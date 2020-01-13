@@ -5,10 +5,12 @@ import org.mabartos.persistence.model.RoomModel;
 import org.mabartos.persistence.repository.RoomRepository;
 import org.mabartos.service.core.RoomService;
 
+import javax.inject.Inject;
 import java.util.List;
 
 public class RoomServiceImpl extends CRUDServiceImpl<RoomModel, RoomRepository> implements RoomService {
 
+    @Inject
     RoomServiceImpl(RoomRepository repository) {
         super(repository);
     }

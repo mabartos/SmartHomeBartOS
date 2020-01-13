@@ -5,11 +5,12 @@ import org.mabartos.persistence.model.DeviceModel;
 import org.mabartos.persistence.repository.DeviceRepository;
 import org.mabartos.service.core.DeviceService;
 
+import javax.inject.Inject;
 import java.util.List;
 
 public class DeviceServiceImpl extends CRUDServiceImpl<DeviceModel, DeviceRepository> implements DeviceService {
 
-
+    @Inject
     DeviceServiceImpl(DeviceRepository repository) {
         super(repository);
     }
