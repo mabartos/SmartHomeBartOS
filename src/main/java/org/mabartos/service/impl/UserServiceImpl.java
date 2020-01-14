@@ -4,8 +4,10 @@ import org.mabartos.persistence.model.UserModel;
 import org.mabartos.persistence.repository.UserRepository;
 import org.mabartos.service.core.UserService;
 
+import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+@Dependent
 public class UserServiceImpl extends CRUDServiceImpl<UserModel, UserRepository> implements UserService {
 
     @Inject

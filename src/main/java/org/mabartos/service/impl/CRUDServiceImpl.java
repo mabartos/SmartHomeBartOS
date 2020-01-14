@@ -5,10 +5,13 @@ import org.mabartos.service.core.CRUDService;
 import org.mabartos.utils.Identifiable;
 
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import javax.ws.rs.NotFoundException;
 import java.util.List;
 
-public class CRUDServiceImpl<T extends Identifiable, Repo extends PanacheRepository<T>> implements CRUDService<T> {
+@Transactional
+public class CRUDServiceImpl
+        <T extends Identifiable, Repo extends PanacheRepository<T>> implements CRUDService<T> {
 
     private Repo repository;
 
@@ -39,17 +42,12 @@ public class CRUDServiceImpl<T extends Identifiable, Repo extends PanacheReposit
     }
 
     @Override
-    public T findByID(Long id) {
-        return repository.findById(id);
-    }
-
-    @Override
     public List<T> getAll() {
         return repository.findAll().list();
     }
 
     @Override
-    public T getByID(Long id) {
+    public T findByID(Long id) {
         return repository
                 .findByIdOptional(id)
                 .orElseThrow(NotFoundException::new);

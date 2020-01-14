@@ -1,41 +1,62 @@
 package org.mabartos.persistence.model;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import org.mabartos.general.UserRole;
-import org.mabartos.utils.Identifiable;
+import org.mabartos.utils.HasChildren;
 
 import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
-import java.io.Serializable;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "Users")
 @Cacheable
-public class UserModel extends PanacheEntity implements Serializable, Identifiable {
+public class UserModel extends PanacheEntityBase implements HasChildren<HomeModel> {
+
+    @Id
+    @GeneratedValue
+    @Column(name = "USER_ID")
+    private Long id;
 
     @Column(unique = true, nullable = false)
-    public String username;
+    private String username;
 
     @Column(nullable = false)
-    public String password;
+    private String password;
 
     @Column
-    public String firstname;
+    private String firstname;
 
     @Column
-    public String lastname;
+    private String lastname;
 
     @Column(nullable = false)
     @Enumerated
-    public UserRole userRole = UserRole.USER;
+    private UserRole userRole = UserRole.USER;
 
     @Column(unique = true)
     @Email
-    public String email;
+    private String email;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "USERS_HOMES",
+            joinColumns = {
+                    @JoinColumn(name = "USER_ID", referencedColumnName = "USER_ID")},
+            inverseJoinColumns = {
+                    @JoinColumn(name = "HOME_ID", referencedColumnName = "HOME_ID")}
+    )
+    private List<HomeModel> homesList;
 
     public UserModel() {
     }
@@ -52,6 +73,50 @@ public class UserModel extends PanacheEntity implements Serializable, Identifiab
         this.lastname = lastname;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public UserRole getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(UserRole userRole) {
+        this.userRole = userRole;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     @Override
     public String getName() {
         return username;
@@ -65,5 +130,48 @@ public class UserModel extends PanacheEntity implements Serializable, Identifiab
     @Override
     public void setID(Long id) {
         this.id = id;
+    }
+
+    @Override
+    public List<HomeModel> getChildren() {
+        return homesList;
+    }
+
+    @Override
+    public boolean addChild(HomeModel child) {
+        return homesList.add(child);
+    }
+
+    @Override
+    public boolean removeChild(HomeModel child) {
+        return homesList.remove(child);
+    }
+
+    @Override
+    public boolean removeChildByID(Long id) {
+        return homesList.removeIf(home -> home.getID().equals(id));
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        else if (!(obj instanceof UserModel))
+            return false;
+        else {
+            UserModel object = (UserModel) obj;
+            return (object.getID().equals(this.getID())
+                    && object.getName().equals(this.getName())
+                    && object.getFirstname().equals(this.getFirstname())
+                    && object.getLastname().equals(this.getLastname())
+                    && object.getEmail().equals(this.getEmail())
+                    && object.getUserRole().equals(this.getUserRole())
+            );
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, username, firstname, lastname, email, userRole);
     }
 }

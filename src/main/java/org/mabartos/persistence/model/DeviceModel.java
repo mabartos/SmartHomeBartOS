@@ -1,6 +1,6 @@
 package org.mabartos.persistence.model;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import org.mabartos.general.DeviceType;
 import org.mabartos.utils.Identifiable;
 
@@ -8,14 +8,22 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 @Table(name = "Devices")
-public class DeviceModel extends PanacheEntity implements Serializable, Identifiable {
+public class DeviceModel extends PanacheEntityBase implements Serializable, Identifiable {
+
+    @Id
+    @GeneratedValue
+    @Column(name = "DEVICE_ID")
+    private Long id;
 
     @Column(nullable = false)
     public String name;
@@ -58,4 +66,26 @@ public class DeviceModel extends PanacheEntity implements Serializable, Identifi
     public void setRoom(RoomModel room) {
         this.room = room;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        else if (!(obj instanceof DeviceModel))
+            return false;
+        else {
+            DeviceModel object = (DeviceModel) obj;
+            return (object.getID().equals(this.getID())
+                    && object.getName().equals(this.getName())
+                    && object.getRoom().equals(this.getRoom())
+                    && object.getType().equals(this.getType())
+            );
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, room, type);
+    }
+
 }
