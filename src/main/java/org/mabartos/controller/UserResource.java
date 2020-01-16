@@ -2,7 +2,9 @@ package org.mabartos.controller;
 
 import org.mabartos.persistence.model.UserModel;
 import org.mabartos.service.core.CRUDService;
+import org.mabartos.service.core.DeviceService;
 import org.mabartos.service.core.HomeService;
+import org.mabartos.service.core.RoomService;
 import org.mabartos.service.core.UserService;
 
 import javax.enterprise.context.RequestScoped;
@@ -19,8 +21,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Path("/users")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -33,13 +35,19 @@ public class UserResource {
     public static final String USER_ID = "/{" + USER_ID_NAME + ":[\\d]+}";
 
 
-    private List<CRUDService> services = new ArrayList<>();
+    private Set<CRUDService> services = new HashSet<>();
     private UserService userService;
 
     @Inject
-    public UserResource(UserService userService, HomeService homeService) {
+    public UserResource(UserService userService,
+                        HomeService homeService,
+                        RoomService roomService,
+                        DeviceService deviceService
+    ) {
         this.userService = userService;
         services.add(homeService);
+        services.add(roomService);
+        services.add(deviceService);
     }
 
     @GET
@@ -49,7 +57,7 @@ public class UserResource {
     }
 
     @GET
-    public List<UserModel> getAll() {
+    public Set<UserModel> getAll() {
         return userService.getAll();
     }
 
@@ -86,7 +94,7 @@ public class UserResource {
         return userService.deleteByID(id);
     }
 
-    @Path(USER_ID + "/homes")
+    @Path(USER_ID + HomeResource.HOME_PATH)
     public HomeResource forwardToHome(@PathParam(USER_ID_NAME) Long id) {
         return new HomeResource(userService.findByID(id), services);
     }

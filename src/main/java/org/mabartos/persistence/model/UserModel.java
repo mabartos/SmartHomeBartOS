@@ -1,10 +1,12 @@
 package org.mabartos.persistence.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import org.mabartos.general.UserRole;
 import org.mabartos.utils.HasChildren;
 
 import javax.persistence.Cacheable;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
@@ -16,8 +18,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "Users")
@@ -49,14 +52,14 @@ public class UserModel extends PanacheEntityBase implements HasChildren<HomeMode
     @Email
     private String email;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(name = "USERS_HOMES",
             joinColumns = {
-                    @JoinColumn(name = "USER_ID", referencedColumnName = "USER_ID")},
+                    @JoinColumn(referencedColumnName = "USER_ID")},
             inverseJoinColumns = {
-                    @JoinColumn(name = "HOME_ID", referencedColumnName = "HOME_ID")}
+                    @JoinColumn(referencedColumnName = "HOME_ID")}
     )
-    private List<HomeModel> homesList;
+    private Set<HomeModel> homesSet = new HashSet<>();
 
     public UserModel() {
     }
@@ -133,23 +136,24 @@ public class UserModel extends PanacheEntityBase implements HasChildren<HomeMode
     }
 
     @Override
-    public List<HomeModel> getChildren() {
-        return homesList;
+    @JsonIgnore
+    public Set<HomeModel> getChildren() {
+        return homesSet;
     }
 
     @Override
     public boolean addChild(HomeModel child) {
-        return homesList.add(child);
+        return homesSet.add(child);
     }
 
     @Override
     public boolean removeChild(HomeModel child) {
-        return homesList.remove(child);
+        return child.removeUser(this) && homesSet.remove(child);
     }
 
     @Override
     public boolean removeChildByID(Long id) {
-        return homesList.removeIf(home -> home.getID().equals(id));
+        return homesSet.removeIf(home -> home.getID().equals(id));
     }
 
     @Override

@@ -8,6 +8,7 @@ import org.mabartos.general.UserRole;
 import org.mabartos.utils.DedicatedUserRole;
 import org.mabartos.utils.HasChildren;
 
+import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -21,12 +22,12 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name = "Homes")
+@Cacheable
 public class HomeModel extends PanacheEntityBase implements HasChildren<RoomModel> {
 
     @Id
@@ -35,26 +36,26 @@ public class HomeModel extends PanacheEntityBase implements HasChildren<RoomMode
     private Long id;
 
     @Column(nullable = false, unique = true)
-    public String name;
+    private String name;
 
     @Column
-    public String brokerURL;
+    private String brokerURL;
 
     @Column
-    public String imageURL;
+    private String imageURL;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.MERGE)
     @JoinTable(name = "HOMES_USERS",
             joinColumns = {
-                    @JoinColumn(name = "HOME_ID", referencedColumnName = "HOME_ID")},
+                    @JoinColumn(referencedColumnName = "HOME_ID")},
             inverseJoinColumns = {
-                    @JoinColumn(name = "USER_ID", referencedColumnName = "USER_ID")}
+                    @JoinColumn(referencedColumnName = "USER_ID")}
     )
-    private List<UserModel> usersList;
+    private Set<UserModel> usersSet = new HashSet<>();
 
-    @OneToMany(targetEntity = RoomModel.class, mappedBy = "home", cascade = CascadeType.REMOVE)
+    @OneToMany(targetEntity = RoomModel.class, mappedBy = "home", cascade = CascadeType.MERGE)
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<RoomModel> roomsList;
+    private Set<RoomModel> roomsSet;
 
     @ElementCollection
     @JsonIgnore
@@ -95,22 +96,24 @@ public class HomeModel extends PanacheEntityBase implements HasChildren<RoomMode
         this.imageURL = imageURL;
     }
 
-    public List<UserModel> getUsers() {
-        return usersList;
+    @JsonIgnore
+    public Set<UserModel> getUsers() {
+        return usersSet;
     }
 
     public boolean addUser(UserModel user) {
-        return usersList.add(user);
+        return usersSet.add(user);
     }
 
     public boolean removeUser(UserModel user) {
-        return usersList.remove(user);
+        return user.removeChild(this) && usersSet.remove(user);
     }
 
     public boolean removeUserByID(Long id) {
-        return usersList.removeIf(user -> user.getID().equals(id));
+        return usersSet.removeIf(user -> user.getID().equals(id));
     }
 
+    @JsonIgnore
     public Set<DedicatedUserRole> getUserRoles() {
         return userRoles;
     }
@@ -132,23 +135,24 @@ public class HomeModel extends PanacheEntityBase implements HasChildren<RoomMode
     }
 
     @Override
-    public List<RoomModel> getChildren() {
-        return roomsList;
+    @JsonIgnore
+    public Set<RoomModel> getChildren() {
+        return roomsSet;
     }
 
     @Override
     public boolean addChild(RoomModel child) {
-        return roomsList.add(child);
+        return roomsSet.add(child);
     }
 
     @Override
     public boolean removeChild(RoomModel child) {
-        return roomsList.remove(child);
+        return roomsSet.remove(child);
     }
 
     @Override
     public boolean removeChildByID(Long id) {
-        return roomsList.removeIf(room -> room.getID().equals(id));
+        return roomsSet.removeIf(room -> room.getID().equals(id));
     }
 
     @Override

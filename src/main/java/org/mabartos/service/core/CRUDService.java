@@ -1,14 +1,14 @@
 package org.mabartos.service.core;
 
-import java.util.List;
+import java.util.Set;
 
 public interface CRUDService<T> {
 
     T create(T entity);
 
     T updateByID(Long id, T entity);
-    
-    List<T> getAll();
+
+    Set<T> getAll();
 
     T findByID(Long id);
 

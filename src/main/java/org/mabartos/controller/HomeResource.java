@@ -6,7 +6,7 @@ import org.mabartos.service.core.CRUDService;
 import org.mabartos.service.core.HomeService;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -20,20 +20,21 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import java.util.List;
+import java.util.Set;
 
 @Path("/homes")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Transactional
-@ApplicationScoped
+@RequestScoped
 public class HomeResource {
 
     private static final String HOME_ID_NAME = "idHome";
-    public static final String HOME_ID = "/{" + HOME_ID_NAME + ":[\\d]+}";
+    private static final String HOME_ID = "/{" + HOME_ID_NAME + ":[\\d]+}";
+    public static final String HOME_PATH = "/homes";
 
     private UserModel parent;
-
+    private Set<CRUDService> services;
     private HomeService homeService;
 
     @Inject
@@ -41,8 +42,9 @@ public class HomeResource {
         this.homeService = homeService;
     }
 
-    public HomeResource(UserModel parent, List<CRUDService> services) {
+    public HomeResource(UserModel parent, Set<CRUDService> services) {
         this.parent = parent;
+        this.services = services;
         this.homeService = (HomeService) services.stream()
                 .filter(f -> f instanceof HomeService)
                 .findFirst()
@@ -63,7 +65,7 @@ public class HomeResource {
     }
 
     @GET
-    public List<HomeModel> getAll() {
+    public Set<HomeModel> getAll() {
         return homeService.getAll();
     }
 
@@ -89,4 +91,10 @@ public class HomeResource {
     public boolean deleteHome(@PathParam(HOME_ID_NAME) Long id) {
         return homeService.deleteByID(id);
     }
+
+    @Path(HOME_ID + RoomResource.ROOM_PATH)
+    public RoomResource forwardToRoom(@PathParam(HOME_ID_NAME) Long id) {
+        return new RoomResource(homeService.findByID(id), services);
+    }
+
 }

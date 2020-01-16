@@ -5,9 +5,11 @@ import org.mabartos.service.core.CRUDService;
 import org.mabartos.utils.Identifiable;
 
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import javax.ws.rs.NotFoundException;
-import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Transactional
 public class CRUDServiceImpl
@@ -16,8 +18,15 @@ public class CRUDServiceImpl
     private Repo repository;
 
     @Inject
+    protected EntityManager entityManager;
+
+    @Inject
     CRUDServiceImpl(Repo repository) {
         this.repository = repository;
+    }
+
+    public EntityManager getEntityManager() {
+        return entityManager;
     }
 
     public Repo getRepository() {
@@ -35,15 +44,15 @@ public class CRUDServiceImpl
         T found = repository.findById(id);
         if (entity != null && found != null) {
             entity.setID(id);
-            repository.persist(entity);
+            entityManager.merge(entity);
             return repository.findById(id);
         }
         return null;
     }
 
     @Override
-    public List<T> getAll() {
-        return repository.findAll().list();
+    public Set<T> getAll() {
+        return repository.findAll().stream().collect(Collectors.toSet());
     }
 
     @Override

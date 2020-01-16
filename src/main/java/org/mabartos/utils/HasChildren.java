@@ -1,13 +1,11 @@
 package org.mabartos.utils;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-
 import java.io.Serializable;
-import java.util.List;
+import java.util.Set;
 
 public interface HasChildren<T> extends Serializable, Identifiable {
 
-    List<T> getChildren();
+    Set<T> getChildren();
 
     boolean addChild(T child);
 

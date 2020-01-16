@@ -4,6 +4,7 @@ import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import org.mabartos.general.DeviceType;
 import org.mabartos.utils.Identifiable;
 
+import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,6 +19,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "Devices")
+@Cacheable
 public class DeviceModel extends PanacheEntityBase implements Serializable, Identifiable {
 
     @Id
@@ -26,11 +28,11 @@ public class DeviceModel extends PanacheEntityBase implements Serializable, Iden
     private Long id;
 
     @Column(nullable = false)
-    public String name;
+    private String name;
 
     @Enumerated
     @Column(nullable = false)
-    public DeviceType type = DeviceType.NONE;
+    private DeviceType type = DeviceType.NONE;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn

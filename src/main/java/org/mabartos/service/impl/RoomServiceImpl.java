@@ -6,9 +6,12 @@ import org.mabartos.persistence.model.RoomModel;
 import org.mabartos.persistence.repository.RoomRepository;
 import org.mabartos.service.core.RoomService;
 
+import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
-import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+@Dependent
 public class RoomServiceImpl extends CRUDServiceChildImpl<RoomModel, RoomRepository, HomeModel> implements RoomService {
 
     @Inject
@@ -17,7 +20,7 @@ public class RoomServiceImpl extends CRUDServiceChildImpl<RoomModel, RoomReposit
     }
 
     @Override
-    public List<RoomModel> findByType(RoomType type) {
-        return getRepository().find("type", type).list();
+    public Set<RoomModel> findByType(RoomType type) {
+        return getRepository().find("type", type).stream().collect(Collectors.toSet());
     }
 }

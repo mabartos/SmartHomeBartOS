@@ -3,7 +3,6 @@ package org.mabartos.service.impl;
 import org.mabartos.persistence.model.HomeModel;
 import org.mabartos.persistence.model.UserModel;
 import org.mabartos.persistence.repository.HomeRepository;
-import org.mabartos.persistence.repository.UserRepository;
 import org.mabartos.service.core.HomeService;
 
 import javax.enterprise.context.Dependent;
@@ -13,8 +12,8 @@ import javax.inject.Inject;
 public class HomeServiceImpl extends CRUDServiceChildImpl<HomeModel, HomeRepository, UserModel> implements HomeService {
 
     @Inject
-    HomeServiceImpl(HomeRepository repository, UserRepository userRepository) {
-        super(repository,userRepository);
+    HomeServiceImpl(HomeRepository repository) {
+        super(repository);
     }
 
     @Override

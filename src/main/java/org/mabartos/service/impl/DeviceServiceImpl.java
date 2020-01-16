@@ -6,9 +6,12 @@ import org.mabartos.persistence.model.RoomModel;
 import org.mabartos.persistence.repository.DeviceRepository;
 import org.mabartos.service.core.DeviceService;
 
+import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
-import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+@Dependent
 public class DeviceServiceImpl extends CRUDServiceChildImpl<DeviceModel, DeviceRepository, RoomModel> implements DeviceService {
 
     @Inject
@@ -17,8 +20,7 @@ public class DeviceServiceImpl extends CRUDServiceChildImpl<DeviceModel, DeviceR
     }
 
     @Override
-    public List<DeviceModel> findByType(DeviceType type) {
-        return getRepository().find("type", type).list();
-
+    public Set<DeviceModel> findByType(DeviceType type) {
+        return getRepository().find("type", type).stream().collect(Collectors.toSet());
     }
 }

@@ -4,9 +4,9 @@ import org.mabartos.general.DeviceType;
 import org.mabartos.persistence.model.DeviceModel;
 import org.mabartos.persistence.model.RoomModel;
 
-import java.util.List;
+import java.util.Set;
 
 public interface DeviceService extends CRUDServiceChild<DeviceModel, RoomModel> {
 
-    List<DeviceModel> findByType(DeviceType type);
+    Set<DeviceModel> findByType(DeviceType type);
 }

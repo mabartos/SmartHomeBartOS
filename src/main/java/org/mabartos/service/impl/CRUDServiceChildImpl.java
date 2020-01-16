@@ -1,15 +1,12 @@
 package org.mabartos.service.impl;
 
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
-import org.mabartos.persistence.model.UserModel;
 import org.mabartos.service.core.CRUDServiceChild;
-import org.mabartos.service.core.UserService;
 import org.mabartos.utils.HasChildren;
 import org.mabartos.utils.Identifiable;
 
-import javax.inject.Inject;
 import javax.transaction.Transactional;
-import java.util.List;
+import java.util.Set;
 
 @Transactional
 public class CRUDServiceChildImpl
@@ -18,11 +15,9 @@ public class CRUDServiceChildImpl
         implements CRUDServiceChild<Model, Parent> {
 
     private Parent parentModel;
-    private UserService userService;
 
-    CRUDServiceChildImpl(Repo repository, UserService userService) {
+    CRUDServiceChildImpl(Repo repository) {
         super(repository);
-        this.userService = userService;
     }
 
     @Override
@@ -34,13 +29,14 @@ public class CRUDServiceChildImpl
         return false;
     }
 
-    //TODO update userModel
+    // TODO only if HOME_ADMIN
     @Override
+    @SuppressWarnings("unchecked")
     public boolean addModelToParent(Long id) {
         if (parentModel != null && id != null) {
             Model found = super.findByID(id);
             if (found != null && parentModel.addChild(found)) {
-                userService.updateByID(parentModel.getID(), (UserModel) parentModel);
+                getEntityManager().merge(parentModel);
                 return true;
             }
         }
@@ -63,6 +59,7 @@ public class CRUDServiceChildImpl
         Model created = super.create(entity);
         if (created != null) {
             parentModel.addChild(created);
+            getEntityManager().merge(parentModel);
             return created;
         }
         return null;
@@ -77,7 +74,7 @@ public class CRUDServiceChildImpl
     }
 
     @Override
-    public List<Model> getAll() {
+    public Set<Model> getAll() {
         if (isParentSet())
             return parentModel.getChildren();
 

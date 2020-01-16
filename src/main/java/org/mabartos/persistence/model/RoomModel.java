@@ -6,6 +6,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 import org.mabartos.general.RoomType;
 import org.mabartos.utils.HasChildren;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
@@ -15,12 +16,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "Rooms")
+@Cacheable
 public class RoomModel extends PanacheEntityBase implements HasChildren<DeviceModel> {
 
     @Id
@@ -29,14 +31,14 @@ public class RoomModel extends PanacheEntityBase implements HasChildren<DeviceMo
     private Long id;
 
     @Column(nullable = false)
-    public String name;
+    private String name;
 
     @Column
-    public String imageURL;
+    private String imageURL;
 
     @Column(nullable = false)
     @Enumerated
-    public RoomType type = RoomType.NONE;
+    private RoomType type = RoomType.NONE;
 
     @ManyToOne
     @JoinColumn(nullable = false)
@@ -44,7 +46,7 @@ public class RoomModel extends PanacheEntityBase implements HasChildren<DeviceMo
 
     @OneToMany(targetEntity = DeviceModel.class, mappedBy = "room")
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<DeviceModel> devicesList = new ArrayList<>();
+    private Set<DeviceModel> devicesSet = new HashSet<>();
 
     @Override
     public String getName() {
@@ -91,23 +93,23 @@ public class RoomModel extends PanacheEntityBase implements HasChildren<DeviceMo
     }
 
     @Override
-    public List<DeviceModel> getChildren() {
-        return devicesList;
+    public Set<DeviceModel> getChildren() {
+        return devicesSet;
     }
 
     @Override
     public boolean addChild(DeviceModel child) {
-        return devicesList.add(child);
+        return devicesSet.add(child);
     }
 
     @Override
     public boolean removeChild(DeviceModel child) {
-        return devicesList.remove(child);
+        return devicesSet.remove(child);
     }
 
     @Override
     public boolean removeChildByID(Long id) {
-        return devicesList.removeIf(device -> device.getID().equals(id));
+        return devicesSet.removeIf(device -> device.getID().equals(id));
     }
 
     @Override
