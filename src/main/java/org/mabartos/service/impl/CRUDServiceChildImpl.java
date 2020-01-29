@@ -2,8 +2,8 @@ package org.mabartos.service.impl;
 
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import org.mabartos.service.core.CRUDServiceChild;
-import org.mabartos.utils.HasChildren;
-import org.mabartos.utils.Identifiable;
+import org.mabartos.interfaces.HasChildren;
+import org.mabartos.interfaces.Identifiable;
 
 import javax.transaction.Transactional;
 import java.util.Set;

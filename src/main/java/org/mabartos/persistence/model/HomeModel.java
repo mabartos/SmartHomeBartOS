@@ -4,9 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.mabartos.controller.HomeResource;
 import org.mabartos.general.UserRole;
 import org.mabartos.utils.DedicatedUserRole;
-import org.mabartos.utils.HasChildren;
+import org.mabartos.interfaces.HasChildren;
 
 import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;

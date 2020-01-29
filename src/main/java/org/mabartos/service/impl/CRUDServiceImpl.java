@@ -2,7 +2,7 @@ package org.mabartos.service.impl;
 
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import org.mabartos.service.core.CRUDService;
-import org.mabartos.utils.Identifiable;
+import org.mabartos.interfaces.Identifiable;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -35,8 +35,11 @@ public class CRUDServiceImpl
 
     @Override
     public T create(T entity) {
-        repository.persist(entity);
-        return repository.findById(entity.getID());
+        if (!repository.isPersistent(entity)) {
+            repository.persist(entity);
+            return repository.findById(entity.getID());
+        } else
+            return entity;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package org.mabartos.utils;
+package org.mabartos.interfaces;
 
 public interface Identifiable {
 

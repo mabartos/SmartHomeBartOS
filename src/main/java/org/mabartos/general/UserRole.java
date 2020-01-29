@@ -1,7 +1,7 @@
 package org.mabartos.general;
 
 public enum UserRole {
-    ADMIN,
+    SYS_ADMIN,
     HOME_ADMIN,
     HOME_MEMBER,
     HOME_CHILD,

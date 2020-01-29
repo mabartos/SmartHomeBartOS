@@ -1,7 +1,7 @@
 package org.mabartos.service.core;
 
-import org.mabartos.utils.HasChildren;
-import org.mabartos.utils.Identifiable;
+import org.mabartos.interfaces.HasChildren;
+import org.mabartos.interfaces.Identifiable;
 
 public interface CRUDServiceChild<T extends Identifiable, Parent extends HasChildren<T>> extends CRUDService<T> {
 

@@ -1,14 +1,11 @@
 package org.mabartos.controller;
 
-import io.smallrye.reactive.messaging.annotations.Channel;
-import org.jboss.resteasy.annotations.SseElementType;
 import org.mabartos.persistence.model.UserModel;
 import org.mabartos.service.core.CRUDService;
 import org.mabartos.service.core.DeviceService;
 import org.mabartos.service.core.HomeService;
 import org.mabartos.service.core.RoomService;
 import org.mabartos.service.core.UserService;
-import org.reactivestreams.Publisher;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;

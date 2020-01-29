@@ -1,8 +1,9 @@
 package org.mabartos.persistence.model;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import org.mabartos.controller.DeviceResource;
 import org.mabartos.general.DeviceType;
-import org.mabartos.utils.Identifiable;
+import org.mabartos.interfaces.Identifiable;
 
 import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
@@ -11,6 +12,8 @@ import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -20,6 +23,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "Devices")
 @Cacheable
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class DeviceModel extends PanacheEntityBase implements Serializable, Identifiable {
 
     @Id
@@ -67,6 +71,10 @@ public class DeviceModel extends PanacheEntityBase implements Serializable, Iden
 
     public void setRoom(RoomModel room) {
         this.room = room;
+    }
+
+    public String getTopic() {
+        return DeviceResource.DEVICE_PATH + "/" + type.name().toLowerCase() + "/" + id;
     }
 
     @Override
