@@ -42,6 +42,15 @@ public class DeviceModel extends PanacheEntityBase implements Serializable, Iden
     @JoinColumn
     private RoomModel room;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn
+    private HomeModel home;
+
+    public DeviceModel(String name, DeviceType type) {
+        this.name = name;
+        this.type = type;
+    }
+
     @Override
     public String getName() {
         return this.name;
@@ -75,6 +84,14 @@ public class DeviceModel extends PanacheEntityBase implements Serializable, Iden
 
     public String getTopic() {
         return DeviceResource.DEVICE_PATH + "/" + type.name().toLowerCase() + "/" + id;
+    }
+
+    public HomeModel getHome() {
+        return home;
+    }
+
+    public void setHome(HomeModel home) {
+        this.home = home;
     }
 
     @Override

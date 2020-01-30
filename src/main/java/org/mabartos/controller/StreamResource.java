@@ -25,7 +25,7 @@ public class StreamResource {
 
     @PostConstruct
     public void setUp() {
-        client = new BarMqttClient("tcp://localhost:1883","input");
+        //client = new BarMqttClient("tcp://localhost:1883","input");
     }
 
     @Inject

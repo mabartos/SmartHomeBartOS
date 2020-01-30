@@ -8,8 +8,8 @@ import javax.persistence.Entity;
 @Entity
 public class TemperatureDevModel extends DeviceWithValue {
 
-    public TemperatureDevModel() {
-        setType(DeviceType.TEMPERATURE);
+    public TemperatureDevModel(String name) {
+        super(name, DeviceType.HUMIDITY);
     }
 
 }

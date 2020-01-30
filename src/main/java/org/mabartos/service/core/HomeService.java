@@ -1,11 +1,16 @@
 package org.mabartos.service.core;
 
+import org.mabartos.persistence.model.DeviceModel;
 import org.mabartos.persistence.model.HomeModel;
 import org.mabartos.persistence.model.UserModel;
 
+import java.util.Set;
+
 public interface HomeService extends CRUDServiceChild<HomeModel, UserModel> {
 
-    HomeModel findByName(String name);
+    boolean addDeviceToHome(DeviceModel device, Long homeID);
 
-    HomeModel findByBrokerURL(String brokerURL);
+    boolean removeDeviceFromHome(DeviceModel device, Long homeID);
+
+    Set<DeviceModel> getAllUnAssignedDevices(Long homeID);
 }

@@ -7,9 +7,15 @@ import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.mabartos.persistence.model.HomeModel;
+import org.mabartos.streams.mqtt.devices.BarMqttHandler;
+import org.mabartos.streams.mqtt.utils.TopicUtils;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import java.util.UUID;
 
+@ApplicationScoped
 public class BarMqttClient {
 
     private final Integer TIMEOUT = 10;
@@ -17,12 +23,24 @@ public class BarMqttClient {
     private String brokerURL;
     private String clientID;
     private IMqttClient mqttClient;
+    private BarMqttClient thisClient;
+    private HomeModel home;
 
-    public BarMqttClient(String brokerURL, String topic) {
+    @Inject
+    public BarMqttClient() {
+    }
+
+    public BarMqttClient(String brokerURL, HomeModel home) {
+        init(brokerURL, home);
+    }
+
+    public void init(String brokerURL, HomeModel home) {
         try {
             this.brokerURL = brokerURL;
             this.clientID = UUID.randomUUID().toString();
             this.mqttClient = new MqttClient(this.getBrokerURL(), this.getClientID());
+            this.thisClient = this;
+            this.home = home;
 
             mqttClient.setCallback(new MqttCallback() {
                 @Override
@@ -32,7 +50,7 @@ public class BarMqttClient {
 
                 @Override
                 public void messageArrived(String topic, MqttMessage message) throws Exception {
-                    System.out.println(topic + ": " + message.toString());
+                    new BarMqttHandler().executeMessage(home, thisClient, topic, message);
                 }
 
                 @Override
@@ -41,7 +59,7 @@ public class BarMqttClient {
             });
 
             mqttClient.connect(setConnectOptions());
-            mqttClient.subscribe(topic + "/#");
+            mqttClient.subscribe(TopicUtils.getTopic(home) + "/#");
 
         } catch (MqttException e) {
             e.printStackTrace();

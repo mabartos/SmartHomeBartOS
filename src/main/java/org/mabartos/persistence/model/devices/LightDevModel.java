@@ -15,8 +15,8 @@ public class LightDevModel extends DeviceWithState {
     @Column
     private Double minIntensity = 0.0;
 
-    public LightDevModel() {
-        setType(DeviceType.LIGHT);
+    public LightDevModel(String name) {
+        super(name,DeviceType.HUMIDITY);
     }
 
     public Double getIntensity() {

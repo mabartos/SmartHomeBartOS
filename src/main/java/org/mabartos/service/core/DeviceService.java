@@ -9,6 +9,4 @@ import java.util.Set;
 public interface DeviceService extends CRUDServiceChild<DeviceModel, RoomModel> {
 
     Set<DeviceModel> findByType(DeviceType type);
-
-    
 }

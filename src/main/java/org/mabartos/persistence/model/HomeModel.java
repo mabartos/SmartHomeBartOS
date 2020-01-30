@@ -4,10 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
-import org.mabartos.controller.HomeResource;
 import org.mabartos.general.UserRole;
-import org.mabartos.utils.DedicatedUserRole;
 import org.mabartos.interfaces.HasChildren;
+import org.mabartos.utils.DedicatedUserRole;
 
 import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
@@ -36,7 +35,7 @@ public class HomeModel extends PanacheEntityBase implements HasChildren<RoomMode
     @Column(name = "HOME_ID")
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String name;
 
     @Column
@@ -44,6 +43,10 @@ public class HomeModel extends PanacheEntityBase implements HasChildren<RoomMode
 
     @Column
     private String imageURL;
+
+    @OneToMany(targetEntity = DeviceModel.class, mappedBy = "home", cascade = CascadeType.MERGE)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private Set<DeviceModel> unAssignedDevices;
 
     @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.MERGE)
     @JoinTable(name = "HOMES_USERS",
@@ -133,6 +136,18 @@ public class HomeModel extends PanacheEntityBase implements HasChildren<RoomMode
 
     public boolean removeRoleForUser(DedicatedUserRole userRole) {
         return userRoles.remove(userRole);
+    }
+
+    public Set<DeviceModel> getUnassignedDevices() {
+        return unAssignedDevices;
+    }
+
+    public boolean addDevice(DeviceModel device) {
+        return unAssignedDevices.add(device);
+    }
+
+    public boolean removeDeviceFromHome(DeviceModel device) {
+        return unAssignedDevices.remove(device);
     }
 
     @Override

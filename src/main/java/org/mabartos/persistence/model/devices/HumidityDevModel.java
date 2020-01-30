@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 @Entity
 public class HumidityDevModel extends DeviceWithValue {
 
-    public HumidityDevModel() {
-        setType(DeviceType.HUMIDITY);
+    public HumidityDevModel(String name) {
+        super(name,DeviceType.HUMIDITY);
     }
 }
