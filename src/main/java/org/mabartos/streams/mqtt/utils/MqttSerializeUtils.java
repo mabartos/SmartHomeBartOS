@@ -1,7 +1,9 @@
 package org.mabartos.streams.mqtt.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import org.mabartos.streams.mqtt.messages.MqttSerializable;
 
 public class MqttSerializeUtils implements MqttSerializable {
@@ -16,6 +18,8 @@ public class MqttSerializeUtils implements MqttSerializable {
     public String toJson() {
         try {
             ObjectMapper mapper = new ObjectMapper();
+            mapper.enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING);
+            mapper.enable(DeserializationFeature.READ_ENUMS_USING_TO_STRING);
             return mapper.writeValueAsString(object);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -23,11 +27,12 @@ public class MqttSerializeUtils implements MqttSerializable {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    public static <T> T fromJson(String json, Class clazz) {
+    public static <T> T fromJson(String json, Class<T> clazz) {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            return (T) mapper.readValue(json, clazz);
+            mapper.enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING);
+            mapper.enable(DeserializationFeature.READ_ENUMS_USING_TO_STRING);
+            return mapper.readValue(json, clazz);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             return null;

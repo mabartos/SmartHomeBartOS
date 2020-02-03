@@ -58,7 +58,8 @@ public class CRUDServiceChildImpl
     public Model create(Model entity) {
         Model created = super.create(entity);
         if (created != null) {
-            parentModel.addChild(created);
+            if (parentModel != null)
+                parentModel.addChild(created);
             getEntityManager().merge(parentModel);
             return created;
         }

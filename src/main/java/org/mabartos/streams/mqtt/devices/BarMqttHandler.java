@@ -1,5 +1,6 @@
 package org.mabartos.streams.mqtt.devices;
 
+import io.quarkus.runtime.StartupEvent;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.mabartos.general.DeviceType;
 import org.mabartos.persistence.model.HomeModel;
@@ -9,6 +10,7 @@ import org.mabartos.streams.mqtt.BarMqttClient;
 import org.mabartos.streams.mqtt.utils.TopicUtils;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import java.util.Arrays;
 import java.util.Optional;
@@ -16,11 +18,18 @@ import java.util.Optional;
 @ApplicationScoped
 public class BarMqttHandler {
 
-    @Inject
-    private DeviceService deviceService;
+    DeviceService deviceService;
+    HomeService homeService;
+
+    void onStartup(@Observes StartupEvent event){
+        System.out.println("Start Handler");
+    }
 
     @Inject
-    private HomeService homeService;
+    public BarMqttHandler(DeviceService deviceService, HomeService homeService) {
+        this.deviceService = deviceService;
+        this.homeService = homeService;
+    }
 
     //TODO own exceptions, common topics
     public void executeMessage(HomeModel home, BarMqttClient client, String receivedTopic, MqttMessage message) {
@@ -31,7 +40,7 @@ public class BarMqttHandler {
 
                 String specificTopic = receivedTopic.substring(homeTopic.length());
 
-                HandleManageMessage handler = new HandleManageMessage(homeService, deviceService, home, client, receivedTopic, message);
+                HandleManageMessage handler = new HandleManageMessage(homeService, deviceService, home, client, specificTopic, message);
 
                 // It's not the 'manage' topic
                 if (handler.handle())

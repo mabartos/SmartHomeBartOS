@@ -1,24 +1,19 @@
 package org.mabartos.controller;
 
+import org.mabartos.general.DeviceType;
 import org.mabartos.persistence.model.HomeModel;
 import org.mabartos.persistence.model.UserModel;
 import org.mabartos.service.core.CRUDService;
 import org.mabartos.service.core.HomeService;
+import org.mabartos.streams.mqtt.BarMqttClient;
+import org.mabartos.streams.mqtt.messages.MqttAddDeviceMessage;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.NotFoundException;
-import javax.ws.rs.PATCH;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.Set;
 
@@ -36,10 +31,13 @@ public class HomeResource {
     private UserModel parent;
     private Set<CRUDService> services;
     private HomeService homeService;
+    private BarMqttClient client;
+
 
     @Inject
-    public HomeResource(HomeService homeService) {
+    public HomeResource(HomeService homeService, BarMqttClient client) {
         this.homeService = homeService;
+        this.client = client;
     }
 
     public HomeResource(UserModel parent, Set<CRUDService> services) {
@@ -56,6 +54,20 @@ public class HomeResource {
     public void setParent() {
         if (this.parent != null)
             homeService.setParentModel(this.parent);
+    }
+
+    @GET
+    @Path("/mqtt/{idMqtt}")
+    public void turnOnMqtt(@PathParam("idMqtt") Long id) {
+        client.init("tcp://localhost:1883", getHomeByID(id));
+    }
+
+    @GET
+    @Path("aaa")
+    public String getJson(String json) {
+        MqttAddDeviceMessage msg = MqttAddDeviceMessage.fromJson(json);
+        System.out.println(msg);
+        return msg.toJson();
     }
 
     @GET

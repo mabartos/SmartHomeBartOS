@@ -18,6 +18,9 @@ import java.util.UUID;
 @ApplicationScoped
 public class BarMqttClient {
 
+    @Inject
+    BarMqttHandler handler;
+
     private final Integer TIMEOUT = 10;
 
     private String brokerURL;
@@ -50,7 +53,7 @@ public class BarMqttClient {
 
                 @Override
                 public void messageArrived(String topic, MqttMessage message) throws Exception {
-                    new BarMqttHandler().executeMessage(home, thisClient, topic, message);
+                    handler.executeMessage(home, thisClient, topic, message);
                 }
 
                 @Override
