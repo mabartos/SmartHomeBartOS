@@ -20,7 +20,18 @@ public class DeviceServiceImpl extends CRUDServiceChildImpl<DeviceModel, DeviceR
     }
 
     @Override
+    public DeviceModel create(DeviceModel entity) {
+        if (isDeviceInHome(entity))
+            return super.create(entity);
+        return null;
+    }
+
+    @Override
     public Set<DeviceModel> findByType(DeviceType type) {
         return getRepository().find("type", type).stream().collect(Collectors.toSet());
+    }
+
+    private boolean isDeviceInHome(DeviceModel device) {
+        return DeviceModel.find("name", device.getName()).count() == 0;
     }
 }

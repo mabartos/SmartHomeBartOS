@@ -82,7 +82,6 @@ public class DeviceModel extends PanacheEntityBase implements Serializable, Iden
         return null;
     }
 
-    @JsonIgnore
     public HomeModel getHome() {
         return home;
     }

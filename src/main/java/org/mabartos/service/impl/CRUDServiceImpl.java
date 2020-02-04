@@ -50,7 +50,8 @@ public class CRUDServiceImpl
         if (entity != null && found != null) {
             entity.setID(id);
             entityManager.merge(entity);
-            return repository.findById(id);
+            entityManager.flush();
+            return entity;
         }
         return null;
     }
