@@ -1,22 +1,12 @@
 package org.mabartos.persistence.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import org.mabartos.controller.DeviceResource;
 import org.mabartos.general.DeviceType;
 import org.mabartos.interfaces.Identifiable;
 
-import javax.persistence.Cacheable;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -29,7 +19,7 @@ public class DeviceModel extends PanacheEntityBase implements Serializable, Iden
     @Id
     @GeneratedValue
     @Column(name = "DEVICE_ID")
-    private Long id;
+    protected Long id;
 
     @Column(nullable = false)
     private String name;
@@ -42,9 +32,12 @@ public class DeviceModel extends PanacheEntityBase implements Serializable, Iden
     @JoinColumn
     private RoomModel room;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn
     private HomeModel home;
+
+    public DeviceModel() {
+    }
 
     public DeviceModel(String name, DeviceType type) {
         this.name = name;
@@ -83,9 +76,13 @@ public class DeviceModel extends PanacheEntityBase implements Serializable, Iden
     }
 
     public String getTopic() {
-        return DeviceResource.DEVICE_PATH + "/" + type.name().toLowerCase() + "/" + id;
+        if (home != null) {
+            return home.getTopic() + DeviceResource.DEVICE_PATH + "/" + type.name().toLowerCase() + "/" + id;
+        }
+        return null;
     }
 
+    @JsonIgnore
     public HomeModel getHome() {
         return home;
     }

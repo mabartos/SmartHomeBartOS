@@ -8,6 +8,10 @@ import org.mabartos.streams.mqtt.BarMqttClient;
 
 public class TemperatureDevice extends GeneralMqttDevice<TemperatureDevModel> {
 
+    public TemperatureDevice(){
+        super();
+    }
+
     public TemperatureDevice(BarMqttClient client, DeviceService deviceService, Long id, MqttMessage message) {
         super(client, deviceService, DeviceType.TEMPERATURE, id, message);
 

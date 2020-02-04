@@ -1,6 +1,8 @@
 package org.mabartos.controller;
 
+import io.quarkus.runtime.StartupEvent;
 import org.mabartos.general.DeviceType;
+import org.mabartos.persistence.model.DeviceModel;
 import org.mabartos.persistence.model.HomeModel;
 import org.mabartos.persistence.model.UserModel;
 import org.mabartos.service.core.CRUDService;
@@ -9,19 +11,22 @@ import org.mabartos.streams.mqtt.BarMqttClient;
 import org.mabartos.streams.mqtt.messages.MqttAddDeviceMessage;
 
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.Collections;
 import java.util.Set;
 
 @Path("/homes")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Transactional
-@RequestScoped
+@ApplicationScoped
 public class HomeResource {
 
     private static final String HOME_ID_NAME = "idHome";
@@ -33,6 +38,10 @@ public class HomeResource {
     private HomeService homeService;
     private BarMqttClient client;
 
+    public void initMqttClient(@Observes StartupEvent start) {
+        client.init("tcp://localhost:1883", getHomeByID((long) 5));
+        System.out.println(client.getTopic());
+    }
 
     @Inject
     public HomeResource(HomeService homeService, BarMqttClient client) {
@@ -54,6 +63,12 @@ public class HomeResource {
     public void setParent() {
         if (this.parent != null)
             homeService.setParentModel(this.parent);
+    }
+
+    @GET
+    @Path(HOME_ID + DeviceResource.DEVICE_PATH)
+    public Set<DeviceModel> getDevices(@PathParam(HOME_ID_NAME) Long id) {
+        return homeService.getAllUnAssignedDevices(id);
     }
 
     @GET

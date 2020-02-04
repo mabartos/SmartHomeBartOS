@@ -1,4 +1,4 @@
-package org.mabartos.streams.mqtt.devices;
+package org.mabartos.streams.mqtt;
 
 import io.quarkus.runtime.StartupEvent;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
@@ -6,7 +6,9 @@ import org.mabartos.general.DeviceType;
 import org.mabartos.persistence.model.HomeModel;
 import org.mabartos.service.core.DeviceService;
 import org.mabartos.service.core.HomeService;
-import org.mabartos.streams.mqtt.BarMqttClient;
+import org.mabartos.streams.mqtt.devices.HumidityDevice;
+import org.mabartos.streams.mqtt.devices.LightDevice;
+import org.mabartos.streams.mqtt.devices.TemperatureDevice;
 import org.mabartos.streams.mqtt.utils.TopicUtils;
 
 import javax.enterprise.context.ApplicationScoped;

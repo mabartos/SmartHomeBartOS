@@ -1,11 +1,13 @@
 package org.mabartos.service.impl;
 
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import org.mabartos.persistence.model.HomeModel;
 import org.mabartos.service.core.CRUDService;
 import org.mabartos.interfaces.Identifiable;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import javax.ws.rs.NotFoundException;
 import java.util.Set;
@@ -17,7 +19,7 @@ public class CRUDServiceImpl
 
     private Repo repository;
 
-    @Inject
+    @PersistenceContext
     protected EntityManager entityManager;
 
     @Inject
@@ -37,9 +39,9 @@ public class CRUDServiceImpl
     public T create(T entity) {
         if (!repository.isPersistent(entity)) {
             repository.persist(entity);
-            return repository.findById(entity.getID());
-        } else
-            return entity;
+            repository.flush();
+        }
+        return entity;
     }
 
     @Override

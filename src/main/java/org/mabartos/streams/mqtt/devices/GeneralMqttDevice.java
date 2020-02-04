@@ -15,6 +15,8 @@ public class GeneralMqttDevice<Model> {
     protected DeviceType type;
     protected BarMqttClient client;
 
+    public GeneralMqttDevice(){}
+
     public GeneralMqttDevice(BarMqttClient client, DeviceService deviceService, DeviceType type, Long id, MqttMessage message) {
         this.deviceService = deviceService;
         this.message = message;

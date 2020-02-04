@@ -1,4 +1,4 @@
-package org.mabartos.streams.mqtt.devices;
+package org.mabartos.streams.mqtt;
 
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.mabartos.general.DeviceType;
@@ -74,7 +74,7 @@ public class HandleManageMessage {
     }
 
     private DeviceModel getTypedInstance(String name, DeviceType type) {
-        if (name != null) {
+        if (name != null && type!=null) {
             switch (type) {
                 case NONE:
                     break;

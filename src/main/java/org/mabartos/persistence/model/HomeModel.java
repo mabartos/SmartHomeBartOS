@@ -100,6 +100,11 @@ public class HomeModel extends PanacheEntityBase implements HasChildren<RoomMode
         this.imageURL = imageURL;
     }
 
+    public String getTopic() {
+        return "/homes/" + id;
+    }
+
+    // Collections
     @JsonIgnore
     public Set<UserModel> getUsers() {
         return usersSet;
@@ -138,7 +143,8 @@ public class HomeModel extends PanacheEntityBase implements HasChildren<RoomMode
         return userRoles.remove(userRole);
     }
 
-    public Set<DeviceModel> getUnassignedDevices() {
+    @JsonIgnore
+    public Set<DeviceModel> getUnAssignedDevices() {
         return unAssignedDevices;
     }
 

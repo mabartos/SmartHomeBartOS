@@ -5,9 +5,10 @@ import org.mabartos.persistence.model.DeviceModel;
 import org.mabartos.persistence.model.devices.HasValue;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.MappedSuperclass;
 
-@MappedSuperclass
+@Entity
 public class DeviceWithValue extends DeviceModel implements HasValue {
 
     @Column
@@ -15,6 +16,10 @@ public class DeviceWithValue extends DeviceModel implements HasValue {
 
     @Column
     private String units;
+
+    public DeviceWithValue(){
+        super();
+    }
 
     public DeviceWithValue(String name, DeviceType type) {
         super(name, type);
@@ -28,7 +33,6 @@ public class DeviceWithValue extends DeviceModel implements HasValue {
     @Override
     public void setValue(Double value) {
         this.value = value;
-
     }
 
     @Override

@@ -12,6 +12,8 @@ public class HeaterDevModel extends DeviceWithValue {
     @Column
     private Double destTemperature;
 
+    public HeaterDevModel(){}
+
     public HeaterDevModel(String name) {
         super(name, DeviceType.HEATER);
     }

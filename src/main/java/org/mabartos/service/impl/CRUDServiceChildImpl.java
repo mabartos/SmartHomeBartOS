@@ -1,9 +1,9 @@
 package org.mabartos.service.impl;
 
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
-import org.mabartos.service.core.CRUDServiceChild;
 import org.mabartos.interfaces.HasChildren;
 import org.mabartos.interfaces.Identifiable;
+import org.mabartos.service.core.CRUDServiceChild;
 
 import javax.transaction.Transactional;
 import java.util.Set;
@@ -58,9 +58,11 @@ public class CRUDServiceChildImpl
     public Model create(Model entity) {
         Model created = super.create(entity);
         if (created != null) {
-            if (parentModel != null)
+            if (parentModel != null) {
                 parentModel.addChild(created);
-            getEntityManager().merge(parentModel);
+                getEntityManager().merge(parentModel);
+                getEntityManager().flush();
+            }
             return created;
         }
         return null;

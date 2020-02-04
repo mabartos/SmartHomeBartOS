@@ -13,6 +13,8 @@ public class DeviceWithState extends DeviceModel implements HasState {
     @Column
     private boolean state;
 
+    public DeviceWithState(){}
+
     public DeviceWithState(String name, DeviceType type) {
         super(name, type);
     }

@@ -18,14 +18,15 @@ public class HomeServiceImpl extends CRUDServiceChildImpl<HomeModel, HomeReposit
         super(repository);
     }
 
-
     @Override
     public boolean addDeviceToHome(DeviceModel device, Long homeID) {
         try {
             HomeModel found = super.findByID(homeID);
             if (found != null && device != null) {
                 found.addDevice(device);
+                device.setHome(found);
                 getEntityManager().merge(found);
+                getEntityManager().flush();
                 return true;
             }
         } catch (Exception e) {
@@ -53,7 +54,7 @@ public class HomeServiceImpl extends CRUDServiceChildImpl<HomeModel, HomeReposit
     public Set<DeviceModel> getAllUnAssignedDevices(Long homeID) {
         HomeModel found = super.findByID(homeID);
         if (found != null) {
-            return found.getUnassignedDevices();
+            return found.getUnAssignedDevices();
         }
         return null;
     }

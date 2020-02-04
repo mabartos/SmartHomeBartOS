@@ -8,7 +8,6 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.mabartos.persistence.model.HomeModel;
-import org.mabartos.streams.mqtt.devices.BarMqttHandler;
 import org.mabartos.streams.mqtt.utils.TopicUtils;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -21,7 +20,7 @@ public class BarMqttClient {
     @Inject
     BarMqttHandler handler;
 
-    private final Integer TIMEOUT = 10;
+    private final Integer TIMEOUT = 20;
 
     private String brokerURL;
     private String clientID;
@@ -48,7 +47,8 @@ public class BarMqttClient {
             mqttClient.setCallback(new MqttCallback() {
                 @Override
                 public void connectionLost(Throwable cause) {
-
+                    System.out.println("Connection lost");
+                    System.out.println(cause.getMessage());
                 }
 
                 @Override
@@ -91,6 +91,13 @@ public class BarMqttClient {
 
     public IMqttClient getMqttClient() {
         return mqttClient;
+    }
+
+    public String getTopic() {
+        if (home != null) {
+            return home.getTopic();
+        }
+        return null;
     }
 
     public void publish(String topic, String message) {
