@@ -1,6 +1,6 @@
 package org.mabartos.general;
 
-public enum DeviceType {
+public enum CapabilityType {
     NONE("none"),
     TEMPERATURE("temp"),
     HUMIDITY("hum"),
@@ -16,7 +16,7 @@ public enum DeviceType {
 
     private String topic;
 
-    DeviceType(String topic) {
+    CapabilityType(String topic) {
         this.topic = topic;
     }
 

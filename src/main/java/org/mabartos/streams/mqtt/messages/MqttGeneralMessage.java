@@ -1,17 +1,30 @@
 package org.mabartos.streams.mqtt.messages;
 
-import org.mabartos.general.DeviceType;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.mabartos.general.CapabilityType;
 import org.mabartos.persistence.model.DeviceModel;
 import org.mabartos.streams.mqtt.utils.MqttSerializeUtils;
 
 public class MqttGeneralMessage implements MqttSerializable {
 
+    @JsonProperty("id")
     private Long id;
-    private String name;
-    private String topic;
-    private DeviceType type;
 
-    public MqttGeneralMessage(Long id, String name, String topic, DeviceType type) {
+    @JsonProperty("name")
+    private String name;
+
+    @JsonProperty("topic")
+    private String topic;
+
+    @JsonProperty("type")
+    private CapabilityType type;
+
+    @JsonCreator
+    public MqttGeneralMessage(@JsonProperty("id") Long id,
+                              @JsonProperty("name") String name,
+                              @JsonProperty("topic") String topic,
+                              @JsonProperty("type") CapabilityType type) {
         this.id = id;
         this.name = name;
         this.topic = topic;
@@ -23,7 +36,6 @@ public class MqttGeneralMessage implements MqttSerializable {
             this.id = device.getID();
             this.name = device.getName();
             this.topic = device.getTopic();
-            this.type = device.getType();
         }
     }
 
@@ -51,11 +63,11 @@ public class MqttGeneralMessage implements MqttSerializable {
         this.topic = topic;
     }
 
-    public DeviceType getType() {
+    public CapabilityType getType() {
         return type;
     }
 
-    public void setType(DeviceType type) {
+    public void setType(CapabilityType type) {
         this.type = type;
     }
 

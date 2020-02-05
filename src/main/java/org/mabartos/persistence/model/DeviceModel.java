@@ -2,13 +2,15 @@ package org.mabartos.persistence.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.mabartos.controller.DeviceResource;
-import org.mabartos.general.DeviceType;
 import org.mabartos.interfaces.Identifiable;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "Devices")
@@ -21,27 +23,31 @@ public class DeviceModel extends PanacheEntityBase implements Serializable, Iden
     @Column(name = "DEVICE_ID")
     protected Long id;
 
-    @Column(nullable = false)
+    @Column(name = "NAME", nullable = false)
     private String name;
 
-    @Enumerated
-    @Column(nullable = false)
-    private DeviceType type = DeviceType.NONE;
-
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn
+    @JoinColumn(name = "ROOM")
     private RoomModel room;
 
     @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn
+    @JoinColumn(name = "HOME")
     private HomeModel home;
+
+    @OneToMany(targetEntity = CapabilityModel.class,mappedBy = "device")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<CapabilityModel> capabilities;
 
     public DeviceModel() {
     }
 
-    public DeviceModel(String name, DeviceType type) {
+    public DeviceModel(String name) {
         this.name = name;
-        this.type = type;
+    }
+
+    public DeviceModel(String name, List<CapabilityModel> capabilities) {
+        this(name);
+        this.capabilities = capabilities;
     }
 
     @Override
@@ -59,14 +65,6 @@ public class DeviceModel extends PanacheEntityBase implements Serializable, Iden
         this.id = id;
     }
 
-    public DeviceType getType() {
-        return type;
-    }
-
-    public void setType(DeviceType type) {
-        this.type = type;
-    }
-
     public RoomModel getRoom() {
         return room;
     }
@@ -77,7 +75,7 @@ public class DeviceModel extends PanacheEntityBase implements Serializable, Iden
 
     public String getTopic() {
         if (home != null) {
-            return home.getTopic() + DeviceResource.DEVICE_PATH + "/" + type.name().toLowerCase() + "/" + id;
+            return home.getTopic() + DeviceResource.DEVICE_PATH + "/" + id;
         }
         return null;
     }
@@ -88,6 +86,21 @@ public class DeviceModel extends PanacheEntityBase implements Serializable, Iden
 
     public void setHome(HomeModel home) {
         this.home = home;
+    }
+
+    @JsonIgnore
+    public List<String> getCapabilitiesName() {
+        if (capabilities != null) {
+            return capabilities
+                    .stream()
+                    .map(CapabilityModel::getName)
+                    .collect(Collectors.toList());
+        }
+        return Collections.emptyList();
+    }
+
+    public List<CapabilityModel> getCapabilities() {
+        return capabilities;
     }
 
     @Override
@@ -101,14 +114,14 @@ public class DeviceModel extends PanacheEntityBase implements Serializable, Iden
             return (object.getID().equals(this.getID())
                     && object.getName().equals(this.getName())
                     && object.getRoom().equals(this.getRoom())
-                    && object.getType().equals(this.getType())
+                    && object.getHome().equals(this.getHome())
             );
         }
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, room, type);
+        return Objects.hash(id, name, room, home);
     }
 
 }

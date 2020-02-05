@@ -1,6 +1,5 @@
 package org.mabartos.persistence.model.devices.common;
 
-import org.mabartos.general.DeviceType;
 import org.mabartos.persistence.model.DeviceModel;
 import org.mabartos.persistence.model.devices.HasState;
 
@@ -13,10 +12,11 @@ public class DeviceWithState extends DeviceModel implements HasState {
     @Column
     private boolean state;
 
-    public DeviceWithState(){}
+    public DeviceWithState() {
+    }
 
-    public DeviceWithState(String name, DeviceType type) {
-        super(name, type);
+    public DeviceWithState(String name) {
+        super(name);
     }
 
     @Override

@@ -1,12 +1,6 @@
 package org.mabartos.streams.mqtt;
 
-import org.eclipse.paho.client.mqttv3.IMqttClient;
-import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
-import org.eclipse.paho.client.mqttv3.MqttCallback;
-import org.eclipse.paho.client.mqttv3.MqttClient;
-import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
-import org.eclipse.paho.client.mqttv3.MqttException;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.eclipse.paho.client.mqttv3.*;
 import org.mabartos.persistence.model.HomeModel;
 import org.mabartos.streams.mqtt.utils.TopicUtils;
 
@@ -100,11 +94,13 @@ public class BarMqttClient {
         return null;
     }
 
-    public void publish(String topic, String message) {
+    public boolean publish(String topic, String message) {
         try {
             mqttClient.publish(topic, new MqttMessage(message.getBytes()));
+            return true;
         } catch (MqttException e) {
             e.printStackTrace();
+            return false;
         }
     }
 }

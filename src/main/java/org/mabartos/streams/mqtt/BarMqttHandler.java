@@ -2,7 +2,7 @@ package org.mabartos.streams.mqtt;
 
 import io.quarkus.runtime.StartupEvent;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
-import org.mabartos.general.DeviceType;
+import org.mabartos.general.CapabilityType;
 import org.mabartos.persistence.model.HomeModel;
 import org.mabartos.service.core.DeviceService;
 import org.mabartos.service.core.HomeService;
@@ -42,20 +42,20 @@ public class BarMqttHandler {
 
                 String specificTopic = receivedTopic.substring(homeTopic.length());
 
-                HandleManageMessage handler = new HandleManageMessage(homeService, deviceService, home, client, specificTopic, message);
+                HandleManageMessage handler = new HandleManageMessage(home, client, specificTopic, message);
 
                 // It's not the 'manage' topic
                 if (handler.handle())
                     return;
 
-                Optional<DeviceType> optionalType = Arrays.stream(DeviceType.values())
+                Optional<CapabilityType> optionalType = Arrays.stream(CapabilityType.values())
                         .filter(f -> f.getTopic().equals(specificTopic))
                         .findFirst();
 
                 if (!optionalType.isPresent())
                     return;
 
-                DeviceType type = optionalType.get();
+                CapabilityType type = optionalType.get();
                 Long idDevice = Long.parseLong(specificTopic.substring(type.getTopic().length()));
 
                 redirectParsing(client, type, idDevice, message);
@@ -68,7 +68,7 @@ public class BarMqttHandler {
         }
     }
 
-    private void redirectParsing(BarMqttClient client, DeviceType type, Long idDevice, MqttMessage message) {
+    private void redirectParsing(BarMqttClient client, CapabilityType type, Long idDevice, MqttMessage message) {
         switch (type) {
             case NONE:
                 break;

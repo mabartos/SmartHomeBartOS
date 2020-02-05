@@ -1,10 +1,11 @@
 package org.mabartos.service.impl;
 
-import org.mabartos.general.DeviceType;
+import org.mabartos.general.CapabilityType;
 import org.mabartos.persistence.model.DeviceModel;
 import org.mabartos.persistence.model.RoomModel;
 import org.mabartos.persistence.repository.DeviceRepository;
 import org.mabartos.service.core.DeviceService;
+import org.mabartos.streams.mqtt.exceptions.DeviceConflictException;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -21,17 +22,17 @@ public class DeviceServiceImpl extends CRUDServiceChildImpl<DeviceModel, DeviceR
 
     @Override
     public DeviceModel create(DeviceModel entity) {
-        if (isDeviceInHome(entity))
+        if (!isDeviceInHome(entity))
             return super.create(entity);
-        return null;
+        else throw new DeviceConflictException();
     }
 
     @Override
-    public Set<DeviceModel> findByType(DeviceType type) {
+    public Set<DeviceModel> findByType(CapabilityType type) {
         return getRepository().find("type", type).stream().collect(Collectors.toSet());
     }
 
     private boolean isDeviceInHome(DeviceModel device) {
-        return DeviceModel.find("name", device.getName()).count() == 0;
+        return DeviceModel.find("name", device.getName()).count() > 0;
     }
 }

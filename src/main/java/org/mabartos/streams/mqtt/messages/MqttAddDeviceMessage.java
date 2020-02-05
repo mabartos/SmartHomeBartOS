@@ -2,23 +2,40 @@ package org.mabartos.streams.mqtt.messages;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.mabartos.general.DeviceType;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.mabartos.streams.mqtt.utils.MqttSerializeUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MqttAddDeviceMessage implements MqttSerializable {
+
+    @JsonProperty("idMessage")
+    private Long idMessage;
 
     @JsonProperty("name")
     private String name;
 
-    @JsonProperty("type")
-    private DeviceType type;
+    @JsonProperty("capabilities")
+    @JsonDeserialize(as = ArrayList.class, contentAs = CapabilityJSON.class)
+    private List<CapabilityJSON> capabilities;
 
     @JsonCreator
     public MqttAddDeviceMessage(
+            @JsonProperty("idMessage") Long idMessage,
             @JsonProperty("name") String name,
-            @JsonProperty("type") DeviceType type) {
+            @JsonProperty("capabilities") List<CapabilityJSON> capabilities) {
+        this.idMessage = idMessage;
         this.name = name;
-        this.type = type;
+        this.capabilities = capabilities;
+    }
+
+    public Long getIdMessage() {
+        return idMessage;
+    }
+
+    public void setIdMessage(Long idMessage) {
+        this.idMessage = idMessage;
     }
 
     public String getName() {
@@ -29,12 +46,12 @@ public class MqttAddDeviceMessage implements MqttSerializable {
         this.name = name;
     }
 
-    public DeviceType getType() {
-        return type;
+    public List<CapabilityJSON> getCapabilities() {
+        return capabilities;
     }
 
-    public void setType(DeviceType type) {
-        this.type = type;
+    public void setCapabilities(List<CapabilityJSON> capabilities) {
+        this.capabilities = capabilities;
     }
 
     @Override

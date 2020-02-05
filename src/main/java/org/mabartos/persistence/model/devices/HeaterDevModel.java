@@ -1,6 +1,5 @@
 package org.mabartos.persistence.model.devices;
 
-import org.mabartos.general.DeviceType;
 import org.mabartos.persistence.model.devices.common.DeviceWithValue;
 
 import javax.persistence.Column;
@@ -15,7 +14,7 @@ public class HeaterDevModel extends DeviceWithValue {
     public HeaterDevModel(){}
 
     public HeaterDevModel(String name) {
-        super(name, DeviceType.HEATER);
+        super(name);
     }
 
     public Double getDestTemperature() {
