@@ -1,5 +1,6 @@
 package org.mabartos.controller;
 
+import org.mabartos.persistence.model.CapabilityModel;
 import org.mabartos.persistence.model.DeviceModel;
 import org.mabartos.persistence.model.RoomModel;
 import org.mabartos.service.core.CRUDService;
@@ -20,6 +21,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.util.List;
 import java.util.Set;
 
 @Path("/devices")
@@ -32,7 +34,7 @@ public class DeviceResource {
     private static final String DEVICE_ID_NAME = "idDevice";
     private static final String DEVICE_ID = "/{" + DEVICE_ID_NAME + ":[\\d]+}";
     public static final String DEVICE_PATH = "/devices";
-
+    public static final String CAPABILITY = DEVICE_ID + "/capability";
 
     private RoomModel parent;
 
@@ -67,6 +69,12 @@ public class DeviceResource {
     @GET
     public Set<DeviceModel> getAll() {
         return deviceService.getAll();
+    }
+
+    @GET
+    @Path(CAPABILITY)
+    public List<CapabilityModel> getCapabilities(@PathParam(DEVICE_ID_NAME) Long id) {
+        return deviceService.findByID(id).getCapabilities();
     }
 
     @POST

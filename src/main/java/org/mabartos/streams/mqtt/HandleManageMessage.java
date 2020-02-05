@@ -4,11 +4,13 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import io.quarkus.runtime.StartupEvent;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.mabartos.general.CapabilityType;
+import org.mabartos.persistence.model.CapabilityModel;
 import org.mabartos.persistence.model.DeviceModel;
 import org.mabartos.persistence.model.HomeModel;
 import org.mabartos.persistence.model.devices.HeaterDevModel;
 import org.mabartos.persistence.model.devices.HumidityDevModel;
 import org.mabartos.persistence.model.devices.TemperatureDevModel;
+import org.mabartos.service.core.CapabilityService;
 import org.mabartos.service.core.DeviceService;
 import org.mabartos.service.core.HomeService;
 import org.mabartos.streams.mqtt.exceptions.DeviceConflictException;
@@ -21,35 +23,39 @@ import org.mabartos.streams.mqtt.messages.MqttGeneralMessage;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
-import java.sql.SQLOutput;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
 
 @ApplicationScoped
 public class HandleManageMessage {
+
+    public static Logger logger = Logger.getLogger(HandleManageMessage.class.getName());
 
     private BarMqttClient client;
     private String topic;
     private MqttMessage message;
     private HomeModel home;
 
-    @Inject
-    private DeviceService deviceService;
-    @Inject
-    private HomeService homeService;
+    DeviceService deviceService;
+    HomeService homeService;
+    CapabilityService capabilityService;
 
-    public void onStartup(@Observes StartupEvent start){
-        System.out.println("Handle Manage Message created");
+    public void onStartup(@Observes StartupEvent start) {
+        logger.info("Initialized Handle Manage Message Bean");
     }
 
     @Inject
-    public HandleManageMessage() {
+    public HandleManageMessage(DeviceService deviceService, HomeService homeService, CapabilityService capabilityService) {
+        this.deviceService = deviceService;
+        this.homeService = homeService;
+        this.capabilityService = capabilityService;
     }
 
-    public HandleManageMessage(HomeModel home, BarMqttClient client, String topic, MqttMessage message) {
+    public void init(HomeModel home, BarMqttClient client, String topic, MqttMessage message) {
         this.client = client;
         this.topic = topic;
         this.message = message;
-        //this.deviceService = deviceService;
-        //this.homeService = homeService;
         this.home = home;
     }
 
@@ -78,16 +84,13 @@ public class HandleManageMessage {
             MqttAddDeviceMessage deviceMessage = MqttAddDeviceMessage.fromJson(message.toString());
             System.out.println(deviceMessage.toJson());
             if (servicesAreValid()) {
-                DeviceModel deviceModel = new DeviceModel(deviceMessage.getName(), CapabilityJSON.toModel(deviceMessage.getCapabilities()));
-                DeviceModel device = deviceService.create(deviceModel);
+                DeviceModel device = createDeviceFromMessage(deviceMessage);
 
                 if (homeService.addDeviceToHome(device, home.getID())) {
-                    MqttGeneralMessage response = new MqttGeneralMessage(device);
+                    MqttGeneralMessage response = new MqttGeneralMessage(device, deviceMessage.getIdMessage());
                     client.publish(receivedTopic, response.toJson());
                 }
             }
-
-
         } catch (DeviceConflictException e) {
             BarMqttSender.sendAddDeviceResponse(client, receivedTopic, HttpResponseStatus.CONFLICT, e.getMessage());
         } catch (WrongMessageTopicException wm) {
@@ -100,7 +103,7 @@ public class HandleManageMessage {
     }
 
     private boolean servicesAreValid() {
-        return deviceService != null && homeService != null;
+        return deviceService != null && homeService != null && capabilityService != null;
     }
 
     private DeviceModel getTypedInstance(String name, CapabilityType type) {
@@ -132,6 +135,17 @@ public class HandleManageMessage {
                     break;
                 default:
             }
+        }
+        return null;
+    }
+
+    private DeviceModel createDeviceFromMessage(MqttAddDeviceMessage message) {
+        List<CapabilityModel> capabilities = CapabilityJSON.toModel(message.getCapabilities());
+        List<CapabilityModel> result = new ArrayList<>();
+        if (capabilities != null) {
+            capabilities.forEach(f -> result.add(capabilityService.create(f)));
+            DeviceModel deviceModel = new DeviceModel(message.getName(), result);
+            return deviceService.create(deviceModel);
         }
         return null;
     }

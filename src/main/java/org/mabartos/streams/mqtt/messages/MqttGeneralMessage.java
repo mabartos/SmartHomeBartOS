@@ -2,11 +2,13 @@ package org.mabartos.streams.mqtt.messages;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.mabartos.general.CapabilityType;
 import org.mabartos.persistence.model.DeviceModel;
 import org.mabartos.streams.mqtt.utils.MqttSerializeUtils;
 
 public class MqttGeneralMessage implements MqttSerializable {
+
+    @JsonProperty("idMessage")
+    private Long idMessage;
 
     @JsonProperty("id")
     private Long id;
@@ -17,21 +19,21 @@ public class MqttGeneralMessage implements MqttSerializable {
     @JsonProperty("topic")
     private String topic;
 
-    @JsonProperty("type")
-    private CapabilityType type;
-
     @JsonCreator
-    public MqttGeneralMessage(@JsonProperty("id") Long id,
-                              @JsonProperty("name") String name,
-                              @JsonProperty("topic") String topic,
-                              @JsonProperty("type") CapabilityType type) {
+    public MqttGeneralMessage(
+            @JsonProperty("idMessage") Long idMessage,
+            @JsonProperty("id") Long id,
+            @JsonProperty("name") String name,
+            @JsonProperty("topic") String topic
+    ) {
+        this.idMessage = idMessage;
         this.id = id;
         this.name = name;
         this.topic = topic;
-        this.type = type;
     }
 
-    public MqttGeneralMessage(DeviceModel device) {
+    public MqttGeneralMessage(DeviceModel device, Long idMessage) {
+        this.idMessage = idMessage;
         if (device != null) {
             this.id = device.getID();
             this.name = device.getName();
@@ -63,12 +65,12 @@ public class MqttGeneralMessage implements MqttSerializable {
         this.topic = topic;
     }
 
-    public CapabilityType getType() {
-        return type;
+    public Long getIdMessage() {
+        return idMessage;
     }
 
-    public void setType(CapabilityType type) {
-        this.type = type;
+    public void setIdMessage(Long idMessage) {
+        this.idMessage = idMessage;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package org.mabartos.persistence.model;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import org.mabartos.general.CapabilityType;
 import org.mabartos.interfaces.Identifiable;
 
@@ -10,12 +11,12 @@ import java.util.Objects;
 
 @Table(name = "CAPABILITY")
 @Entity
-public class CapabilityModel extends PanacheEntity implements Serializable, Identifiable {
+public class CapabilityModel extends PanacheEntityBase implements Serializable, Identifiable {
 
     @Id
     @GeneratedValue
     @Column(name = "CAPABILITY_ID")
-    private Long id;
+    Long id;
 
     @Column(name = "NAME")
     private String name;
@@ -23,14 +24,14 @@ public class CapabilityModel extends PanacheEntity implements Serializable, Iden
     @Enumerated
     private CapabilityType type;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "DEVICE")
     private DeviceModel device;
 
     public CapabilityModel() {
     }
 
-    public CapabilityModel(Integer idInDevice, String name, CapabilityType type) {
+    public CapabilityModel(String name, CapabilityType type) {
         this.name = name;
         this.type = type;
     }

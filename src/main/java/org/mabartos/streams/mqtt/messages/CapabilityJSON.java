@@ -55,7 +55,7 @@ public class CapabilityJSON implements MqttSerializable {
     }
 
     public CapabilityModel toModel() {
-        return new CapabilityModel(id, name, type);
+        return new CapabilityModel(name, type);
     }
 
     public static Capabilities toCapabilities(List<CapabilityJSON> capabilities) {
@@ -68,7 +68,7 @@ public class CapabilityJSON implements MqttSerializable {
     public static List<CapabilityModel> toModel(List<CapabilityJSON> jsonCapabilities) {
         if (jsonCapabilities != null) {
             ArrayList<CapabilityModel> result = new ArrayList<>();
-            jsonCapabilities.forEach(cap -> result.add(new CapabilityModel(cap.getId(), cap.getName(), cap.getType())));
+            jsonCapabilities.forEach(cap -> result.add(new CapabilityModel(cap.getName(), cap.getType())));
             return result;
         }
         return null;

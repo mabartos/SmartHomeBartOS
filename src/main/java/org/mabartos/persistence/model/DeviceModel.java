@@ -21,7 +21,7 @@ public class DeviceModel extends PanacheEntityBase implements Serializable, Iden
     @Id
     @GeneratedValue
     @Column(name = "DEVICE_ID")
-    protected Long id;
+    Long id;
 
     @Column(name = "NAME", nullable = false)
     private String name;
@@ -34,7 +34,7 @@ public class DeviceModel extends PanacheEntityBase implements Serializable, Iden
     @JoinColumn(name = "HOME")
     private HomeModel home;
 
-    @OneToMany(targetEntity = CapabilityModel.class,mappedBy = "device")
+    @OneToMany(targetEntity = CapabilityModel.class,mappedBy = "device",cascade = CascadeType.MERGE)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<CapabilityModel> capabilities;
 
@@ -99,6 +99,7 @@ public class DeviceModel extends PanacheEntityBase implements Serializable, Iden
         return Collections.emptyList();
     }
 
+    @JsonIgnore
     public List<CapabilityModel> getCapabilities() {
         return capabilities;
     }
