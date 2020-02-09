@@ -56,7 +56,7 @@ public class BarMqttClient {
             });
 
             mqttClient.connect(setConnectOptions());
-            mqttClient.subscribe(TopicUtils.getTopic(home) + "/#");
+            mqttClient.subscribe(TopicUtils.getHomeTopic(home) + "/#");
 
         } catch (MqttException e) {
             e.printStackTrace();

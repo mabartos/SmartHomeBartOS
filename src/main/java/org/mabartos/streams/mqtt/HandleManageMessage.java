@@ -7,9 +7,9 @@ import org.mabartos.general.CapabilityType;
 import org.mabartos.persistence.model.CapabilityModel;
 import org.mabartos.persistence.model.DeviceModel;
 import org.mabartos.persistence.model.HomeModel;
-import org.mabartos.persistence.model.devices.HeaterDevModel;
-import org.mabartos.persistence.model.devices.HumidityDevModel;
-import org.mabartos.persistence.model.devices.TemperatureDevModel;
+import org.mabartos.persistence.model.capability.HeaterDevModel;
+import org.mabartos.persistence.model.capability.HumidityDevModel;
+import org.mabartos.persistence.model.capability.TemperatureDevModel;
 import org.mabartos.service.core.CapabilityService;
 import org.mabartos.service.core.DeviceService;
 import org.mabartos.service.core.HomeService;
@@ -59,7 +59,7 @@ public class HandleManageMessage {
         this.home = home;
     }
 
-    public boolean handle() {
+    public boolean handleManageTopics() {
         if (topic.equals(MqttTopics.CONNECT_TOPIC)) {
             handleConnect();
             return true;

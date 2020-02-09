@@ -1,21 +1,21 @@
-package org.mabartos.persistence.model.devices.common;
+package org.mabartos.persistence.model.capability.common;
 
 import org.mabartos.persistence.model.DeviceModel;
-import org.mabartos.persistence.model.devices.HasState;
+import org.mabartos.persistence.model.capability.HasState;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
-public class DeviceWithState extends DeviceModel implements HasState {
+public class CapabilityWithState extends DeviceModel implements HasState {
 
     @Column
     private boolean state;
 
-    public DeviceWithState() {
+    public CapabilityWithState() {
     }
 
-    public DeviceWithState(String name) {
+    public CapabilityWithState(String name) {
         super(name);
     }
 

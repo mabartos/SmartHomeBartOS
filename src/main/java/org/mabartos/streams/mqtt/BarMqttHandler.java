@@ -2,14 +2,15 @@ package org.mabartos.streams.mqtt;
 
 import io.quarkus.runtime.StartupEvent;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.jboss.logmanager.Level;
 import org.mabartos.general.CapabilityType;
 import org.mabartos.persistence.model.HomeModel;
 import org.mabartos.service.core.CapabilityService;
 import org.mabartos.service.core.DeviceService;
 import org.mabartos.service.core.HomeService;
-import org.mabartos.streams.mqtt.devices.HumidityDevice;
-import org.mabartos.streams.mqtt.devices.LightDevice;
-import org.mabartos.streams.mqtt.devices.TemperatureDevice;
+import org.mabartos.streams.mqtt.capability.HumidityCapability;
+import org.mabartos.streams.mqtt.capability.LightCapability;
+import org.mabartos.streams.mqtt.capability.TemperatureCapability;
 import org.mabartos.streams.mqtt.utils.TopicUtils;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -41,22 +42,26 @@ public class BarMqttHandler {
     }
 
     //TODO own exceptions, common topics
-    public void executeMessage(HomeModel home, BarMqttClient client, String receivedTopic, MqttMessage message) {
+    public void executeMessage(HomeModel home, BarMqttClient client, final String receivedTopic, final MqttMessage message) {
         try {
-            String homeTopic = TopicUtils.getTopic(home);
+            TopicUtils.GeneralTopic generalTopic = TopicUtils.GeneralTopic.getGeneralTopic(receivedTopic);
 
-            if (homeTopic.equals(receivedTopic.substring(0, homeTopic.length())) && receivedTopic.length() > homeTopic.length()) {
+            String homeTopic = TopicUtils.getHomeTopic(home);
 
-                String specificTopic = receivedTopic.substring(homeTopic.length());
+            if (homeTopic.equals(generalTopic.getHomeTopic()) && receivedTopic.length() > homeTopic.length()) {
+
+
+                final String specificTopic = receivedTopic.substring(homeTopic.length() + 1);
+                //String[] capabilityAndID = specificTopic.split("/");
 
                 handler.init(home, client, specificTopic, message);
 
-                // It's not the 'manage' topic
-                if (handler.handle())
+                // It's the 'manage' topic
+                if (handler.handleManageTopics())
                     return;
 
                 Optional<CapabilityType> optionalType = Arrays.stream(CapabilityType.values())
-                        .filter(f -> f.getTopic().equals(specificTopic))
+                        .filter(f -> f.getTopic().toLowerCase().equals("sd".toLowerCase()))
                         .findFirst();
 
                 if (!optionalType.isPresent())
@@ -68,8 +73,7 @@ public class BarMqttHandler {
                 redirectParsing(client, type, idDevice, message);
             }
         } catch (IndexOutOfBoundsException iobe) {
-            System.err.println("Invalid topic : " + receivedTopic);
-            iobe.printStackTrace();
+            logger.log(Level.ERROR, "Invalid topic : " + receivedTopic);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -80,15 +84,15 @@ public class BarMqttHandler {
             case NONE:
                 break;
             case TEMPERATURE:
-                new TemperatureDevice(client, deviceService, idDevice, message).parseMessage();
+                new TemperatureCapability(client, deviceService, idDevice, message).parseMessage();
                 break;
             case HUMIDITY:
-                new HumidityDevice(client, deviceService, idDevice, message).parseMessage();
+                new HumidityCapability(client, deviceService, idDevice, message).parseMessage();
                 break;
             case HEATER:
                 break;
             case LIGHT:
-                new LightDevice(client, deviceService, idDevice, message).parseMessage();
+                new LightCapability(client, deviceService, idDevice, message).parseMessage();
                 break;
             case RELAY:
                 break;

@@ -1,12 +1,12 @@
-package org.mabartos.persistence.model.devices;
+package org.mabartos.persistence.model.capability;
 
-import org.mabartos.persistence.model.devices.common.DeviceWithState;
+import org.mabartos.persistence.model.capability.common.CapabilityWithState;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
-public class LightDevModel extends DeviceWithState {
+public class LightDevModel extends CapabilityWithState {
 
     @Column
     private Double intensity = 0.0;

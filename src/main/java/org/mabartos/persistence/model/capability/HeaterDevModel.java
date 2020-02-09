@@ -1,12 +1,12 @@
-package org.mabartos.persistence.model.devices;
+package org.mabartos.persistence.model.capability;
 
-import org.mabartos.persistence.model.devices.common.DeviceWithValue;
+import org.mabartos.persistence.model.capability.common.CapabilityWithValue;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
-public class HeaterDevModel extends DeviceWithValue {
+public class HeaterDevModel extends CapabilityWithValue {
 
     @Column
     private Double destTemperature;

@@ -3,7 +3,7 @@ package org.mabartos.streams.mqtt.messages;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.mabartos.general.CapabilityType;
-import org.mabartos.persistence.model.devices.common.Capabilities;
+import org.mabartos.persistence.model.capability.common.Capabilities;
 import org.mabartos.persistence.model.CapabilityModel;
 import org.mabartos.streams.mqtt.utils.MqttSerializeUtils;
 

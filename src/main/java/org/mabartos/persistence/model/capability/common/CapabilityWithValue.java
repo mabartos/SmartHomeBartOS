@@ -1,13 +1,13 @@
-package org.mabartos.persistence.model.devices.common;
+package org.mabartos.persistence.model.capability.common;
 
 import org.mabartos.persistence.model.DeviceModel;
-import org.mabartos.persistence.model.devices.HasValue;
+import org.mabartos.persistence.model.capability.HasValue;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
-public class DeviceWithValue extends DeviceModel implements HasValue {
+public class CapabilityWithValue extends DeviceModel implements HasValue {
 
     @Column
     private Double value;
@@ -15,11 +15,11 @@ public class DeviceWithValue extends DeviceModel implements HasValue {
     @Column
     private String units;
 
-    public DeviceWithValue() {
+    public CapabilityWithValue() {
         super();
     }
 
-    public DeviceWithValue(String name) {
+    public CapabilityWithValue(String name) {
         super(name);
     }
 

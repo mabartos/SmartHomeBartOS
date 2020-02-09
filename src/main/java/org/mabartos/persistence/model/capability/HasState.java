@@ -1,4 +1,4 @@
-package org.mabartos.persistence.model.devices;
+package org.mabartos.persistence.model.capability;
 
 public interface HasState {
 

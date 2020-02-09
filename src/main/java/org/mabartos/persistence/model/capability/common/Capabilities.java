@@ -1,4 +1,4 @@
-package org.mabartos.persistence.model.devices.common;
+package org.mabartos.persistence.model.capability.common;
 
 import org.mabartos.persistence.model.CapabilityModel;
 

@@ -23,4 +23,8 @@ public enum CapabilityType {
     public String getTopic() {
         return topic;
     }
+
+    public static String getTopic(CapabilityType type) {
+        return type.getTopic();
+    }
 }
