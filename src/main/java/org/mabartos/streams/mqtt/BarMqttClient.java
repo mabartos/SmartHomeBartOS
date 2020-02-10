@@ -52,6 +52,7 @@ public class BarMqttClient {
 
                 @Override
                 public void deliveryComplete(IMqttDeliveryToken token) {
+                    System.out.println("DELIVERED");
                 }
             });
 

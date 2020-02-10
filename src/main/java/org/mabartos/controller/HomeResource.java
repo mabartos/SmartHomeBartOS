@@ -37,7 +37,11 @@ public class HomeResource {
 
     public void initMqttClient(@Observes StartupEvent start) {
         homeService.getAll()
-                .forEach(home -> client.init(home.getBrokerURL(), home));
+                .forEach(home -> {
+                    System.out.println(home.getBrokerURL());
+                    client.init(home.getBrokerURL(), home);
+                });
+
     }
 
     @Inject

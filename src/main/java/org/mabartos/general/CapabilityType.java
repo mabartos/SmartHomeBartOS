@@ -1,5 +1,7 @@
 package org.mabartos.general;
 
+import java.util.Arrays;
+
 public enum CapabilityType {
     NONE("none"),
     TEMPERATURE("temp"),
@@ -14,17 +16,25 @@ public enum CapabilityType {
     AIRCONDITIONER("ac"),
     OTHER("other");
 
-    private String topic;
+    private String name;
 
-    CapabilityType(String topic) {
-        this.topic = topic;
+    CapabilityType(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public String getTopic() {
-        return topic;
+        return "/" + name;
     }
 
     public static String getTopic(CapabilityType type) {
-        return type.getTopic();
+        return "/" + type.getName();
+    }
+
+    public static CapabilityType getByName(String name) {
+        return Arrays.stream(CapabilityType.values()).filter(f -> f.getName().equals(name)).findFirst().orElse(null);
     }
 }

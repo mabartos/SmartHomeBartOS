@@ -19,6 +19,8 @@ import org.mabartos.streams.mqtt.messages.BarMqttSender;
 import org.mabartos.streams.mqtt.messages.CapabilityJSON;
 import org.mabartos.streams.mqtt.messages.MqttAddDeviceMessage;
 import org.mabartos.streams.mqtt.messages.MqttGeneralMessage;
+import org.mabartos.streams.mqtt.topics.CRUDTopic;
+import org.mabartos.streams.mqtt.topics.GeneralTopic;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
@@ -33,7 +35,7 @@ public class HandleManageMessage {
     public static Logger logger = Logger.getLogger(HandleManageMessage.class.getName());
 
     private BarMqttClient client;
-    private String topic;
+    private GeneralTopic topic;
     private MqttMessage message;
     private HomeModel home;
 
@@ -52,7 +54,7 @@ public class HandleManageMessage {
         this.capabilityService = capabilityService;
     }
 
-    public void init(HomeModel home, BarMqttClient client, String topic, MqttMessage message) {
+    public void init(HomeModel home, BarMqttClient client, GeneralTopic topic, MqttMessage message) {
         this.client = client;
         this.topic = topic;
         this.message = message;
@@ -60,25 +62,33 @@ public class HandleManageMessage {
     }
 
     public boolean handleManageTopics() {
-        if (topic.equals(MqttTopics.CONNECT_TOPIC)) {
-            handleConnect();
-            return true;
-        } else if (topic.equals(MqttTopics.ADD_DEVICE_TOPIC)) {
-            handleAdd();
-            return true;
-        } else if (topic.equals(MqttTopics.REMOVE_DEVICE_TOPIC)) {
-            handleRemove();
-            return true;
+        if (topic != null) {
+            if (topic instanceof CRUDTopic) {
+                CRUDTopic crudTopic = (CRUDTopic) topic;
+                switch (crudTopic.getTypeCRUD()) {
+                    case CONNECT:
+                        return handleConnect();
+                    case CREATE:
+                        return handleCreate();
+                    case REMOVE:
+                        return handleRemove();
+                    case UPDATE:
+                        return handleUpdate();
+                    default:
+                        return false;
+                }
+            }
         }
         return false;
     }
 
-    private void handleConnect() {
+    private boolean handleConnect() {
         if (servicesAreValid()) {
         }
+        return false;
     }
 
-    private void handleAdd() {
+    private boolean handleCreate() {
         String receivedTopic = home.getTopic();
         try {
             MqttAddDeviceMessage deviceMessage = MqttAddDeviceMessage.fromJson(message.toString());
@@ -89,6 +99,7 @@ public class HandleManageMessage {
                 if (homeService.addDeviceToHome(device, home.getID())) {
                     MqttGeneralMessage response = new MqttGeneralMessage(device, deviceMessage.getIdMessage());
                     client.publish(receivedTopic, response.toJson());
+                    return true;
                 }
             }
         } catch (DeviceConflictException e) {
@@ -96,10 +107,17 @@ public class HandleManageMessage {
         } catch (WrongMessageTopicException wm) {
             BarMqttSender.sendAddDeviceResponse(client, receivedTopic, HttpResponseStatus.BAD_REQUEST, wm.getMessage());
         }
+        return false;
     }
 
-    private void handleRemove() {
+    //TODO
+    private boolean handleRemove() {
+        return false;
+    }
 
+    //TODO
+    private boolean handleUpdate() {
+        return false;
     }
 
     private boolean servicesAreValid() {

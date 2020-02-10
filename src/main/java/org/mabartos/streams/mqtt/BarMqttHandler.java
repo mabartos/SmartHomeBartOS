@@ -11,13 +11,13 @@ import org.mabartos.service.core.HomeService;
 import org.mabartos.streams.mqtt.capability.HumidityCapability;
 import org.mabartos.streams.mqtt.capability.LightCapability;
 import org.mabartos.streams.mqtt.capability.TemperatureCapability;
+import org.mabartos.streams.mqtt.topics.CapabilityTopic;
+import org.mabartos.streams.mqtt.topics.GeneralTopic;
 import org.mabartos.streams.mqtt.utils.TopicUtils;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
-import java.util.Arrays;
-import java.util.Optional;
 import java.util.logging.Logger;
 
 @ApplicationScoped
@@ -44,33 +44,20 @@ public class BarMqttHandler {
     //TODO own exceptions, common topics
     public void executeMessage(HomeModel home, BarMqttClient client, final String receivedTopic, final MqttMessage message) {
         try {
-            TopicUtils.GeneralTopic generalTopic = TopicUtils.GeneralTopic.getGeneralTopic(receivedTopic);
-
             String homeTopic = TopicUtils.getHomeTopic(home);
+            GeneralTopic resultTopic = TopicUtils.getSpecificTopic(receivedTopic);
 
-            if (homeTopic.equals(generalTopic.getHomeTopic()) && receivedTopic.length() > homeTopic.length()) {
-
-
-                final String specificTopic = receivedTopic.substring(homeTopic.length() + 1);
-                //String[] capabilityAndID = specificTopic.split("/");
-
-                handler.init(home, client, specificTopic, message);
+            if (resultTopic != null && receivedTopic.length() > homeTopic.length()) {
+                handler.init(home, client, resultTopic, message);
 
                 // It's the 'manage' topic
                 if (handler.handleManageTopics())
                     return;
 
-                Optional<CapabilityType> optionalType = Arrays.stream(CapabilityType.values())
-                        .filter(f -> f.getTopic().toLowerCase().equals("sd".toLowerCase()))
-                        .findFirst();
-
-                if (!optionalType.isPresent())
-                    return;
-
-                CapabilityType type = optionalType.get();
-                Long idDevice = Long.parseLong(specificTopic.substring(type.getTopic().length()));
-
-                redirectParsing(client, type, idDevice, message);
+                if (resultTopic instanceof CapabilityTopic) {
+                    CapabilityTopic capTopic = (CapabilityTopic) resultTopic;
+                    redirectParsing(client, capTopic.getCapabilityType(), capTopic.getDeviceID(), message);
+                }
             }
         } catch (IndexOutOfBoundsException iobe) {
             logger.log(Level.ERROR, "Invalid topic : " + receivedTopic);
