@@ -73,20 +73,6 @@ public class HomeResource {
     }
 
     @GET
-    @Path("/mqtt/{idMqtt}")
-    public void turnOnMqtt(@PathParam("idMqtt") Long id) {
-        client.init("tcp://localhost:1883", getHomeByID(id));
-    }
-
-    @GET
-    @Path("aaa")
-    public String getJson(String json) {
-        MqttAddDeviceMessage msg = MqttAddDeviceMessage.fromJson(json);
-        System.out.println(msg);
-        return msg.toJson();
-    }
-
-    @GET
     @Path(HOME_ID)
     public HomeModel getHomeByID(@PathParam(HOME_ID_NAME) Long id) {
         return homeService.findByID(id);

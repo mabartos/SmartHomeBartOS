@@ -39,7 +39,7 @@ public class CRUDServiceImpl
             repository.persist(entity);
             repository.flush();
         }
-        return entity;
+         return entity;
     }
 
     @Override

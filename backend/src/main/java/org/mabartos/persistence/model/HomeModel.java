@@ -65,6 +65,18 @@ public class HomeModel extends PanacheEntityBase implements HasChildren<RoomMode
     @JsonIgnore
     private Set<DedicatedUserRole> userRoles = new HashSet<>();
 
+    public HomeModel() {
+    }
+
+    public HomeModel(String name) {
+        this.name = name;
+    }
+
+    public HomeModel(String name, String brokerURL) {
+        this(name);
+        this.brokerURL = brokerURL;
+    }
+
     @Override
     public String getName() {
         return name;
