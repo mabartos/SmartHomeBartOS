@@ -1,15 +1,13 @@
 package org.mabartos.service.impl;
 
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
-import org.mabartos.persistence.model.HomeModel;
-import org.mabartos.service.core.CRUDService;
 import org.mabartos.interfaces.Identifiable;
+import org.mabartos.service.core.CRUDService;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
-import javax.ws.rs.NotFoundException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -46,7 +44,7 @@ public class CRUDServiceImpl
 
     @Override
     public T updateByID(Long id, T entity) {
-        T found = repository.findById(id);
+        T found = repository.find("id", id).firstResult();
         if (entity != null && found != null) {
             entity.setID(id);
             entityManager.merge(entity);
@@ -63,9 +61,7 @@ public class CRUDServiceImpl
 
     @Override
     public T findByID(Long id) {
-        return repository
-                .findByIdOptional(id)
-                .orElseThrow(NotFoundException::new);
+        return repository.find("id", id).firstResult();
     }
 
     @Override

@@ -1,14 +1,14 @@
 package org.mabartos.streams.mqtt.capability;
 
 import org.eclipse.paho.client.mqttv3.MqttMessage;
-import org.mabartos.general.CapabilityType;
-import org.mabartos.persistence.model.capability.LightDevModel;
-import org.mabartos.service.core.DeviceService;
+import org.mabartos.persistence.model.capability.LightCapModel;
+import org.mabartos.service.core.CapabilityService;
 import org.mabartos.streams.mqtt.BarMqttClient;
+import org.mabartos.streams.mqtt.topics.CapabilityTopic;
 
-public class LightCapability extends GeneralMqttCapability<LightDevModel> {
+public class LightCapability extends GeneralMqttCapability<LightCapModel> {
 
-    public LightCapability(BarMqttClient client, DeviceService deviceService, Long id, MqttMessage message) {
-        super(client, deviceService, CapabilityType.LIGHT, id, message);
+    public LightCapability(BarMqttClient client, CapabilityService capabilityService, CapabilityTopic capabilityTopic, MqttMessage message) {
+        super(client, capabilityService, capabilityTopic, message);
     }
 }

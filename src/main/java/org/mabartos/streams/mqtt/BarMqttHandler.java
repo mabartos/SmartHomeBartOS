@@ -3,7 +3,6 @@ package org.mabartos.streams.mqtt;
 import io.quarkus.runtime.StartupEvent;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.jboss.logmanager.Level;
-import org.mabartos.general.CapabilityType;
 import org.mabartos.persistence.model.HomeModel;
 import org.mabartos.service.core.CapabilityService;
 import org.mabartos.service.core.DeviceService;
@@ -43,11 +42,11 @@ public class BarMqttHandler {
 
     //TODO own exceptions, common topics
     public void executeMessage(HomeModel home, BarMqttClient client, final String receivedTopic, final MqttMessage message) {
+        String homeTopic = TopicUtils.getHomeTopic(home);
         try {
-            String homeTopic = TopicUtils.getHomeTopic(home);
             GeneralTopic resultTopic = TopicUtils.getSpecificTopic(receivedTopic);
 
-            if (resultTopic != null && receivedTopic.length() > homeTopic.length()) {
+            if (resultTopic != null && homeTopic != null && receivedTopic.length() > homeTopic.length()) {
                 handler.init(home, client, resultTopic, message);
 
                 // It's the 'manage' topic
@@ -56,7 +55,7 @@ public class BarMqttHandler {
 
                 if (resultTopic instanceof CapabilityTopic) {
                     CapabilityTopic capTopic = (CapabilityTopic) resultTopic;
-                    redirectParsing(client, capTopic.getCapabilityType(), capTopic.getDeviceID(), message);
+                    redirectParsing(client, capTopic, message);
                 }
             }
         } catch (IndexOutOfBoundsException iobe) {
@@ -66,20 +65,20 @@ public class BarMqttHandler {
         }
     }
 
-    private void redirectParsing(BarMqttClient client, CapabilityType type, Long idDevice, MqttMessage message) {
-        switch (type) {
+    private void redirectParsing(BarMqttClient client, CapabilityTopic capabilityTopic, MqttMessage message) {
+        switch (capabilityTopic.getCapabilityType()) {
             case NONE:
                 break;
             case TEMPERATURE:
-                new TemperatureCapability(client, deviceService, idDevice, message).parseMessage();
+                new TemperatureCapability(client, capabilityService, capabilityTopic, message).parseMessage();
                 break;
             case HUMIDITY:
-                new HumidityCapability(client, deviceService, idDevice, message).parseMessage();
+                new HumidityCapability(client, capabilityService, capabilityTopic, message).parseMessage();
                 break;
             case HEATER:
                 break;
             case LIGHT:
-                new LightCapability(client, deviceService, idDevice, message).parseMessage();
+                new LightCapability(client, capabilityService, capabilityTopic, message).parseMessage();
                 break;
             case RELAY:
                 break;

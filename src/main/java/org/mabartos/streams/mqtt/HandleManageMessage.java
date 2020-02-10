@@ -7,9 +7,9 @@ import org.mabartos.general.CapabilityType;
 import org.mabartos.persistence.model.CapabilityModel;
 import org.mabartos.persistence.model.DeviceModel;
 import org.mabartos.persistence.model.HomeModel;
-import org.mabartos.persistence.model.capability.HeaterDevModel;
-import org.mabartos.persistence.model.capability.HumidityDevModel;
-import org.mabartos.persistence.model.capability.TemperatureDevModel;
+import org.mabartos.persistence.model.capability.HeaterCapModel;
+import org.mabartos.persistence.model.capability.HumidityCapModel;
+import org.mabartos.persistence.model.capability.TemperatureCapModel;
 import org.mabartos.service.core.CapabilityService;
 import org.mabartos.service.core.DeviceService;
 import org.mabartos.service.core.HomeService;
@@ -28,6 +28,7 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class HandleManageMessage {
@@ -92,7 +93,6 @@ public class HandleManageMessage {
         String receivedTopic = home.getTopic();
         try {
             MqttAddDeviceMessage deviceMessage = MqttAddDeviceMessage.fromJson(message.toString());
-            System.out.println(deviceMessage.toJson());
             if (servicesAreValid()) {
                 DeviceModel device = createDeviceFromMessage(deviceMessage);
 
@@ -124,17 +124,17 @@ public class HandleManageMessage {
         return deviceService != null && homeService != null && capabilityService != null;
     }
 
-    private DeviceModel getTypedInstance(String name, CapabilityType type) {
+    private CapabilityModel getTypedInstance(String name, CapabilityType type) {
         if (name != null && type != null) {
             switch (type) {
                 case NONE:
                     break;
                 case TEMPERATURE:
-                    return new TemperatureDevModel(name);
+                    return new TemperatureCapModel(name);
                 case HUMIDITY:
-                    return new HumidityDevModel(name);
+                    return new HumidityCapModel(name);
                 case HEATER:
-                    return new HeaterDevModel(name);
+                    return new HeaterCapModel(name);
                 case LIGHT:
                     break;
                 case RELAY:
@@ -158,13 +158,13 @@ public class HandleManageMessage {
     }
 
     private DeviceModel createDeviceFromMessage(MqttAddDeviceMessage message) {
-        List<CapabilityModel> capabilities = CapabilityJSON.toModel(message.getCapabilities());
+        List<CapabilityModel> capabilities = CapabilityJSON.toModel(message.getCapabilities())
+                .stream()
+                .map(f -> getTypedInstance(f.getName(), f.getType()))
+                .collect(Collectors.toList());
         List<CapabilityModel> result = new ArrayList<>();
-        if (capabilities != null) {
-            capabilities.forEach(f -> result.add(capabilityService.create(f)));
-            DeviceModel deviceModel = new DeviceModel(message.getName(), result);
-            return deviceService.create(deviceModel);
-        }
-        return null;
+        capabilities.forEach(f -> result.add(capabilityService.create(f)));
+        DeviceModel deviceModel = new DeviceModel(message.getName(), result);
+        return deviceService.create(deviceModel);
     }
 }

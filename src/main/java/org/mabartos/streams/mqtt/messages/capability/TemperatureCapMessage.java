@@ -2,18 +2,22 @@ package org.mabartos.streams.mqtt.messages.capability;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.mabartos.streams.mqtt.messages.MqttGeneralMessage;
+import org.mabartos.general.CapabilityType;
+import org.mabartos.streams.mqtt.messages.CapabilityJSON;
 import org.mabartos.streams.mqtt.utils.MqttSerializeUtils;
 
-public class TemperatureCapMessage extends MqttGeneralMessage {
+public class TemperatureCapMessage extends CapabilityJSON {
 
-    @JsonProperty("actualTemperature")
+    @JsonProperty("actual")
     private Double actualTemperature;
 
     @JsonCreator
-    public TemperatureCapMessage(Long idMessage, Long id, String name, String topic,
-                                 @JsonProperty("actualTemperature") Double actualTemperature) {
-        super(idMessage, id, name, topic);
+    public TemperatureCapMessage(@JsonProperty("id") Integer id,
+                                 @JsonProperty("name") String name,
+                                 @JsonProperty("type") CapabilityType type,
+                                 @JsonProperty("actual") Double actualTemperature) {
+        super(id, name, type);
+        this.actualTemperature = actualTemperature;
     }
 
     public Double getActualTemperature() {

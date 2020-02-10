@@ -1,13 +1,14 @@
 package org.mabartos.persistence.model.capability.common;
 
-import org.mabartos.persistence.model.DeviceModel;
+import org.mabartos.general.CapabilityType;
+import org.mabartos.persistence.model.CapabilityModel;
 import org.mabartos.persistence.model.capability.HasValue;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
-public class CapabilityWithValue extends DeviceModel implements HasValue {
+public class CapabilityWithValue extends CapabilityModel implements HasValue {
 
     @Column
     private Double value;
@@ -19,8 +20,8 @@ public class CapabilityWithValue extends DeviceModel implements HasValue {
         super();
     }
 
-    public CapabilityWithValue(String name) {
-        super(name);
+    public CapabilityWithValue(String name, CapabilityType type) {
+        super(name, type);
     }
 
     @Override

@@ -2,7 +2,8 @@ package org.mabartos.streams.mqtt.topics;
 
 public enum Topics {
 
-    HOME_TOPIC("homes");
+    HOME_TOPIC("homes"),
+    DEVICE_TOPIC("devices");
 
     private String name;
 

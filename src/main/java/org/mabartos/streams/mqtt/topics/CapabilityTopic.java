@@ -7,12 +7,14 @@ public class CapabilityTopic implements GeneralTopic {
     private CapabilityType capabilityType;
     private Long homeID;
     private Long deviceID;
-    public static final Integer TOPIC_ITEMS_COUNT = 4;
+    private Long capabilityID;
+    public static final Integer TOPIC_ITEMS_COUNT = 6;
 
-    public CapabilityTopic(CapabilityType capabilityType, Long homeID, Long deviceID) {
+    public CapabilityTopic(CapabilityType capabilityType, Long homeID, Long deviceID, Long capabilityID) {
         this.capabilityType = capabilityType;
         this.homeID = homeID;
         this.deviceID = deviceID;
+        this.capabilityID = capabilityID;
         this.topicType = TopicType.CAPABILITY_TOPIC;
     }
 
@@ -22,6 +24,10 @@ public class CapabilityTopic implements GeneralTopic {
 
     public Long getDeviceID() {
         return deviceID;
+    }
+
+    public Long getCapabilityID() {
+        return capabilityID;
     }
 
     @Override

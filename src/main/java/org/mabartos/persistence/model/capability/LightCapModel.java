@@ -1,12 +1,13 @@
 package org.mabartos.persistence.model.capability;
 
+import org.mabartos.general.CapabilityType;
 import org.mabartos.persistence.model.capability.common.CapabilityWithState;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
-public class LightDevModel extends CapabilityWithState {
+public class LightCapModel extends CapabilityWithState {
 
     @Column
     private Double intensity = 0.0;
@@ -14,10 +15,11 @@ public class LightDevModel extends CapabilityWithState {
     @Column
     private Double minIntensity = 0.0;
 
-    public LightDevModel(){}
+    public LightCapModel() {
+    }
 
-    public LightDevModel(String name) {
-        super(name);
+    public LightCapModel(String name) {
+        super(name, CapabilityType.LIGHT);
     }
 
     public Double getIntensity() {

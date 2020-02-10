@@ -1,6 +1,12 @@
 package org.mabartos.streams.mqtt;
 
-import org.eclipse.paho.client.mqttv3.*;
+import org.eclipse.paho.client.mqttv3.IMqttClient;
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.MqttCallback;
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.mabartos.persistence.model.HomeModel;
 import org.mabartos.streams.mqtt.utils.TopicUtils;
 
@@ -15,6 +21,7 @@ public class BarMqttClient {
     BarMqttHandler handler;
 
     private final Integer TIMEOUT = 20;
+    private final Integer STD_QOS = 0;
 
     private String brokerURL;
     private String clientID;
@@ -52,13 +59,11 @@ public class BarMqttClient {
 
                 @Override
                 public void deliveryComplete(IMqttDeliveryToken token) {
-                    System.out.println("DELIVERED");
                 }
             });
 
             mqttClient.connect(setConnectOptions());
-            mqttClient.subscribe(TopicUtils.getHomeTopic(home) + "/#");
-
+            mqttClient.subscribe(TopicUtils.getHomeTopic(home) + "/#", STD_QOS);
         } catch (MqttException e) {
             e.printStackTrace();
         }

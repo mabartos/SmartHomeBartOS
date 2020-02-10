@@ -31,7 +31,7 @@ public class TopicUtils {
             // Split takes even empty string at beginning
             final int size = topics.size() - 1;
 
-            // /homes/123/add or f.e /homes/123/temp/2
+            // /homes/123/add or f.e /homes/123/dev/2/temp/2
             if (size >= 3 && topics.get(1).equals(Topics.HOME_TOPIC.getName())) {
                 Long homeID = Long.parseLong(topics.get(2));
                 if (size == CRUDTopic.TOPIC_ITEMS_COUNT) {
@@ -39,11 +39,12 @@ public class TopicUtils {
                     if (type != null) {
                         return new CRUDTopic(homeID, type);
                     }
-                } else if (size == CapabilityTopic.TOPIC_ITEMS_COUNT) {
-                    CapabilityType type = CapabilityType.getByName(topics.get(3));
+                } else if (size == CapabilityTopic.TOPIC_ITEMS_COUNT && topics.get(3).equals(Topics.DEVICE_TOPIC.getName())) {
+                    Long deviceID = Long.parseLong(topics.get(4));
+                    CapabilityType type = CapabilityType.getByName(topics.get(5));
                     if (type != null) {
-                        Long deviceID = Long.parseLong(topics.get(4));
-                        return new CapabilityTopic(type, homeID, deviceID);
+                        Long capabilityID = Long.parseLong(topics.get(6));
+                        return new CapabilityTopic(type, homeID, deviceID, capabilityID);
                     }
                 }
             }

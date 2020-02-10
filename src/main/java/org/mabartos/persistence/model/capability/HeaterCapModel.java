@@ -1,20 +1,22 @@
 package org.mabartos.persistence.model.capability;
 
+import org.mabartos.general.CapabilityType;
 import org.mabartos.persistence.model.capability.common.CapabilityWithValue;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
-public class HeaterDevModel extends CapabilityWithValue {
+public class HeaterCapModel extends CapabilityWithValue {
 
     @Column
     private Double destTemperature;
 
-    public HeaterDevModel(){}
+    public HeaterCapModel() {
+    }
 
-    public HeaterDevModel(String name) {
-        super(name);
+    public HeaterCapModel(String name) {
+        super(name, CapabilityType.HEATER);
     }
 
     public Double getDestTemperature() {
