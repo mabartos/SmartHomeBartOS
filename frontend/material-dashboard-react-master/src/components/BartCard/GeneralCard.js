@@ -10,6 +10,7 @@ import styles from "assets/jss/material-dashboard-react/components/generalTile.j
 import dashboardStyles from "assets/jss/material-dashboard-react/views/dashboardStyle.js";
 import DateRange from "@material-ui/icons/DateRange";
 import SettingsIcon from "@material-ui/icons/Settings";
+import {Clickable, StopPropagation} from "react-clickable";
 
 const useStyles = makeStyles(styles);
 const useDashboardStyle = makeStyles(dashboardStyles);
@@ -28,25 +29,36 @@ export default function GeneralCard(props) {
     const dashboardStyle = useDashboardStyle();
     const iconStyle = iconStyles();
 
+    const onSelect = () => {
+        console.log('Item selected!');
+    };
+
     return (
         <GridItem xs={12} sm={6} md={3}>
-            <a>
-                <Card className={classes.container} onClick={e => console.log("sd")}>
+            <Clickable onClick={() => onSelect()}>
+                <Card className={classes.container}>
                     <BartGeneralHeaderCard title={props.title} active={props.active} message={props.message}
                                            color={props.color}/>
+
                     <CardFooter stats/>
                     {props.children}
+
                     <CardFooter stats>
-                        <div className={dashboardStyle.stats}>
-                            <DateRange/>
-                            {props.notification || "Last 24 Hours"}
-                        </div>
-                        <CardIcon>
-                            <SettingsIcon className={iconStyle.settings} color={"secondary"}/>
-                        </CardIcon>
+                        <StopPropagation>
+                            <div className={dashboardStyle.stats}>
+                                <DateRange/>
+                                {props.notification || "Last 24 Hours"}
+                            </div>
+                        </StopPropagation>
+                        <StopPropagation>
+                            <CardIcon>
+                                <SettingsIcon className={iconStyle.settings} color={"secondary"}
+                                              onClick={() => console.log("test")}/>
+                            </CardIcon>
+                        </StopPropagation>
                     </CardFooter>
                 </Card>
-            </a>
+            </Clickable>
         </GridItem>
     );
 }
