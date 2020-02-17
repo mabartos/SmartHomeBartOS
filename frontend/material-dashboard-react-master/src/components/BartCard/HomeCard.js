@@ -14,7 +14,7 @@ const useStyles = makeStyles(styles => ({
     homePicture: {
         height: "100%",
         width: "100%",
-        borderRadius: "10px",
+        borderRadius: "5px",
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover"
     }

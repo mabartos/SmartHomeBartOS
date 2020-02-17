@@ -21,6 +21,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -44,11 +45,14 @@ public class HomeModel extends PanacheEntityBase implements HasChildren<RoomMode
     @Column
     private String imageURL;
 
+    @Column
+    private String topic;
+
     @OneToMany(targetEntity = DeviceModel.class, mappedBy = "home", cascade = CascadeType.MERGE)
     @LazyCollection(LazyCollectionOption.FALSE)
-    private Set<DeviceModel> unAssignedDevices;
+    private Set<DeviceModel> unAssignedDevices = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.MERGE)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(name = "HOMES_USERS",
             joinColumns = {
                     @JoinColumn(referencedColumnName = "HOME_ID")},
@@ -59,17 +63,19 @@ public class HomeModel extends PanacheEntityBase implements HasChildren<RoomMode
 
     @OneToMany(targetEntity = RoomModel.class, mappedBy = "home", cascade = CascadeType.MERGE)
     @LazyCollection(LazyCollectionOption.FALSE)
-    private Set<RoomModel> roomsSet;
+    private Set<RoomModel> roomsSet = new HashSet<>();
 
     @ElementCollection
     @JsonIgnore
     private Set<DedicatedUserRole> userRoles = new HashSet<>();
 
     public HomeModel() {
+        setTopic("/homes/" + id);
     }
 
     public HomeModel(String name) {
         this.name = name;
+        setTopic("/homes/" + id);
     }
 
     public HomeModel(String name, String brokerURL) {
@@ -113,7 +119,11 @@ public class HomeModel extends PanacheEntityBase implements HasChildren<RoomMode
     }
 
     public String getTopic() {
-        return "/homes/" + id;
+        return topic;
+    }
+
+    public void setTopic(String topic) {
+        this.topic = topic;
     }
 
     // Collections
@@ -202,6 +212,7 @@ public class HomeModel extends PanacheEntityBase implements HasChildren<RoomMode
                     && object.getBrokerURL().equals(this.getBrokerURL())
                     && object.getImageURL().equals(this.getImageURL())
                     && object.getChildren().equals(this.getChildren())
+                    && object.getTopic().equals(this.getTopic())
                     && object.getUsers().equals(this.getUsers())
             );
         }
@@ -209,6 +220,6 @@ public class HomeModel extends PanacheEntityBase implements HasChildren<RoomMode
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, brokerURL, imageURL, getChildren(), getUsers());
+        return Objects.hash(id, name, brokerURL, imageURL, topic, getChildren(), getUsers());
     }
 }

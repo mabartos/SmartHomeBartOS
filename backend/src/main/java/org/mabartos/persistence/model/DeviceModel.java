@@ -36,7 +36,7 @@ public class DeviceModel extends PanacheEntityBase implements Serializable, Iden
 
     @OneToMany(targetEntity = CapabilityModel.class,mappedBy = "device",cascade = CascadeType.MERGE)
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<CapabilityModel> capabilities;
+    private List<CapabilityModel> capabilities=new ArrayList<>();
 
     public DeviceModel() {
     }

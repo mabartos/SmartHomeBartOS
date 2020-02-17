@@ -28,14 +28,14 @@ export default function BartGeneralHeaderCard({title, active = false, color}) {
 
     return (
         <CardHeader stats icon>
-            <CardIcon color={color}>
+            <CardIcon color={color||"info"}>
                 <Store/>
             </CardIcon>
             <p className={colorActivity}>
                 <span style={{display: "inline-block"}}>{isActive}</span>
             </p>
             <h3 className={titleClasses}>
-                <DynamicFont content={title}/>
+                <DynamicFont smooth content={title}/>
             </h3>
         </CardHeader>
     );
