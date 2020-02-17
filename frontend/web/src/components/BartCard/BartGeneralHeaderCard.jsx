@@ -16,9 +16,10 @@ const generalHeaderStyle = makeStyles(style => ({
     },
 }));
 
-export default function BartGeneralHeaderCard({title, active = false, color}) {
+export default function BartGeneralHeaderCard(props) {
     const classes = useStyles();
     const headerStyle = generalHeaderStyle();
+    const {title, active = false, displayActivity = false, color} = props;
     const colorActivity = active ? classes.cardStatusActive : classes.cardStatusInActive;
     const isActive = active ? "Active" : "InActive";
     const titleClasses = classNames({
@@ -26,14 +27,24 @@ export default function BartGeneralHeaderCard({title, active = false, color}) {
         [headerStyle.title]: true
     });
 
+    const activityStatus = () => {
+        if (displayActivity) {
+            return (<p className={colorActivity}>
+                <span style={{display: "inline-block"}}>{isActive}</span>
+            </p>);
+        } else {
+            return (<p className={colorActivity}>
+                <span style={{display: "inline-block"}}/>
+            </p>);
+        }
+    };
+
     return (
         <CardHeader stats icon>
-            <CardIcon color={color||"info"}>
+            <CardIcon color={color || "info"}>
                 <Store/>
             </CardIcon>
-            <p className={colorActivity}>
-                <span style={{display: "inline-block"}}>{isActive}</span>
-            </p>
+            {activityStatus()}
             <h3 className={titleClasses}>
                 <DynamicFont smooth content={title}/>
             </h3>

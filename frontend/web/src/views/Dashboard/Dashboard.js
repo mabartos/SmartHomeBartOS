@@ -26,7 +26,6 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardIcon from "components/Card/CardIcon.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
-import defaultImage from "assets/img/sidebar-2.jpg";
 
 
 import {bugs, server, website} from "variables/general.js";
@@ -36,6 +35,7 @@ import {completedTasksChart, dailySalesChart, emailsSubscriptionChart} from "var
 
 import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js";
 import HomeCard from "../../components/BartCard/HomeCard";
+import GeneralInfoCard from "../../components/BartCard/GeneralInfoCard";
 
 const useStyles = makeStyles(styles);
 

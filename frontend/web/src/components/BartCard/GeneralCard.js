@@ -37,8 +37,7 @@ export default function GeneralCard(props) {
         <GridItem xs={12} sm={6} md={3}>
             <Clickable onClick={() => onSelect()}>
                 <Card className={classes.container}>
-                    <BartGeneralHeaderCard title={props.title} active={props.active} message={props.message}
-                                           color={props.color}/>
+                    <BartGeneralHeaderCard title={props.title} active={props.active} color={props.color} displayActivity={props.displayActivity}/>
 
                     <CardFooter stats/>
                     {props.children}

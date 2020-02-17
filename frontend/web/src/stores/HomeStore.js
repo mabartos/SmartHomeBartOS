@@ -1,6 +1,7 @@
 import {action, computed, observable} from "mobx";
+import GeneralStore from "./GeneralStore";
 
-export class HomeStore {
+export class HomeStore extends GeneralStore {
 
     @observable
     homes = {};
@@ -8,30 +9,12 @@ export class HomeStore {
     @observable
     devicesInHome = {};
 
-    @observable
-    loading = false;
-
-    @observable
-    error = null;
-
-    @observable
-    fetched = false;
-
     homeService;
 
     constructor(homeService) {
+        super();
         this.homeService = homeService;
     }
-
-    @action
-    startLoading = () => {
-        this.loading = true;
-    };
-
-    @action
-    stopLoading = () => {
-        this.loading = false;
-    };
 
     @action
     setHomes = (homesList) => {
@@ -59,16 +42,6 @@ export class HomeStore {
         this.homes[device.id] = device;
     };
 
-    @action
-    setError = (message) => {
-        this.error = message;
-    };
-
-    @action
-    setFetched = () => {
-        this.fetched = true;
-    };
-
     @computed
     get homes() {
         return this.homes;
@@ -80,28 +53,13 @@ export class HomeStore {
     }
 
     @computed
-    get loading() {
-        return this.loading;
-    }
-
-    @computed
-    get error() {
-        return this.error;
-    }
-
-    @computed
-    get fetched() {
-        return this.fetched;
-    }
-
-    @computed
     get devices() {
-        return this.devices;
+        return this.devicesInHome;
     }
 
     @computed
     get devicesValues() {
-        return Object.values(this.devices);
+        return Object.values(this.devicesInHome);
     }
 
     getAllHomes = () => {
@@ -109,8 +67,8 @@ export class HomeStore {
         this.homeService
             .getAllHomes()
             .then(this.setHomes)
-            .catch(this.setError)
-            .finally(this.stopLoading);
+            .catch(super.setError)
+            .finally(super.stopLoading);
     };
 
     getHomeByID = (id) => {
@@ -118,8 +76,8 @@ export class HomeStore {
         this.homeService
             .getHomeByID(id)
             .then(this.setHome)
-            .catch(this.setError)
-            .finally(this.stopLoading);
+            .catch(super.setError)
+            .finally(super.stopLoading);
     };
 
     createHome = (home) => {
@@ -127,8 +85,8 @@ export class HomeStore {
         this.homeService
             .createHome(home)
             .then(this.setHome)
-            .catch(this.setError)
-            .finally(this.stopLoading);
+            .catch(super.setError)
+            .finally(super.stopLoading);
     };
 
     updateHome = (id, home) => {
@@ -136,16 +94,16 @@ export class HomeStore {
         this.homeService
             .updateHome(id, home)
             .then(this.setHome)
-            .catch(this.setError)
-            .finally(this.stopLoading);
+            .catch(super.setError)
+            .finally(super.stopLoading);
     };
 
     deleteHome = (id) => {
         this.startLoading();
         this.homeService
             .deleteHome(id)
-            .catch(this.setError)
-            .finally(this.stopLoading);
+            .catch(super.setError)
+            .finally(super.stopLoading);
     };
 
     getDevicesInHome = (id) => {
@@ -153,15 +111,15 @@ export class HomeStore {
         this.homeService
             .getDevicesInHome(id)
             .then(this.setDevicesInHome)
-            .catch(this.setError)
-            .finally(this.stopLoading);
+            .catch(super.setError)
+            .finally(super.stopLoading);
     };
 
     addHomeToUser = (homeID, userID) => {
         this.startLoading();
         this.homeService
             .addHomeToUser(homeID, userID)
-            .catch(this.setError)
-            .finally(this.stopLoading);
+            .catch(super.setError)
+            .finally(super.stopLoading);
     };
 }

@@ -24,7 +24,7 @@ export default function HomeCard(props) {
     const classes = useStyles();
 
     return (
-        <GeneralCard title={props.title} active={props.active} message={props.message} color={props.color}>
+        <GeneralCard title={props.title} active={props.active} color={props.color} displayActivity={true}>
             <GridItem xs={12} sm={12} md={12}>
                 <div className={classes.homePictureContainer}>
                     <img className={classes.homePicture} alt="home" src={props.image || defaultImage}/>

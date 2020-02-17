@@ -1,9 +1,10 @@
 {
-  "presets": ["es2015"],
+  "presets": ["es2015","mobx","stage-1"],
   "plugins": [
     "transform-class-properties",
     "transform-react-jsx",
     "transform-object-rest-spread",
+    "transform-decorators-legacy",
     ["module-resolver", {
       "root": ["./src"]
       }],
