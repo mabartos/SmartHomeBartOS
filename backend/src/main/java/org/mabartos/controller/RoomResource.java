@@ -69,8 +69,8 @@ public class RoomResource {
     }
 
     @POST
-    public RoomModel createRoom(@Valid RoomModel home) {
-        return roomService.create(home);
+    public RoomModel createRoom(@Valid RoomModel room) {
+        return roomService.create(room);
     }
 
     @POST

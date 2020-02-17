@@ -2769,20 +2769,20 @@ output {
   min-height: 28px;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 800px) {
   .form-horizontal .control-label {
     padding-top: 8px;
   }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 800px) {
   .form-horizontal .form-group-lg .control-label {
     padding-top: 13px;
     font-size: 18px;
   }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 800px) {
   .form-horizontal .form-group-sm .control-label {
     padding-top: 4px;
     font-size: 11px;
@@ -4477,7 +4477,7 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
   color: inherit;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 800px) {
   .navbar .navbar-nav .navbar-text {
     color: inherit;
     margin-top: 15px;
@@ -6997,13 +6997,13 @@ footer .btn {
   }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 800px) {
   .navbar > .container-fluid .navbar-brand {
     margin-left: 0;
   }
 }
 
-@media (max-width: 480px), (max-width: 767px) {
+@media (max-width: 480px), (max-width: 800px) {
   .form-group .form-control {
     width: 83%;
   }

@@ -78,8 +78,8 @@ public class DeviceResource {
     }
 
     @POST
-    public DeviceModel createDevice(@Valid DeviceModel home) {
-        return deviceService.create(home);
+    public DeviceModel createDevice(@Valid DeviceModel device) {
+        return deviceService.create(device);
     }
 
     @POST
@@ -90,8 +90,8 @@ public class DeviceResource {
 
     @PATCH
     @Path(DEVICE_ID)
-    public DeviceModel updateDevice(@PathParam(DEVICE_ID_NAME) Long id, @Valid DeviceModel home) {
-        return deviceService.updateByID(id, home);
+    public DeviceModel updateDevice(@PathParam(DEVICE_ID_NAME) Long id, @Valid DeviceModel device) {
+        return deviceService.updateByID(id, device);
     }
 
     @DELETE
