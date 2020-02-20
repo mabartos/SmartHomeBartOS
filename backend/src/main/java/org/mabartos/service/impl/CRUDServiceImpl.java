@@ -1,6 +1,7 @@
 package org.mabartos.service.impl;
 
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import org.hibernate.PropertyAccessException;
 import org.mabartos.interfaces.Identifiable;
 import org.mabartos.service.core.CRUDService;
 
@@ -35,16 +36,21 @@ public class CRUDServiceImpl
 
     @Override
     public T create(T entity) {
-        if (!repository.isPersistent(entity)) {
-            repository.persist(entity);
-            repository.flush();
+        try {
+            if (!repository.isPersistent(entity)) {
+                repository.persist(entity);
+                repository.flush();
+            }
+            return entity;
+        } catch (Exception e) {
+            // HIBERNATE BUG
+            return entity;
         }
-         return entity;
     }
 
     @Override
     public T updateByID(Long id, T entity) {
-        T found = repository.find("id", id).firstResult();
+        T found = findByID(id);
         if (entity != null && found != null) {
             entity.setID(id);
             entityManager.merge(entity);
@@ -61,11 +67,33 @@ public class CRUDServiceImpl
 
     @Override
     public T findByID(Long id) {
-        return repository.find("id", id).firstResult();
+        try {
+            return repository.find("id", id).firstResult();
+        } catch (ClassCastException e) {
+            return null;
+        }
     }
 
     @Override
     public boolean deleteByID(Long id) {
         return repository.delete("id", id) > 0;
+    }
+
+/*<ahoj\Miluji te <3 a chces neco vedet
+            chybel jsi mi <3
+    public boolean deleteBzID(Long id) {
+        return false;
+
+        Martínku, jsi fakt skvělý přítel a je mi moc líto, že jsem ti řikala, že bych chtěla pauzu, já bych ji chtěla od všeho
+                a ne od tebe, jsem z toho všeho už fakt moc zoufalá.... A ty mi držíš nad vodou, i když na mi většinu času sereš
+                upřednostňuješ spíše své přátele, ale jak říkáš, semnou jsi pořád a já se stějně musím učit, takže užívej život dokud
+                můžeš a jsi mlady, ale užívej ho víc semnou, než jen s nimi.... já tě totiž strašně moc  miluji a nechci tě ztratit..
+        jsem fakt strašně ráda, že tě mám, jsi moje sluníčko miláčku <3 Miluji tě Mafínku můj <3
+
+    }
+ */
+    @Override
+    public boolean exists(Long id) {
+        return findByID(id) != null;
     }
 }

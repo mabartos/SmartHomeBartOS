@@ -34,7 +34,7 @@ public class HomeModel extends PanacheEntityBase implements HasChildren<RoomMode
     @Id
     @GeneratedValue
     @Column(name = "HOME_ID")
-    private Long id;
+    Long id;
 
     @Column(nullable = false)
     private String name;
@@ -46,7 +46,7 @@ public class HomeModel extends PanacheEntityBase implements HasChildren<RoomMode
     private String imageURL;
 
     @Column
-    private String topic;
+    private String topic = "/homes/" + id;
 
     @OneToMany(targetEntity = DeviceModel.class, mappedBy = "home", cascade = CascadeType.MERGE)
     @LazyCollection(LazyCollectionOption.FALSE)
@@ -119,6 +119,8 @@ public class HomeModel extends PanacheEntityBase implements HasChildren<RoomMode
     }
 
     public String getTopic() {
+        if (topic == null)
+            return "/homes/" + id;
         return topic;
     }
 

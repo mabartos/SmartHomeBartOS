@@ -22,8 +22,7 @@ public class CapabilityJSON implements MqttSerializable {
     private CapabilityType type;
 
     @JsonCreator
-    public CapabilityJSON(@JsonProperty("id") Integer id,
-                          @JsonProperty("name") String name,
+    public CapabilityJSON(@JsonProperty("name") String name,
                           @JsonProperty("type") CapabilityType type) {
         this.id = id;
         this.name = name;

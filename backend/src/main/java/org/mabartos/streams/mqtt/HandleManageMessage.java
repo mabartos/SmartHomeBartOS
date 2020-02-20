@@ -93,7 +93,7 @@ public class HandleManageMessage {
         String receivedTopic = home.getTopic();
         try {
             MqttAddDeviceMessage deviceMessage = MqttAddDeviceMessage.fromJson(message.toString());
-            if (servicesAreValid()) {
+            if (servicesAreValid() && receivedTopic != null && deviceMessage != null) {
                 DeviceModel device = createDeviceFromMessage(deviceMessage);
 
                 if (homeService.addDeviceToHome(device, home.getID())) {
@@ -103,9 +103,9 @@ public class HandleManageMessage {
                 }
             }
         } catch (DeviceConflictException e) {
-            BarMqttSender.sendAddDeviceResponse(client, receivedTopic, HttpResponseStatus.CONFLICT, e.getMessage());
+            BarMqttSender.sendResponse(client, receivedTopic, HttpResponseStatus.CONFLICT, e.getMessage());
         } catch (WrongMessageTopicException wm) {
-            BarMqttSender.sendAddDeviceResponse(client, receivedTopic, HttpResponseStatus.BAD_REQUEST, wm.getMessage());
+            BarMqttSender.sendResponse(client, receivedTopic, HttpResponseStatus.BAD_REQUEST, wm.getMessage());
         }
         return false;
     }

@@ -11,11 +11,11 @@ import java.util.Objects;
 
 @Table(name = "CAPABILITY")
 @Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class CapabilityModel extends PanacheEntityBase implements Serializable, Identifiable {
 
     @Id
     @GeneratedValue
-    @Column(name = "CAPABILITY_ID")
     Long id;
 
     @Column(name = "NAME")

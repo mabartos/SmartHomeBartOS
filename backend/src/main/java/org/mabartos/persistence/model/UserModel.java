@@ -30,7 +30,7 @@ public class UserModel extends PanacheEntityBase implements HasChildren<HomeMode
     @Id
     @GeneratedValue
     @Column(name = "USER_ID")
-    private Long id;
+    Long id;
 
     @Column(unique = true, nullable = false)
     private String username;

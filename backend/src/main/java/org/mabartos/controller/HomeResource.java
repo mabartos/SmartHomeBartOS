@@ -7,6 +7,7 @@ import org.mabartos.persistence.model.UserModel;
 import org.mabartos.service.core.CRUDService;
 import org.mabartos.service.core.HomeService;
 import org.mabartos.streams.mqtt.BarMqttClient;
+import org.mabartos.streams.mqtt.HandleManageMessage;
 import org.mabartos.streams.mqtt.messages.MqttAddDeviceMessage;
 
 import javax.annotation.PostConstruct;
@@ -18,6 +19,7 @@ import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.Set;
+import java.util.logging.Logger;
 
 @Path("/homes")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -25,6 +27,7 @@ import java.util.Set;
 @Transactional
 @ApplicationScoped
 public class HomeResource {
+    public static Logger logger = Logger.getLogger(HomeResource.class.getName());
 
     private static final String HOME_ID_NAME = "idHome";
     private static final String HOME_ID = "/{" + HOME_ID_NAME + ":[\\d]+}";
@@ -39,6 +42,7 @@ public class HomeResource {
         homeService.getAll()
                 .forEach(home -> {
                     client.init(home.getBrokerURL(), home);
+                    logger.info("MQTT client with broker: "+home.getBrokerURL()+" STARTED");
                 });
 
     }

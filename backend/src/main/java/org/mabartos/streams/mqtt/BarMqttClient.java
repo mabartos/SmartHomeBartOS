@@ -10,18 +10,18 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.mabartos.persistence.model.HomeModel;
 import org.mabartos.streams.mqtt.utils.TopicUtils;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.util.UUID;
 
-@ApplicationScoped
+@Singleton
 public class BarMqttClient {
 
     @Inject
     BarMqttHandler handler;
 
     private final Integer TIMEOUT = 20;
-    private final Integer STD_QOS = 0;
+    private final Integer STD_QOS = 2;
 
     private String brokerURL;
     private String clientID;
@@ -49,6 +49,7 @@ public class BarMqttClient {
                 @Override
                 public void connectionLost(Throwable cause) {
                     System.out.println("Connection lost");
+                    System.out.println("Connection losts");
                     System.out.println(cause.getMessage());
                 }
 

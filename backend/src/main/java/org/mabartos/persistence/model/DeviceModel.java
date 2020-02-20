@@ -7,9 +7,23 @@ import org.hibernate.annotations.LazyCollectionOption;
 import org.mabartos.controller.DeviceResource;
 import org.mabartos.interfaces.Identifiable;
 
-import javax.persistence.*;
+import javax.persistence.Cacheable;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Entity
@@ -112,9 +126,13 @@ public class DeviceModel extends PanacheEntityBase implements Serializable, Iden
             return false;
         else {
             DeviceModel object = (DeviceModel) obj;
+
+            if (object.getRoom() != null && this.getRoom() != null && !object.getRoom().equals(this.getRoom())) {
+                return false;
+            }
+
             return (object.getID().equals(this.getID())
                     && object.getName().equals(this.getName())
-                    && object.getRoom().equals(this.getRoom())
                     && object.getHome().equals(this.getHome())
             );
         }

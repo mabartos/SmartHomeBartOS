@@ -12,11 +12,10 @@ public class TemperatureCapMessage extends CapabilityJSON {
     private Double actualTemperature;
 
     @JsonCreator
-    public TemperatureCapMessage(@JsonProperty("id") Integer id,
-                                 @JsonProperty("name") String name,
+    public TemperatureCapMessage(@JsonProperty("name") String name,
                                  @JsonProperty("type") CapabilityType type,
                                  @JsonProperty("actual") Double actualTemperature) {
-        super(id, name, type);
+        super(name, type);
         this.actualTemperature = actualTemperature;
     }
 

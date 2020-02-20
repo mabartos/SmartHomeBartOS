@@ -12,5 +12,7 @@ public interface CRUDService<T> {
 
     T findByID(Long id);
 
+    boolean exists(Long id);
+
     boolean deleteByID(Long id);
 }

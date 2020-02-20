@@ -21,6 +21,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -74,7 +76,11 @@ public class DeviceResource {
     @GET
     @Path(CAPABILITY)
     public List<CapabilityModel> getCapabilities(@PathParam(DEVICE_ID_NAME) Long id) {
-        return deviceService.findByID(id).getCapabilities();
+        if (deviceService.exists(id)) {
+            return deviceService.findByID(id).getCapabilities();
+        } else {
+            return null;
+        }
     }
 
     @POST

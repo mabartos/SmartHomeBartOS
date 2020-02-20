@@ -29,7 +29,7 @@ public class RoomModel extends PanacheEntityBase implements HasChildren<DeviceMo
     @Id
     @GeneratedValue
     @Column(name = "ROOM_ID")
-    private Long id;
+    Long id;
 
     @Column(nullable = false)
     private String name;
