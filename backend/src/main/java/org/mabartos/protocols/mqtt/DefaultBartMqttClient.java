@@ -44,7 +44,6 @@ public class DefaultBartMqttClient implements BartMqttClient {
             this.brokerURL = brokerURL;
             this.clientID = UUID.randomUUID().toString();
             this.mqttClient = new MqttClient(this.getBrokerURL(), this.getClientID());
-            this.thisClient = this;
             this.home = home;
 
             mqttClient.setCallback(new MqttCallback() {
@@ -57,7 +56,7 @@ public class DefaultBartMqttClient implements BartMqttClient {
 
                 @Override
                 public void messageArrived(String topic, MqttMessage message) throws Exception {
-                    handler.executeMessage(home, thisClient, topic, message);
+                    handler.executeMessage(home, topic, message);
                 }
 
                 @Override

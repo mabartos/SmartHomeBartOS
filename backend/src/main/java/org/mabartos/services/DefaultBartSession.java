@@ -8,7 +8,6 @@ import org.mabartos.api.service.HomeService;
 import org.mabartos.api.service.RoomService;
 import org.mabartos.api.service.UserService;
 import org.mabartos.persistence.model.HomeModel;
-import org.mabartos.services.core.UserServiceImpl;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.spi.CreationalContext;

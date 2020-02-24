@@ -3,10 +3,8 @@ package org.mabartos.protocols.mqtt;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.quarkus.runtime.StartupEvent;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.mabartos.api.model.BartSession;
 import org.mabartos.api.protocol.BartMqttClient;
-import org.mabartos.api.service.CapabilityService;
-import org.mabartos.api.service.DeviceService;
-import org.mabartos.api.service.HomeService;
 import org.mabartos.general.CapabilityType;
 import org.mabartos.persistence.model.CapabilityModel;
 import org.mabartos.persistence.model.DeviceModel;
@@ -41,23 +39,20 @@ public class HandleManageMessage {
     private MqttMessage message;
     private HomeModel home;
 
-    DeviceService deviceService;
-    HomeService homeService;
-    CapabilityService capabilityService;
+    BartSession session;
 
     public void onStartup(@Observes StartupEvent start) {
         logger.info("Initialized Handle Manage Message Bean");
     }
 
     @Inject
-    public HandleManageMessage(DeviceService deviceService, HomeService homeService, CapabilityService capabilityService) {
-        this.deviceService = deviceService;
-        this.homeService = homeService;
-        this.capabilityService = capabilityService;
+    public HandleManageMessage(BartSession session) {
+        this.session = session;
+
     }
 
-    public void init(HomeModel home, BartMqttClient client, GeneralTopic topic, MqttMessage message) {
-        this.client = client;
+    public void init(HomeModel home, GeneralTopic topic, MqttMessage message) {
+        this.client = session.getMqttClient();
         this.topic = topic;
         this.message = message;
         this.home = home;
@@ -97,7 +92,7 @@ public class HandleManageMessage {
             if (servicesAreValid() && receivedTopic != null && deviceMessage != null) {
                 DeviceModel device = createDeviceFromMessage(deviceMessage);
 
-                if (homeService.addDeviceToHome(device, home.getID())) {
+                if (session.homes().addDeviceToHome(device, home.getID())) {
                     MqttGeneralMessage response = new MqttGeneralMessage(device, deviceMessage.getIdMessage());
                     client.publish(receivedTopic, response.toJson());
                     return true;
@@ -122,7 +117,7 @@ public class HandleManageMessage {
     }
 
     private boolean servicesAreValid() {
-        return deviceService != null && homeService != null && capabilityService != null;
+        return session.devices() != null && session.homes() != null && session.capabilities() != null;
     }
 
     private CapabilityModel getTypedInstance(String name, CapabilityType type) {
@@ -164,8 +159,8 @@ public class HandleManageMessage {
                 .map(f -> getTypedInstance(f.getName(), f.getType()))
                 .collect(Collectors.toList());
         List<CapabilityModel> result = new ArrayList<>();
-        capabilities.forEach(f -> result.add(capabilityService.create(f)));
+        capabilities.forEach(f -> result.add(session.capabilities().create(f)));
         DeviceModel deviceModel = new DeviceModel(message.getName(), result);
-        return deviceService.create(deviceModel);
+        return session.devices().create(deviceModel);
     }
 }

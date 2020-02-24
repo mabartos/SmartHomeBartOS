@@ -3,10 +3,7 @@ package org.mabartos.protocols.mqtt;
 import io.quarkus.runtime.StartupEvent;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.jboss.logmanager.Level;
-import org.mabartos.api.protocol.BartMqttClient;
-import org.mabartos.api.service.CapabilityService;
-import org.mabartos.api.service.DeviceService;
-import org.mabartos.api.service.HomeService;
+import org.mabartos.api.model.BartSession;
 import org.mabartos.persistence.model.HomeModel;
 import org.mabartos.protocols.mqtt.capability.HumidityCapability;
 import org.mabartos.protocols.mqtt.capability.LightCapability;
@@ -24,9 +21,7 @@ import java.util.logging.Logger;
 public class BartMqttHandler {
     public static Logger logger = Logger.getLogger(BartMqttHandler.class.getName());
 
-    DeviceService deviceService;
-    HomeService homeService;
-    CapabilityService capabilityService;
+    BartSession session;
     HandleManageMessage handler;
 
     void onStartup(@Observes StartupEvent event) {
@@ -34,21 +29,19 @@ public class BartMqttHandler {
     }
 
     @Inject
-    public BartMqttHandler(DeviceService deviceService, HomeService homeService, CapabilityService capabilityService, HandleManageMessage handler) {
-        this.deviceService = deviceService;
-        this.homeService = homeService;
-        this.capabilityService = capabilityService;
+    public BartMqttHandler(BartSession session, HandleManageMessage handler) {
+        this.session = session;
         this.handler = handler;
     }
 
     //TODO own exceptions, common topics
-    public void executeMessage(HomeModel home, BartMqttClient client, final String receivedTopic, final MqttMessage message) {
+    public void executeMessage(HomeModel home, final String receivedTopic, final MqttMessage message) {
         String homeTopic = TopicUtils.getHomeTopic(home);
         try {
             GeneralTopic resultTopic = TopicUtils.getSpecificTopic(receivedTopic);
 
             if (resultTopic != null && homeTopic != null && receivedTopic.length() > homeTopic.length()) {
-                handler.init(home, client, resultTopic, message);
+                handler.init(home, resultTopic, message);
 
                 // It's the 'manage' topic
                 if (handler.handleManageTopics())
@@ -56,7 +49,7 @@ public class BartMqttHandler {
 
                 if (resultTopic instanceof CapabilityTopic) {
                     CapabilityTopic capTopic = (CapabilityTopic) resultTopic;
-                    redirectParsing(client, capTopic, message);
+                    redirectParsing(capTopic, message);
                 }
             }
         } catch (IndexOutOfBoundsException iobe) {
@@ -66,20 +59,20 @@ public class BartMqttHandler {
         }
     }
 
-    private void redirectParsing(BartMqttClient client, CapabilityTopic capabilityTopic, MqttMessage message) {
+    private void redirectParsing(CapabilityTopic capabilityTopic, MqttMessage message) {
         switch (capabilityTopic.getCapabilityType()) {
             case NONE:
                 break;
             case TEMPERATURE:
-                new TemperatureCapability(client, capabilityService, capabilityTopic, message).parseMessage();
+                new TemperatureCapability(session, capabilityTopic, message).parseMessage();
                 break;
             case HUMIDITY:
-                new HumidityCapability(client, capabilityService, capabilityTopic, message).parseMessage();
+                new HumidityCapability(session, capabilityTopic, message).parseMessage();
                 break;
             case HEATER:
                 break;
             case LIGHT:
-                new LightCapability(client, capabilityService, capabilityTopic, message).parseMessage();
+                new LightCapability(session, capabilityTopic, message).parseMessage();
                 break;
             case RELAY:
                 break;
