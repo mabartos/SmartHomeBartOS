@@ -1,9 +1,9 @@
 package org.mabartos.controller;
 
+import org.mabartos.api.model.BartSession;
+import org.mabartos.api.service.RoomService;
 import org.mabartos.persistence.model.HomeModel;
 import org.mabartos.persistence.model.RoomModel;
-import org.mabartos.service.core.CRUDService;
-import org.mabartos.service.core.RoomService;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
@@ -13,7 +13,6 @@ import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
-import javax.ws.rs.NotFoundException;
 import javax.ws.rs.PATCH;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -33,21 +32,15 @@ public class RoomResource {
     public static final String ROOM_PATH = "/rooms";
 
     private HomeModel parent;
-    private Set<CRUDService> services;
     private RoomService roomService;
 
     @Inject
-    public RoomResource(RoomService roomService) {
-        this.roomService = roomService;
+    public RoomResource(BartSession session) {
+        this.roomService = session.rooms();
     }
 
-    public RoomResource(HomeModel parent, Set<CRUDService> services) {
+    public RoomResource(HomeModel parent) {
         this.parent = parent;
-        this.services = services;
-        this.roomService = (RoomService) services.stream()
-                .filter(f -> f instanceof RoomService)
-                .findFirst()
-                .orElseThrow(NotFoundException::new);
         setParent();
     }
 
@@ -93,7 +86,7 @@ public class RoomResource {
 
     @Path(ROOM_ID + DeviceResource.DEVICE_PATH)
     public DeviceResource forwardToRoom(@PathParam(ROOM_ID_NAME) Long id) {
-        return new DeviceResource(roomService.findByID(id), services);
+        return new DeviceResource(roomService.findByID(id));
     }
 
 }

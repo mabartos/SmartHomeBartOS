@@ -1,10 +1,10 @@
 package org.mabartos.controller;
 
+import org.mabartos.api.model.BartSession;
+import org.mabartos.api.service.DeviceService;
 import org.mabartos.persistence.model.CapabilityModel;
 import org.mabartos.persistence.model.DeviceModel;
 import org.mabartos.persistence.model.RoomModel;
-import org.mabartos.service.core.CRUDService;
-import org.mabartos.service.core.DeviceService;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
@@ -14,15 +14,12 @@ import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
-import javax.ws.rs.NotFoundException;
 import javax.ws.rs.PATCH;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -39,20 +36,15 @@ public class DeviceResource {
     public static final String CAPABILITY = DEVICE_ID + "/capability";
 
     private RoomModel parent;
-
     private DeviceService deviceService;
 
     @Inject
-    public DeviceResource(DeviceService deviceService) {
-        this.deviceService = deviceService;
+    public DeviceResource(BartSession session) {
+        this.deviceService = session.devices();
     }
 
-    public DeviceResource(RoomModel parent, Set<CRUDService> services) {
+    public DeviceResource(RoomModel parent) {
         this.parent = parent;
-        this.deviceService = (DeviceService) services.stream()
-                .filter(f -> f instanceof DeviceService)
-                .findFirst()
-                .orElseThrow(NotFoundException::new);
         setParent();
     }
 

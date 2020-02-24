@@ -6,7 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.mabartos.persistence.model.HomeModel;
-import org.mabartos.service.core.HomeService;
+import org.mabartos.api.service.HomeService;
 
 import javax.inject.Inject;
 

@@ -1,14 +1,11 @@
 package org.mabartos.controller;
 
 import io.quarkus.runtime.StartupEvent;
+import org.mabartos.api.model.BartSession;
+import org.mabartos.api.service.HomeService;
 import org.mabartos.persistence.model.DeviceModel;
 import org.mabartos.persistence.model.HomeModel;
 import org.mabartos.persistence.model.UserModel;
-import org.mabartos.service.core.CRUDService;
-import org.mabartos.service.core.HomeService;
-import org.mabartos.streams.mqtt.BarMqttClient;
-import org.mabartos.streams.mqtt.HandleManageMessage;
-import org.mabartos.streams.mqtt.messages.MqttAddDeviceMessage;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
@@ -16,7 +13,14 @@ import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.PATCH;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -34,32 +38,25 @@ public class HomeResource {
     public static final String HOME_PATH = "/homes";
 
     private UserModel parent;
-    private Set<CRUDService> services;
     private HomeService homeService;
-    private BarMqttClient client;
+    private BartSession session;
 
     public void initMqttClient(@Observes StartupEvent start) {
         homeService.getAll()
                 .forEach(home -> {
-                    client.init(home.getBrokerURL(), home);
-                    logger.info("MQTT client with broker: "+home.getBrokerURL()+" STARTED");
+                    session.getMqttClient().init(home.getBrokerURL(), home);
+                    logger.info("MQTT client with broker: " + home.getBrokerURL() + " STARTED");
                 });
-
     }
 
     @Inject
-    public HomeResource(HomeService homeService, BarMqttClient client) {
-        this.homeService = homeService;
-        this.client = client;
+    public HomeResource(BartSession session) {
+        this.session = session;
+        this.homeService = session.homes();
     }
 
-    public HomeResource(UserModel parent, Set<CRUDService> services) {
+    public HomeResource(UserModel parent) {
         this.parent = parent;
-        this.services = services;
-        this.homeService = (HomeService) services.stream()
-                .filter(f -> f instanceof HomeService)
-                .findFirst()
-                .orElseThrow(NotFoundException::new);
         setParent();
     }
 
@@ -111,7 +108,7 @@ public class HomeResource {
 
     @Path(HOME_ID + RoomResource.ROOM_PATH)
     public RoomResource forwardToRoom(@PathParam(HOME_ID_NAME) Long id) {
-        return new RoomResource(homeService.findByID(id), services);
+        return new RoomResource(homeService.findByID(id));
     }
 
 }

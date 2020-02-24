@@ -1,11 +1,8 @@
 package org.mabartos.controller;
 
+import org.mabartos.api.model.BartSession;
+import org.mabartos.api.service.UserService;
 import org.mabartos.persistence.model.UserModel;
-import org.mabartos.service.core.CRUDService;
-import org.mabartos.service.core.DeviceService;
-import org.mabartos.service.core.HomeService;
-import org.mabartos.service.core.RoomService;
-import org.mabartos.service.core.UserService;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -21,7 +18,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
-import java.util.HashSet;
 import java.util.Set;
 
 @Path("/users")
@@ -34,20 +30,11 @@ public class UserResource {
     private static final String USER_ID_NAME = "idUser";
     public static final String USER_ID = "/{" + USER_ID_NAME + ":[\\d]+}";
 
-
-    private Set<CRUDService> services = new HashSet<>();
     private UserService userService;
 
     @Inject
-    public UserResource(UserService userService,
-                        HomeService homeService,
-                        RoomService roomService,
-                        DeviceService deviceService
-    ) {
-        this.userService = userService;
-        services.add(homeService);
-        services.add(roomService);
-        services.add(deviceService);
+    public UserResource(BartSession session) {
+        this.userService = session.users();
     }
 
     @GET
@@ -96,6 +83,6 @@ public class UserResource {
 
     @Path(USER_ID + HomeResource.HOME_PATH)
     public HomeResource forwardToHome(@PathParam(USER_ID_NAME) Long id) {
-        return new HomeResource(userService.findByID(id), services);
+        return new HomeResource(userService.findByID(id));
     }
 }
