@@ -1,4 +1,4 @@
-package org.mabartos.controller;
+package org.mabartos.controller.capability;
 
 import org.mabartos.api.model.BartSession;
 import org.mabartos.controller.utils.ControllerUtil;
@@ -13,7 +13,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import java.util.List;
 import java.util.Set;
 
 @Consumes(MediaType.APPLICATION_JSON)

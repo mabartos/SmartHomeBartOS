@@ -1,9 +1,8 @@
-package org.mabartos.controller;
+package org.mabartos.controller.room;
 
 import org.mabartos.api.model.BartSession;
 import org.mabartos.controller.utils.ControllerUtil;
 import org.mabartos.persistence.model.RoomModel;
-import org.mabartos.persistence.model.UserModel;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;

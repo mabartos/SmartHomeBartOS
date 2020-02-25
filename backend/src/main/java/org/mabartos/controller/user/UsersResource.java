@@ -1,8 +1,7 @@
-package org.mabartos.controller;
+package org.mabartos.controller.user;
 
 import org.mabartos.api.model.BartSession;
 import org.mabartos.controller.utils.ControllerUtil;
-import org.mabartos.persistence.model.HomeModel;
 import org.mabartos.persistence.model.UserModel;
 
 import javax.enterprise.context.RequestScoped;

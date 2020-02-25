@@ -3,7 +3,6 @@ package org.mabartos.persistence.model;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
-import org.mabartos.controller.RoomResource;
 import org.mabartos.general.RoomType;
 import org.mabartos.interfaces.HasChildren;
 

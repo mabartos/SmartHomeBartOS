@@ -1,4 +1,4 @@
-package org.mabartos.controller;
+package org.mabartos.controller.capability;
 
 import org.mabartos.api.model.BartSession;
 import org.mabartos.persistence.model.CapabilityModel;

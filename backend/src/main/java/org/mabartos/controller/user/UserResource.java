@@ -1,7 +1,7 @@
-package org.mabartos.controller;
+package org.mabartos.controller.user;
 
 import org.mabartos.api.model.BartSession;
-import org.mabartos.persistence.model.HomeModel;
+import org.mabartos.controller.home.HomesResource;
 import org.mabartos.persistence.model.UserModel;
 
 import javax.transaction.Transactional;

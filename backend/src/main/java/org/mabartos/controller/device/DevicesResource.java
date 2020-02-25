@@ -1,10 +1,8 @@
-package org.mabartos.controller;
+package org.mabartos.controller.device;
 
 import org.mabartos.api.model.BartSession;
 import org.mabartos.controller.utils.ControllerUtil;
 import org.mabartos.persistence.model.DeviceModel;
-import org.mabartos.persistence.model.RoomModel;
-import org.mabartos.persistence.model.UserModel;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
