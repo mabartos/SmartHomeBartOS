@@ -36,23 +36,8 @@ public class Capabilities implements Serializable {
         return caps.remove(capability);
     }
 
-    /*public boolean removeCapabilityByID(Integer id) {
-        return caps.removeIf(cap -> cap.getID()
-                .equals(id));
-    }
-
-     */
-
     public List<CapabilityModel> getAll() {
         return caps;
     }
 
-    /*public CapabilityModel getByIDinDevice(Integer id) {
-        return caps.stream()
-                .filter(f -> f.getIdInDevice().equals(id))
-                .findFirst()
-                .orElse(null);
-    }
-
-     */
 }

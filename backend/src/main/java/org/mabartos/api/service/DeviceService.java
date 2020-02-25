@@ -6,7 +6,7 @@ import org.mabartos.persistence.model.RoomModel;
 
 import java.util.Set;
 
-public interface DeviceService extends CRUDServiceChild<DeviceModel, RoomModel> {
+public interface DeviceService extends CRUDService<DeviceModel> {
 
     Set<DeviceModel> findByType(CapabilityType type);
 }

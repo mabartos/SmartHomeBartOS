@@ -1,21 +1,25 @@
 package org.mabartos.services.core;
 
+import io.quarkus.runtime.StartupEvent;
 import org.mabartos.api.service.HomeService;
 import org.mabartos.persistence.model.DeviceModel;
 import org.mabartos.persistence.model.HomeModel;
-import org.mabartos.persistence.model.UserModel;
 import org.mabartos.persistence.repository.HomeRepository;
 
 import javax.enterprise.context.Dependent;
+import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import java.util.Set;
 
 @Dependent
-public class HomeServiceImpl extends CRUDServiceChildImpl<HomeModel, HomeRepository, UserModel> implements HomeService {
+public class HomeServiceImpl extends CRUDServiceImpl<HomeModel, HomeRepository> implements HomeService {
 
     @Inject
     HomeServiceImpl(HomeRepository repository) {
         super(repository);
+    }
+
+    public void start(@Observes StartupEvent event) {
     }
 
     @Override
@@ -58,4 +62,6 @@ public class HomeServiceImpl extends CRUDServiceChildImpl<HomeModel, HomeReposit
         }
         return null;
     }
+
+
 }

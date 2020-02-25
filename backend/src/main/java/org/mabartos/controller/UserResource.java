@@ -1,11 +1,9 @@
 package org.mabartos.controller;
 
 import org.mabartos.api.model.BartSession;
-import org.mabartos.api.service.UserService;
+import org.mabartos.persistence.model.HomeModel;
 import org.mabartos.persistence.model.UserModel;
 
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
@@ -14,75 +12,47 @@ import javax.ws.rs.GET;
 import javax.ws.rs.PATCH;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
-import java.util.Set;
 
-@Path("/users")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Transactional
-@RequestScoped
 public class UserResource {
 
-    private static final String USER_ID_NAME = "idUser";
-    public static final String USER_ID = "/{" + USER_ID_NAME + ":[\\d]+}";
+    private final BartSession session;
 
-    private UserService userService;
-
-    @Inject
     public UserResource(BartSession session) {
-        this.userService = session.users();
+        this.session = session;
     }
 
     @GET
-    @Path(USER_ID)
-    public UserModel getUserByID(@PathParam(USER_ID_NAME) Long id) {
-        return userService.findByID(id);
-    }
-
-    @GET
-    public Set<UserModel> getAll() {
-        return userService.getAll();
-    }
-
-    @GET
-    @Path("/search")
-    public UserModel getUserByEmail(@QueryParam("email") String email) {
-        if (email != null)
-            return userService.findByEmail(email);
-        return null;
-    }
-
-    @GET
-    @Path("/search")
-    public UserModel getUserByUsername(@QueryParam("username") String username) {
-        if (username != null)
-            return userService.findByUsername(username);
-        return null;
-    }
-
-    @POST
-    public UserModel createUser(@Valid UserModel user) {
-        return userService.create(user);
+    public UserModel getUser() {
+        return session.getActualUser();
     }
 
     @PATCH
-    @Path(USER_ID)
-    public UserModel updateUser(@PathParam(USER_ID_NAME) Long id, @Valid UserModel user) {
-        return userService.updateByID(id, user);
+    public UserModel updateUser(@Valid UserModel user) {
+        return session.users().updateByID(session.getActualUser().getID(), user);
+    }
+
+    @POST
+    public UserModel addUserToHome() {
+        UserModel user = session.getActualUser();
+        if (session.getActualHome() != null) {
+            user.addChild(session.getActualHome());
+            return session.users().updateByID(session.getActualUser().getID(), user);
+        }
+        return null;
     }
 
     @DELETE
-    @Path(USER_ID)
-    public boolean deleteUser(@PathParam(USER_ID_NAME) Long id) {
-        return userService.deleteByID(id);
+    public boolean deleteUser() {
+        return session.users().deleteByID(session.getActualUser().getID());
     }
 
-    @Path(USER_ID + HomeResource.HOME_PATH)
-    public HomeResource forwardToHome(@PathParam(USER_ID_NAME) Long id) {
-        return new HomeResource(userService.findByID(id));
+    @Path(HomesResource.HOME_PATH)
+    public HomesResource forwardToHome() {
+        return new HomesResource(session);
     }
 }

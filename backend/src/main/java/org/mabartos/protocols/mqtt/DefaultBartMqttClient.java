@@ -13,10 +13,11 @@ import org.mabartos.protocols.mqtt.utils.TopicUtils;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import java.io.Serializable;
 import java.util.UUID;
 
 @ApplicationScoped
-public class DefaultBartMqttClient implements BartMqttClient {
+public class DefaultBartMqttClient implements BartMqttClient, Serializable {
 
     @Inject
     BartMqttHandler handler;
@@ -27,7 +28,6 @@ public class DefaultBartMqttClient implements BartMqttClient {
     private String brokerURL;
     private String clientID;
     private IMqttClient mqttClient;
-    private BartMqttClient thisClient;
     private HomeModel home;
 
     @Inject

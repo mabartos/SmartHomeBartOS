@@ -24,13 +24,16 @@ import org.mabartos.protocols.mqtt.topics.GeneralTopic;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
+import javax.ws.rs.core.Context;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
-public class HandleManageMessage {
+public class HandleManageMessage implements Serializable {
 
     public static Logger logger = Logger.getLogger(HandleManageMessage.class.getName());
 
@@ -38,7 +41,6 @@ public class HandleManageMessage {
     private GeneralTopic topic;
     private MqttMessage message;
     private HomeModel home;
-
     BartSession session;
 
     public void onStartup(@Observes StartupEvent start) {
@@ -48,7 +50,6 @@ public class HandleManageMessage {
     @Inject
     public HandleManageMessage(BartSession session) {
         this.session = session;
-
     }
 
     public void init(HomeModel home, GeneralTopic topic, MqttMessage message) {
@@ -158,7 +159,7 @@ public class HandleManageMessage {
                 .stream()
                 .map(f -> getTypedInstance(f.getName(), f.getType()))
                 .collect(Collectors.toList());
-        List<CapabilityModel> result = new ArrayList<>();
+        Set<CapabilityModel> result = new ArrayList<>();
         capabilities.forEach(f -> result.add(session.capabilities().create(f)));
         DeviceModel deviceModel = new DeviceModel(message.getName(), result);
         return session.devices().create(deviceModel);

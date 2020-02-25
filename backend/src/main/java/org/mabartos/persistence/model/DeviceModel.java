@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
-import org.mabartos.controller.DeviceResource;
+import org.mabartos.controller.DevicesResource;
 import org.mabartos.interfaces.Identifiable;
 
 import javax.persistence.Cacheable;
@@ -22,8 +22,10 @@ import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
@@ -50,7 +52,7 @@ public class DeviceModel extends PanacheEntityBase implements Serializable, Iden
 
     @OneToMany(targetEntity = CapabilityModel.class,mappedBy = "device",cascade = CascadeType.MERGE)
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<CapabilityModel> capabilities=new ArrayList<>();
+    private Set<CapabilityModel> capabilities=new HashSet<>();
 
     public DeviceModel() {
     }
@@ -59,7 +61,7 @@ public class DeviceModel extends PanacheEntityBase implements Serializable, Iden
         this.name = name;
     }
 
-    public DeviceModel(String name, List<CapabilityModel> capabilities) {
+    public DeviceModel(String name, Set<CapabilityModel> capabilities) {
         this(name);
         this.capabilities = capabilities;
     }
@@ -89,7 +91,7 @@ public class DeviceModel extends PanacheEntityBase implements Serializable, Iden
 
     public String getTopic() {
         if (home != null) {
-            return home.getTopic() + DeviceResource.DEVICE_PATH + "/" + id;
+            return home.getTopic() + DevicesResource.DEVICE_PATH + "/" + id;
         }
         return null;
     }
@@ -103,19 +105,23 @@ public class DeviceModel extends PanacheEntityBase implements Serializable, Iden
     }
 
     @JsonIgnore
-    public List<String> getCapabilitiesName() {
+    public Set<String> getCapabilitiesName() {
         if (capabilities != null) {
             return capabilities
                     .stream()
                     .map(CapabilityModel::getName)
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toSet());
         }
-        return Collections.emptyList();
+        return Collections.emptySet();
     }
 
     @JsonIgnore
-    public List<CapabilityModel> getCapabilities() {
+    public Set<CapabilityModel> getCapabilities() {
         return capabilities;
+    }
+
+    public boolean addCapability(CapabilityModel capability) {
+        return capabilities.add(capability);
     }
 
     @Override

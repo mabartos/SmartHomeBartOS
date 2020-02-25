@@ -6,7 +6,7 @@ import org.mabartos.persistence.model.UserModel;
 
 import java.util.Set;
 
-public interface HomeService extends CRUDServiceChild<HomeModel, UserModel> {
+public interface HomeService extends CRUDService<HomeModel> {
 
     boolean addDeviceToHome(DeviceModel device, Long homeID);
 
