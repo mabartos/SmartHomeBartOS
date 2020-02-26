@@ -37,11 +37,11 @@ public class HandleManageMessage implements Serializable {
     private MqttMessage message;
     private HomeModel home;
     private BartMqttClient client;
-
-    @Inject
     AppServices services;
 
-    public HandleManageMessage() {
+    @Inject
+    public HandleManageMessage(AppServices services) {
+        this.services=services;
     }
 
     public void init(BartMqttClient client, HomeModel home, GeneralTopic topic, MqttMessage message) {

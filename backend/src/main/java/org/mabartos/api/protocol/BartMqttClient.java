@@ -7,6 +7,8 @@ public interface BartMqttClient {
 
     void initClient(HomeModel home);
 
+    public boolean reconnectClient();
+
     String getBrokerURL();
 
     void setBrokerURL(String brokerURL);

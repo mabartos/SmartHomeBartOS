@@ -1,6 +1,5 @@
 package org.mabartos.protocols.mqtt;
 
-import io.quarkus.runtime.StartupEvent;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.jboss.logmanager.Level;
 import org.mabartos.api.protocol.BartMqttClient;
@@ -14,7 +13,6 @@ import org.mabartos.protocols.mqtt.topics.GeneralTopic;
 import org.mabartos.protocols.mqtt.utils.TopicUtils;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import java.io.Serializable;
 import java.util.logging.Logger;
@@ -24,24 +22,22 @@ public class BartMqttHandler implements Serializable {
     public static Logger logger = Logger.getLogger(BartMqttHandler.class.getName());
 
     BartMqttClient mqttClient;
-
-    @Inject
     AppServices services;
 
     @Inject
     HandleManageMessage handler;
 
-    /*void onStartup(@Observes StartupEvent event) {
-        logger.info("Initialized BarMqttHandler Bean");
+    @Inject
+    public BartMqttHandler(AppServices services) {
+        this.services = services;
     }
-*/
+
     //TODO own exceptions, common topics
     public void executeMessage(BartMqttClient client, HomeModel home, final String receivedTopic, final MqttMessage message) {
         if (home == null || receivedTopic == null || message == null)
             return;
 
         this.mqttClient = client;
-       // this.handler = new HandleManageMessage();
 
         String homeTopic = TopicUtils.getHomeTopic(home);
         try {

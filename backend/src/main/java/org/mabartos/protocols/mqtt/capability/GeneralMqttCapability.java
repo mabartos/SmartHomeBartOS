@@ -8,6 +8,7 @@ import org.mabartos.protocols.mqtt.topics.CapabilityTopic;
 
 import java.util.logging.Logger;
 
+
 public class GeneralMqttCapability {
 
     protected static Logger logger = Logger.getLogger(GeneralMqttCapability.class.getName());

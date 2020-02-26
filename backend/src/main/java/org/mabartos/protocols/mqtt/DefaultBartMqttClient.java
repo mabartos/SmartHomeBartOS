@@ -12,6 +12,7 @@ import org.mabartos.api.service.AppServices;
 import org.mabartos.persistence.model.HomeModel;
 import org.mabartos.protocols.mqtt.utils.TopicUtils;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.io.Serializable;
@@ -35,8 +36,20 @@ public class DefaultBartMqttClient implements BartMqttClient, Serializable {
     BartMqttHandler handler;
 
     @Inject
+    AppServices services;
+
     public DefaultBartMqttClient() {
         logger.info("Initialized");
+        this.services = services;
+        this.handler = handler;
+
+    }
+
+    @PostConstruct
+    public void start() {
+        System.out.println("heeeere");
+        // services.homes().getAll().forEach(System.out::println);
+        // services.homes().getAll().forEach(this::initClient);
     }
 
     @Override
@@ -47,17 +60,11 @@ public class DefaultBartMqttClient implements BartMqttClient, Serializable {
             this.mqttClient = new MqttClient(home.getMqttClient().getBrokerURL(), this.getClientID());
             this.brokerURL = home.getMqttClient().getBrokerURL();
             this.actual = this;
-            this.handler = new BartMqttHandler();
 
             mqttClient.setCallback(new MqttCallback() {
                 @Override
                 public void connectionLost(Throwable cause) {
                     logger.warning("Connection lost: " + cause.getMessage());
-                    try {
-                        mqttClient.reconnect();
-                    } catch (MqttException e) {
-                        e.printStackTrace();
-                    }
                 }
 
                 @Override
@@ -82,6 +89,17 @@ public class DefaultBartMqttClient implements BartMqttClient, Serializable {
         options.setCleanSession(true);
         options.setConnectionTimeout(TIMEOUT);
         return options;
+    }
+
+    public boolean reconnectClient() {
+        try {
+            if (mqttClient != null) {
+                mqttClient.reconnect();
+                return true;
+            }
+        } catch (MqttException ignored) {
+        }
+        return false;
     }
 
     @Override

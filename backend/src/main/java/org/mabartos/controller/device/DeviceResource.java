@@ -18,7 +18,7 @@ import javax.ws.rs.core.MediaType;
 @Produces(MediaType.APPLICATION_JSON)
 @Transactional
 public class DeviceResource {
-    public static final String CAPABILITY = "/caps";
+    public static final String CAPABILITY = "/capabilities";
 
     private final BartSession session;
 

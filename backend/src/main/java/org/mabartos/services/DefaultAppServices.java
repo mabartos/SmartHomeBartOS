@@ -9,8 +9,6 @@ import org.mabartos.api.service.DeviceService;
 import org.mabartos.api.service.HomeService;
 import org.mabartos.api.service.RoomService;
 import org.mabartos.api.service.UserService;
-import org.mabartos.persistence.model.MqttClientModel;
-import org.mabartos.protocols.mqtt.DefaultBartMqttClient;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.spi.CreationalContext;
@@ -20,9 +18,7 @@ import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -41,19 +37,12 @@ public class DefaultAppServices implements AppServices {
     public static Logger logger = Logger.getLogger(DefaultAppServices.class.getName());
     private Map<Class, Object> providers = new HashMap<>();
 
-    public void initOnStart(@Observes StartupEvent start) {
-        logger.info("App Services are initialized.");
-        homes().getAll().forEach(home -> {
-            if (home.getMqttClient() == null) {
-                home.setMqttClient(mqttClientsRepresentation().create(new MqttClientModel(home, home.getBrokerURL())));
-            }
-            BartMqttClient client = new DefaultBartMqttClient();
-            client.initClient(home);
-        });
-    }
-
     @Inject
     public DefaultAppServices() {
+    }
+
+    public void start(@Observes StartupEvent start) {
+        homes().getAll().forEach(mqttClient::initClient);
     }
 
     @Override

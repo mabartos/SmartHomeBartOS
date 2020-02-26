@@ -39,7 +39,7 @@ public class DataLoader {
     }
 
     private void addHomes() {
-        final int CNT = 10;
+        final int CNT = 1;
         for (int i = 0; i < CNT; i++) {
             HomeModel home = new HomeModel();
             StringBuilder builder = new StringBuilder();
@@ -50,8 +50,8 @@ public class DataLoader {
     }
 
     private void addUsersToHomes() {
-        services.homes().addUserToHome((long)1, (long)30);
-        services.homes().addUserToHome((long)2, (long)24);
-        services.homes().addUserToHome((long)3, (long)22);
+        services.homes().addUserToHome((long)1, (long)12);
+        //services.homes().addUserToHome((long)2, (long)24);
+        //services.homes().addUserToHome((long)3, (long)22);
     }
 }

@@ -36,14 +36,19 @@ public class DevicesResource {
 
     @GET
     public Set<DeviceModel> getAll() {
-        return session.getActualRoom().getChildren();
+        return session.getActualRoom() != null ? session.getActualRoom().getChildren() : session.services().devices().getAll();
     }
 
     @POST
     public DeviceModel createDevice(@Valid DeviceModel device) {
-        device.setHome(session.getActualHome());
-        device.setRoom(session.getActualRoom());
-        return session.services().devices().create(device);
+        if (session.getActualHome() != null) {
+            device.setHome(session.getActualHome());
+            if (session.getActualRoom() != null) {
+                device.setRoom(session.getActualRoom());
+            }
+            return session.services().devices().create(device);
+        }
+        return null;
     }
 
     @POST
