@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.mabartos.protocols.mqtt.utils.MqttSerializeUtils;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 public class MqttAddDeviceMessage implements MqttSerializable {
 
@@ -17,14 +17,14 @@ public class MqttAddDeviceMessage implements MqttSerializable {
     private String name;
 
     @JsonProperty("capabilities")
-    @JsonDeserialize(as = ArrayList.class, contentAs = CapabilityJSON.class)
-    private List<CapabilityJSON> capabilities;
+    @JsonDeserialize(as = Set.class, contentAs = CapabilityJSON.class)
+    private Set<CapabilityJSON> capabilities;
 
     @JsonCreator
     public MqttAddDeviceMessage(
             @JsonProperty("idMessage") Long idMessage,
             @JsonProperty("name") String name,
-            @JsonProperty("capabilities") List<CapabilityJSON> capabilities) {
+            @JsonProperty("capabilities") Set<CapabilityJSON> capabilities) {
         this.idMessage = idMessage;
         this.name = name;
         this.capabilities = capabilities;
@@ -46,11 +46,11 @@ public class MqttAddDeviceMessage implements MqttSerializable {
         this.name = name;
     }
 
-    public List<CapabilityJSON> getCapabilities() {
+    public Set<CapabilityJSON> getCapabilities() {
         return capabilities;
     }
 
-    public void setCapabilities(List<CapabilityJSON> capabilities) {
+    public void setCapabilities(Set<CapabilityJSON> capabilities) {
         this.capabilities = capabilities;
     }
 

@@ -1,20 +1,15 @@
 package org.mabartos.api.model;
 
-import org.mabartos.api.protocol.BartMqttClient;
-import org.mabartos.api.service.CapabilityService;
-import org.mabartos.api.service.DeviceService;
-import org.mabartos.api.service.HomeService;
-import org.mabartos.api.service.RoomService;
-import org.mabartos.api.service.UserService;
+import org.mabartos.api.service.AppServices;
 import org.mabartos.persistence.model.CapabilityModel;
 import org.mabartos.persistence.model.DeviceModel;
 import org.mabartos.persistence.model.HomeModel;
 import org.mabartos.persistence.model.RoomModel;
 import org.mabartos.persistence.model.UserModel;
 
-import javax.persistence.EntityManager;
+import java.io.Serializable;
 
-public interface BartSession {
+public interface BartSession extends Serializable {
 
     UserModel getActualUser();
 
@@ -36,21 +31,5 @@ public interface BartSession {
 
     BartSession setActualCapability(Long id);
 
-    <T> T getProvider(Class<T> clazz);
-
-    EntityManager getEntityManager();
-
-    BartMqttClient getMqttClient();
-
-    BartSession setMqttClient(BartMqttClient mqttClient);
-
-    UserService users();
-
-    HomeService homes();
-
-    RoomService rooms();
-
-    DeviceService devices();
-
-    CapabilityService capabilities();
+    AppServices services();
 }

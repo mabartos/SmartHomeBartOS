@@ -1,6 +1,7 @@
 package org.mabartos.persistence.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -20,8 +21,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -42,12 +43,6 @@ public class HomeModel extends PanacheEntityBase implements HasChildren<RoomMode
     @Column
     private String brokerURL;
 
-    @Column
-    private String imageURL;
-
-    @Column
-    private String topic = "/homes/" + id;
-
     @OneToMany(targetEntity = DeviceModel.class, mappedBy = "home", cascade = CascadeType.MERGE)
     @LazyCollection(LazyCollectionOption.FALSE)
     private Set<DeviceModel> unAssignedDevices = new HashSet<>();
@@ -65,17 +60,20 @@ public class HomeModel extends PanacheEntityBase implements HasChildren<RoomMode
     @LazyCollection(LazyCollectionOption.FALSE)
     private Set<RoomModel> roomsSet = new HashSet<>();
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "mqttClient", referencedColumnName = "mqttClientID")
+    private MqttClientModel mqttClient;
+
     @ElementCollection
     @JsonIgnore
     private Set<DedicatedUserRole> userRoles = new HashSet<>();
 
     public HomeModel() {
-        setTopic("/homes/" + id);
     }
 
     public HomeModel(String name) {
+        this();
         this.name = name;
-        setTopic("/homes/" + id);
     }
 
     public HomeModel(String name, String brokerURL) {
@@ -108,24 +106,6 @@ public class HomeModel extends PanacheEntityBase implements HasChildren<RoomMode
 
     public void setBrokerURL(String brokerURL) {
         this.brokerURL = brokerURL;
-    }
-
-    public String getImageURL() {
-        return imageURL;
-    }
-
-    public void setImageURL(String imageURL) {
-        this.imageURL = imageURL;
-    }
-
-    public String getTopic() {
-        if (topic == null)
-            return "/homes/" + id;
-        return topic;
-    }
-
-    public void setTopic(String topic) {
-        this.topic = topic;
     }
 
     // Collections
@@ -201,6 +181,14 @@ public class HomeModel extends PanacheEntityBase implements HasChildren<RoomMode
         return roomsSet.removeIf(room -> room.getID().equals(id));
     }
 
+    public MqttClientModel getMqttClient() {
+        return mqttClient;
+    }
+
+    public void setMqttClient(MqttClientModel mqttClient) {
+        this.mqttClient = mqttClient;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -211,10 +199,7 @@ public class HomeModel extends PanacheEntityBase implements HasChildren<RoomMode
             HomeModel object = (HomeModel) obj;
             return (object.getID().equals(this.getID())
                     && object.getName().equals(this.getName())
-                    && object.getBrokerURL().equals(this.getBrokerURL())
-                    && object.getImageURL().equals(this.getImageURL())
                     && object.getChildren().equals(this.getChildren())
-                    && object.getTopic().equals(this.getTopic())
                     && object.getUsers().equals(this.getUsers())
             );
         }
@@ -222,6 +207,6 @@ public class HomeModel extends PanacheEntityBase implements HasChildren<RoomMode
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, brokerURL, imageURL, topic, getChildren(), getUsers());
+        return Objects.hash(id, name, getChildren(), getUsers());
     }
 }

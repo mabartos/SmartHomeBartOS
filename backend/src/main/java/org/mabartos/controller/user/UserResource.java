@@ -33,7 +33,7 @@ public class UserResource {
 
     @PATCH
     public UserModel updateUser(@Valid UserModel user) {
-        return session.users().updateByID(session.getActualUser().getID(), user);
+        return session.services().users().updateByID(session.getActualUser().getID(), user);
     }
 
     @POST
@@ -41,14 +41,14 @@ public class UserResource {
         UserModel user = session.getActualUser();
         if (session.getActualHome() != null) {
             user.addChild(session.getActualHome());
-            return session.users().updateByID(session.getActualUser().getID(), user);
+            return session.services().users().updateByID(session.getActualUser().getID(), user);
         }
         return null;
     }
 
     @DELETE
     public boolean deleteUser() {
-        return session.users().deleteByID(session.getActualUser().getID());
+        return session.services().users().deleteByID(session.getActualUser().getID());
     }
 
     @Path(HomesResource.HOME_PATH)

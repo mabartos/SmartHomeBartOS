@@ -35,9 +35,9 @@ public class CapabilitiesResource {
 
     @POST
     public CapabilityModel createCapability(@Valid CapabilityModel capability) {
-        CapabilityModel created = session.capabilities().create(capability);
+        CapabilityModel created = session.services().capabilities().create(capability);
         session.getActualDevice().addCapability(created);
-        return session.capabilities().updateByID(created.getID(), created);
+        return session.services().capabilities().updateByID(created.getID(), created);
     }
 
     @Path(CAP_ID)

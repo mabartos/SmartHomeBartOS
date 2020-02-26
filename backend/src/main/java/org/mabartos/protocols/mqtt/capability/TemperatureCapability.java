@@ -1,7 +1,8 @@
 package org.mabartos.protocols.mqtt.capability;
 
 import org.eclipse.paho.client.mqttv3.MqttMessage;
-import org.mabartos.api.model.BartSession;
+import org.mabartos.api.protocol.BartMqttClient;
+import org.mabartos.api.service.AppServices;
 import org.mabartos.persistence.model.CapabilityModel;
 import org.mabartos.persistence.model.capability.TemperatureCapModel;
 import org.mabartos.protocols.mqtt.exceptions.WrongMessageTopicException;
@@ -17,29 +18,29 @@ public class TemperatureCapability extends GeneralMqttCapability {
         super();
     }
 
-    public TemperatureCapability(BartSession session, CapabilityTopic capabilityTopic, MqttMessage message) {
-        super(session, capabilityTopic, message);
+    public TemperatureCapability(AppServices services, BartMqttClient client, CapabilityTopic capabilityTopic, MqttMessage message) {
+        super(services, client, capabilityTopic, message);
         try {
             this.tempMessage = TemperatureCapMessage.fromJson(message.toString());
         } catch (WrongMessageTopicException e) {
-            BarMqttSender.sendResponse(session.getMqttClient(), 400, "Wrong message");
+            BarMqttSender.sendResponse(client, 400, "Wrong message");
         }
     }
 
     @Override
     public void parseMessage() {
         if (tempMessage != null) {
-            CapabilityModel model = session.capabilities().findByID(capabilityTopic.getCapabilityID());
+            CapabilityModel model = services.capabilities().findByID(capabilityTopic.getCapabilityID());
             if (model instanceof TemperatureCapModel) {
                 TemperatureCapModel result = (TemperatureCapModel) model;
                 result.setValue(tempMessage.getActualTemperature());
-                CapabilityModel updated = session.capabilities().updateByID(capabilityTopic.getCapabilityID(), model);
+                CapabilityModel updated = services.capabilities().updateByID(capabilityTopic.getCapabilityID(), model);
                 if (updated != null) {
-                    BarMqttSender.sendResponse(session.getMqttClient(), 200, "Temperature was updated");
+                    BarMqttSender.sendResponse(client, 200, "Temperature was updated");
                     return;
                 }
             }
         }
-        BarMqttSender.sendResponse(session.getMqttClient(), 400, "Update temperature");
+        BarMqttSender.sendResponse(client, 400, "Update temperature");
     }
 }

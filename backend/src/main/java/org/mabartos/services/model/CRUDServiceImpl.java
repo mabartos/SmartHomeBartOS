@@ -1,4 +1,4 @@
-package org.mabartos.services.core;
+package org.mabartos.services.model;
 
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import org.mabartos.api.service.CRUDService;

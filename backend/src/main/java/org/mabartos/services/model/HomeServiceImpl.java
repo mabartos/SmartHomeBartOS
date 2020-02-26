@@ -1,9 +1,13 @@
-package org.mabartos.services.core;
+package org.mabartos.services.model;
 
 import io.quarkus.runtime.StartupEvent;
+import org.mabartos.api.model.MqttClientService;
 import org.mabartos.api.service.HomeService;
+import org.mabartos.api.service.UserService;
 import org.mabartos.persistence.model.DeviceModel;
 import org.mabartos.persistence.model.HomeModel;
+import org.mabartos.persistence.model.MqttClientModel;
+import org.mabartos.persistence.model.UserModel;
 import org.mabartos.persistence.repository.HomeRepository;
 
 import javax.enterprise.context.Dependent;
@@ -14,12 +18,50 @@ import java.util.Set;
 @Dependent
 public class HomeServiceImpl extends CRUDServiceImpl<HomeModel, HomeRepository> implements HomeService {
 
+    private UserService userService;
+
     @Inject
-    HomeServiceImpl(HomeRepository repository) {
+    HomeServiceImpl(HomeRepository repository, UserService userService) {
         super(repository);
+        this.userService = userService;
     }
 
     public void start(@Observes StartupEvent event) {
+    }
+
+    @Override
+    public HomeModel create(HomeModel home) {
+        try {
+            if (!getRepository().isPersistent(home)) {
+                MqttClientModel client = new MqttClientModel(home, home.getBrokerURL());
+                home.setMqttClient(client);
+                client.persist();
+                getRepository().persist(home);
+                getRepository().flush();
+            }
+            return home;
+        } catch (Exception e) {
+            // HIBERNATE BUG
+            e.printStackTrace();
+            return home;
+        }
+    }
+
+    @Override
+    public boolean addUserToHome(Long userID, Long homeID) {
+        try {
+            HomeModel home = getRepository().findById(homeID);
+            UserModel user = userService.findByID(userID);
+            if (home != null && user != null) {
+                user.addChild(home);
+                home.addUser(user);
+                getRepository().persistAndFlush(home);
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     @Override
@@ -62,6 +104,5 @@ public class HomeServiceImpl extends CRUDServiceImpl<HomeModel, HomeRepository> 
         }
         return null;
     }
-
 
 }

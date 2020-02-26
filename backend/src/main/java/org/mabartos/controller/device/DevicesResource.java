@@ -43,17 +43,17 @@ public class DevicesResource {
     public DeviceModel createDevice(@Valid DeviceModel device) {
         device.setHome(session.getActualHome());
         device.setRoom(session.getActualRoom());
-        return session.devices().create(device);
+        return session.services().devices().create(device);
     }
 
     @POST
     @Path(DEVICE_ID + "/add")
     public DeviceModel addDeviceToRoom(@PathParam(DEVICE_ID_NAME) Long id) {
-        DeviceModel device = session.devices().findByID(id);
+        DeviceModel device = session.services().devices().findByID(id);
         if (device != null && session.getActualRoom() != null) {
             device.setRoom(session.getActualRoom());
             session.getActualRoom().addChild(device);
-            return session.devices().updateByID(id, device);
+            return session.services().devices().updateByID(id, device);
         }
         return null;
     }

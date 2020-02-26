@@ -1,6 +1,5 @@
 package org.mabartos.controller.utils;
 
-import org.mabartos.interfaces.HasChildren;
 import org.mabartos.interfaces.Identifiable;
 
 import java.util.Set;

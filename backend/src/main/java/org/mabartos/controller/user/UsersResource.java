@@ -37,14 +37,14 @@ public class UsersResource {
 
     @GET
     public Set<UserModel> getAll() {
-        return (session.getActualHome() != null) ? session.getActualHome().getUsers() : session.users().getAll();
+        return (session.getActualHome() != null) ? session.getActualHome().getUsers() : session.services().users().getAll();
     }
 
     @GET
     @Path("/search")
     public UserModel getUserByEmail(@QueryParam("email") String email) {
         if (email != null)
-            return session.users().findByEmail(email);
+            return session.services().users().findByEmail(email);
         return null;
     }
 
@@ -52,23 +52,23 @@ public class UsersResource {
     @Path("/search")
     public UserModel getUserByUsername(@QueryParam("username") String username) {
         if (username != null)
-            return session.users().findByUsername(username);
+            return session.services().users().findByUsername(username);
         return null;
     }
 
     @POST
     public UserModel createUser(@Valid UserModel user) {
-        return session.users().create(user);
+        return session.services().users().create(user);
     }
 
     @POST
     @Path(USER_ID + "/add")
     public UserModel addUserToHome(@PathParam(USER_ID_NAME) Long id) {
-        UserModel user = session.users().findByID(id);
+        UserModel user = session.services().users().findByID(id);
         if (user != null && session.getActualHome() != null) {
             user.addChild(session.getActualHome());
             session.getActualHome().addUser(user);
-            return session.users().updateByID(id, user);
+            return session.services().users().updateByID(id, user);
         }
         return null;
     }

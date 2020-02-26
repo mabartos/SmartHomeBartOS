@@ -5,7 +5,7 @@ import org.mabartos.persistence.model.HomeModel;
 
 public interface BartMqttClient {
 
-    void init(String brokerUrl, HomeModel home);
+    void initClient(HomeModel home);
 
     String getBrokerURL();
 
@@ -16,6 +16,8 @@ public interface BartMqttClient {
     IMqttClient getMqttClient();
 
     String getTopic();
+
+    HomeModel getHome();
 
     boolean publish(String topic, String message);
 }

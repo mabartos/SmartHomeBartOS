@@ -33,12 +33,12 @@ public class DeviceResource {
 
     @PATCH
     public DeviceModel updateDevice(@Valid DeviceModel device) {
-        return session.devices().updateByID(session.getActualDevice().getID(), device);
+        return session.services().devices().updateByID(session.getActualDevice().getID(), device);
     }
 
     @DELETE
     public boolean deleteDevice() {
-        return session.devices().deleteByID(session.getActualDevice().getID());
+        return session.services().devices().deleteByID(session.getActualDevice().getID());
     }
 
     @Path(CAPABILITY)

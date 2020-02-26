@@ -1,10 +1,9 @@
 package org.mabartos.protocols.mqtt;
 
 import io.netty.handler.codec.http.HttpResponseStatus;
-import io.quarkus.runtime.StartupEvent;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
-import org.mabartos.api.model.BartSession;
 import org.mabartos.api.protocol.BartMqttClient;
+import org.mabartos.api.service.AppServices;
 import org.mabartos.general.CapabilityType;
 import org.mabartos.persistence.model.CapabilityModel;
 import org.mabartos.persistence.model.DeviceModel;
@@ -22,12 +21,9 @@ import org.mabartos.protocols.mqtt.topics.CRUDTopic;
 import org.mabartos.protocols.mqtt.topics.GeneralTopic;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.event.Observes;
 import javax.inject.Inject;
-import javax.ws.rs.core.Context;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -37,26 +33,22 @@ public class HandleManageMessage implements Serializable {
 
     public static Logger logger = Logger.getLogger(HandleManageMessage.class.getName());
 
-    private BartMqttClient client;
     private GeneralTopic topic;
     private MqttMessage message;
     private HomeModel home;
-    BartSession session;
-
-    public void onStartup(@Observes StartupEvent start) {
-        logger.info("Initialized Handle Manage Message Bean");
-    }
+    private BartMqttClient client;
 
     @Inject
-    public HandleManageMessage(BartSession session) {
-        this.session = session;
+    AppServices services;
+
+    public HandleManageMessage() {
     }
 
-    public void init(HomeModel home, GeneralTopic topic, MqttMessage message) {
-        this.client = session.getMqttClient();
+    public void init(BartMqttClient client, HomeModel home, GeneralTopic topic, MqttMessage message) {
         this.topic = topic;
         this.message = message;
         this.home = home;
+        this.client = client;
     }
 
     public boolean handleManageTopics() {
@@ -81,19 +73,19 @@ public class HandleManageMessage implements Serializable {
     }
 
     private boolean handleConnect() {
-        if (servicesAreValid()) {
+        if (services != null) {
         }
         return false;
     }
 
     private boolean handleCreate() {
-        String receivedTopic = home.getTopic();
+        String receivedTopic = home.getMqttClient().getTopic();
         try {
             MqttAddDeviceMessage deviceMessage = MqttAddDeviceMessage.fromJson(message.toString());
-            if (servicesAreValid() && receivedTopic != null && deviceMessage != null) {
+            if (services != null && receivedTopic != null && deviceMessage != null) {
                 DeviceModel device = createDeviceFromMessage(deviceMessage);
 
-                if (session.homes().addDeviceToHome(device, home.getID())) {
+                if (services.homes().addDeviceToHome(device, home.getID())) {
                     MqttGeneralMessage response = new MqttGeneralMessage(device, deviceMessage.getIdMessage());
                     client.publish(receivedTopic, response.toJson());
                     return true;
@@ -115,10 +107,6 @@ public class HandleManageMessage implements Serializable {
     //TODO
     private boolean handleUpdate() {
         return false;
-    }
-
-    private boolean servicesAreValid() {
-        return session.devices() != null && session.homes() != null && session.capabilities() != null;
     }
 
     private CapabilityModel getTypedInstance(String name, CapabilityType type) {
@@ -155,13 +143,13 @@ public class HandleManageMessage implements Serializable {
     }
 
     private DeviceModel createDeviceFromMessage(MqttAddDeviceMessage message) {
-        List<CapabilityModel> capabilities = CapabilityJSON.toModel(message.getCapabilities())
+        Set<CapabilityModel> capabilities = CapabilityJSON.toModel(message.getCapabilities())
                 .stream()
                 .map(f -> getTypedInstance(f.getName(), f.getType()))
-                .collect(Collectors.toList());
-        Set<CapabilityModel> result = new ArrayList<>();
-        capabilities.forEach(f -> result.add(session.capabilities().create(f)));
+                .collect(Collectors.toSet());
+        Set<CapabilityModel> result = new HashSet<>();
+        capabilities.forEach(f -> result.add(services.capabilities().create(f)));
         DeviceModel deviceModel = new DeviceModel(message.getName(), result);
-        return session.devices().create(deviceModel);
+        return services.devices().create(deviceModel);
     }
 }

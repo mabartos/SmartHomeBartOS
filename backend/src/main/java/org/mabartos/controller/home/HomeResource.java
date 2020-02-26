@@ -1,9 +1,10 @@
 package org.mabartos.controller.home;
 
 import org.mabartos.api.model.BartSession;
+import org.mabartos.controller.device.DevicesResource;
+import org.mabartos.controller.home.mqtt.MqttResource;
 import org.mabartos.controller.room.RoomsResource;
 import org.mabartos.controller.user.UsersResource;
-import org.mabartos.controller.device.DevicesResource;
 import org.mabartos.persistence.model.DeviceModel;
 import org.mabartos.persistence.model.HomeModel;
 
@@ -42,12 +43,17 @@ public class HomeResource {
 
     @PATCH
     public HomeModel updateHome(@Valid HomeModel home) {
-        return session.homes().updateByID(session.getActualHome().getID(), home);
+        return session.services().homes().updateByID(session.getActualHome().getID(), home);
     }
 
     @DELETE
     public boolean deleteHome() {
-        return session.homes().deleteByID(session.getActualHome().getID());
+        return session.services().homes().deleteByID(session.getActualHome().getID());
+    }
+
+    @Path("/mqtt")
+    public MqttResource forwardToMqttInfo() {
+        return new MqttResource(session);
     }
 
     @Path(UsersResource.USER_PATH)

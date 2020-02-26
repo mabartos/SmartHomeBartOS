@@ -4,7 +4,6 @@ import org.mabartos.general.UserRole;
 import org.mabartos.persistence.model.UserModel;
 
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Objects;
 
 public class DedicatedUserRole implements Serializable {

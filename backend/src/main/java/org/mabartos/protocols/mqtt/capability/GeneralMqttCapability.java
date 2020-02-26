@@ -1,7 +1,8 @@
 package org.mabartos.protocols.mqtt.capability;
 
 import org.eclipse.paho.client.mqttv3.MqttMessage;
-import org.mabartos.api.model.BartSession;
+import org.mabartos.api.protocol.BartMqttClient;
+import org.mabartos.api.service.AppServices;
 import org.mabartos.persistence.model.CapabilityModel;
 import org.mabartos.protocols.mqtt.topics.CapabilityTopic;
 
@@ -14,16 +15,18 @@ public class GeneralMqttCapability {
     protected MqttMessage message;
     protected CapabilityModel model;
     protected CapabilityTopic capabilityTopic;
-    protected BartSession session;
+    protected AppServices services;
+    protected BartMqttClient client;
 
     public GeneralMqttCapability() {
     }
 
-    public GeneralMqttCapability(BartSession session, CapabilityTopic capabilityTopic, MqttMessage message) {
-        this.session = session;
-        this.message = message;
+    public GeneralMqttCapability(AppServices services, BartMqttClient client, CapabilityTopic capabilityTopic, MqttMessage message) {
+        this.services = services;
         this.capabilityTopic = capabilityTopic;
-        this.model = session.capabilities().findByID(capabilityTopic.getCapabilityID());
+        this.message = message;
+        this.model = services.capabilities().findByID(capabilityTopic.getCapabilityID());
+        this.client = client;
     }
 
     public void parseMessage() {

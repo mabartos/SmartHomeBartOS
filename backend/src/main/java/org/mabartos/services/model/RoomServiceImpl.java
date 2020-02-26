@@ -1,11 +1,10 @@
-package org.mabartos.services.core;
+package org.mabartos.services.model;
 
 import io.quarkus.runtime.StartupEvent;
+import org.mabartos.api.service.RoomService;
 import org.mabartos.general.RoomType;
-import org.mabartos.persistence.model.HomeModel;
 import org.mabartos.persistence.model.RoomModel;
 import org.mabartos.persistence.repository.RoomRepository;
-import org.mabartos.api.service.RoomService;
 
 import javax.enterprise.context.Dependent;
 import javax.enterprise.event.Observes;

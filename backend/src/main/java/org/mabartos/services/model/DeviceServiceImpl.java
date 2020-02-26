@@ -1,11 +1,10 @@
-package org.mabartos.services.core;
+package org.mabartos.services.model;
 
 import io.quarkus.runtime.StartupEvent;
+import org.mabartos.api.service.DeviceService;
 import org.mabartos.general.CapabilityType;
 import org.mabartos.persistence.model.DeviceModel;
-import org.mabartos.persistence.model.RoomModel;
 import org.mabartos.persistence.repository.DeviceRepository;
-import org.mabartos.api.service.DeviceService;
 import org.mabartos.protocols.mqtt.exceptions.DeviceConflictException;
 
 import javax.enterprise.context.Dependent;

@@ -89,7 +89,7 @@ public class DeviceModel extends PanacheEntityBase implements Serializable, Iden
 
     public String getTopic() {
         if (home != null) {
-            return home.getTopic() + DevicesResource.DEVICE_PATH + "/" + id;
+            return home.getMqttClient().getTopic() + DevicesResource.DEVICE_PATH + "/" + id;
         }
         return null;
     }

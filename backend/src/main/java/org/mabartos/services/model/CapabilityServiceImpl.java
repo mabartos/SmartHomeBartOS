@@ -1,9 +1,9 @@
-package org.mabartos.services.core;
+package org.mabartos.services.model;
 
 import io.quarkus.runtime.StartupEvent;
+import org.mabartos.api.service.CapabilityService;
 import org.mabartos.persistence.model.CapabilityModel;
 import org.mabartos.persistence.repository.CapabilityRepository;
-import org.mabartos.api.service.CapabilityService;
 
 import javax.enterprise.context.Dependent;
 import javax.enterprise.event.Observes;

@@ -3,16 +3,16 @@ package org.mabartos.persistence.model.capability.common;
 import org.mabartos.persistence.model.CapabilityModel;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Capabilities implements Serializable {
 
-    private List<CapabilityModel> caps;
+    private Set<CapabilityModel> caps;
 
     public Capabilities() {
-        caps = new ArrayList<>();
+        caps = new HashSet<>();
     }
 
     public Capabilities(CapabilityModel... capabilities) {
@@ -20,7 +20,7 @@ public class Capabilities implements Serializable {
         addCapabilities(capabilities);
     }
 
-    public Capabilities(List<CapabilityModel> capabilities) {
+    public Capabilities(Set<CapabilityModel> capabilities) {
         caps = capabilities;
     }
 
@@ -36,7 +36,7 @@ public class Capabilities implements Serializable {
         return caps.remove(capability);
     }
 
-    public List<CapabilityModel> getAll() {
+    public Set<CapabilityModel> getAll() {
         return caps;
     }
 

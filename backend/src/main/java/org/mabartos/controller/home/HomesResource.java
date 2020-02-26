@@ -1,10 +1,12 @@
 package org.mabartos.controller.home;
 
+import io.quarkus.runtime.StartupEvent;
 import org.mabartos.api.model.BartSession;
 import org.mabartos.controller.utils.ControllerUtil;
 import org.mabartos.persistence.model.HomeModel;
 
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -37,34 +39,24 @@ public class HomesResource {
         this.session = session;
     }
 
-    /*public void initMqttClient(@Observes StartupEvent start) {
-        session.homes().getAll()
-                .forEach(home -> {
-                    session.getMqttClient().init(home.getBrokerURL(), home);
-                    logger.info("MQTT client with broker: " + home.getBrokerURL() + " STARTED");
-                });
-    }
-
-     */
-
     @GET
     public Set<HomeModel> getAll() {
-        return (session.getActualUser() != null) ? session.getActualUser().getChildren() : session.homes().getAll();
+        return (session.getActualUser() != null) ? session.getActualUser().getChildren() : session.services().homes().getAll();
     }
 
     @POST
     public HomeModel createHome(@Valid HomeModel home) {
-        return session.homes().create(home);
+        return session.services().homes().create(home);
     }
 
     @POST
     @Path(HOME_ID + "/add")
     public HomeModel addHomeToUser(@PathParam(HOME_ID_NAME) Long id) {
-        HomeModel home = session.homes().findByID(id);
+        HomeModel home = session.services().homes().findByID(id);
         if (home != null && session.getActualUser() != null) {
             home.addUser(session.getActualUser());
             session.getActualUser().addChild(home);
-            return session.homes().updateByID(id, home);
+            return session.services().homes().updateByID(id, home);
         }
         return null;
     }

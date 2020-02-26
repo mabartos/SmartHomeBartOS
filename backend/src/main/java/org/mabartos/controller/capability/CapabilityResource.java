@@ -30,12 +30,12 @@ public class CapabilityResource {
 
     @PATCH
     public CapabilityModel updateDevice(@Valid CapabilityModel capability) {
-        return session.capabilities().updateByID(session.getActualCapability().getID(), capability);
+        return session.services().capabilities().updateByID(session.getActualCapability().getID(), capability);
     }
 
     @DELETE
     public boolean deleteDevice() {
-        return session.capabilities().deleteByID(session.getActualCapability().getID());
+        return session.services().capabilities().deleteByID(session.getActualCapability().getID());
     }
 
 }

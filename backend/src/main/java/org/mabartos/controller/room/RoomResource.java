@@ -27,17 +27,17 @@ public class RoomResource {
 
     @GET
     public RoomModel getRoom() {
-        return session.rooms().findByID(session.getActualRoom().getID());
+        return session.services().rooms().findByID(session.getActualRoom().getID());
     }
 
     @PATCH
     public RoomModel updateRoom(@Valid RoomModel room) {
-        return session.rooms().updateByID(session.getActualRoom().getID(), room);
+        return session.services().rooms().updateByID(session.getActualRoom().getID(), room);
     }
 
     @DELETE
     public boolean deleteRoom() {
-        return session.rooms().deleteByID(session.getActualRoom().getID());
+        return session.services().rooms().deleteByID(session.getActualRoom().getID());
     }
 
     @Path(DevicesResource.DEVICE_PATH)

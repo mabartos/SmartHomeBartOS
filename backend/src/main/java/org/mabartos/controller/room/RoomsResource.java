@@ -37,17 +37,17 @@ public class RoomsResource {
     @POST
     public RoomModel createRoom(@Valid RoomModel room) {
         room.setHome(session.getActualHome());
-        return session.rooms().create(room);
+        return session.services().rooms().create(room);
     }
 
     @POST
     @Path(ROOM_ID + "/add")
     public RoomModel addRoomToHome(@PathParam(ROOM_ID_NAME) Long id) {
-        RoomModel room = session.rooms().findByID(id);
+        RoomModel room = session.services().rooms().findByID(id);
         if (room != null && session.getActualHome() != null) {
             room.setHome(session.getActualHome());
             session.getActualHome().addChild(room);
-            return session.rooms().updateByID(id, room);
+            return session.services().rooms().updateByID(id, room);
         }
         return null;
     }
