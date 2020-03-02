@@ -1,4 +1,4 @@
 package org.mabartos.protocols.mqtt.messages.capability;
 
-public class HumidityCapMessage {
+public class HumidityData {
 }

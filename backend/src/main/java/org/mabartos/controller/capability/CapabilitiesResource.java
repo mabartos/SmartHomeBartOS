@@ -30,14 +30,19 @@ public class CapabilitiesResource {
 
     @GET
     public Set<CapabilityModel> getCapabilities() {
-        return session.getActualDevice().getCapabilities();
+        if (session.getActualDevice() != null)
+            return session.getActualDevice().getCapabilities();
+        return null;
     }
 
     @POST
     public CapabilityModel createCapability(@Valid CapabilityModel capability) {
         CapabilityModel created = session.services().capabilities().create(capability);
-        session.getActualDevice().addCapability(created);
-        return session.services().capabilities().updateByID(created.getID(), created);
+        if (created != null && session.getActualDevice() != null) {
+            session.getActualDevice().addCapability(created);
+            return session.services().capabilities().updateByID(created.getID(), created);
+        }
+        return null;
     }
 
     @Path(CAP_ID)

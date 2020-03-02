@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.mabartos.persistence.model.DeviceModel;
 import org.mabartos.protocols.mqtt.utils.MqttSerializeUtils;
 
-public class MqttGeneralMessage implements MqttSerializable {
+public class MqttGeneralData implements MqttSerializable {
 
     @JsonProperty("idMessage")
     private Long idMessage;
@@ -20,7 +20,7 @@ public class MqttGeneralMessage implements MqttSerializable {
     private String topic;
 
     @JsonCreator
-    public MqttGeneralMessage(
+    public MqttGeneralData(
             @JsonProperty("idMessage") Long idMessage,
             @JsonProperty("id") Long id,
             @JsonProperty("name") String name,
@@ -32,7 +32,7 @@ public class MqttGeneralMessage implements MqttSerializable {
         this.topic = topic;
     }
 
-    public MqttGeneralMessage(DeviceModel device, Long idMessage) {
+    public MqttGeneralData(DeviceModel device, Long idMessage) {
         this.idMessage = idMessage;
         if (device != null) {
             this.id = device.getID();
@@ -78,7 +78,7 @@ public class MqttGeneralMessage implements MqttSerializable {
         return new MqttSerializeUtils(this).toJson();
     }
 
-    public static MqttGeneralMessage fromJson(String json) {
-        return MqttSerializeUtils.fromJson(json, MqttGeneralMessage.class);
+    public static MqttGeneralData fromJson(String json) {
+        return MqttSerializeUtils.fromJson(json, MqttGeneralData.class);
     }
 }

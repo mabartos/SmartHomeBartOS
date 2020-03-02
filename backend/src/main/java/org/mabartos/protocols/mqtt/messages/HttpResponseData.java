@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.mabartos.protocols.mqtt.utils.MqttSerializeUtils;
 
-public class HttpResponseJSON implements MqttSerializable {
+public class HttpResponseData implements MqttSerializable {
 
     @JsonProperty("code")
     private Integer code;
@@ -15,20 +15,20 @@ public class HttpResponseJSON implements MqttSerializable {
     @JsonProperty("message")
     private String message = "";
 
-    public HttpResponseJSON(Integer statusCode) {
+    public HttpResponseData(Integer statusCode) {
         setCode(statusCode);
     }
 
-    public HttpResponseJSON(Integer statusCode, String message) {
+    public HttpResponseData(Integer statusCode, String message) {
         this(statusCode);
         this.message = message;
     }
 
-    public HttpResponseJSON(HttpResponseStatus status) {
+    public HttpResponseData(HttpResponseStatus status) {
         setCode(status);
     }
 
-    public HttpResponseJSON(HttpResponseStatus status, String message) {
+    public HttpResponseData(HttpResponseStatus status, String message) {
         this(status);
         this.message = message;
     }

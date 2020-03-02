@@ -13,10 +13,10 @@ import org.mabartos.persistence.model.capability.HumidityCapModel;
 import org.mabartos.persistence.model.capability.TemperatureCapModel;
 import org.mabartos.protocols.mqtt.exceptions.DeviceConflictException;
 import org.mabartos.protocols.mqtt.exceptions.WrongMessageTopicException;
+import org.mabartos.protocols.mqtt.messages.AddDeviceRequestData;
+import org.mabartos.protocols.mqtt.messages.AddDeviceResponseData;
 import org.mabartos.protocols.mqtt.messages.BarMqttSender;
-import org.mabartos.protocols.mqtt.messages.CapabilityJSON;
-import org.mabartos.protocols.mqtt.messages.MqttAddDeviceMessage;
-import org.mabartos.protocols.mqtt.messages.MqttGeneralMessage;
+import org.mabartos.protocols.mqtt.messages.CapabilityData;
 import org.mabartos.protocols.mqtt.topics.CRUDTopic;
 import org.mabartos.protocols.mqtt.topics.GeneralTopic;
 
@@ -81,12 +81,14 @@ public class HandleManageMessage implements Serializable {
     private boolean handleCreate() {
         String receivedTopic = home.getMqttClient().getTopic();
         try {
-            MqttAddDeviceMessage deviceMessage = MqttAddDeviceMessage.fromJson(message.toString());
+            AddDeviceRequestData deviceMessage = AddDeviceRequestData.fromJson(message.toString());
             if (services != null && receivedTopic != null && deviceMessage != null) {
                 DeviceModel device = createDeviceFromMessage(deviceMessage);
+                if (device == null)
+                    throw new WrongMessageTopicException();
 
                 if (services.homes().addDeviceToHome(device, home.getID())) {
-                    MqttGeneralMessage response = new MqttGeneralMessage(device, deviceMessage.getIdMessage());
+                    AddDeviceResponseData response = new AddDeviceResponseData(deviceMessage.getIdMessage(), device);
                     client.publish(receivedTopic, response.toJson());
                     return true;
                 }
@@ -142,14 +144,17 @@ public class HandleManageMessage implements Serializable {
         return null;
     }
 
-    private DeviceModel createDeviceFromMessage(MqttAddDeviceMessage message) {
-        Set<CapabilityModel> capabilities = CapabilityJSON.toModel(message.getCapabilities())
+    private DeviceModel createDeviceFromMessage(AddDeviceRequestData message) {
+        Set<CapabilityModel> capabilities = CapabilityData.toModel(message.getCapabilities())
                 .stream()
                 .map(f -> getTypedInstance(f.getName(), f.getType()))
                 .collect(Collectors.toSet());
         Set<CapabilityModel> result = new HashSet<>();
-        capabilities.forEach(f -> result.add(services.capabilities().create(f)));
-        DeviceModel deviceModel = new DeviceModel(message.getName(), result);
-        return services.devices().create(deviceModel);
+        if (services != null && services.capabilities() != null) {
+            capabilities.forEach(f -> result.add(services.capabilities().create(f)));
+            DeviceModel deviceModel = new DeviceModel(message.getName(), result);
+            return services.devices().create(deviceModel);
+        }
+        return null;
     }
 }

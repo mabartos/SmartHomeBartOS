@@ -6,7 +6,7 @@ import org.mabartos.api.protocol.BartMqttClient;
 public class BarMqttSender {
 
     public static boolean sendResponse(BartMqttClient client, String topic, HttpResponseStatus status, String message) {
-        HttpResponseJSON response = new HttpResponseJSON(status, message);
+        HttpResponseData response = new HttpResponseData(status, message);
         return client.publish(topic, response.toJson());
     }
 

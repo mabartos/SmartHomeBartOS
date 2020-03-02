@@ -2,19 +2,20 @@ package org.mabartos.protocols.mqtt.messages;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import org.mabartos.general.CapabilityType;
 import org.mabartos.persistence.model.CapabilityModel;
 import org.mabartos.persistence.model.capability.common.Capabilities;
 import org.mabartos.protocols.mqtt.utils.MqttSerializeUtils;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-public class CapabilityJSON implements MqttSerializable {
+@JsonPropertyOrder({"id", "name", "type"})
+public class CapabilityData implements MqttSerializable {
 
     @JsonProperty("id")
-    private Integer id;
+    private Long id;
 
     @JsonProperty("name")
     private String name;
@@ -23,18 +24,22 @@ public class CapabilityJSON implements MqttSerializable {
     private CapabilityType type;
 
     @JsonCreator
-    public CapabilityJSON(@JsonProperty("name") String name,
+    public CapabilityData(@JsonProperty("name") String name,
                           @JsonProperty("type") CapabilityType type) {
-        this.id = id;
         this.name = name;
         this.type = type;
     }
 
-    public Integer getId() {
+    public CapabilityData(Long id, String name, CapabilityType type) {
+        this(name, type);
+        this.id = id;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -58,14 +63,14 @@ public class CapabilityJSON implements MqttSerializable {
         return new CapabilityModel(name, type);
     }
 
-    public static Capabilities toCapabilities(Set<CapabilityJSON> capabilities) {
+    public static Capabilities toCapabilities(Set<CapabilityData> capabilities) {
         if (capabilities != null) {
             return new Capabilities(toModel(capabilities));
         }
         return null;
     }
 
-    public static Set<CapabilityModel> toModel(Set<CapabilityJSON> jsonCapabilities) {
+    public static Set<CapabilityModel> toModel(Set<CapabilityData> jsonCapabilities) {
         if (jsonCapabilities != null) {
             Set<CapabilityModel> result = new HashSet<>();
             jsonCapabilities.forEach(cap -> result.add(new CapabilityModel(cap.getName(), cap.getType())));
@@ -74,7 +79,16 @@ public class CapabilityJSON implements MqttSerializable {
         return null;
     }
 
-    public static CapabilityJSON fromJson(String json) {
-        return MqttSerializeUtils.fromJson(json, CapabilityJSON.class);
+    public static Set<CapabilityData> fromModel(Set<CapabilityModel> capabilities) {
+        if (capabilities != null) {
+            Set<CapabilityData> result = new HashSet<>();
+            capabilities.forEach(cap -> result.add(new CapabilityData(cap.getID(), cap.getName(), cap.getType())));
+            return result;
+        }
+        return null;
+    }
+
+    public static CapabilityData fromJson(String json) {
+        return MqttSerializeUtils.fromJson(json, CapabilityData.class);
     }
 }

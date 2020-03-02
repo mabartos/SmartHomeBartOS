@@ -5,10 +5,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.mabartos.protocols.mqtt.utils.MqttSerializeUtils;
 
-import java.util.ArrayList;
 import java.util.Set;
 
-public class MqttAddDeviceMessage implements MqttSerializable {
+public class AddDeviceRequestData implements MqttSerializable {
 
     @JsonProperty("idMessage")
     private Long idMessage;
@@ -17,14 +16,14 @@ public class MqttAddDeviceMessage implements MqttSerializable {
     private String name;
 
     @JsonProperty("capabilities")
-    @JsonDeserialize(as = Set.class, contentAs = CapabilityJSON.class)
-    private Set<CapabilityJSON> capabilities;
+    @JsonDeserialize(as = Set.class, contentAs = CapabilityData.class)
+    private Set<CapabilityData> capabilities;
 
     @JsonCreator
-    public MqttAddDeviceMessage(
+    public AddDeviceRequestData(
             @JsonProperty("idMessage") Long idMessage,
             @JsonProperty("name") String name,
-            @JsonProperty("capabilities") Set<CapabilityJSON> capabilities) {
+            @JsonProperty("capabilities") Set<CapabilityData> capabilities) {
         this.idMessage = idMessage;
         this.name = name;
         this.capabilities = capabilities;
@@ -46,11 +45,11 @@ public class MqttAddDeviceMessage implements MqttSerializable {
         this.name = name;
     }
 
-    public Set<CapabilityJSON> getCapabilities() {
+    public Set<CapabilityData> getCapabilities() {
         return capabilities;
     }
 
-    public void setCapabilities(Set<CapabilityJSON> capabilities) {
+    public void setCapabilities(Set<CapabilityData> capabilities) {
         this.capabilities = capabilities;
     }
 
@@ -59,7 +58,7 @@ public class MqttAddDeviceMessage implements MqttSerializable {
         return new MqttSerializeUtils(this).toJson();
     }
 
-    public static MqttAddDeviceMessage fromJson(String json) {
-        return MqttSerializeUtils.fromJson(json, MqttAddDeviceMessage.class);
+    public static AddDeviceRequestData fromJson(String json) {
+        return MqttSerializeUtils.fromJson(json, AddDeviceRequestData.class);
     }
 }

@@ -7,12 +7,12 @@ import org.mabartos.persistence.model.CapabilityModel;
 import org.mabartos.persistence.model.capability.TemperatureCapModel;
 import org.mabartos.protocols.mqtt.exceptions.WrongMessageTopicException;
 import org.mabartos.protocols.mqtt.messages.BarMqttSender;
-import org.mabartos.protocols.mqtt.messages.capability.TemperatureCapMessage;
+import org.mabartos.protocols.mqtt.messages.capability.TemperatureData;
 import org.mabartos.protocols.mqtt.topics.CapabilityTopic;
 
 public class TemperatureCapability extends GeneralMqttCapability {
 
-    private TemperatureCapMessage tempMessage;
+    private TemperatureData tempMessage;
 
     public TemperatureCapability() {
         super();
@@ -21,7 +21,7 @@ public class TemperatureCapability extends GeneralMqttCapability {
     public TemperatureCapability(AppServices services, BartMqttClient client, CapabilityTopic capabilityTopic, MqttMessage message) {
         super(services, client, capabilityTopic, message);
         try {
-            this.tempMessage = TemperatureCapMessage.fromJson(message.toString());
+            this.tempMessage = TemperatureData.fromJson(message.toString());
         } catch (WrongMessageTopicException e) {
             BarMqttSender.sendResponse(client, 400, "Wrong message");
         }

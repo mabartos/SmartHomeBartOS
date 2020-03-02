@@ -8,11 +8,9 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.mabartos.api.protocol.BartMqttClient;
-import org.mabartos.api.service.AppServices;
 import org.mabartos.persistence.model.HomeModel;
 import org.mabartos.protocols.mqtt.utils.TopicUtils;
 
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.io.Serializable;
@@ -35,21 +33,7 @@ public class DefaultBartMqttClient implements BartMqttClient, Serializable {
     @Inject
     BartMqttHandler handler;
 
-    @Inject
-    AppServices services;
-
     public DefaultBartMqttClient() {
-        logger.info("Initialized");
-        this.services = services;
-        this.handler = handler;
-
-    }
-
-    @PostConstruct
-    public void start() {
-        System.out.println("heeeere");
-        // services.homes().getAll().forEach(System.out::println);
-        // services.homes().getAll().forEach(this::initClient);
     }
 
     @Override
