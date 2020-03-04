@@ -3,6 +3,7 @@ package org.mabartos.protocols.mqtt.data.capability;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.mabartos.general.CapabilityType;
+import org.mabartos.persistence.model.capability.TemperatureCapModel;
 import org.mabartos.protocols.mqtt.data.CapabilityData;
 import org.mabartos.protocols.mqtt.utils.MqttSerializeUtils;
 
@@ -25,5 +26,14 @@ public class TemperatureData extends CapabilityData {
 
     public static TemperatureData fromJson(String json) {
         return MqttSerializeUtils.fromJson(json, TemperatureData.class);
+    }
+
+    @Override
+    public TemperatureCapModel toModel() {
+        TemperatureCapModel model = new TemperatureCapModel(name);
+        model.setID(id);
+        model.setType(type);
+        model.setValue(actualTemperature);
+        return model;
     }
 }

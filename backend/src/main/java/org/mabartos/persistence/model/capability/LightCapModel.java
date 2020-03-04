@@ -2,6 +2,7 @@ package org.mabartos.persistence.model.capability;
 
 import org.mabartos.general.CapabilityType;
 import org.mabartos.persistence.model.CapabilityModel;
+import org.mabartos.protocols.mqtt.data.capability.State;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,7 +17,7 @@ public class LightCapModel extends CapabilityModel implements HasState {
     private Double minIntensity = 0.0;
 
     @Column
-    private Boolean state;
+    private State state;
 
     public LightCapModel() {
     }
@@ -42,17 +43,17 @@ public class LightCapModel extends CapabilityModel implements HasState {
     }
 
     @Override
-    public boolean getState() {
+    public State getState() {
         return state;
     }
 
     @Override
-    public void setState(boolean state) {
+    public void setState(State state) {
         this.state = state;
     }
 
     @Override
     public void changeState() {
-        this.state = !this.state;
+        this.state = State.changeState(state);
     }
 }

@@ -1,10 +1,12 @@
 package org.mabartos.persistence.model.capability;
 
+import org.mabartos.protocols.mqtt.data.capability.State;
+
 public interface HasState {
 
-    boolean getState();
+    State getState();
 
-    void setState(boolean state);
+    void setState(State state);
 
     void changeState();
 }

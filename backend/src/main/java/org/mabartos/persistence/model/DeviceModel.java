@@ -2,6 +2,8 @@ package org.mabartos.persistence.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.mabartos.controller.device.DevicesResource;
 import org.mabartos.interfaces.Identifiable;
 
@@ -38,7 +40,7 @@ public class DeviceModel extends PanacheEntityBase implements Serializable, Iden
     @Column(name = "NAME", nullable = false)
     private String name;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "ROOM")
     private RoomModel room;
 
@@ -46,8 +48,9 @@ public class DeviceModel extends PanacheEntityBase implements Serializable, Iden
     @JoinColumn(name = "HOME")
     private HomeModel home;
 
-    @OneToMany(targetEntity = CapabilityModel.class, mappedBy = "device", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private Set<CapabilityModel> capabilities=new HashSet<>();
+    @OneToMany(targetEntity = CapabilityModel.class, mappedBy = "device", cascade = CascadeType.MERGE)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private Set<CapabilityModel> capabilities = new HashSet<>();
 
     public DeviceModel() {
     }

@@ -12,16 +12,16 @@ import java.util.HashSet;
 import java.util.Set;
 
 @JsonPropertyOrder({"id", "name", "type"})
-public class CapabilityData implements MqttSerializable {
+public class CapabilityData implements MqttSerializable, ConvertableToModel {
 
     @JsonProperty("id")
-    private Long id;
+    protected Long id;
 
     @JsonProperty("name")
-    private String name;
+    protected String name;
 
     @JsonProperty("type")
-    private CapabilityType type;
+    protected CapabilityType type;
 
     @JsonCreator
     public CapabilityData(@JsonProperty("name") String name,
@@ -59,6 +59,7 @@ public class CapabilityData implements MqttSerializable {
         this.type = type;
     }
 
+    @Override
     public CapabilityModel toModel() {
         return new CapabilityModel(name, type);
     }
