@@ -1,12 +1,14 @@
 package org.mabartos.persistence;
 
 import io.quarkus.runtime.StartupEvent;
+import org.mabartos.api.protocol.MqttClientManager;
 import org.mabartos.api.service.AppServices;
 import org.mabartos.persistence.model.HomeModel;
 import org.mabartos.persistence.model.UserModel;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
+import javax.enterprise.event.TransactionPhase;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -16,6 +18,9 @@ public class DataLoader {
     AppServices services;
 
     @Inject
+    MqttClientManager manager;
+
+    @Inject
     public DataLoader() {
     }
 
@@ -23,6 +28,7 @@ public class DataLoader {
         addUsers();
         addHomes();
         addUsersToHomes();
+        manager.initAllClients();
     }
 
     private void addUsers() {

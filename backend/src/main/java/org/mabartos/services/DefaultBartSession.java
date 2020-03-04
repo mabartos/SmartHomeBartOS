@@ -1,6 +1,7 @@
 package org.mabartos.services;
 
 import org.mabartos.api.model.BartSession;
+import org.mabartos.api.protocol.MqttClientManager;
 import org.mabartos.api.service.AppServices;
 import org.mabartos.api.service.CapabilityService;
 import org.mabartos.api.service.DeviceService;
@@ -22,6 +23,9 @@ public class DefaultBartSession implements BartSession {
 
     @Inject
     AppServices services;
+
+    @Inject
+    MqttClientManager mqttClientManager;
 
     public static Logger logger = Logger.getLogger(DefaultBartSession.class.getName());
 
@@ -102,6 +106,11 @@ public class DefaultBartSession implements BartSession {
         this.actualCapability = services().getProvider(CapabilityService.class).findByID(id);
         this.actualCapabilityID = id;
         return this;
+    }
+
+    @Override
+    public MqttClientManager getClientManager() {
+        return mqttClientManager;
     }
 
     @Override

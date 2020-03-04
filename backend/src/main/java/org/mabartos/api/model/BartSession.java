@@ -1,5 +1,6 @@
 package org.mabartos.api.model;
 
+import org.mabartos.api.protocol.MqttClientManager;
 import org.mabartos.api.service.AppServices;
 import org.mabartos.persistence.model.CapabilityModel;
 import org.mabartos.persistence.model.DeviceModel;
@@ -30,6 +31,8 @@ public interface BartSession extends Serializable {
     CapabilityModel getActualCapability();
 
     BartSession setActualCapability(Long id);
+
+    MqttClientManager getClientManager();
 
     AppServices services();
 }

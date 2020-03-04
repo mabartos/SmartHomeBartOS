@@ -29,7 +29,7 @@ public class DefaultAppServices implements AppServices {
     BeanManager beanManager;
 
     @Inject
-    MqttClientManager clientManager;
+    MqttClientManager mqttClientManager;
 
     @PersistenceContext
     EntityManager entityManager;
@@ -43,7 +43,6 @@ public class DefaultAppServices implements AppServices {
 
     public void start(@Observes StartupEvent start) {
         logger.info("App services are initialized");
-        clientManager.initAllClients();
     }
 
     @Override

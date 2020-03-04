@@ -58,6 +58,7 @@ public class HandleManageMessage implements Serializable {
     public boolean handleManageTopics() {
         if (topic instanceof CRUDTopic && services != null) {
             crudTopic = (CRUDTopic) topic;
+            this.home = services.homes().findByID(this.home.getID());
             switch (crudTopic.getTypeCRUD()) {
                 case CONNECT:
                     return handleConnect();
@@ -106,10 +107,14 @@ public class HandleManageMessage implements Serializable {
 
     private boolean handleRemoveFromHome() {
         try {
-            DeviceModel device = services.devices().findByID(crudTopic.getDeviceID());
-            services.homes().removeDeviceFromHome(device, home.getID());
-            BartMqttSender.sendResponse(client, receivedTopic, HttpResponseStatus.OK);
-            return true;
+            if (isContainedInHome(crudTopic)) {
+                DeviceModel device = services.devices().findByID(crudTopic.getDeviceID());
+                services.homes().removeDeviceFromHome(device, home.getID());
+                BartMqttSender.sendResponse(client, receivedTopic, HttpResponseStatus.OK);
+                return true;
+            }
+        } catch (WrongMessageTopicException wm) {
+            BartMqttSender.sendResponse(client, receivedTopic, HttpResponseStatus.BAD_REQUEST, wm.getMessage());
         } catch (Exception e) {
             BartMqttSender.sendResponse(client, receivedTopic, HttpResponseStatus.BAD_REQUEST, e.getMessage());
             e.printStackTrace();
@@ -120,10 +125,10 @@ public class HandleManageMessage implements Serializable {
     private boolean handleUpdate() {
         try {
             DeviceData deviceData = DeviceData.fromJson(message.toString());
-            if (deviceData != null) {
+            if (isContainedInHome(crudTopic) && deviceData != null) {
                 DeviceModel device = deviceData.toModel();
                 services.devices().updateByID(device.getID(), device);
-                BartMqttSender.sendResponse(client, receivedTopic, HttpResponseStatus.OK);
+                BartMqttSender.sendResponse(client, receivedTopic, HttpResponseStatus.OK, "Device was updated");
                 return true;
             }
         } catch (WrongMessageTopicException wm) {
@@ -136,10 +141,12 @@ public class HandleManageMessage implements Serializable {
 
     private boolean handleDelete() {
         try {
-            if (services.devices().deleteByID(crudTopic.getDeviceID())) {
-                BartMqttSender.sendResponse(client, receivedTopic, HttpResponseStatus.OK);
+            if (isContainedInHome(crudTopic) && services.devices().deleteByID(crudTopic.getDeviceID())) {
+                BartMqttSender.sendResponse(client, receivedTopic, HttpResponseStatus.OK, "Device was deleted");
                 return true;
             }
+        } catch (WrongMessageTopicException wm) {
+            BartMqttSender.sendResponse(client, receivedTopic, HttpResponseStatus.BAD_REQUEST, wm.getMessage());
         } catch (Exception e) {
             BartMqttSender.sendResponse(client, receivedTopic, HttpResponseStatus.BAD_REQUEST);
         }
@@ -178,6 +185,13 @@ public class HandleManageMessage implements Serializable {
             }
         }
         return null;
+    }
+
+    private boolean isContainedInHome(CRUDTopic crudTopic) {
+        boolean isContained = home.getUnAssignedDevices().stream().anyMatch(f -> f.getID().equals(crudTopic.getDeviceID()));
+        if (!isContained)
+            throw new WrongMessageTopicException("Device doesn't belong to home");
+        return true;
     }
 
     private DeviceModel createDeviceFromMessage(AddDeviceRequestData message) {

@@ -2,9 +2,11 @@ package org.mabartos.api.protocol;
 
 public interface MqttClientManager {
 
-    void initAllClients();
+    boolean initAllClients();
 
-    void initClient(Long id);
+    boolean destroyAllClients();
 
-    void shutdownClient(Long id);
+    boolean initClient(Long idHome);
+
+    boolean shutdownClient(Long idHome);
 }

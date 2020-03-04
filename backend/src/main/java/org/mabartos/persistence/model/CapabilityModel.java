@@ -33,8 +33,8 @@ public class CapabilityModel extends PanacheEntityBase implements Serializable, 
     @Enumerated
     private CapabilityType type;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "DEVICE")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "DEVICE_ID")
     private DeviceModel device;
 
     public CapabilityModel() {
