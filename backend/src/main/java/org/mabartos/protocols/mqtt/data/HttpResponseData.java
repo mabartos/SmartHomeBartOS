@@ -1,4 +1,4 @@
-package org.mabartos.protocols.mqtt.messages;
+package org.mabartos.protocols.mqtt.data;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.netty.handler.codec.http.HttpResponseStatus;

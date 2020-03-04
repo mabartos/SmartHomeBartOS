@@ -5,8 +5,9 @@ import java.util.Arrays;
 public enum CRUDTopicType {
     CONNECT("connect"),
     CREATE("create"),
-    REMOVE("remove"),
-    UPDATE("update");
+    REMOVE_FROM_HOME("remove_from_home"),
+    UPDATE("update"),
+    DELETE("delete");
 
     private String name;
 

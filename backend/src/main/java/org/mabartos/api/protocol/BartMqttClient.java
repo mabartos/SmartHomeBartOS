@@ -1,11 +1,13 @@
 package org.mabartos.api.protocol;
 
 import org.eclipse.paho.client.mqttv3.IMqttClient;
+import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.mabartos.persistence.model.HomeModel;
+import org.mabartos.protocols.mqtt.BartMqttHandler;
 
 public interface BartMqttClient {
 
-    void initClient(HomeModel home);
+    void init(HomeModel home, BartMqttHandler handler, MemoryPersistence persistence);
 
     boolean reconnectClient();
 

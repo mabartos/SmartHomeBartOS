@@ -1,7 +1,6 @@
 package org.mabartos.services;
 
 import org.mabartos.api.model.BartSession;
-import org.mabartos.api.protocol.BartMqttClient;
 import org.mabartos.api.service.AppServices;
 import org.mabartos.api.service.CapabilityService;
 import org.mabartos.api.service.DeviceService;

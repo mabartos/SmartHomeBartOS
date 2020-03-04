@@ -2,7 +2,7 @@ package org.mabartos.services;
 
 import io.quarkus.runtime.StartupEvent;
 import org.mabartos.api.model.MqttClientService;
-import org.mabartos.api.protocol.BartMqttClient;
+import org.mabartos.api.protocol.MqttClientManager;
 import org.mabartos.api.service.AppServices;
 import org.mabartos.api.service.CapabilityService;
 import org.mabartos.api.service.DeviceService;
@@ -29,7 +29,7 @@ public class DefaultAppServices implements AppServices {
     BeanManager beanManager;
 
     @Inject
-    BartMqttClient mqttClient;
+    MqttClientManager clientManager;
 
     @PersistenceContext
     EntityManager entityManager;
@@ -42,7 +42,8 @@ public class DefaultAppServices implements AppServices {
     }
 
     public void start(@Observes StartupEvent start) {
-        homes().getAll().forEach(mqttClient::initClient);
+        logger.info("App services are initialized");
+        clientManager.initAllClients();
     }
 
     @Override

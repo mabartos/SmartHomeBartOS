@@ -7,18 +7,17 @@ import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.mabartos.api.protocol.BartMqttClient;
 import org.mabartos.persistence.model.HomeModel;
 import org.mabartos.protocols.mqtt.utils.TopicUtils;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 import java.io.Serializable;
 import java.util.UUID;
 import java.util.logging.Logger;
 
-@ApplicationScoped
 public class DefaultBartMqttClient implements BartMqttClient, Serializable {
+
     public static Logger logger = Logger.getLogger(DefaultBartMqttClient.class.getName());
 
     private final Integer TIMEOUT = 20;
@@ -28,22 +27,19 @@ public class DefaultBartMqttClient implements BartMqttClient, Serializable {
     private String clientID;
     private IMqttClient mqttClient;
     private HomeModel home;
-    private BartMqttClient actual;
 
-    @Inject
-    BartMqttHandler handler;
-
-    public DefaultBartMqttClient() {
+    public DefaultBartMqttClient(HomeModel home, BartMqttHandler handler, MemoryPersistence persistence) {
+        init(home, handler, persistence);
     }
 
-    @Override
-    public void initClient(HomeModel home) {
+    public void init(HomeModel home, BartMqttHandler handler, MemoryPersistence persistence) {
         try {
-            this.clientID = UUID.randomUUID().toString();
+            logger.info("Initialized MQTT for home " + home.getName());
             this.home = home;
-            this.mqttClient = new MqttClient(home.getMqttClient().getBrokerURL(), this.getClientID());
+            this.clientID = UUID.randomUUID().toString();
+            this.mqttClient = new MqttClient(home.getMqttClient().getBrokerURL(), this.getClientID(), persistence);
             this.brokerURL = home.getMqttClient().getBrokerURL();
-            this.actual = this;
+            BartMqttClient actual = this;
 
             mqttClient.setCallback(new MqttCallback() {
                 @Override

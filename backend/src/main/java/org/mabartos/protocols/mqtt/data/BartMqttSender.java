@@ -1,12 +1,17 @@
-package org.mabartos.protocols.mqtt.messages;
+package org.mabartos.protocols.mqtt.data;
 
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.mabartos.api.protocol.BartMqttClient;
 
-public class BarMqttSender {
+public class BartMqttSender {
 
     public static boolean sendResponse(BartMqttClient client, String topic, HttpResponseStatus status, String message) {
         HttpResponseData response = new HttpResponseData(status, message);
+        return client.publish(topic, response.toJson());
+    }
+
+    public static boolean sendResponse(BartMqttClient client, String topic, HttpResponseStatus status) {
+        HttpResponseData response = new HttpResponseData(status, "");
         return client.publish(topic, response.toJson());
     }
 

@@ -3,19 +3,31 @@ package org.mabartos.protocols.mqtt.topics;
 import org.mabartos.general.CapabilityType;
 
 public class CapabilityTopic implements GeneralTopic {
-    private TopicType topicType;
     private CapabilityType capabilityType;
     private Long homeID;
     private Long deviceID;
     private Long capabilityID;
-    public static final Integer TOPIC_ITEMS_COUNT = 6;
 
     public CapabilityTopic(CapabilityType capabilityType, Long homeID, Long deviceID, Long capabilityID) {
         this.capabilityType = capabilityType;
         this.homeID = homeID;
         this.deviceID = deviceID;
         this.capabilityID = capabilityID;
-        this.topicType = TopicType.CAPABILITY_TOPIC;
+    }
+
+    public CapabilityTopic(String capabilityType, String homeID, String deviceID, String capabilityID) {
+        setCapabilityType(capabilityType);
+        this.homeID = Long.parseLong(homeID);
+        this.deviceID = Long.parseLong(deviceID);
+        this.capabilityID = Long.parseLong(capabilityID);
+    }
+
+    private void setCapabilityType(String capabilityType) {
+        try {
+            this.capabilityType = CapabilityType.valueOf(capabilityType);
+        } catch (IllegalArgumentException e) {
+            this.capabilityType = CapabilityType.getByName(capabilityType);
+        }
     }
 
     public CapabilityType getCapabilityType() {
@@ -37,11 +49,7 @@ public class CapabilityTopic implements GeneralTopic {
 
     @Override
     public TopicType getTopicType() {
-        return topicType;
+        return TopicType.CAPABILITY_TOPIC;
     }
 
-    @Override
-    public Integer getTopicItemsCount() {
-        return TOPIC_ITEMS_COUNT;
-    }
 }

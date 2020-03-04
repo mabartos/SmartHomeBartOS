@@ -3,6 +3,7 @@ package org.mabartos.controller.user;
 import org.mabartos.api.model.BartSession;
 import org.mabartos.controller.utils.ControllerUtil;
 import org.mabartos.persistence.model.UserModel;
+import org.mabartos.protocols.mqtt.utils.TopicUtils;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -38,6 +39,13 @@ public class UsersResource {
     @GET
     public Set<UserModel> getAll() {
         return (session.getActualHome() != null) ? session.getActualHome().getUsers() : session.services().users().getAll();
+    }
+
+    @GET
+    @Path("/test")
+    public String asd() {
+        TopicUtils.getSpecificTopic("/homes/5/devices/2/temp/3");
+        return "asd";
     }
 
     @GET

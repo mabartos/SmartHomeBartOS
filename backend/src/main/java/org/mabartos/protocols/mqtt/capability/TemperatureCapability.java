@@ -5,9 +5,9 @@ import org.mabartos.api.protocol.BartMqttClient;
 import org.mabartos.api.service.AppServices;
 import org.mabartos.persistence.model.CapabilityModel;
 import org.mabartos.persistence.model.capability.TemperatureCapModel;
+import org.mabartos.protocols.mqtt.data.BartMqttSender;
+import org.mabartos.protocols.mqtt.data.capability.TemperatureData;
 import org.mabartos.protocols.mqtt.exceptions.WrongMessageTopicException;
-import org.mabartos.protocols.mqtt.messages.BarMqttSender;
-import org.mabartos.protocols.mqtt.messages.capability.TemperatureData;
 import org.mabartos.protocols.mqtt.topics.CapabilityTopic;
 
 public class TemperatureCapability extends GeneralMqttCapability {
@@ -23,7 +23,7 @@ public class TemperatureCapability extends GeneralMqttCapability {
         try {
             this.tempMessage = TemperatureData.fromJson(message.toString());
         } catch (WrongMessageTopicException e) {
-            BarMqttSender.sendResponse(client, 400, "Wrong message");
+            BartMqttSender.sendResponse(client, 400, "Wrong message");
         }
     }
 
@@ -36,11 +36,11 @@ public class TemperatureCapability extends GeneralMqttCapability {
                 result.setValue(tempMessage.getActualTemperature());
                 CapabilityModel updated = services.capabilities().updateByID(capabilityTopic.getCapabilityID(), model);
                 if (updated != null) {
-                    BarMqttSender.sendResponse(client, 200, "Temperature was updated");
+                    BartMqttSender.sendResponse(client, 200, "Temperature was updated");
                     return;
                 }
             }
         }
-        BarMqttSender.sendResponse(client, 400, "Update temperature");
+        BartMqttSender.sendResponse(client, 400, "Update temperature");
     }
 }

@@ -5,18 +5,18 @@ import org.mabartos.persistence.model.HomeModel;
 import org.mabartos.protocols.mqtt.topics.CRUDTopic;
 import org.mabartos.protocols.mqtt.topics.CRUDTopicType;
 import org.mabartos.protocols.mqtt.topics.CapabilityTopic;
+import org.mabartos.protocols.mqtt.topics.DeviceTopic;
 import org.mabartos.protocols.mqtt.topics.GeneralTopic;
 import org.mabartos.protocols.mqtt.topics.Topics;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class TopicUtils {
 
     // Topic f.e. "/homes/5/temp/3"
-
     public static String getHomeTopic(HomeModel home) {
         if (home != null) {
             return Topics.HOME_TOPIC.getTopic() + "/" + home.getID();
@@ -24,35 +24,52 @@ public class TopicUtils {
         return null;
     }
 
-
+    /**
+     * Create specific topic
+     * <p>
+     * 1. Manage topic CREATE                   /homes/5/create
+     * 2. Manage topic OTHER with device ID     /homes/5/update/2
+     * 3. Device topic                          /homes/5/device/1
+     * 4. Capability Topic                      /homes/5/device/1/temp/4
+     */
     public static GeneralTopic getSpecificTopic(String topic) {
         try {
-            List<String> topics = new ArrayList<>(Arrays.asList(topic.split("/")));
-            // Split takes even empty string at beginning
-            final int size = topics.size() - 1;
+            StringBuilder builder = new StringBuilder();
+            // Manage topics
+            Arrays.stream(CRUDTopicType.values()).forEach(f -> builder.append(f.getName()).append("|"));
+            builder.deleteCharAt(builder.length() - 1);
+            final String MANAGE = "^/homes/(\\d+)/(" + builder.toString() + ")/*(\\d*)$";
 
-            // /homes/123/add or f.e /homes/123/dev/2/temp/2
-            if (size >= 3 && topics.get(1).equals(Topics.HOME_TOPIC.getName())) {
-                Long homeID = Long.parseLong(topics.get(2));
-                if (size == CRUDTopic.TOPIC_ITEMS_COUNT) {
-                    CRUDTopicType type = CRUDTopicType.getByName(topics.get(3));
-                    if (type != null) {
-                        return new CRUDTopic(homeID, type);
-                    }
-                } else if (size == CapabilityTopic.TOPIC_ITEMS_COUNT && topics.get(3).equals(Topics.DEVICE_TOPIC.getName())) {
-                    Long deviceID = Long.parseLong(topics.get(4));
-                    CapabilityType type = CapabilityType.getByName(topics.get(5));
-                    if (type != null) {
-                        Long capabilityID = Long.parseLong(topics.get(6));
-                        return new CapabilityTopic(type, homeID, deviceID, capabilityID);
-                    }
+            // 1.
+            Matcher manageTopic = Pattern.compile(MANAGE).matcher(topic);
+            if (manageTopic.matches() && manageTopic.groupCount() >= 2) {
+                CRUDTopicType type = CRUDTopicType.getByName(manageTopic.group(2));
+                if (type.equals(CRUDTopicType.CREATE) && manageTopic.group(3) != null && !manageTopic.group(3).isEmpty()) {
+                    return null;
                 }
+                return new CRUDTopic(manageTopic.group(1), manageTopic.group(3), type);
             }
-            return null;
-        } catch (Exception e) {
+
+            // clear builder
+            builder.delete(0, builder.length());
+            Arrays.stream(CapabilityType.values()).map(CapabilityType::getName).forEach(item -> builder.append(item).append("|"));
+
+            //General topic
+            String GENERAL = "^/homes/(\\d+)/devices/(\\d+).*";
+            Matcher generalTopic = Pattern.compile(GENERAL).matcher(topic);
+
+            if (generalTopic.matches() && generalTopic.groupCount() > 1) {
+                GENERAL += "/(" + builder.toString() + ")/(\\d+)$";
+                Matcher capabilityTopic = Pattern.compile(GENERAL).matcher(topic);
+                if (capabilityTopic.matches() && capabilityTopic.groupCount() > 3) {
+                    return new CapabilityTopic(capabilityTopic.group(3), generalTopic.group(1), generalTopic.group(2), capabilityTopic.group(4));
+                }
+                return new DeviceTopic(generalTopic.group(1), generalTopic.group(2));
+            }
+        } catch (RuntimeException e) {
             e.printStackTrace();
             return null;
         }
+        return null;
     }
-
 }

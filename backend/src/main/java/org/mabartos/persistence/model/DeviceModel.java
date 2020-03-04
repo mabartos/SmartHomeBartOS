@@ -48,7 +48,7 @@ public class DeviceModel extends PanacheEntityBase implements Serializable, Iden
     @JoinColumn(name = "HOME")
     private HomeModel home;
 
-    @OneToMany(targetEntity = CapabilityModel.class,mappedBy = "device",cascade = CascadeType.MERGE)
+    @OneToMany(targetEntity = CapabilityModel.class, mappedBy = "device", cascade = CascadeType.MERGE, orphanRemoval = true)
     @LazyCollection(LazyCollectionOption.FALSE)
     private Set<CapabilityModel> capabilities=new HashSet<>();
 

@@ -44,9 +44,15 @@ public class DataLoader {
             HomeModel home = new HomeModel();
             StringBuilder builder = new StringBuilder();
             home.setName(builder.append("home").append(i).toString());
-            home.setBrokerURL("tcp://127.0.0.1:1883");
+            home.setBrokerURL("tcp://127.0.0.1:8883");
             services.homes().create(home);
         }
+
+        HomeModel home = new HomeModel();
+        StringBuilder builder = new StringBuilder();
+        home.setName("home2");
+        home.setBrokerURL("tcp://127.0.0.1:1883");
+        services.homes().create(home);
     }
 
     private void addUsersToHomes() {

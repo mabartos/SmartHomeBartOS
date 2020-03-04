@@ -1,11 +1,13 @@
-package org.mabartos.protocols.mqtt.messages;
+package org.mabartos.protocols.mqtt.data;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.mabartos.persistence.model.DeviceModel;
+import org.mabartos.protocols.mqtt.utils.MqttSerializeUtils;
 
 import java.util.Set;
 
-public class AddDeviceResponseData implements MqttSerializable {
+public class DeviceData implements MqttSerializable {
 
     @JsonProperty("idMessage")
     private Long idMessage;
@@ -19,20 +21,27 @@ public class AddDeviceResponseData implements MqttSerializable {
     @JsonProperty("capabilities")
     private Set<CapabilityData> capabilities;
 
-    public AddDeviceResponseData(Long idMessage, Long id, String name) {
+    @JsonCreator
+    public DeviceData(@JsonProperty("idMessage") Long idMessage,
+                      @JsonProperty("id") Long id,
+                      @JsonProperty("name") String name) {
         this.idMessage = idMessage;
         this.id = id;
         this.name = name;
     }
 
-    public AddDeviceResponseData(Long idMessage, DeviceModel device) {
+    public DeviceData(Long idMessage, DeviceModel device) {
         this.idMessage = idMessage;
         this.id = device.getID();
         this.name = device.getName();
         this.capabilities = CapabilityData.fromModel(device.getCapabilities());
     }
 
-    public AddDeviceResponseData(Long idMessage, Long id, String name, Set<CapabilityData> capabilities) {
+    @JsonCreator
+    public DeviceData(@JsonProperty("idMessage") Long idMessage,
+                      @JsonProperty("id") Long id,
+                      @JsonProperty("name") String name,
+                      @JsonProperty("capabilities") Set<CapabilityData> capabilities) {
         this(idMessage, id, name);
         this.capabilities = capabilities;
     }
@@ -67,5 +76,15 @@ public class AddDeviceResponseData implements MqttSerializable {
 
     public void setCapabilities(Set<CapabilityData> capabilities) {
         this.capabilities = capabilities;
+    }
+
+    public static DeviceData fromJson(String json) {
+        return MqttSerializeUtils.fromJson(json, DeviceData.class);
+    }
+
+    public DeviceModel toModel() {
+        DeviceModel created = new DeviceModel(this.name, CapabilityData.toModel(this.capabilities));
+        created.setID(this.id);
+        return created;
     }
 }

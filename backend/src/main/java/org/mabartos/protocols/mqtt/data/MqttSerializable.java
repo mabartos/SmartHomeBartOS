@@ -1,4 +1,4 @@
-package org.mabartos.protocols.mqtt.messages;
+package org.mabartos.protocols.mqtt.data;
 
 import org.mabartos.protocols.mqtt.utils.MqttSerializeUtils;
 

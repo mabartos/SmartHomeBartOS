@@ -1,34 +1,36 @@
 package org.mabartos.protocols.mqtt.topics;
 
 public class CRUDTopic implements GeneralTopic {
-    private TopicType topicType;
     private Long homeID;
+    private Long deviceID;
     private CRUDTopicType typeCRUD;
-    public static final Integer TOPIC_ITEMS_COUNT = 3;
 
     private CRUDTopic(CRUDTopicType typeCRUD) {
         this.typeCRUD = typeCRUD;
-        topicType = TopicType.CRUD_TOPIC;
     }
 
-    public CRUDTopic(Long homeID, CRUDTopicType typeCRUD) {
+    public CRUDTopic(Long homeID, Long deviceID, CRUDTopicType typeCRUD) {
         this(typeCRUD);
         this.homeID = homeID;
+        if (!typeCRUD.equals(CRUDTopicType.CREATE))
+            this.deviceID = deviceID;
     }
 
-    public CRUDTopic(String homeID, CRUDTopicType typeCRUD) {
+    public CRUDTopic(String homeID, Long deviceID, CRUDTopicType typeCRUD) {
+        this(Long.parseLong(homeID), deviceID, typeCRUD);
+    }
+
+    public CRUDTopic(String homeID, String deviceID, CRUDTopicType typeCRUD) {
         this(typeCRUD);
         this.homeID = Long.parseLong(homeID);
+        if (!typeCRUD.equals(CRUDTopicType.CREATE))
+            this.deviceID = Long.parseLong(deviceID);
+
     }
 
     @Override
     public TopicType getTopicType() {
-        return topicType;
-    }
-
-    @Override
-    public Integer getTopicItemsCount() {
-        return TOPIC_ITEMS_COUNT;
+        return TopicType.CRUD_TOPIC;
     }
 
     public Long getHomeID() {
@@ -37,6 +39,14 @@ public class CRUDTopic implements GeneralTopic {
 
     public void setHomeID(Long homeID) {
         this.homeID = homeID;
+    }
+
+    public Long getDeviceID() {
+        return deviceID;
+    }
+
+    public void setDeviceID(Long deviceID) {
+        this.deviceID = deviceID;
     }
 
     public CRUDTopicType getTypeCRUD() {

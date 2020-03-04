@@ -1,9 +1,9 @@
-package org.mabartos.protocols.mqtt.messages.capability;
+package org.mabartos.protocols.mqtt.data.capability;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.mabartos.general.CapabilityType;
-import org.mabartos.protocols.mqtt.messages.CapabilityData;
+import org.mabartos.protocols.mqtt.data.CapabilityData;
 import org.mabartos.protocols.mqtt.utils.MqttSerializeUtils;
 
 public class TemperatureData extends CapabilityData {
