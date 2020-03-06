@@ -1,5 +1,6 @@
 package org.mabartos.api.service;
 
+import io.vertx.core.Vertx;
 import org.mabartos.api.model.MqttClientService;
 
 import javax.persistence.EntityManager;
@@ -21,4 +22,6 @@ public interface AppServices {
     CapabilityService capabilities();
 
     MqttClientService mqttClientsRepresentation();
+
+    Vertx getVertx();
 }

@@ -45,18 +45,17 @@ public class DataLoader {
     }
 
     private void addHomes() {
-        final int CNT = 1;
+        final int CNT = 20;
         for (int i = 0; i < CNT; i++) {
             HomeModel home = new HomeModel();
             StringBuilder builder = new StringBuilder();
             home.setName(builder.append("home").append(i).toString());
-            home.setBrokerURL("tcp://127.0.0.1:8883");
+            home.setBrokerURL("tcp://sdokmsd");
             services.homes().create(home);
         }
 
         HomeModel home = new HomeModel();
-        StringBuilder builder = new StringBuilder();
-        home.setName("home2");
+        home.setName("homeDefault");
         home.setBrokerURL("tcp://127.0.0.1:1883");
         services.homes().create(home);
     }

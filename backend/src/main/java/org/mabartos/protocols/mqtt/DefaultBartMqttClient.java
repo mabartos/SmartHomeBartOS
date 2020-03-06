@@ -9,6 +9,7 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.mabartos.api.protocol.BartMqttClient;
+import org.mabartos.api.service.AppServices;
 import org.mabartos.persistence.model.HomeModel;
 import org.mabartos.protocols.mqtt.utils.TopicUtils;
 
@@ -23,28 +24,38 @@ public class DefaultBartMqttClient implements BartMqttClient, Serializable {
     private final Integer TIMEOUT = 20;
     private final Integer STD_QOS = 2;
 
+    private MemoryPersistence persistence;
     private String brokerURL;
     private String clientID;
     private IMqttClient mqttClient;
     private HomeModel home;
+    private AppServices services;
 
-    public DefaultBartMqttClient(HomeModel home, BartMqttHandler handler, MemoryPersistence persistence) {
-        init(home, handler, persistence);
+    private boolean previousState = false;
+
+    public DefaultBartMqttClient(AppServices services, HomeModel home, BartMqttHandler handler) {
+        init(services, home, handler);
     }
 
-    public void init(HomeModel home, BartMqttHandler handler, MemoryPersistence persistence) {
+    public void init(AppServices services, HomeModel home, BartMqttHandler handler) {
+        this.services = services;
+        this.persistence = new MemoryPersistence();
+        this.home = home;
+        this.previousState = home.getMqttClient().isBrokerActive();
+        initOnlyMqttClient(handler);
+    }
+
+    private void initOnlyMqttClient(BartMqttHandler handler) {
         try {
-            logger.info("Initialized MQTT for home " + home.getName());
-            this.home = home;
             this.clientID = UUID.randomUUID().toString();
-            this.mqttClient = new MqttClient(home.getMqttClient().getBrokerURL(), this.getClientID(), persistence);
             this.brokerURL = home.getMqttClient().getBrokerURL();
             BartMqttClient actual = this;
+            this.mqttClient = new MqttClient(home.getMqttClient().getBrokerURL(), this.getClientID(), persistence);
 
             mqttClient.setCallback(new MqttCallback() {
                 @Override
                 public void connectionLost(Throwable cause) {
-                    logger.warning("Connection lost: " + cause.getMessage());
+                    setState(false);
                 }
 
                 @Override
@@ -54,12 +65,21 @@ public class DefaultBartMqttClient implements BartMqttClient, Serializable {
 
                 @Override
                 public void deliveryComplete(IMqttDeliveryToken token) {
+                    setBrokerActive(true);
+                    services.getVertx().eventBus().publish("test", "COMPLETED " + home.getName());
                 }
             });
             mqttClient.connect(setConnectOptions());
             mqttClient.subscribe(TopicUtils.getHomeTopic(home) + "/#", STD_QOS);
+
+            checkAndSetState(true);
+
+            logger.info("Initialized MQTT for home " + home.getName());
         } catch (MqttException e) {
+            checkAndSetState(false);
+        } catch (Exception e) {
             e.printStackTrace();
+
         }
     }
 
@@ -69,6 +89,23 @@ public class DefaultBartMqttClient implements BartMqttClient, Serializable {
         options.setCleanSession(true);
         options.setConnectionTimeout(TIMEOUT);
         return options;
+    }
+
+    private void setBrokerActive(boolean state) {
+        previousState = state;
+        if (this.home.getMqttClient().isBrokerActive() != state)
+            this.home.getMqttClient().setBrokerActive(state);
+    }
+
+    private void checkAndSetState(boolean invokeState) {
+        if (previousState != invokeState) {
+            setState(invokeState);
+        }
+    }
+
+    private void setState(boolean state) {
+        setBrokerActive(state);
+        services.homes().updateByID(home.getID(), home);
     }
 
     public boolean reconnectClient() {

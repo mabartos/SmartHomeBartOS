@@ -3,9 +3,7 @@ package org.mabartos.persistence.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-import org.mabartos.api.protocol.BartMqttClient;
 import org.mabartos.interfaces.Identifiable;
-import org.mabartos.protocols.mqtt.DefaultBartMqttClient;
 
 import javax.persistence.Cacheable;
 import javax.persistence.Column;
@@ -38,6 +36,9 @@ public class MqttClientModel extends PanacheEntityBase implements Serializable, 
 
     @Column
     private String topic;
+
+    @Column
+    private boolean brokerActive = false;
 
     public MqttClientModel() {
     }
@@ -97,5 +98,13 @@ public class MqttClientModel extends PanacheEntityBase implements Serializable, 
 
     public void setBrokerURL(String brokerURL) {
         this.brokerURL = brokerURL;
+    }
+
+    public boolean isBrokerActive() {
+        return brokerActive;
+    }
+
+    public void setBrokerActive(boolean state) {
+        this.brokerActive = state;
     }
 }
