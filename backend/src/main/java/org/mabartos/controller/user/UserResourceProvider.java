@@ -1,7 +1,9 @@
 package org.mabartos.controller.user;
 
+import org.mabartos.api.controller.home.HomesResource;
+import org.mabartos.api.controller.user.UserResource;
 import org.mabartos.api.model.BartSession;
-import org.mabartos.controller.home.HomesResource;
+import org.mabartos.controller.home.HomesResourceProvider;
 import org.mabartos.persistence.model.UserModel;
 
 import javax.transaction.Transactional;
@@ -14,15 +16,16 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Transactional
-public class UserResource {
+public class UserResourceProvider implements UserResource {
 
     private final BartSession session;
 
-    public UserResource(BartSession session) {
+    public UserResourceProvider(BartSession session) {
         this.session = session;
     }
 
@@ -47,12 +50,15 @@ public class UserResource {
     }
 
     @DELETE
-    public boolean deleteUser() {
-        return session.services().users().deleteByID(session.getActualUser().getID());
+    public Response deleteUser() {
+        if (session.services().users().deleteByID(session.getActualUser().getID())) {
+            return Response.ok().build();
+        }
+        return Response.status(400).build();
     }
 
     @Path(HomesResource.HOME_PATH)
-    public HomesResource forwardToHome() {
-        return new HomesResource(session);
+    public HomesResource forwardToHomes() {
+        return new HomesResourceProvider(session);
     }
 }

@@ -1,5 +1,7 @@
 package org.mabartos.controller.home;
 
+import org.mabartos.api.controller.home.HomeResource;
+import org.mabartos.api.controller.home.HomesResource;
 import org.mabartos.api.model.BartSession;
 import org.mabartos.controller.utils.ControllerUtil;
 import org.mabartos.persistence.model.HomeModel;
@@ -23,17 +25,13 @@ import java.util.logging.Logger;
 @Produces(MediaType.APPLICATION_JSON)
 @Transactional
 @RequestScoped
-public class HomesResource {
-    public static Logger logger = Logger.getLogger(HomesResource.class.getName());
-
-    public static final String HOME_ID_NAME = "idHome";
-    public static final String HOME_ID = "/{" + HOME_ID_NAME + ":[\\d]+}";
-    public static final String HOME_PATH = "/homes";
+public class HomesResourceProvider implements HomesResource {
+    public static Logger logger = Logger.getLogger(HomesResourceProvider.class.getName());
 
     private BartSession session;
 
     @Inject
-    public HomesResource(BartSession session) {
+    public HomesResourceProvider(BartSession session) {
         this.session = session;
     }
 
@@ -62,7 +60,7 @@ public class HomesResource {
     @Path(HOME_ID)
     public HomeResource forwardToHome(@PathParam(HOME_ID_NAME) Long id) {
         if (session.getActualUser() == null || ControllerUtil.containsItem(session.getActualUser().getChildren(), id)) {
-            return new HomeResource(session.setActualHome(id));
+            return new HomeResourceProvider(session.setActualHome(id));
         }
         return null;
     }

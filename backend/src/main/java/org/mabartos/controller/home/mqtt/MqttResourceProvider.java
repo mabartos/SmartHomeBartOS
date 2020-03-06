@@ -1,5 +1,6 @@
 package org.mabartos.controller.home.mqtt;
 
+import org.mabartos.api.controller.home.mqtt.MqttResource;
 import org.mabartos.api.model.BartSession;
 import org.mabartos.persistence.model.MqttClientModel;
 
@@ -14,11 +15,11 @@ import javax.ws.rs.core.Response;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Transactional
-public class MqttResource {
+public class MqttResourceProvider implements MqttResource {
 
     private final BartSession session;
 
-    public MqttResource(BartSession session) {
+    public MqttResourceProvider(BartSession session) {
         this.session = session;
     }
 

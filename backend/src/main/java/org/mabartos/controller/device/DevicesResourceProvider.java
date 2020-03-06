@@ -1,5 +1,7 @@
 package org.mabartos.controller.device;
 
+import org.mabartos.api.controller.device.DeviceResource;
+import org.mabartos.api.controller.device.DevicesResource;
 import org.mabartos.api.model.BartSession;
 import org.mabartos.controller.utils.ControllerUtil;
 import org.mabartos.persistence.model.DeviceModel;
@@ -22,15 +24,11 @@ import java.util.Set;
 @Produces(MediaType.APPLICATION_JSON)
 @Transactional
 @RequestScoped
-public class DevicesResource {
-    private static final String DEVICE_ID_NAME = "idDevice";
-    private static final String DEVICE_ID = "/{" + DEVICE_ID_NAME + ":[\\d]+}";
-    public static final String DEVICE_PATH = "/devices";
-
+public class DevicesResourceProvider implements DevicesResource {
     private final BartSession session;
 
     @Inject
-    public DevicesResource(BartSession session) {
+    public DevicesResourceProvider(BartSession session) {
         this.session = session;
     }
 
@@ -66,7 +64,7 @@ public class DevicesResource {
     @Path(DEVICE_ID)
     public DeviceResource forwardToDevice(@PathParam(DEVICE_ID_NAME) Long id) {
         if (session.getActualRoom() == null || ControllerUtil.containsItem(session.getActualRoom().getChildren(), id)) {
-            return new DeviceResource(session.setActualDevice(id));
+            return new DeviceResourceProvider(session.setActualDevice(id));
         }
         return null;
     }

@@ -79,12 +79,11 @@ public class DefaultMqttClientManager implements MqttClientManager {
                 try {
                     IMqttClient manageClient = client.getMqttClient();
                     if (manageClient.isConnected()) {
-                        client.getMqttClient().disconnect();
-                        client.getMqttClient().close();
+                        manageClient.disconnect();
+                        manageClient.close();
                     }
                 } catch (MqttException e) {
                     e.printStackTrace();
-
                 }
             });
             clients.set(Collections.emptySet());

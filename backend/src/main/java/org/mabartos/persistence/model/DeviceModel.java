@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
-import org.mabartos.controller.device.DevicesResource;
+import org.mabartos.api.controller.device.DevicesResource;
 import org.mabartos.interfaces.Identifiable;
 
 import javax.persistence.Cacheable;

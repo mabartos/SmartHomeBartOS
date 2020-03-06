@@ -1,5 +1,6 @@
 package org.mabartos.controller.capability;
 
+import org.mabartos.api.controller.capability.CapabilityResource;
 import org.mabartos.api.model.BartSession;
 import org.mabartos.persistence.model.CapabilityModel;
 
@@ -11,15 +12,16 @@ import javax.ws.rs.GET;
 import javax.ws.rs.PATCH;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Transactional
-public class CapabilityResource {
+public class CapabilityResourceProvider implements CapabilityResource {
 
     private final BartSession session;
 
-    public CapabilityResource(BartSession session) {
+    public CapabilityResourceProvider(BartSession session) {
         this.session = session;
     }
 
@@ -29,13 +31,16 @@ public class CapabilityResource {
     }
 
     @PATCH
-    public CapabilityModel updateDevice(@Valid CapabilityModel capability) {
+    public CapabilityModel updateCapability(@Valid CapabilityModel capability) {
         return session.services().capabilities().updateByID(session.getActualCapability().getID(), capability);
     }
 
     @DELETE
-    public boolean deleteDevice() {
-        return session.services().capabilities().deleteByID(session.getActualCapability().getID());
+    public Response deleteCapability() {
+        if (session.services().capabilities().deleteByID(session.getActualCapability().getID())) {
+            return Response.status(200).build();
+        }
+        return Response.status(400).entity("Cannot delete device").build();
     }
 
 }

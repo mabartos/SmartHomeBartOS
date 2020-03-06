@@ -1,5 +1,7 @@
 package org.mabartos.controller.capability;
 
+import org.mabartos.api.controller.capability.CapabilitiesResource;
+import org.mabartos.api.controller.capability.CapabilityResource;
 import org.mabartos.api.model.BartSession;
 import org.mabartos.controller.utils.ControllerUtil;
 import org.mabartos.persistence.model.CapabilityModel;
@@ -18,13 +20,11 @@ import java.util.Set;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Transactional
-public class CapabilitiesResource {
-    private static final String CAP_ID_NAME = "idCaps";
-    private static final String CAP_ID = "/{" + CAP_ID_NAME + ":[\\d]+}";
+public class CapabilitiesResourceProvider implements CapabilitiesResource {
 
     private final BartSession session;
 
-    public CapabilitiesResource(BartSession session) {
+    public CapabilitiesResourceProvider(BartSession session) {
         this.session = session;
     }
 
@@ -48,7 +48,7 @@ public class CapabilitiesResource {
     @Path(CAP_ID)
     public CapabilityResource forwardToCapability(@PathParam(CAP_ID_NAME) Long id) {
         if (session.getActualDevice() == null || ControllerUtil.containsItem(session.getActualDevice().getCapabilities(), id)) {
-            return new CapabilityResource(session.setActualCapability(id));
+            return new CapabilityResourceProvider(session.setActualCapability(id));
         }
         return null;
     }

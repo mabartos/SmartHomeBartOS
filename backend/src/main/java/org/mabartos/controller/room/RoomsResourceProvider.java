@@ -1,5 +1,7 @@
 package org.mabartos.controller.room;
 
+import org.mabartos.api.controller.room.RoomResource;
+import org.mabartos.api.controller.room.RoomsResource;
 import org.mabartos.api.model.BartSession;
 import org.mabartos.controller.utils.ControllerUtil;
 import org.mabartos.persistence.model.RoomModel;
@@ -18,14 +20,11 @@ import java.util.Set;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Transactional
-public class RoomsResource {
-    private static final String ROOM_ID_NAME = "idRoom";
-    private static final String ROOM_ID = "/{" + ROOM_ID_NAME + ":[\\d]+}";
-    public static final String ROOM_PATH = "/rooms";
+public class RoomsResourceProvider implements RoomsResource {
 
     private final BartSession session;
 
-    public RoomsResource(BartSession session) {
+    public RoomsResourceProvider(BartSession session) {
         this.session = session;
     }
 
@@ -55,7 +54,7 @@ public class RoomsResource {
     @Path(ROOM_ID)
     public RoomResource forwardToRoom(@PathParam(ROOM_ID_NAME) Long id) {
         if (session.getActualHome() == null || ControllerUtil.containsItem(session.getActualHome().getChildren(), id)) {
-            return new RoomResource(session.setActualRoom(id));
+            return new RoomResourceProvider(session.setActualRoom(id));
         }
         return null;
     }

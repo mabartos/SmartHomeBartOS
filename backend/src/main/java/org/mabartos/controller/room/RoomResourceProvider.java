@@ -1,7 +1,9 @@
 package org.mabartos.controller.room;
 
+import org.mabartos.api.controller.device.DevicesResource;
+import org.mabartos.api.controller.room.RoomResource;
 import org.mabartos.api.model.BartSession;
-import org.mabartos.controller.device.DevicesResource;
+import org.mabartos.controller.device.DevicesResourceProvider;
 import org.mabartos.persistence.model.RoomModel;
 
 import javax.transaction.Transactional;
@@ -17,11 +19,11 @@ import javax.ws.rs.core.MediaType;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Transactional
-public class RoomResource {
+public class RoomResourceProvider implements RoomResource {
 
     private final BartSession session;
 
-    public RoomResource(BartSession session) {
+    public RoomResourceProvider(BartSession session) {
         this.session = session;
     }
 
@@ -42,6 +44,6 @@ public class RoomResource {
 
     @Path(DevicesResource.DEVICE_PATH)
     public DevicesResource forwardToDevices() {
-        return new DevicesResource(session);
+        return new DevicesResourceProvider(session);
     }
 }

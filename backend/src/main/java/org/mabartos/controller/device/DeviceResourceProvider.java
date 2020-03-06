@@ -1,7 +1,9 @@
 package org.mabartos.controller.device;
 
+import org.mabartos.api.controller.capability.CapabilitiesResource;
+import org.mabartos.api.controller.device.DeviceResource;
 import org.mabartos.api.model.BartSession;
-import org.mabartos.controller.capability.CapabilitiesResource;
+import org.mabartos.controller.capability.CapabilitiesResourceProvider;
 import org.mabartos.persistence.model.DeviceModel;
 
 import javax.transaction.Transactional;
@@ -13,16 +15,16 @@ import javax.ws.rs.PATCH;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Transactional
-public class DeviceResource {
-    public static final String CAPABILITY = "/caps";
+public class DeviceResourceProvider implements DeviceResource {
 
     private final BartSession session;
 
-    public DeviceResource(BartSession session) {
+    public DeviceResourceProvider(BartSession session) {
         this.session = session;
     }
 
@@ -37,12 +39,15 @@ public class DeviceResource {
     }
 
     @DELETE
-    public boolean deleteDevice() {
-        return session.services().devices().deleteByID(session.getActualDevice().getID());
+    public Response deleteDevice() {
+        if (session.services().devices().deleteByID(session.getActualDevice().getID())) {
+            return Response.ok().build();
+        }
+        return Response.status(400).build();
     }
 
     @Path(CAPABILITY)
     public CapabilitiesResource forwardToCapabilities() {
-        return new CapabilitiesResource(session);
+        return new CapabilitiesResourceProvider(session);
     }
 }

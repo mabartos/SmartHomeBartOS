@@ -1,5 +1,7 @@
 package org.mabartos.controller.user;
 
+import org.mabartos.api.controller.user.UserResource;
+import org.mabartos.api.controller.user.UsersResource;
 import org.mabartos.api.model.BartSession;
 import org.mabartos.controller.utils.ControllerUtil;
 import org.mabartos.persistence.model.UserModel;
@@ -24,15 +26,12 @@ import java.util.Set;
 @Produces(MediaType.APPLICATION_JSON)
 @Transactional
 @RequestScoped
-public class UsersResource {
-    private static final String USER_ID_NAME = "idUser";
-    public static final String USER_ID = "/{" + USER_ID_NAME + ":[\\d]+}";
-    public static final String USER_PATH = "/users";
+public class UsersResourceProvider implements UsersResource {
 
     private final BartSession session;
 
     @Inject
-    public UsersResource(BartSession session) {
+    public UsersResourceProvider(BartSession session) {
         this.session = session;
     }
 
@@ -82,9 +81,9 @@ public class UsersResource {
     }
 
     @Path(USER_ID)
-    public UserResource forwardToUser(@PathParam(USER_ID_NAME) Long id) {
+    public UserResourceProvider forwardToUser(@PathParam(USER_ID_NAME) Long id) {
         if (session.getActualHome() == null || ControllerUtil.containsItem(session.getActualHome().getUsers(), id)) {
-            return new UserResource(session.setActualUser(id));
+            return new UserResourceProvider(session.setActualUser(id));
         }
         return null;
     }

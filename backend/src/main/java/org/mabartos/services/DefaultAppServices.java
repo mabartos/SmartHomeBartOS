@@ -30,9 +30,6 @@ public class DefaultAppServices implements AppServices {
     BeanManager beanManager;
 
     @Inject
-    MqttClientManager mqttClientManager;
-
-    @Inject
     Vertx vertx;
 
     @PersistenceContext
