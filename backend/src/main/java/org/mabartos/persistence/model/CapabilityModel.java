@@ -1,5 +1,7 @@
 package org.mabartos.persistence.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import org.mabartos.general.CapabilityType;
 import org.mabartos.interfaces.Identifiable;
@@ -33,7 +35,7 @@ public class CapabilityModel extends PanacheEntityBase implements Serializable, 
     @Enumerated
     private CapabilityType type;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "DEVICE_ID")
     private DeviceModel device;
 
@@ -70,6 +72,23 @@ public class CapabilityModel extends PanacheEntityBase implements Serializable, 
 
     public void setType(CapabilityType type) {
         this.type = type;
+    }
+
+    @JsonIgnore
+    public DeviceModel getDevice() {
+        return device;
+    }
+
+    @JsonProperty("deviceID")
+    public Long getDeviceID() {
+        if (device != null)
+            return device.getID();
+        return null;
+    }
+
+    public void setDevice(DeviceModel device) {
+        device.addCapability(this);
+        this.device = device;
     }
 
     @Override

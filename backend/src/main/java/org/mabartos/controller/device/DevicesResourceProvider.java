@@ -1,9 +1,11 @@
 package org.mabartos.controller.device;
 
+import jdk.nashorn.internal.objects.annotations.Getter;
 import org.mabartos.api.controller.device.DeviceResource;
 import org.mabartos.api.controller.device.DevicesResource;
 import org.mabartos.api.model.BartSession;
 import org.mabartos.controller.utils.ControllerUtil;
+import org.mabartos.persistence.model.CapabilityModel;
 import org.mabartos.persistence.model.DeviceModel;
 
 import javax.enterprise.context.RequestScoped;
@@ -35,6 +37,12 @@ public class DevicesResourceProvider implements DevicesResource {
     @GET
     public Set<DeviceModel> getAll() {
         return session.getActualRoom() != null ? session.getActualRoom().getChildren() : session.services().devices().getAll();
+    }
+
+    @GET
+    @Path("/caps")
+    public Set<CapabilityModel> getCaps() {
+        return session.services().capabilities().getAll();
     }
 
     @POST

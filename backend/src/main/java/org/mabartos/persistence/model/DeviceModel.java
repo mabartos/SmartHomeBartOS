@@ -48,7 +48,7 @@ public class DeviceModel extends PanacheEntityBase implements Serializable, Iden
     @JoinColumn(name = "HOME")
     private HomeModel home;
 
-    @OneToMany(targetEntity = CapabilityModel.class, mappedBy = "device", cascade = CascadeType.MERGE)
+    @OneToMany(targetEntity = CapabilityModel.class, mappedBy = "device", cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     private Set<CapabilityModel> capabilities = new HashSet<>();
 
@@ -61,7 +61,7 @@ public class DeviceModel extends PanacheEntityBase implements Serializable, Iden
 
     public DeviceModel(String name, Set<CapabilityModel> capabilities) {
         this(name);
-        this.capabilities = capabilities;
+        setCapabilities(capabilities);
     }
 
     @Override
@@ -116,6 +116,11 @@ public class DeviceModel extends PanacheEntityBase implements Serializable, Iden
     @JsonIgnore
     public Set<CapabilityModel> getCapabilities() {
         return capabilities;
+    }
+
+    public void setCapabilities(Set<CapabilityModel> capabilities) {
+        this.capabilities = capabilities;
+        this.capabilities.forEach(f -> f.setDevice(this));
     }
 
     public boolean addCapability(CapabilityModel capability) {

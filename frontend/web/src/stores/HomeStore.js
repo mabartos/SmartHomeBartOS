@@ -1,70 +1,64 @@
-import {action, computed, observable} from "mobx";
+import {action, computed, decorate, observable} from "mobx";
 import GeneralStore from "./GeneralStore";
 
 export class HomeStore extends GeneralStore {
 
-    @observable
-    homes = {};
+    _homes = {};
 
-    @observable
-    devicesInHome = {};
+    _devicesInHome = {};
 
-    homeService;
+    _homeService;
 
     constructor(homeService) {
         super();
-        this.homeService = homeService;
+        this._homeService = homeService;
     }
 
-    @action
     setHomes = (homesList) => {
-        this.homes = homesList.reduce((map, home) => {
+        this._homes = homesList.reduce((map, home) => {
             map[home.id] = home;
             return map;
         });
     };
 
-    @action
     setHome = (home) => {
-        this.homes[home.id] = home;
+        this._homes[home.id] = home;
     };
 
-    @action
     setDevicesInHome = (devices) => {
-        this.homes = devices.reduce((map, home) => {
+        this._homes = devices.reduce((map, home) => {
             map[home.id] = home;
             return map;
         });
     };
 
-    @action
     setDevice = (device) => {
-        this.homes[device.id] = device;
+        this._homes[device.id] = device;
     };
 
-    @computed
-    get homes() {
-        return this.homes;
+    /*get homes() {
+        return this._homes;
     }
 
-    @computed
+    set homes(homes){
+        this._homes=homes;
+    }
+
     get homesValues() {
-        return Object.values(this.homes);
+        return Object.values(this._homes);
     }
 
-    @computed
     get devices() {
-        return this.devicesInHome;
+        return this._devicesInHome;
     }
 
-    @computed
     get devicesValues() {
-        return Object.values(this.devicesInHome);
-    }
+        return Object.values(this._devicesInHome);
+    }*/
 
     getAllHomes = () => {
         this.startLoading();
-        this.homeService
+        this._homeService
             .getAllHomes()
             .then(this.setHomes)
             .catch(super.setError)
@@ -73,7 +67,7 @@ export class HomeStore extends GeneralStore {
 
     getHomeByID = (id) => {
         this.startLoading();
-        this.homeService
+        this._homeService
             .getHomeByID(id)
             .then(this.setHome)
             .catch(super.setError)
@@ -82,7 +76,7 @@ export class HomeStore extends GeneralStore {
 
     createHome = (home) => {
         this.startLoading();
-        this.homeService
+        this._homeService
             .createHome(home)
             .then(this.setHome)
             .catch(super.setError)
@@ -91,7 +85,7 @@ export class HomeStore extends GeneralStore {
 
     updateHome = (id, home) => {
         this.startLoading();
-        this.homeService
+        this._homeService
             .updateHome(id, home)
             .then(this.setHome)
             .catch(super.setError)
@@ -100,7 +94,7 @@ export class HomeStore extends GeneralStore {
 
     deleteHome = (id) => {
         this.startLoading();
-        this.homeService
+        this._homeService
             .deleteHome(id)
             .catch(super.setError)
             .finally(super.stopLoading);
@@ -108,7 +102,7 @@ export class HomeStore extends GeneralStore {
 
     getDevicesInHome = (id) => {
         this.startLoading();
-        this.homeService
+        this._homeService
             .getDevicesInHome(id)
             .then(this.setDevicesInHome)
             .catch(super.setError)
@@ -117,9 +111,24 @@ export class HomeStore extends GeneralStore {
 
     addHomeToUser = (homeID, userID) => {
         this.startLoading();
-        this.homeService
+        this._homeService
             .addHomeToUser(homeID, userID)
             .catch(super.setError)
             .finally(super.stopLoading);
     };
 }
+
+decorate(HomeStore, {
+    _homes: observable,
+    _devicesInHome: observable,
+
+    setHome: action,
+    setHomes: action,
+    setDevicesInHome: action,
+    setDevice: action,
+
+    /*homes: computed,
+    homesValues: computed,
+    devices: computed,
+    devicesValue: computed*/
+});

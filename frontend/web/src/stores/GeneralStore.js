@@ -1,47 +1,51 @@
-import {action, computed, observable} from "mobx";
+import {action, decorate, observable,computed} from "mobx";
 
 export default class GeneralStore {
-    @observable
-    loading = false;
+    _loading = false;
 
-    @observable
-    error = null;
+    _error = null;
 
-    @observable
-    fetched = false;
+    _fetched = false;
 
-    @action
     startLoading = () => {
-        this.loading = true;
+        this._loading = true;
     };
 
-    @action
     stopLoading = () => {
-        this.loading = false;
+        this._loading = false;
     };
 
-    @action
     setError = (message) => {
-        this.error = message;
+        this._error = message;
     };
 
-    @action
     setFetched = () => {
-        this.fetched = true;
+        this._fetched = true;
     };
 
-    @computed
-    get loading() {
-        return this.loading;
+    /*get _loading() {
+        return this._loading;
     }
 
-    @computed
     get error() {
-        return this.error;
+        return this._error;
     }
 
-    @computed
     get fetched() {
-        return this.fetched;
-    };
+        return this._fetched;
+    };*/
 }
+decorate(GeneralStore, {
+    _loading: observable,
+    _error: observable,
+    _fetched: observable,
+
+    startLoading: action,
+    stopLoading: action,
+    setError: action,
+    setFetched:action,
+/*
+    loading:computed,
+    error:computed,
+    fetched:computed*/
+});

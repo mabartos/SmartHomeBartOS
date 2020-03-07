@@ -1,44 +1,39 @@
-import {action, computed, observable} from "mobx";
+import {action, decorate, observable, computed} from "mobx";
 import GeneralStore from "./GeneralStore";
 
 export class UserStore extends GeneralStore {
 
-    @observable
-    users = {};
+    _users = {};
 
-    userService;
+    _userService;
 
     constructor(userService) {
         super();
-        this.userService = userService;
+        this._userService = userService;
     }
 
-    @action
     setUsers = (usersList) => {
-        this.users = usersList.reduce((map, user) => {
+        this._users = usersList.reduce((map, user) => {
             map[user.id] = user;
             return map;
         });
     };
 
-    @action
     setUser = (user) => {
-        this.users[user.id] = user;
+        this._users[user.id] = user;
     };
 
-    @computed
     get users() {
-        return this.users;
+        return this._users;
     }
 
-    @computed
     get usersValues() {
-        return Object.values(this.users);
+        return Object.values(this._users);
     }
 
     getAllUsers = () => {
         this.startLoading();
-        this.userService
+        this._userService
             .getAllUsers()
             .then(this.setUsers)
             .catch(super.setError)
@@ -47,7 +42,7 @@ export class UserStore extends GeneralStore {
 
     getUserByID = (id) => {
         this.startLoading();
-        this.userService
+        this._userService
             .getUserByID(id)
             .then(this.setUser)
             .catch(super.setError)
@@ -56,7 +51,7 @@ export class UserStore extends GeneralStore {
 
     getUserByEmail = (email) => {
         this.startLoading();
-        this.userService
+        this._userService
             .getUserByEmail(email)
             .then(this.setUser)
             .catch(super.setError)
@@ -65,7 +60,7 @@ export class UserStore extends GeneralStore {
 
     getUserByUsername = (username) => {
         this.startLoading();
-        this.userService
+        this._userService
             .getUserByUsername(username)
             .then(this.setUser)
             .catch(super.setError)
@@ -74,7 +69,7 @@ export class UserStore extends GeneralStore {
 
     createUser = (user) => {
         this.startLoading();
-        this.userService
+        this._userService
             .createUser(user)
             .then(this.setUser)
             .catch(super.setError)
@@ -83,7 +78,7 @@ export class UserStore extends GeneralStore {
 
     updateUser = (id, user) => {
         this.startLoading();
-        this.userService
+        this._userService
             .updateUser(id, user)
             .then(this.setUser)
             .catch(super.setError)
@@ -92,10 +87,19 @@ export class UserStore extends GeneralStore {
 
     deleteUser = (id) => {
         this.startLoading();
-        this.userService
+        this._userService
             .deleteUser(id)
             .catch(super.setError)
             .finally(super.stopLoading);
     };
 }
+
+decorate(UserStore, {
+    _users: observable,
+
+    setUsers: action,
+    setUser: action,
+
+    users: computed
+});
 

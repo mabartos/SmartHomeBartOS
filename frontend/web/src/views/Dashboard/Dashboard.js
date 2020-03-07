@@ -26,6 +26,7 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardIcon from "components/Card/CardIcon.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
+import {useObserver} from "mobx-react-lite"
 
 
 import {bugs, server, website} from "variables/general.js";
@@ -35,13 +36,12 @@ import {completedTasksChart, dailySalesChart, emailsSubscriptionChart} from "var
 
 import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js";
 import HomeCard from "../../components/BartCard/HomeCard";
-import GeneralInfoCard from "../../components/BartCard/GeneralInfoCard";
 
 const useStyles = makeStyles(styles);
 
 export default function Dashboard() {
     const classes = useStyles();
-    return (
+    return useObserver(() => (
         <div>
             <GridContainer>
                 <HomeCard title="Home 23" active message="Hey yooou" color="success"/>
@@ -238,5 +238,5 @@ export default function Dashboard() {
                 </GridItem>
             </GridContainer>
         </div>
-    );
+    ));
 }

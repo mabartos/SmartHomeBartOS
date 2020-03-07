@@ -5,6 +5,7 @@ import CardFooter from "components/Card/CardFooter.js";
 import CardIcon from "components/Card/CardIcon.js";
 import GridItem from "components/Grid/GridItem.js";
 import Card from "components/Card/Card.js";
+import {history} from "../../index";
 
 import styles from "assets/jss/material-dashboard-react/components/generalTile.js";
 import dashboardStyles from "assets/jss/material-dashboard-react/views/dashboardStyle.js";

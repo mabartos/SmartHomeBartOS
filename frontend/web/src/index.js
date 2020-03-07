@@ -30,7 +30,7 @@ import DeviceService from "./services/DeviceService";
 import {HomeStore} from "./stores/HomeStore";
 import {UserStore} from "./stores/UserStore";
 
-const hist = createBrowserHistory();
+export const history = createBrowserHistory();
 
 const urlServer = "localhost:8081"
 
@@ -60,7 +60,7 @@ export const storesContext = React.createContext(stores);
 export const servicesContext = React.createContext(services);
 
 ReactDOM.render(
-    <Router history={hist}>
+    <Router history={history}>
         <Switch>
             <Route path="/admin" component={Admin}/>
             <Redirect from="/" to="/admin/dashboard"/>

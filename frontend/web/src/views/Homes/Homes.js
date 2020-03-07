@@ -4,12 +4,13 @@ import GridContainer from "components/Grid/GridContainer.js";
 import HomeCard from "../../components/BartCard/HomeCard";
 import image1 from "assets/img/sidebar-4.jpg";
 import AddCard from "../../components/BartCard/AddCard";
-import {storesContext} from "../";
+import {storesContext} from "../../index.js";
+import {useObserver} from "mobx-react-lite"
 
 export default function Homes() {
     const homeStore = React.useContext(storesContext);
 
-    return (
+    return useObserver(() => (
         <div>
             <GridContainer>
                 <HomeCard title="Home 1" active color="success"/>
@@ -18,8 +19,7 @@ export default function Homes() {
                 <HomeCard title="Home 4" active color="warning"/>
                 <HomeCard title="Home 5" color="primary"/>
                 <AddCard title="Add Home" color="success"/>
-
             </GridContainer>
         </div>
-    );
+    ));
 }
