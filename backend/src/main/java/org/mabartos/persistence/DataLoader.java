@@ -45,7 +45,7 @@ public class DataLoader {
     }
 
     private void addHomes() {
-        final int CNT = 20;
+        final int CNT = 2;
         for (int i = 0; i < CNT; i++) {
             HomeModel home = new HomeModel();
             StringBuilder builder = new StringBuilder();

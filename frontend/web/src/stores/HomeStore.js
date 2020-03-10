@@ -5,8 +5,6 @@ export class HomeStore extends GeneralStore {
 
     _homes = {};
 
-    _devicesInHome = {};
-
     _homeService;
 
     constructor(homeService) {
@@ -25,36 +23,17 @@ export class HomeStore extends GeneralStore {
         this._homes[home.id] = home;
     };
 
-    setDevicesInHome = (devices) => {
-        this._homes = devices.reduce((map, home) => {
-            map[home.id] = home;
-            return map;
-        });
+    set homes(homes) {
+        this._homes = homes;
     };
 
-    setDevice = (device) => {
-        this._homes[device.id] = device;
-    };
-
-    /*get homes() {
+    get homes() {
         return this._homes;
-    }
-
-    set homes(homes){
-        this._homes=homes;
     }
 
     get homesValues() {
         return Object.values(this._homes);
     }
-
-    get devices() {
-        return this._devicesInHome;
-    }
-
-    get devicesValues() {
-        return Object.values(this._devicesInHome);
-    }*/
 
     getAllHomes = () => {
         this.startLoading();
@@ -120,15 +99,10 @@ export class HomeStore extends GeneralStore {
 
 decorate(HomeStore, {
     _homes: observable,
-    _devicesInHome: observable,
 
     setHome: action,
     setHomes: action,
-    setDevicesInHome: action,
-    setDevice: action,
 
-    /*homes: computed,
+    homes: computed,
     homesValues: computed,
-    devices: computed,
-    devicesValue: computed*/
 });

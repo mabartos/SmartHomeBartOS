@@ -23,7 +23,7 @@ export default class GeneralStore {
         this._fetched = true;
     };
 
-    /*get _loading() {
+    get loading() {
         return this._loading;
     }
 
@@ -33,7 +33,7 @@ export default class GeneralStore {
 
     get fetched() {
         return this._fetched;
-    };*/
+    };
 }
 decorate(GeneralStore, {
     _loading: observable,
@@ -44,8 +44,8 @@ decorate(GeneralStore, {
     stopLoading: action,
     setError: action,
     setFetched:action,
-/*
+
     loading:computed,
     error:computed,
-    fetched:computed*/
+    fetched:computed
 });

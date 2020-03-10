@@ -32,7 +32,7 @@ import {UserStore} from "./stores/UserStore";
 
 export const history = createBrowserHistory();
 
-const urlServer = "localhost:8081"
+const urlServer = "http://localhost:8888";
 
 // SERVICES
 const userService = new UserService(urlServer);
@@ -40,9 +40,13 @@ const homeService = new HomeService(urlServer);
 const roomService = new RoomService(urlServer);
 const deviceService = new DeviceService(urlServer);
 
+const homeStore = new HomeStore(homeService);
+homeStore.getAllHomes();
 // STORES
 const userStore = new UserStore(userService);
-const homeStore = new HomeStore(homeService);
+/*
+const homeStore = undefined;
+*/
 
 const services = {
     userService,

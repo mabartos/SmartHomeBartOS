@@ -5,7 +5,6 @@ import CardFooter from "components/Card/CardFooter.js";
 import CardIcon from "components/Card/CardIcon.js";
 import GridItem from "components/Grid/GridItem.js";
 import Card from "components/Card/Card.js";
-import {history} from "../../index";
 
 import styles from "assets/jss/material-dashboard-react/components/generalTile.js";
 import dashboardStyles from "assets/jss/material-dashboard-react/views/dashboardStyle.js";
@@ -31,6 +30,10 @@ export default function GeneralCard(props) {
     const iconStyle = iconStyles();
 
     const onSelect = () => {
+        if (props.onClick !== undefined) {
+            props.onClick();
+            return;
+        }
         console.log('Item selected!');
     };
 
@@ -38,7 +41,8 @@ export default function GeneralCard(props) {
         <GridItem xs={12} sm={6} md={3}>
             <Clickable onClick={() => onSelect()}>
                 <Card className={classes.container}>
-                    <BartGeneralHeaderCard title={props.title} active={props.active} color={props.color} displayActivity={props.displayActivity}/>
+                    <BartGeneralHeaderCard title={props.title} active={props.active} color={props.color}
+                                           displayActivity={props.displayActivity}/>
 
                     <CardFooter stats/>
                     {props.children}

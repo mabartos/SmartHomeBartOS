@@ -4,6 +4,7 @@ import GridItem from "components/Grid/GridItem.js";
 import defaultImage from "assets/img/sidebar-2.jpg";
 
 import GeneralCard from "./GeneralCard";
+import useStores from "../../hooks/useStores";
 
 const useStyles = makeStyles(styles => ({
     homePictureContainer: {
@@ -22,9 +23,14 @@ const useStyles = makeStyles(styles => ({
 
 export default function HomeCard(props) {
     const classes = useStyles();
+   // const {homeStore} = useStores().homeStore;
+
+    const onSelect = () => {
+                console.log("Home");
+    };
 
     return (
-        <GeneralCard title={props.title} active={props.active} color={props.color} displayActivity={true}>
+        <GeneralCard onClick={()=>onSelect()} title={props.title} active={props.active} color={props.color} displayActivity={true}>
             <GridItem xs={12} sm={12} md={12}>
                 <div className={classes.homePictureContainer}>
                     <img className={classes.homePicture} alt="home" src={props.image || defaultImage}/>
