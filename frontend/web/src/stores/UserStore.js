@@ -1,9 +1,9 @@
-import {action, decorate, observable, computed} from "mobx";
+import {action, computed, decorate, observable} from "mobx";
 import GeneralStore from "./GeneralStore";
 
 export class UserStore extends GeneralStore {
 
-    _users = {};
+    _users = [];
 
     _userService;
 
@@ -13,10 +13,9 @@ export class UserStore extends GeneralStore {
     }
 
     setUsers = (usersList) => {
-        this._users = usersList.reduce((map, user) => {
-            map[user.id] = user;
-            return map;
-        });
+        for (let i = 0; i < usersList.length; i++) {
+            this._users.push(usersList[i]);
+        }
     };
 
     setUser = (user) => {

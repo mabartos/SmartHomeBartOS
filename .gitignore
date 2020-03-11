@@ -44,3 +44,6 @@ mvnw.cmd
 /backupModules
 
 lsp
+
+node_modules
+frontend/node_modules

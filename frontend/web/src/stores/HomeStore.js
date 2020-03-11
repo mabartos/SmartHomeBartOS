@@ -3,7 +3,7 @@ import GeneralStore from "./GeneralStore";
 
 export class HomeStore extends GeneralStore {
 
-    _homes = {};
+    _homes = [];
 
     _homeService;
 
@@ -13,18 +13,13 @@ export class HomeStore extends GeneralStore {
     }
 
     setHomes = (homesList) => {
-        this._homes = homesList.reduce((map, home) => {
-            map[home.id] = home;
-            return map;
-        });
+        for (let i = 0; i < homesList.length; i++) {
+            this._homes.push(homesList[i]);
+        }
     };
 
     setHome = (home) => {
         this._homes[home.id] = home;
-    };
-
-    set homes(homes) {
-        this._homes = homes;
     };
 
     get homes() {
