@@ -1,5 +1,7 @@
 package org.mabartos.persistence.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -41,12 +43,19 @@ public class RoomModel extends PanacheEntityBase implements HasChildren<DeviceMo
     private RoomType type = RoomType.NONE;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
+    @JoinColumn()
     private HomeModel home;
 
     @OneToMany(targetEntity = DeviceModel.class, mappedBy = "room")
     @LazyCollection(LazyCollectionOption.FALSE)
     private Set<DeviceModel> devicesSet = new HashSet<>();
+
+    public RoomModel() {
+    }
+
+    public RoomModel(String name) {
+        this.name = name;
+    }
 
     @Override
     public String getName() {
@@ -64,9 +73,8 @@ public class RoomModel extends PanacheEntityBase implements HasChildren<DeviceMo
 
     @Override
     public void setID(Long id) {
-        this.id=id;
+        this.id = id;
     }
-
 
     public String getImageURL() {
         return imageURL;
@@ -84,15 +92,23 @@ public class RoomModel extends PanacheEntityBase implements HasChildren<DeviceMo
         this.type = type;
     }
 
+    @JsonIgnore
     public HomeModel getHome() {
         return home;
     }
 
+    @JsonProperty("homeID")
+    public Long getHomeID() {
+        return home.getID();
+    }
+
     public void setHome(HomeModel home) {
         this.home = home;
+        this.home.addChild(this);
     }
 
     @Override
+    @JsonProperty("devices")
     public Set<DeviceModel> getChildren() {
         return devicesSet;
     }
@@ -131,6 +147,6 @@ public class RoomModel extends PanacheEntityBase implements HasChildren<DeviceMo
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, home, imageURL, type);
+        return Objects.hash(id, name, imageURL, type);
     }
 }

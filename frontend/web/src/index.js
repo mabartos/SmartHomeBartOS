@@ -29,6 +29,7 @@ import RoomService from "./services/RoomService";
 import DeviceService from "./services/DeviceService";
 import {HomeStore} from "./stores/HomeStore";
 import {UserStore} from "./stores/UserStore";
+import {RoomStore} from "./stores/RoomStore";
 
 export const history = createBrowserHistory();
 
@@ -40,10 +41,10 @@ const homeService = new HomeService(urlServer);
 const roomService = new RoomService(urlServer);
 const deviceService = new DeviceService(urlServer);
 
-const homeStore = new HomeStore(homeService);
-homeStore.getAllHomes();
 // STORES
+const homeStore = new HomeStore(homeService);
 const userStore = new UserStore(userService);
+const roomStore = new RoomStore(roomService);
 /*
 const homeStore = undefined;
 */
@@ -57,7 +58,8 @@ const services = {
 
 const stores = {
     homeStore,
-    userStore
+    userStore,
+    roomStore
 };
 
 export const storesContext = React.createContext(stores);

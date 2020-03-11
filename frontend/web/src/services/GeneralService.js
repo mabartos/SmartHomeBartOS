@@ -1,5 +1,3 @@
-
-
 export default class GeneralService {
     urlServer;
 
@@ -8,13 +6,11 @@ export default class GeneralService {
     }
 
     fetch = (path, settings) => {
-        console.log("assd");
-
         return new Promise((resolve, reject) => {
 
             const headers = {
-               /* "Accept": "application/json",
-                "Content-type": "application/json"*/
+                /* "Accept": "application/json",
+                 "Content-type": "application/json"*/
             };
 
             fetch(`${this.urlServer}${path}`, {...settings, headers})
@@ -25,7 +21,6 @@ export default class GeneralService {
                     switch (response.status) {
                         case 200:
                         case 201:
-                            console.log("200")
                             response.json()
                                 .then(resolve)
                                 .catch(reject);

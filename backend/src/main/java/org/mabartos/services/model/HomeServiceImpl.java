@@ -1,7 +1,6 @@
 package org.mabartos.services.model;
 
 import io.quarkus.runtime.StartupEvent;
-import org.mabartos.api.model.MqttClientService;
 import org.mabartos.api.service.HomeService;
 import org.mabartos.api.service.UserService;
 import org.mabartos.persistence.model.DeviceModel;

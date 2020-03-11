@@ -1,5 +1,6 @@
 package org.mabartos.controller.utils;
 
+import org.mabartos.api.service.CRUDService;
 import org.mabartos.interfaces.Identifiable;
 
 import java.util.Set;
@@ -12,5 +13,9 @@ public class ControllerUtil {
 
     public static <Child extends Identifiable> boolean containsItem(Set<Child> parentSet, Long id) {
         return parentSet.stream().anyMatch(f -> f.getID().equals(id));
+    }
+
+    public static <Service extends CRUDService<?>> boolean existsItem(Service service, Long id) {
+        return (id != null && service != null && service.findByID(id) != null);
     }
 }

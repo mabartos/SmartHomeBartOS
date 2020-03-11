@@ -1,7 +1,6 @@
 package org.mabartos.persistence.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -207,6 +206,6 @@ public class HomeModel extends PanacheEntityBase implements HasChildren<RoomMode
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, getChildren(), getUsers());
+        return Objects.hash(id, name, getUsers());
     }
 }

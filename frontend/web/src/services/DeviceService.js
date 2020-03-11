@@ -15,30 +15,30 @@ export default class DeviceService extends GeneralService {
     }
 
     getAllDevices = () => {
-        return super.fetch(DeviceService.DEVICE_ENDPOINT);
+        return this.fetch(DeviceService.DEVICE_ENDPOINT);
     };
 
     getDeviceByID = (id) => {
-        return super.fetch(`${DeviceService.DEVICE_ENDPOINT}/${id}`);
+        return this.fetch(`${DeviceService.DEVICE_ENDPOINT}/${id}`);
     };
 
     getCapabilities = (id) => {
-        return super.fetch(`${DeviceService.DEVICE_ENDPOINT}/${id}${DeviceService.CAPABILITY_ENDPOINT}`)
+        return this.fetch(`${DeviceService.DEVICE_ENDPOINT}/${id}${DeviceService.CAPABILITY_ENDPOINT}`)
     };
 
     createDevice = (device) => {
-        return super.post(DeviceService.DEVICE_ENDPOINT, device);
+        return this.post(DeviceService.DEVICE_ENDPOINT, device);
     };
 
     addDeviceToRoom = (homeID, roomID, deviceID) => {
-        return super.post(`${DeviceService.getPath(homeID, roomID)}/${deviceID}`);
+        return this.post(`${DeviceService.getPath(homeID, roomID)}/${deviceID}`);
     };
 
     updateDevice = (id, device) => {
-        return super.patch(`${DeviceService.DEVICE_ENDPOINT} /${id}`, device);
+        return this.patch(`${DeviceService.DEVICE_ENDPOINT} /${id}`, device);
     };
 
     deleteDevice = (id) => {
-        return super.delete(`${DeviceService.DEVICE_ENDPOINT} /${id}`);
+        return this.delete(`${DeviceService.DEVICE_ENDPOINT} /${id}`);
     };
 }

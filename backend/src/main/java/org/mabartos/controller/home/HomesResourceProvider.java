@@ -59,7 +59,8 @@ public class HomesResourceProvider implements HomesResource {
 
     @Path(HOME_ID)
     public HomeResource forwardToHome(@PathParam(HOME_ID_NAME) Long id) {
-        if (session.getActualUser() == null || ControllerUtil.containsItem(session.getActualUser().getChildren(), id)) {
+        if (ControllerUtil.existsItem(session.services().homes(), id)
+                && (session.getActualUser() == null || (ControllerUtil.containsItem(session.getActualUser().getChildren(), id)))) {
             return new HomeResourceProvider(session.setActualHome(id));
         }
         return null;

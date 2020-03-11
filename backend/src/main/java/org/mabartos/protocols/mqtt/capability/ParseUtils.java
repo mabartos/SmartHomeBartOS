@@ -8,7 +8,7 @@ import org.mabartos.protocols.mqtt.data.CapabilityData;
 import org.mabartos.protocols.mqtt.topics.CapabilityTopic;
 
 public class ParseUtils {
-    
+
     public static void parse(AppServices services, BartMqttClient client, CapabilityTopic capabilityTopic, CapabilityData data) {
         parse(services, client, capabilityTopic, data, null);
     }

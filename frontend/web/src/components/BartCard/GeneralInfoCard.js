@@ -35,7 +35,6 @@ export default function GeneralInfoCard(props) {
     const infoClasses = useInfoStyle();
 
     const onSelect = () => {
-        console.log("ahoj");
     };
 
     return (

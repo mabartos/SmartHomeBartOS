@@ -1,8 +1,8 @@
 package org.mabartos.api.model;
 
 import org.mabartos.api.service.CRUDService;
-import org.mabartos.persistence.model.MqttClientModel;
 import org.mabartos.persistence.model.HomeModel;
+import org.mabartos.persistence.model.MqttClientModel;
 
 public interface MqttClientService extends CRUDService<MqttClientModel> {
 

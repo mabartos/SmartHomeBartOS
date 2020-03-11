@@ -4,11 +4,11 @@ import io.quarkus.runtime.StartupEvent;
 import org.mabartos.api.protocol.MqttClientManager;
 import org.mabartos.api.service.AppServices;
 import org.mabartos.persistence.model.HomeModel;
+import org.mabartos.persistence.model.RoomModel;
 import org.mabartos.persistence.model.UserModel;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
-import javax.enterprise.event.TransactionPhase;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -61,7 +61,11 @@ public class DataLoader {
         home = new HomeModel();
         home.setName("homeDefault");
         home.setBrokerURL("tcp://127.0.0.1:1212");
-        services.homes().create(home);
+        home = services.homes().create(home);
+
+        RoomModel room = new RoomModel("room1");
+        room.setHome(home);
+        services.rooms().create(room);
     }
 
     private void addUsersToHomes() {

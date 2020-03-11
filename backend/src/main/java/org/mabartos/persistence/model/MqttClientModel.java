@@ -74,7 +74,7 @@ public class MqttClientModel extends PanacheEntityBase implements Serializable, 
     }
 
     @JsonProperty("homeId")
-    public Long getHomeID(){
+    public Long getHomeID() {
         return home.getID();
     }
 

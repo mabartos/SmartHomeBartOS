@@ -19,6 +19,16 @@ import logo from "assets/img/reactlogo.png";
 
 let ps;
 
+const sidebarRoutes = () => {
+    let result = [];
+    routes.map((item) => {
+        if (item.inSidebar === undefined || item.inSidebar !== false) {
+            result.push(item);
+        }
+    });
+    return result;
+};
+
 const switchRoutes = (
     <Switch>
         {routes.map((prop, key) => {
@@ -94,7 +104,7 @@ export default function Admin({...rest}) {
     return (
         <div className={classes.wrapper}>
             <Sidebar
-                routes={routes}
+                routes={sidebarRoutes()}
                 logoText={"Smart Home"}
                 logo={logo}
                 image={image}

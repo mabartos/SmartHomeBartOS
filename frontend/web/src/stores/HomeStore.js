@@ -3,40 +3,41 @@ import GeneralStore from "./GeneralStore";
 
 export class HomeStore extends GeneralStore {
 
-    _homes = [];
+    _homes = new Map();
 
     _homeService;
 
     constructor(homeService) {
         super();
         this._homeService = homeService;
+        this.getAllHomes();
     }
 
     setHomes = (homesList) => {
         for (let i = 0; i < homesList.length; i++) {
-            this._homes.push(homesList[i]);
+            this._homes.set(homesList[i].id, homesList[i]);
         }
     };
 
     setHome = (home) => {
-        this._homes[home.id] = home;
+        this._homes.set(home.id, home);
     };
 
     get homes() {
         return this._homes;
     }
 
-    get homesValues() {
-        return Object.values(this._homes);
-    }
+    getByIDstore = (id) => {
+        return this._homes.get(id);
+    };
 
     getAllHomes = () => {
         this.startLoading();
         this._homeService
             .getAllHomes()
             .then(this.setHomes)
-            .catch(super.setError)
-            .finally(super.stopLoading);
+            .catch(this.setError)
+            .finally(this.stopLoading);
     };
 
     getHomeByID = (id) => {
@@ -44,8 +45,8 @@ export class HomeStore extends GeneralStore {
         this._homeService
             .getHomeByID(id)
             .then(this.setHome)
-            .catch(super.setError)
-            .finally(super.stopLoading);
+            .catch(this.setError)
+            .finally(this.stopLoading);
     };
 
     createHome = (home) => {
@@ -53,8 +54,8 @@ export class HomeStore extends GeneralStore {
         this._homeService
             .createHome(home)
             .then(this.setHome)
-            .catch(super.setError)
-            .finally(super.stopLoading);
+            .catch(this.setError)
+            .finally(this.stopLoading);
     };
 
     updateHome = (id, home) => {
@@ -62,16 +63,16 @@ export class HomeStore extends GeneralStore {
         this._homeService
             .updateHome(id, home)
             .then(this.setHome)
-            .catch(super.setError)
-            .finally(super.stopLoading);
+            .catch(this.setError)
+            .finally(this.stopLoading);
     };
 
     deleteHome = (id) => {
         this.startLoading();
         this._homeService
             .deleteHome(id)
-            .catch(super.setError)
-            .finally(super.stopLoading);
+            .catch(this.setError)
+            .finally(this.stopLoading);
     };
 
     getDevicesInHome = (id) => {
@@ -79,16 +80,16 @@ export class HomeStore extends GeneralStore {
         this._homeService
             .getDevicesInHome(id)
             .then(this.setDevicesInHome)
-            .catch(super.setError)
-            .finally(super.stopLoading);
+            .catch(this.setError)
+            .finally(this.stopLoading);
     };
 
     addHomeToUser = (homeID, userID) => {
         this.startLoading();
         this._homeService
             .addHomeToUser(homeID, userID)
-            .catch(super.setError)
-            .finally(super.stopLoading);
+            .catch(this.setError)
+            .finally(this.stopLoading);
     };
 }
 
@@ -98,6 +99,5 @@ decorate(HomeStore, {
     setHome: action,
     setHomes: action,
 
-    homes: computed,
-    homesValues: computed,
+    homes: computed
 });

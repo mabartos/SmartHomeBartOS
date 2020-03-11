@@ -1,6 +1,5 @@
 package org.mabartos.controller.user;
 
-import org.mabartos.api.controller.user.UserResource;
 import org.mabartos.api.controller.user.UsersResource;
 import org.mabartos.api.model.BartSession;
 import org.mabartos.controller.utils.ControllerUtil;

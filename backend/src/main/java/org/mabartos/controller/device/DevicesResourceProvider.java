@@ -1,6 +1,5 @@
 package org.mabartos.controller.device;
 
-import jdk.nashorn.internal.objects.annotations.Getter;
 import org.mabartos.api.controller.device.DeviceResource;
 import org.mabartos.api.controller.device.DevicesResource;
 import org.mabartos.api.model.BartSession;

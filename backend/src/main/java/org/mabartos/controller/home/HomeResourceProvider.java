@@ -6,7 +6,6 @@ import org.mabartos.api.controller.home.mqtt.MqttResource;
 import org.mabartos.api.controller.room.RoomsResource;
 import org.mabartos.api.controller.user.UsersResource;
 import org.mabartos.api.model.BartSession;
-import org.mabartos.controller.device.DevicesResourceProvider;
 import org.mabartos.controller.home.mqtt.MqttResourceProvider;
 import org.mabartos.controller.room.RoomsResourceProvider;
 import org.mabartos.controller.user.UsersResourceProvider;

@@ -25,7 +25,7 @@ public interface CapabilitiesResource {
     Set<CapabilityModel> getCapabilities();
 
     @POST
-    CapabilityModel createCapability(@Valid CapabilityModel capability) ;
+    CapabilityModel createCapability(@Valid CapabilityModel capability);
 
     @Path(CAP_ID)
     CapabilityResource forwardToCapability(@PathParam(CAP_ID_NAME) Long id);

@@ -1,4 +1,5 @@
 import GeneralService from "./GeneralService";
+import React from "react";
 
 export default class HomeService extends GeneralService {
 
