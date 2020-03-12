@@ -1,27 +1,28 @@
 import React from "react";
 import GridContainer from "components/Grid/GridContainer.js";
 
-import HomeCard from "../../components/BartCard/HomeCard";
+import MainDisplayCard from "../../components/BartCard/MainDisplayCard";
 import AddCard from "../../components/BartCard/AddCard";
 import {useObserver} from "mobx-react-lite";
 import useStores from "../../hooks/useStores";
+import CardIcon from "components/Card/CardIcon.js";
+import NoItemsAvailable from "../../components/BartCard/NoItemsAvailable";
 
 export default function Homes() {
     const {homeStore} = useStores();
 
     return useObserver(() => {
         const {error, loading, homes} = homeStore;
-        /*console.log(homes);*/
-
         const allHomes = [...homes].map(([key, item], index) => (
-            <HomeCard key={index} id={item.id} title={item.name} active={item.mqttClient.brokerActive} color="info"/>
+            <MainDisplayCard key={index} id={item.id} title={item.name} active={item.mqttClient.brokerActive}
+                             color={CardIcon.getColorID(index)}/>
         ));
+        const printAllHomes = homes.length === 0 ? <NoItemsAvailable message={"No Homes found"}/> : allHomes;
 
         return (
             <div>
                 <GridContainer>
-                    {allHomes}
-                    <HomeCard title="sd" id={2}/>
+                    {printAllHomes}
                     <AddCard title="Add Home" color="success"/>
                 </GridContainer>
             </div>

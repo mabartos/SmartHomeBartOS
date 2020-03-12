@@ -6,7 +6,6 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import {whiteColor} from "../../assets/jss/material-dashboard-react";
 
-
 const useInfoStyle = makeStyles(style => ({
     container: {
         color: "primary",
@@ -41,7 +40,7 @@ export default function GeneralInfoCard(props) {
         <GridItem xs={12} sm={6} md={3}>
             <Card>
                 <CardHeader color={props.color || "info"} className={useInfoStyle.container}>
-                    <h4 className={infoClasses.title}>Add Home</h4>
+                    <h4 className={infoClasses.title}>{props.title || "Add Item"}</h4>
                 </CardHeader>
                 <CardBody>
                     {props.children}

@@ -28,15 +28,22 @@ export default function CardIcon(props) {
     );
 }
 
+CardIcon.colors = [
+    "warning",
+    "success",
+    "danger",
+    "info",
+    "primary",
+    "rose"
+];
+
+CardIcon.getColorID = (index) => {
+    return CardIcon.colors[index % CardIcon.colors.length]
+};
+
+
 CardIcon.propTypes = {
     className: PropTypes.string,
-    color: PropTypes.oneOf([
-        "warning",
-        "success",
-        "danger",
-        "info",
-        "primary",
-        "rose"
-    ]),
+    color: PropTypes.oneOf(CardIcon.colors),
     children: PropTypes.node
 };

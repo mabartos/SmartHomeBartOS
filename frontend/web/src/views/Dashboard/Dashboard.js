@@ -35,7 +35,7 @@ import {bugs, server, website} from "variables/general.js";
 import {completedTasksChart, dailySalesChart, emailsSubscriptionChart} from "variables/charts.js";
 
 import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js";
-import HomeCard from "../../components/BartCard/HomeCard";
+import MainDisplayCard from "../../components/BartCard/MainDisplayCard";
 
 const useStyles = makeStyles(styles);
 
@@ -44,7 +44,7 @@ export default function Dashboard() {
     return useObserver(() => (
         <div>
             <GridContainer>
-                <HomeCard title="Home 23" active message="Hey yooou" color="success"/>
+                <MainDisplayCard title="Home 23" active message="Hey yooou" color="success"/>
                 <GridItem xs={12} sm={6} md={3}>
                     <Card>
                         <CardHeader color="success" stats icon>

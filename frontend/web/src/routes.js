@@ -32,7 +32,7 @@ import Maps from "views/Maps/Maps.js";
 import NotificationsPage from "views/Notifications/Notifications.js";
 // core components/views for RTL layout
 import Homes from "./views/Homes/Homes";
-import Home from "./views/Homes/Home";
+import Home from "./views/Homes/Home.jsx";
 
 const dashboardRoutes = [
   {

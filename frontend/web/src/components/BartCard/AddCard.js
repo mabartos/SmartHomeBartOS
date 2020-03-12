@@ -21,11 +21,10 @@ export default function AddCard(props) {
     const infoClasses = useInfoStyle();
 
     const onSelect = () => {
-
     };
 
     return (
-        <GeneralInfoCard color={props.color}>
+        <GeneralInfoCard color={props.color} title={props.title}>
             <Clickable onClick={onSelect}>
                 <div className={infoClasses.container}>
                     <AddBoxIcon className={infoClasses.icon}/>
