@@ -104,4 +104,12 @@ public class HomeServiceImpl extends CRUDServiceImpl<HomeModel, HomeRepository> 
         return null;
     }
 
+    @Override
+    public boolean deleteByID(Long id) {
+        HomeModel found = super.findByID(id);
+        if (found != null) {
+            return super.deleteByID(id);
+        }
+        return false;
+    }
 }

@@ -17,11 +17,11 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -46,16 +46,10 @@ public class HomeModel extends PanacheEntityBase implements HasChildren<RoomMode
     @LazyCollection(LazyCollectionOption.FALSE)
     private Set<DeviceModel> unAssignedDevices = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-    @JoinTable(name = "HOMES_USERS",
-            joinColumns = {
-                    @JoinColumn(referencedColumnName = "HOME_ID")},
-            inverseJoinColumns = {
-                    @JoinColumn(referencedColumnName = "USER_ID")}
-    )
+    @ManyToMany(mappedBy = "homesSet", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     private Set<UserModel> usersSet = new HashSet<>();
 
-    @OneToMany(targetEntity = RoomModel.class, mappedBy = "home", cascade = CascadeType.MERGE)
+    @OneToMany(targetEntity = RoomModel.class, mappedBy = "home", cascade = CascadeType.ALL, orphanRemoval = true)
     @LazyCollection(LazyCollectionOption.FALSE)
     private Set<RoomModel> roomsSet = new HashSet<>();
 
@@ -159,6 +153,10 @@ public class HomeModel extends PanacheEntityBase implements HasChildren<RoomMode
         return unAssignedDevices.remove(device);
     }
 
+    public void clearRooms() {
+        roomsSet = Collections.emptySet();
+    }
+
     @Override
     @JsonIgnore
     public Set<RoomModel> getChildren() {
@@ -198,7 +196,6 @@ public class HomeModel extends PanacheEntityBase implements HasChildren<RoomMode
             HomeModel object = (HomeModel) obj;
             return (object.getID().equals(this.getID())
                     && object.getName().equals(this.getName())
-                    && object.getChildren().equals(this.getChildren())
                     && object.getUsers().equals(this.getUsers())
             );
         }

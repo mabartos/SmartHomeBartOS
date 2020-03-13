@@ -61,11 +61,12 @@ public class DataLoader {
         home = new HomeModel();
         home.setName("homeDefault");
         home.setBrokerURL("tcp://127.0.0.1:1212");
-        home = services.homes().create(home);
-
-        RoomModel room = new RoomModel("room1");
+        RoomModel room=new RoomModel("room1");
+        home.addChild(room);
         room.setHome(home);
-        services.rooms().create(room);
+
+        services.homes().create(home);
+
     }
 
     private void addUsersToHomes() {

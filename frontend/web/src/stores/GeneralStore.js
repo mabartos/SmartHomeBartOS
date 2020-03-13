@@ -1,4 +1,4 @@
-import {action, decorate, observable,computed} from "mobx";
+import {action, computed, decorate, observable} from "mobx";
 
 export default class GeneralStore {
     _loading = false;
@@ -43,9 +43,9 @@ decorate(GeneralStore, {
     startLoading: action,
     stopLoading: action,
     setError: action,
-    setFetched:action,
+    setFetched: action,
 
-    loading:computed,
-    error:computed,
-    fetched:computed
+    loading: computed,
+    error: computed,
+    fetched: computed
 });

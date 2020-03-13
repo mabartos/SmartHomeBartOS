@@ -35,70 +35,70 @@ import Homes from "./views/Homes/Homes";
 import Home from "./views/Homes/Home.jsx";
 
 const dashboardRoutes = [
-  {
-    path: "/dashboard",
-    name: "Dashboard",
-    icon: Dashboard,
-    component: DashboardPage,
-    layout: "/admin"
-  },
-  {
-    path: "/homes/:homeID",
-    name: "Home",
-    icon: Person,
-    component: Home,
-    layout: "/admin",
-    inSidebar:false
-  },
-  {
-    path: "/homes",
-    name: "Homes",
-    icon: Person,
-    component: Homes,
-    layout: "/admin"
-  },
-  {
-    path: "/user",
-    name: "User Profile",
-    icon: Person,
-    component: UserProfile,
-    layout: "/admin"
-  },
-  {
-    path: "/table",
-    name: "Table List",
-    icon: "content_paste",
-    component: TableList,
-    layout: "/admin"
-  },
-  {
-    path: "/typography",
-    name: "Typography",
-    icon: LibraryBooks,
-    component: Typography,
-    layout: "/admin"
-  },
-  {
-    path: "/icons",
-    name: "Icons",
-    icon: BubbleChart,
-    component: Icons,
-    layout: "/admin"
-  },
-  {
-    path: "/maps",
-    name: "Maps",
-    icon: LocationOn,
-    component: Maps,
-    layout: "/admin"
-  },
-  {
-    path: "/notifications",
-    name: "Notifications",
-    icon: Notifications,
-    component: NotificationsPage,
-    layout: "/admin"
-  },
+    {
+        path: "/dashboard",
+        name: "Dashboard",
+        icon: Dashboard,
+        component: DashboardPage,
+        layout: "/admin"
+    },
+    {
+        path: "/homes/:homeID",
+        name: "Home",
+        icon: Person,
+        component: Home,
+        layout: "/admin",
+        inSidebar: false
+    },
+    {
+        path: "/homes",
+        name: "Homes",
+        icon: Person,
+        component: Homes,
+        layout: "/admin"
+    },
+    {
+        path: "/user",
+        name: "User Profile",
+        icon: Person,
+        component: UserProfile,
+        layout: "/admin"
+    },
+    {
+        path: "/table",
+        name: "Table List",
+        icon: "content_paste",
+        component: TableList,
+        layout: "/admin"
+    },
+    {
+        path: "/typography",
+        name: "Typography",
+        icon: LibraryBooks,
+        component: Typography,
+        layout: "/admin"
+    },
+    {
+        path: "/icons",
+        name: "Icons",
+        icon: BubbleChart,
+        component: Icons,
+        layout: "/admin"
+    },
+    {
+        path: "/maps",
+        name: "Maps",
+        icon: LocationOn,
+        component: Maps,
+        layout: "/admin"
+    },
+    {
+        path: "/notifications",
+        name: "Notifications",
+        icon: Notifications,
+        component: NotificationsPage,
+        layout: "/admin"
+    },
 ];
 
 export default dashboardRoutes;

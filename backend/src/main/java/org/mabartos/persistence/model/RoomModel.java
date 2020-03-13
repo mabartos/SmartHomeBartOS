@@ -43,7 +43,7 @@ public class RoomModel extends PanacheEntityBase implements HasChildren<DeviceMo
     private RoomType type = RoomType.NONE;
 
     @ManyToOne
-    @JoinColumn()
+    @JoinColumn
     private HomeModel home;
 
     @OneToMany(targetEntity = DeviceModel.class, mappedBy = "room")
@@ -104,7 +104,9 @@ public class RoomModel extends PanacheEntityBase implements HasChildren<DeviceMo
 
     public void setHome(HomeModel home) {
         this.home = home;
-        this.home.addChild(this);
+        if (home != null) {
+            this.home.addChild(this);
+        }
     }
 
     @Override
@@ -147,6 +149,6 @@ public class RoomModel extends PanacheEntityBase implements HasChildren<DeviceMo
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, imageURL, type);
+        return Objects.hash(id, home, name, imageURL, type);
     }
 }

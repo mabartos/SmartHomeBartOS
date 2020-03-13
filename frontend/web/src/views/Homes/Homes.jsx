@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import GridContainer from "components/Grid/GridContainer.js";
 
 import MainDisplayCard from "../../components/BartCard/MainDisplayCard";
@@ -10,6 +10,13 @@ import NoItemsAvailable from "../../components/BartCard/NoItemsAvailable";
 
 export default function Homes() {
     const {homeStore} = useStores();
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            homeStore.getAllHomes();
+        }, 2000);
+        return () => clearInterval(interval);
+    }, []);
 
     return useObserver(() => {
         const {error, loading, homes} = homeStore;

@@ -11,6 +11,7 @@ import dashboardStyles from "assets/jss/material-dashboard-react/views/dashboard
 import DateRange from "@material-ui/icons/DateRange";
 import SettingsIcon from "@material-ui/icons/Settings";
 import {Clickable, StopPropagation} from "react-clickable";
+import Poppers from "@material-ui/core/Popper";
 
 const useStyles = makeStyles(styles);
 const useDashboardStyle = makeStyles(dashboardStyles);
@@ -21,6 +22,14 @@ const iconStyles = makeStyles(iconStyle => ({
         color: "gray",
         align: "center",
         flex: 1
+    },
+    popperContainer: {
+        backgroundColor: "red"
+    },
+    popperText: {
+        border: '1px solid',
+        color: "black",
+        backgroundColor: "red"
     }
 }));
 
@@ -28,6 +37,12 @@ export default function GeneralCard(props) {
     const classes = useStyles();
     const dashboardStyle = useDashboardStyle();
     const iconStyle = iconStyles();
+
+    const [settingsAnchor, setSettingsAnchor] = React.useState(null);
+
+    const handleClickSettings = event => {
+        setSettingsAnchor(settingsAnchor ? null : event.currentTarget);
+    };
 
     const onSelect = () => {
         if (props.onClick !== undefined) {
@@ -57,8 +72,13 @@ export default function GeneralCard(props) {
                         <StopPropagation>
                             <CardIcon>
                                 <SettingsIcon className={iconStyle.settings} color={"secondary"}
-                                              onClick={() => console.log("test")}/>
+                                              onClick={handleClickSettings}/>
                             </CardIcon>
+                            <Poppers id={'simple'} open={Boolean(settingsAnchor)} anchorEl={settingsAnchor}
+                                     placement={'top'}
+                                     transition>
+                                <div className={classes.popperText}>AHOJ</div>
+                            </Poppers>
                         </StopPropagation>
                     </CardFooter>
                 </Card>

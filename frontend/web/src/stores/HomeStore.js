@@ -14,6 +14,7 @@ export class HomeStore extends GeneralStore {
     }
 
     setHomes = (homesList) => {
+        this._homes.clear();
         for (let i = 0; i < homesList.length; i++) {
             this._homes.set(homesList[i].id, homesList[i]);
         }

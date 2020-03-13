@@ -52,7 +52,7 @@ public class UserModel extends PanacheEntityBase implements HasChildren<HomeMode
     @Email
     private String email;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE, targetEntity = HomeModel.class)
     @JoinTable(name = "USERS_HOMES",
             joinColumns = {
                     @JoinColumn(referencedColumnName = "USER_ID")},
@@ -148,7 +148,7 @@ public class UserModel extends PanacheEntityBase implements HasChildren<HomeMode
 
     @Override
     public boolean removeChild(HomeModel child) {
-        return child.removeUser(this) && homesSet.remove(child);
+        return homesSet.remove(child);
     }
 
     @Override
