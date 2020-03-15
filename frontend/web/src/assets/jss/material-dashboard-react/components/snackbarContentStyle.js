@@ -125,6 +125,9 @@ const snackbarContentStyle = {
   actionRTL: {
     marginLeft: "-8px",
     marginRight: "auto"
+  },
+  snackbarWidth:{
+    width:"400px",
   }
 };
 

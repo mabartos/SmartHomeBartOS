@@ -16,6 +16,7 @@ import styles from "assets/jss/material-dashboard-react/layouts/adminStyle.js";
 
 import bgImage from "assets/img/home.jpg";
 import logo from "assets/img/reactlogo.png";
+import Notification from "../components/Notifications/Notification";
 
 let ps;
 

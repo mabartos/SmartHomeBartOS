@@ -26,6 +26,13 @@ export class RoomStore extends GeneralStore {
         return this._rooms;
     }
 
+    reloadAllRooms = (homeID) => {
+        this._roomService
+            .getAllRooms(homeID)
+            .then(this.setRooms)
+            .catch(this.setError);
+    };
+
     getAllRooms = (homeID) => {
         this.startLoading();
         this._roomService

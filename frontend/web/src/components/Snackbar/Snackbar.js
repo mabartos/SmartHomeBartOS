@@ -19,7 +19,7 @@ export default function Snackbar(props) {
     const messageClasses = classNames({
         [classes.iconMessage]: icon !== undefined
     });
-    if (close !== undefined) {
+    if (close) {
         action = [
             <IconButton
                 className={classes.iconButton}
@@ -53,7 +53,7 @@ export default function Snackbar(props) {
             action={action}
             ContentProps={{
                 classes: {
-                    root: classes.root + " " + classes[color],
+                    root: classes.snackbarWidth + " " + classes.root + " " + classes[color],
                     message: classes.message,
                     action: classNames({[classes.actionRTL]: rtlActive})
                 }

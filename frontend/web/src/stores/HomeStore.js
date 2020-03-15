@@ -32,6 +32,13 @@ export class HomeStore extends GeneralStore {
         return this._homes.get(id);
     };
 
+    reloadHomes=()=>{
+      this._homeService
+          .getAllHomes()
+          .then(this.setHomes)
+          .catch(this.setError)
+    };
+
     getAllHomes = () => {
         this.startLoading();
         this._homeService

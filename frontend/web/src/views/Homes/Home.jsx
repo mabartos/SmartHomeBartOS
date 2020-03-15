@@ -7,16 +7,8 @@ import MainDisplayCard from "../../components/BartCard/MainDisplayCard";
 import CardIcon from "components/Card/CardIcon.js";
 import NoItemsAvailable from "../../components/BartCard/NoItemsAvailable";
 import AddCard from "../../components/BartCard/AddCard";
-
-const filterRooms = (rooms, idHome) => {
-    let tmp = new Map();
-    [...rooms].map(([key, item], index) => {
-        if (item.homeID === idHome) {
-            tmp.set(key, item);
-        }
-    });
-    return tmp;
-};
+import {SemipolarLoading} from 'react-loadingg';
+import Notification from "../../components/Notifications/Notification";
 
 export default function Home(props) {
     const {homeStore, roomStore} = useStores();
@@ -28,23 +20,44 @@ export default function Home(props) {
     React.useEffect(() => {
         if (!homeStore.homes[id]) {
             homeStore.getHomeByID(id);
-            roomStore.getAllRooms(id);
+            roomStore.reloadAllRooms(id);
         }
     }, [homeStore, roomStore, id]);
 
+    React.useEffect(() => {
+        console.log("sdf");
+        const interval = setInterval(() => {
+            roomStore.reloadAllRooms(id);
+        }, 2000);
+        return () => clearInterval(interval);
+    }, []);
+
     return useObserver(() => {
-        const {error, loading, homes} = homeStore;
-        const {rooms} = roomStore;
+        const {homes} = homeStore;
+        const {error, loading, rooms} = roomStore;
+
+        const filterRooms = (rooms, idHome) => {
+            let tmp = new Map();
+            [...rooms].map(([key, item], index) => {
+                if (item.homeID === idHome) {
+                    tmp.set(key, item);
+                }
+            });
+            return tmp;
+        };
 
         const allRooms = [...filterRooms(rooms, id)]
             .map(([key, item], index) => (
-                <MainDisplayCard key={index} id={item.id} title={item.name} color={CardIcon.getColorID(index)}/>
+                <MainDisplayCard key={index} homeID={item.homeID} roomID={item.id} title={item.name}
+                                 color={CardIcon.getColorID(index)}/>
             ));
 
         const printAllRooms = allRooms.length === 0 ? <NoItemsAvailable message={"No Rooms found"}/> : allRooms;
 
         return (
             <div>
+                {error && <Notification/>}
+                {loading && <SemipolarLoading/>}
                 <GridContainer>
                     {printAllRooms}
                     <AddCard title="Add Room" color="success"/>

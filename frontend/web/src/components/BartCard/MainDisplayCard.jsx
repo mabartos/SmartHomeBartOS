@@ -27,12 +27,12 @@ export default function MainDisplayCard(props) {
     const history = useHistory();
 
     const onSelect = () => {
-        history.push(`${path}/${props.id}`);
+        history.push(`${path}/${props.homeID}`);
     };
 
     return (
         <GeneralCard onClick={() => onSelect()} title={props.title} active={props.active} color={props.color}
-                     displayActivity={true}>
+                     displayActivity={true} rest={props}>
             <GridItem xs={12} sm={12} md={12}>
                 <div className={classes.mainPictureContainer}>
                     <img className={classes.mainPicture} alt="home" src={props.image || defaultImage}/>
