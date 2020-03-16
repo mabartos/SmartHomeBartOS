@@ -5,7 +5,7 @@ export default class GeneralStore {
 
     _error = null;
 
-    _fetched = false;
+    _actionInvoked = false;
 
     startLoading = () => {
         this._loading = true;
@@ -16,11 +16,17 @@ export default class GeneralStore {
     };
 
     setError = (message) => {
-        this._error = message;
+        if (message !== this._error) {
+            this._error = message;
+        }
     };
 
-    setFetched = () => {
-        this._fetched = true;
+    setActionInvoked = (message) => {
+        this._actionInvoked = message;
+    };
+
+    clearActionInvoked = () => {
+        this._actionInvoked = undefined;
     };
 
     get loading() {
@@ -31,21 +37,35 @@ export default class GeneralStore {
         return this._error;
     }
 
-    get fetched() {
-        return this._fetched;
+    get actionInvoked() {
+        return this._actionInvoked;
+    };
+
+    checkError = () => {
+        if (this._error !== undefined) {
+            this._error = undefined;
+        }
+    };
+
+    getMapFromList = (list) => {
+        let map = new Map();
+        for (let i = 0; i < list.length; i++) {
+            map.set(list[i].id, list[i]);
+        }
+        return map;
     };
 }
 decorate(GeneralStore, {
     _loading: observable,
     _error: observable,
-    _fetched: observable,
+    _actionInvoked: observable,
 
     startLoading: action,
     stopLoading: action,
     setError: action,
-    setFetched: action,
+    setActionInvoked: action,
 
     loading: computed,
     error: computed,
-    fetched: computed
+    actionInvoked: computed
 });

@@ -15,13 +15,13 @@ export class HomeStore extends GeneralStore {
 
     setHomes = (homesList) => {
         this._homes.clear();
-        for (let i = 0; i < homesList.length; i++) {
-            this._homes.set(homesList[i].id, homesList[i]);
-        }
+        this._homes = this.getMapFromList(homesList);
+        this.checkError();
     };
 
     setHome = (home) => {
         this._homes.set(home.id, home);
+        this.checkError();
     };
 
     get homes() {
@@ -32,14 +32,20 @@ export class HomeStore extends GeneralStore {
         return this._homes.get(id);
     };
 
-    reloadHomes=()=>{
-      this._homeService
-          .getAllHomes()
-          .then(this.setHomes)
-          .catch(this.setError)
+    reloadHomes = () => {
+        const handleError = (error) => {
+            this._homes = new Map();
+            this.setError(error);
+        };
+
+        this._homeService
+            .getAllHomes()
+            .then(this.setHomes)
+            .catch(handleError)
     };
 
     getAllHomes = () => {
+        this.clearActionInvoked();
         this.startLoading();
         this._homeService
             .getAllHomes()
@@ -64,6 +70,7 @@ export class HomeStore extends GeneralStore {
             .then(this.setHome)
             .catch(this.setError)
             .finally(this.stopLoading);
+        this.setActionInvoked("Home is successfully created.")
     };
 
     updateHome = (id, home) => {
@@ -73,6 +80,7 @@ export class HomeStore extends GeneralStore {
             .then(this.setHome)
             .catch(this.setError)
             .finally(this.stopLoading);
+        this.setActionInvoked("Home is successfully updated.")
     };
 
     deleteHome = (id) => {
@@ -81,6 +89,7 @@ export class HomeStore extends GeneralStore {
             .deleteHome(id)
             .catch(this.setError)
             .finally(this.stopLoading);
+        this.setActionInvoked("Home is successfully deleted.")
     };
 
     getDevicesInHome = (id) => {

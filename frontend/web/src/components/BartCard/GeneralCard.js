@@ -20,7 +20,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Divider from "@material-ui/core/Divider";
 import Paper from "@material-ui/core/Paper";
 import BooleanDialog from "../BartDialogs/BooleanDialog";
-import {useParams} from "react-router-dom";
+import EditForm from "../Forms/EditForm";
 
 
 const useStyles = makeStyles(styles);
@@ -47,6 +47,7 @@ export default function GeneralCard(props) {
 
     const [settingsAnchor, setSettingsAnchor] = React.useState(null);
     const [openWarningDialog, setWarningDialog] = React.useState(false);
+    const [openEditForm, setEditForm] = React.useState(false);
 
     const handleClickSettings = event => {
         setSettingsAnchor(settingsAnchor ? null : event.currentTarget);
@@ -54,6 +55,7 @@ export default function GeneralCard(props) {
 
     const handleEdit = () => {
         console.log("edit");
+        setEditForm(true);
     };
 
     const handleDelete = () => {
@@ -79,9 +81,16 @@ export default function GeneralCard(props) {
         }
     };
 
+    const showEditForm = () => {
+        if (openEditForm) {
+            return (<EditForm open={true} ids={props.rest} name={props.title}/>);
+        }
+    };
+
     return (
         <GridItem xs={12} sm={6} md={3}>
             {showDialog()}
+            {showEditForm()}
             <Clickable onClick={() => onSelect()}>
                 <Card className={classes.container}>
                     <BartGeneralHeaderCard title={props.title} active={props.active} color={props.color}

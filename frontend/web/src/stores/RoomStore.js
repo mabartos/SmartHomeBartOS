@@ -13,13 +13,13 @@ export class RoomStore extends GeneralStore {
     }
 
     setRooms = (roomsList) => {
-        for (let i = 0; i < roomsList.length; i++) {
-            this._rooms.set(roomsList[i].id, roomsList[i]);
-        }
+        this._rooms = this.getMapFromList(roomsList);
+        this.checkError();
     };
 
     setRoom = (room) => {
         this._rooms.set(room.id, room);
+        this.checkError();
     };
 
     get rooms() {

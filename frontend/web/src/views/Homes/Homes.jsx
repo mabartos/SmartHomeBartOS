@@ -9,19 +9,35 @@ import CardIcon from "components/Card/CardIcon.js";
 import NoItemsAvailable from "../../components/BartCard/NoItemsAvailable";
 import {SemipolarLoading} from 'react-loadingg';
 import ErrorNotification from "../../components/Notifications/ErrorNotification";
+import SuccessNotification from "../../components/Notifications/SuccessNotification";
+import Popup from "reactjs-popup";
 
 export default function Homes() {
     const {homeStore} = useStores();
+    const [mounted, setMounted] = React.useState(false);
 
     useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    useEffect(() => {
+        if (mounted) {
+            homeStore.getAllHomes();
+        }
         const interval = setInterval(() => {
             homeStore.reloadHomes();
         }, 2000);
         return () => clearInterval(interval);
-    }, []);
+    }, [homeStore]);
+
+    useEffect(() => {
+        return () => {
+            setMounted(false);
+        }
+    });
 
     return useObserver(() => {
-        const {error, loading, homes} = homeStore;
+        const {error, loading, actionInvoked, homes} = homeStore;
         const allHomes = [...homes].map(([key, item], index) => (
             <MainDisplayCard key={index} homeID={item.id} title={item.name} active={item.mqttClient.brokerActive}
                              color={CardIcon.getColorID(index + 2)}/>
@@ -31,8 +47,10 @@ export default function Homes() {
         return (
             <div>
                 {error && <ErrorNotification message={error.message}/>}
+                {actionInvoked && <SuccessNotification message={actionInvoked}/>}
                 {loading && <SemipolarLoading/>}
                 <GridContainer>
+                   
                     {printAllHomes}
                     <AddCard title="Add Home" color="success"/>
                 </GridContainer>
