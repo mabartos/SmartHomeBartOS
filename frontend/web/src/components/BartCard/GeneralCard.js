@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useRef} from "react";
 import BartGeneralHeaderCard from "./BartGeneralHeaderCard";
 import {makeStyles} from "@material-ui/core/styles";
 import CardFooter from "components/Card/CardFooter.js";
@@ -14,14 +14,15 @@ import DateRange from "@material-ui/icons/DateRange";
 import SettingsIcon from "@material-ui/icons/Settings";
 import {Clickable, StopPropagation} from "react-clickable";
 import Poppers from "@material-ui/core/Popper";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import MenuList from "@material-ui/core/MenuList";
 import MenuItem from "@material-ui/core/MenuItem";
 import Divider from "@material-ui/core/Divider";
 import Paper from "@material-ui/core/Paper";
-import BooleanDialog from "../BartDialogs/BooleanDialog";
-import EditForm from "../Forms/EditForm";
-
+import {BooleanDialog} from "../BartDialogs/BooleanDialog";
+import {HomeComponent} from "../../index";
+import UpdateHomeForm from "../Forms/UpdateHomeForm";
+import {ClickAwayListener} from "@material-ui/core";
+import {EditForm} from "../Forms/EditForm";
 
 const useStyles = makeStyles(styles);
 const useDashboardStyle = makeStyles(dashboardStyles);
@@ -45,26 +46,25 @@ export default function GeneralCard(props) {
     const dropDownStyle = useDropDownStyle();
     const iconStyle = iconStyles();
 
-    const [settingsAnchor, setSettingsAnchor] = React.useState(null);
-    const [openWarningDialog, setWarningDialog] = React.useState(false);
-    const [openEditForm, setEditForm] = React.useState(false);
+    const refDelete = useRef(null);
+    const refEdit = useRef(null);
+
+    const [settingsAnchor, setSettingsAnchor] = React.useState(false);
 
     const handleClickSettings = event => {
         setSettingsAnchor(settingsAnchor ? null : event.currentTarget);
     };
 
     const handleEdit = () => {
-        console.log("edit");
-        setEditForm(true);
+        refEdit.current.openForm();
     };
 
     const handleDelete = () => {
-        setWarningDialog(true);
+        refDelete.current.openDialog()
     };
 
     const closeSettings = () => {
-        setSettingsAnchor(null);
-        setWarningDialog(false);
+        setSettingsAnchor(false);
     };
 
     const onSelect = () => {
@@ -75,22 +75,29 @@ export default function GeneralCard(props) {
         console.log('Item selected!');
     };
 
-    const showDialog = () => {
-        if (openWarningDialog) {
-            return (<BooleanDialog open={openWarningDialog} ids={props.rest}/>)
-        }
+    const getEdit = () => {
+        return (<EditForm ref={refEdit} type={props.type} {...props}>
+            {getEditForm()}
+        </EditForm>)
     };
 
-    const showEditForm = () => {
-        if (openEditForm) {
-            return (<EditForm open={true} ids={props.rest} name={props.title}/>);
+    const getEditForm = () => {
+        switch (props.type) {
+            case HomeComponent.HOME:
+                return (<UpdateHomeForm {...props}/>);
+            case HomeComponent.USER:
+                break;
+            case HomeComponent.ROOM:
+                break;
+            case HomeComponent.DEVICE:
+                break;
         }
     };
 
     return (
         <GridItem xs={12} sm={6} md={3}>
-            {showDialog()}
-            {showEditForm()}
+            <BooleanDialog ref={refDelete} type={props.type} {...props}/>
+            {getEdit()}
             <Clickable onClick={() => onSelect()}>
                 <Card className={classes.container}>
                     <BartGeneralHeaderCard title={props.title} active={props.active} color={props.color}
@@ -111,11 +118,11 @@ export default function GeneralCard(props) {
                                 <SettingsIcon className={iconStyle.settings} color={"secondary"}
                                               onClick={handleClickSettings}/>
                             </CardIcon>
-                            <Poppers id={'simple'} open={Boolean(settingsAnchor)} anchorEl={settingsAnchor}
+                            <Poppers id={'simple'} open={settingsAnchor} anchorEl={settingsAnchor}
                                      placement={'top'}
                                      transition>
-                                <Paper>
-                                    <ClickAwayListener onClickAway={closeSettings}>
+                                <ClickAwayListener onClickAway={closeSettings}>
+                                    <Paper>
                                         <MenuList role="menu">
                                             <MenuItem className={dropDownStyle.dropdownItem} onClick={handleEdit}>
                                                 Edit
@@ -125,8 +132,8 @@ export default function GeneralCard(props) {
                                                 <span style={{color: "red"}}>Delete</span>
                                             </MenuItem>
                                         </MenuList>
-                                    </ClickAwayListener>
-                                </Paper>
+                                    </Paper>
+                                </ClickAwayListener>
                             </Poppers>
                         </StopPropagation>
                     </CardFooter>

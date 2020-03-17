@@ -1,4 +1,4 @@
-import React from "react";
+import React, {forwardRef, useImperativeHandle} from "react";
 import Slide from "@material-ui/core/Slide";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
@@ -7,51 +7,76 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import useStores from "../../hooks/useStores";
+import {HomeComponent} from "../../index";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function BooleanDialog(props) {
-    const id=props.ids;
-    const userID = id.userID;
-    const homeID = id.homeID;
-    const roomID = id.roomID;
-    const deviceID = id.deviceID;
+export const BooleanDialog = forwardRef((props, ref) => {
+    const userID = props.userID;
+    const homeID = props.homeID;
+    const roomID = props.roomID;
+    const deviceID = props.deviceID;
+
+    const [open, setOpen] = React.useState(false);
 
     const {userStore, homeStore, roomStore, productStore, deviceStore} = useStores();
 
+    const closeDialog = () => {
+        setOpen(false);
+    };
+
+    const openDialog = () => {
+        setOpen(true);
+    };
+
+    useImperativeHandle(ref, () => {
+        return {
+            closeDialog: closeDialog,
+            openDialog: openDialog
+        }
+    });
+
     const deleteByID = () => {
-        console.log(homeID);
-        if (userID !== undefined) {
-            console.log("here");
-            userStore.deleteUser(userID);
-            return;
-        }
-        if (homeID !== undefined) {
-            if (roomID !== undefined) {
-                roomStore.deleteRoom(homeID, roomID);
-                return;
-            }
-            homeStore.deleteHome(homeID);
-            return;
-        }
-        if (deviceID !== undefined) {
+        switch (props.type) {
+            case HomeComponent.USER:
+                if (userID !== undefined) {
+                    userStore.deleteUser(userID);
+                    return;
+                }
+                break;
+            case HomeComponent.HOME:
+                console.log(homeID)
+                if (homeID !== undefined) {
+                    homeStore.deleteHome(homeID);
+                    return;
+                }
+                break;
+            case HomeComponent.ROOM:
+                if (roomID !== undefined) {
+                    roomStore.deleteRoom(homeID, roomID);
+                    return;
+                }
+                break;
+            case HomeComponent.DEVICE:
+                if (deviceID !== undefined) {
+                    return deviceID;
+                }
+                break;
         }
     };
 
-    const title = props.title || "Are you sure to delete item?";
-
-    const handleNo = () => {
-    };
+    const title = "Are you sure to delete item?";
 
     const handleYes = () => {
         deleteByID();
+        closeDialog();
     };
 
     return (
         <Dialog
-            open={props.open}
+            open={open}
             TransitionComponent={Transition}
             keepMounted
             aria-labelledby="alert-dialog-slide-title"
@@ -60,11 +85,11 @@ export default function BooleanDialog(props) {
             <DialogTitle id="alert-dialog-slide-title">{title}</DialogTitle>
             <DialogContent>
                 <DialogContentText id="alert-dialog-slide-description">
-                    {props.message}
+                    {props.message || "Home '" + props.title + "'"}
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleNo} color="primary">
+                <Button onClick={closeDialog} color="primary">
                     No
                 </Button>
                 <Button onClick={handleYes} color="primary">
@@ -73,4 +98,4 @@ export default function BooleanDialog(props) {
             </DialogActions>
         </Dialog>
     );
-}
+});

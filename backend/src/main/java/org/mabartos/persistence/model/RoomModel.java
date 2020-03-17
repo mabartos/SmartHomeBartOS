@@ -1,6 +1,7 @@
 package org.mabartos.persistence.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import org.hibernate.annotations.LazyCollection;
@@ -25,6 +26,7 @@ import java.util.Set;
 @Entity
 @Table(name = "Rooms")
 @Cacheable
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class RoomModel extends PanacheEntityBase implements HasChildren<DeviceModel> {
 
     @Id
@@ -34,9 +36,6 @@ public class RoomModel extends PanacheEntityBase implements HasChildren<DeviceMo
 
     @Column(nullable = false)
     private String name;
-
-    @Column
-    private String imageURL;
 
     @Column(nullable = false)
     @Enumerated
@@ -76,14 +75,6 @@ public class RoomModel extends PanacheEntityBase implements HasChildren<DeviceMo
         this.id = id;
     }
 
-    public String getImageURL() {
-        return imageURL;
-    }
-
-    public void setImageURL(String imageURL) {
-        this.imageURL = imageURL;
-    }
-
     public RoomType getType() {
         return type;
     }
@@ -92,6 +83,7 @@ public class RoomModel extends PanacheEntityBase implements HasChildren<DeviceMo
         this.type = type;
     }
 
+    /* HOME */
     @JsonIgnore
     public HomeModel getHome() {
         return home;
@@ -108,7 +100,8 @@ public class RoomModel extends PanacheEntityBase implements HasChildren<DeviceMo
             this.home.addChild(this);
         }
     }
-
+    
+    /* DEVICES */
     @Override
     @JsonProperty("devices")
     public Set<DeviceModel> getChildren() {
@@ -130,6 +123,16 @@ public class RoomModel extends PanacheEntityBase implements HasChildren<DeviceMo
         return devicesSet.removeIf(device -> device.getID().equals(id));
     }
 
+    /* COMPUTED */
+    @JsonProperty("devicesCount")
+    public Integer getDevicesCount() {
+        if (devicesSet != null) {
+            return devicesSet.size();
+        }
+        return 0;
+    }
+
+    /* MANAGE */
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -141,7 +144,6 @@ public class RoomModel extends PanacheEntityBase implements HasChildren<DeviceMo
             return (this.getID().equals(room.getID())
                     && this.getName().equals(room.getName())
                     && this.getHome().equals(room.getHome())
-                    && this.getImageURL().equals(room.getImageURL())
                     && this.getType().equals(room.getType())
             );
         }
@@ -149,6 +151,6 @@ public class RoomModel extends PanacheEntityBase implements HasChildren<DeviceMo
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, home, name, imageURL, type);
+        return Objects.hash(id, home, name, type);
     }
 }

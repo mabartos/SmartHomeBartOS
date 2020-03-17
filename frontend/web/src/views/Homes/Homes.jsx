@@ -10,7 +10,8 @@ import NoItemsAvailable from "../../components/BartCard/NoItemsAvailable";
 import {SemipolarLoading} from 'react-loadingg';
 import ErrorNotification from "../../components/Notifications/ErrorNotification";
 import SuccessNotification from "../../components/Notifications/SuccessNotification";
-import Popup from "reactjs-popup";
+import {HomeComponent} from "../../index";
+import HomeCard from "../../components/BartCard/BartHomeComponent/HomeCard";
 
 export default function Homes() {
     const {homeStore} = useStores();
@@ -39,8 +40,7 @@ export default function Homes() {
     return useObserver(() => {
         const {error, loading, actionInvoked, homes} = homeStore;
         const allHomes = [...homes].map(([key, item], index) => (
-            <MainDisplayCard key={index} homeID={item.id} title={item.name} active={item.mqttClient.brokerActive}
-                             color={CardIcon.getColorID(index + 2)}/>
+            <HomeCard key={index} value={item} colorIndex={index}/>
         ));
         const printAllHomes = homes.length === 0 ? <NoItemsAvailable message={"No Homes found"}/> : allHomes;
 
@@ -50,7 +50,7 @@ export default function Homes() {
                 {actionInvoked && <SuccessNotification message={actionInvoked}/>}
                 {loading && <SemipolarLoading/>}
                 <GridContainer>
-                   
+
                     {printAllHomes}
                     <AddCard title="Add Home" color="success"/>
                 </GridContainer>

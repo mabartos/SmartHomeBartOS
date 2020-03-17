@@ -1,6 +1,7 @@
 package org.mabartos.persistence.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -30,6 +31,7 @@ import java.util.stream.Collectors;
 @Table(name = "Devices")
 @Cacheable
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class DeviceModel extends PanacheEntityBase implements Serializable, Identifiable {
 
     @Id

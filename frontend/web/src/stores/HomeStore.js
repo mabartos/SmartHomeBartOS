@@ -37,11 +37,17 @@ export class HomeStore extends GeneralStore {
             this._homes = new Map();
             this.setError(error);
         };
+        this.clearActionInvoked();
 
         this._homeService
             .getAllHomes()
             .then(this.setHomes)
             .catch(handleError)
+    };
+
+    stopLoadingAndMessage = (message) => {
+        this.stopLoading();
+        this.setActionInvoked(message);
     };
 
     getAllHomes = () => {
@@ -79,8 +85,8 @@ export class HomeStore extends GeneralStore {
             .updateHome(id, home)
             .then(this.setHome)
             .catch(this.setError)
-            .finally(this.stopLoading);
-        this.setActionInvoked("Home is successfully updated.")
+            .finally(this.stopLoading)
+            .finally(this.setActionInvoked("Home is successfully updated."));
     };
 
     deleteHome = (id) => {
@@ -88,8 +94,8 @@ export class HomeStore extends GeneralStore {
         this._homeService
             .deleteHome(id)
             .catch(this.setError)
-            .finally(this.stopLoading);
-        this.setActionInvoked("Home is successfully deleted.")
+            .finally(this.stopLoading)
+            .finally(this.setActionInvoked("Home is successfully deleted."));
     };
 
     getDevicesInHome = (id) => {

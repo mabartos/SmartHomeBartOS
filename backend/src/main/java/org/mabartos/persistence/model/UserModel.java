@@ -1,6 +1,8 @@
 package org.mabartos.persistence.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import org.mabartos.general.UserRole;
 import org.mabartos.interfaces.HasChildren;
@@ -25,6 +27,7 @@ import java.util.Set;
 @Entity
 @Table(name = "Users")
 @Cacheable
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserModel extends PanacheEntityBase implements HasChildren<HomeModel> {
 
     @Id
@@ -135,6 +138,7 @@ public class UserModel extends PanacheEntityBase implements HasChildren<HomeMode
         this.id = id;
     }
 
+    /* HOMES */
     @Override
     @JsonIgnore
     public Set<HomeModel> getChildren() {
@@ -156,6 +160,16 @@ public class UserModel extends PanacheEntityBase implements HasChildren<HomeMode
         return homesSet.removeIf(home -> home.getID().equals(id));
     }
 
+    /* COMPUTED */
+    @JsonProperty("homesCount")
+    public Integer getHomesCount() {
+        if (homesSet != null) {
+            return homesSet.size();
+        }
+        return 0;
+    }
+
+    /* MANAGE */
     @Override
     public boolean equals(Object obj) {
         if (this == obj)

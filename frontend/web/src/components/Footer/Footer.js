@@ -17,23 +17,18 @@ export default function Footer(props) {
                 <div className={classes.left}>
                     <List className={classes.list}>
                         <ListItem className={classes.inlineBlock}>
-                            <a href="#home" className={classes.block}>
-                                Home
+                            <a href="/dashboard" className={classes.block}>
+                                Dashboard
                             </a>
                         </ListItem>
                         <ListItem className={classes.inlineBlock}>
-                            <a href="#company" className={classes.block}>
-                                Company
+                            <a href="/admin/homes" className={classes.block}>
+                                Homes
                             </a>
                         </ListItem>
                         <ListItem className={classes.inlineBlock}>
-                            <a href="#portfolio" className={classes.block}>
-                                Portfolio
-                            </a>
-                        </ListItem>
-                        <ListItem className={classes.inlineBlock}>
-                            <a href="#blog" className={classes.block}>
-                                Blog
+                            <a href="/admin/user" className={classes.block}>
+                                User Profile
                             </a>
                         </ListItem>
                     </List>
@@ -48,7 +43,7 @@ export default function Footer(props) {
               >
               Creative Tim
             </a>
-            , made with love for a better web
+            , edited by Martin Bartos.
           </span>
                 </p>
             </div>

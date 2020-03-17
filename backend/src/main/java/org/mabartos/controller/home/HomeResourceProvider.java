@@ -6,6 +6,7 @@ import org.mabartos.api.controller.home.mqtt.MqttResource;
 import org.mabartos.api.controller.room.RoomsResource;
 import org.mabartos.api.controller.user.UsersResource;
 import org.mabartos.api.model.BartSession;
+import org.mabartos.controller.data.HomeData;
 import org.mabartos.controller.home.mqtt.MqttResourceProvider;
 import org.mabartos.controller.room.RoomsResourceProvider;
 import org.mabartos.controller.user.UsersResourceProvider;
@@ -13,7 +14,6 @@ import org.mabartos.persistence.model.DeviceModel;
 import org.mabartos.persistence.model.HomeModel;
 
 import javax.transaction.Transactional;
-import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -47,8 +47,12 @@ public class HomeResourceProvider implements HomeResource {
     }
 
     @PATCH
-    public HomeModel updateHome(@Valid HomeModel home) {
-        return session.services().homes().updateByID(session.getActualHome().getID(), home);
+    public HomeModel updateHome(String json) {
+        HomeModel found = session.services().homes().findByID(session.getActualHome().getID());
+        HomeData data = HomeData.fromJson(json);
+        found.setName(data.getName());
+        found.setBrokerURL(data.getBrokerURL());
+        return session.services().homes().updateByID(session.getActualHome().getID(), found);
     }
 
     @DELETE

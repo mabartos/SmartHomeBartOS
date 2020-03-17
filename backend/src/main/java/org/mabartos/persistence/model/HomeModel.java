@@ -1,6 +1,9 @@
 package org.mabartos.persistence.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -29,6 +32,8 @@ import java.util.Set;
 @Entity
 @Table(name = "Homes")
 @Cacheable
+@JsonIgnoreProperties(value = "mqttClientID", ignoreUnknown = true)
+@JsonPropertyOrder({"id", "name", "active"})
 public class HomeModel extends PanacheEntityBase implements HasChildren<RoomModel> {
 
     @Id
@@ -99,9 +104,12 @@ public class HomeModel extends PanacheEntityBase implements HasChildren<RoomMode
 
     public void setBrokerURL(String brokerURL) {
         this.brokerURL = brokerURL;
+        if (this.mqttClient != null) {
+            this.mqttClient.setBrokerURL(brokerURL);
+        }
     }
 
-    // Collections
+    /* USERS */
     @JsonIgnore
     public Set<UserModel> getUsers() {
         return usersSet;
@@ -119,6 +127,8 @@ public class HomeModel extends PanacheEntityBase implements HasChildren<RoomMode
         return usersSet.removeIf(user -> user.getID().equals(id));
     }
 
+
+    /* ROLES */
     @JsonIgnore
     public Set<DedicatedUserRole> getUserRoles() {
         return userRoles;
@@ -140,6 +150,7 @@ public class HomeModel extends PanacheEntityBase implements HasChildren<RoomMode
         return userRoles.remove(userRole);
     }
 
+    /* DEVICES */
     @JsonIgnore
     public Set<DeviceModel> getUnAssignedDevices() {
         return unAssignedDevices;
@@ -153,6 +164,7 @@ public class HomeModel extends PanacheEntityBase implements HasChildren<RoomMode
         return unAssignedDevices.remove(device);
     }
 
+    /* ROOMS */
     public void clearRooms() {
         roomsSet = Collections.emptySet();
     }
@@ -178,14 +190,38 @@ public class HomeModel extends PanacheEntityBase implements HasChildren<RoomMode
         return roomsSet.removeIf(room -> room.getID().equals(id));
     }
 
+    @JsonIgnore
     public MqttClientModel getMqttClient() {
         return mqttClient;
+    }
+
+    /* COMPUTED */
+    @JsonProperty("mqttClientID")
+    public Long getMqttClientID() {
+        return mqttClient.getID();
+    }
+
+    @JsonProperty("usersCount")
+    public Integer getUsersCount() {
+        if (usersSet != null) {
+            return usersSet.size();
+        }
+        return 0;
+    }
+
+    @JsonProperty("active")
+    public boolean isHomeActive() {
+        if (mqttClient != null) {
+            return mqttClient.isBrokerActive();
+        }
+        return false;
     }
 
     public void setMqttClient(MqttClientModel mqttClient) {
         this.mqttClient = mqttClient;
     }
 
+    /* MANAGE */
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
