@@ -15,6 +15,7 @@ export default function HomeCard(props) {
     return (
         <MainDisplayCard type={HomeComponent.HOME} homeID={props.value.id} title={props.value.name}
                          active={props.value.active} onSelect={onSelect} brokerURL={props.value.brokerURL}
+                         home={props.value}
                          color={CardIcon.getColorID(props.colorIndex + 2)}/>
     );
 

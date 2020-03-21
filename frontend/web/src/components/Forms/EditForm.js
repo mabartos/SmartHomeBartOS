@@ -27,8 +27,6 @@ export const EditForm = forwardRef((props, ref) => {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
 
-    const {userStore, homeStore, roomStore, productStore, deviceStore} = useStores();
-
     const openForm = () => {
         setOpen(true);
     };
@@ -38,8 +36,9 @@ export const EditForm = forwardRef((props, ref) => {
     };
 
     const handleUpdate = () => {
-        //TODO
-        setOpen(false);
+       if(props.handleUpdate!==undefined)
+           props.handleUpdate();
+        closeForm();
     };
 
     useImperativeHandle(ref, () => {
@@ -99,7 +98,8 @@ export const EditForm = forwardRef((props, ref) => {
                             </CardBody>
                             <CardFooter>
                                 <Button onClick={closeForm} color="secondary">Cancel</Button>
-                                <Button onClick={handleUpdate} color="primary">Update {props.type}</Button>
+                                <Button onClick={handleUpdate}
+                                        color="primary">Update {props.type}</Button>
                             </CardFooter>
                         </Card>
                     </GridItem>

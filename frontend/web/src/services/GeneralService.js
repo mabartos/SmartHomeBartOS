@@ -9,8 +9,8 @@ export default class GeneralService {
         return new Promise((resolve, reject) => {
 
             const headers = {
-                /* "Accept": "application/json",
-                 "Content-type": "application/json"*/
+                "Accept": "application/json",
+                "Content-type": "application/json"
             };
 
             fetch(`${this.urlServer}${path}`, {...settings, headers})
@@ -44,6 +44,7 @@ export default class GeneralService {
                             reject("Server error");
                             break;
                         default:
+                            reject("Error occured");
                             break;
                     }
                 })
@@ -59,6 +60,8 @@ export default class GeneralService {
     };
 
     patch = (path, body) => {
+        console.log("STRIG");
+        console.log(JSON.stringify(body));
         return this.fetch(path, {
             body: JSON.stringify(body),
             method: "PATCH"

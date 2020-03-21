@@ -20,7 +20,7 @@ import Divider from "@material-ui/core/Divider";
 import Paper from "@material-ui/core/Paper";
 import {BooleanDialog} from "../BartDialogs/BooleanDialog";
 import {HomeComponent} from "../../index";
-import UpdateHomeForm from "../Forms/UpdateHomeForm";
+import {UpdateHomeForm} from "../Forms/UpdateHomeForm";
 import {ClickAwayListener} from "@material-ui/core";
 import {EditForm} from "../Forms/EditForm";
 
@@ -49,10 +49,12 @@ export default function GeneralCard(props) {
     const refDelete = useRef(null);
     const refEdit = useRef(null);
 
-    const [settingsAnchor, setSettingsAnchor] = React.useState(false);
+    const [settingsAnchor, setSettingsAnchor] = React.useState(null);
+    const [openSettingsAnchor,setOpenSettingsAnchor]=React.useState(false);
 
     const handleClickSettings = event => {
-        setSettingsAnchor(settingsAnchor ? null : event.currentTarget);
+        setOpenSettingsAnchor(!openSettingsAnchor);
+        setSettingsAnchor(openSettingsAnchor ? null : event.currentTarget);
     };
 
     const handleEdit = () => {
@@ -64,7 +66,7 @@ export default function GeneralCard(props) {
     };
 
     const closeSettings = () => {
-        setSettingsAnchor(false);
+        setOpenSettingsAnchor(false);
     };
 
     const onSelect = () => {
@@ -75,16 +77,10 @@ export default function GeneralCard(props) {
         console.log('Item selected!');
     };
 
-    const getEdit = () => {
-        return (<EditForm ref={refEdit} type={props.type} {...props}>
-            {getEditForm()}
-        </EditForm>)
-    };
-
     const getEditForm = () => {
         switch (props.type) {
             case HomeComponent.HOME:
-                return (<UpdateHomeForm {...props}/>);
+                return (<UpdateHomeForm ref={refEdit} {...props}/>);
             case HomeComponent.USER:
                 break;
             case HomeComponent.ROOM:
@@ -97,7 +93,7 @@ export default function GeneralCard(props) {
     return (
         <GridItem xs={12} sm={6} md={3}>
             <BooleanDialog ref={refDelete} type={props.type} {...props}/>
-            {getEdit()}
+            {getEditForm()}
             <Clickable onClick={() => onSelect()}>
                 <Card className={classes.container}>
                     <BartGeneralHeaderCard title={props.title} active={props.active} color={props.color}
@@ -118,7 +114,7 @@ export default function GeneralCard(props) {
                                 <SettingsIcon className={iconStyle.settings} color={"secondary"}
                                               onClick={handleClickSettings}/>
                             </CardIcon>
-                            <Poppers id={'simple'} open={settingsAnchor} anchorEl={settingsAnchor}
+                            <Poppers id={'simple'} open={openSettingsAnchor} anchorEl={settingsAnchor}
                                      placement={'top'}
                                      transition>
                                 <ClickAwayListener onClickAway={closeSettings}>

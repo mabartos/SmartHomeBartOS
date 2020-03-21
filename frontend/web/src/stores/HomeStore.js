@@ -74,9 +74,9 @@ export class HomeStore extends GeneralStore {
         this._homeService
             .createHome(home)
             .then(this.setHome)
+            .then( this.setActionInvoked("Home is successfully created."))
             .catch(this.setError)
             .finally(this.stopLoading);
-        this.setActionInvoked("Home is successfully created.")
     };
 
     updateHome = (id, home) => {
@@ -84,18 +84,18 @@ export class HomeStore extends GeneralStore {
         this._homeService
             .updateHome(id, home)
             .then(this.setHome)
+            .then(this.setActionInvoked("Home is successfully updated."))
             .catch(this.setError)
             .finally(this.stopLoading)
-            .finally(this.setActionInvoked("Home is successfully updated."));
     };
 
     deleteHome = (id) => {
         this.startLoading();
         this._homeService
             .deleteHome(id)
+            .then(this.setActionInvoked("Home is successfully deleted."))
             .catch(this.setError)
             .finally(this.stopLoading)
-            .finally(this.setActionInvoked("Home is successfully deleted."));
     };
 
     getDevicesInHome = (id) => {

@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
 import org.mabartos.general.UserRole;
 import org.mabartos.interfaces.HasChildren;
 import org.mabartos.utils.DedicatedUserRole;
@@ -32,7 +34,7 @@ import java.util.Set;
 @Entity
 @Table(name = "Homes")
 @Cacheable
-@JsonIgnoreProperties(value = "mqttClientID", ignoreUnknown = true)
+@JsonIgnoreProperties(value = {"mqttClientID","active","usersCount"}, ignoreUnknown = true)
 @JsonPropertyOrder({"id", "name", "active"})
 public class HomeModel extends PanacheEntityBase implements HasChildren<RoomModel> {
 

@@ -22,6 +22,7 @@ export default function CustomInput(props) {
         id,
         labelProps,
         inputProps,
+        onChange,
         error,
         success
     } = props;
@@ -58,6 +59,7 @@ export default function CustomInput(props) {
                     disabled: classes.disabled,
                     underline: underlineClasses
                 }}
+                onChange={onChange}
                 id={id}
                 {...inputProps}
             />

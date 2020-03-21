@@ -2,6 +2,7 @@ package org.mabartos.services.model;
 
 import io.quarkus.runtime.StartupEvent;
 import org.mabartos.api.service.HomeService;
+import org.mabartos.api.service.RoomService;
 import org.mabartos.api.service.UserService;
 import org.mabartos.persistence.model.DeviceModel;
 import org.mabartos.persistence.model.HomeModel;
@@ -18,11 +19,13 @@ import java.util.Set;
 public class HomeServiceImpl extends CRUDServiceImpl<HomeModel, HomeRepository> implements HomeService {
 
     private UserService userService;
+    private RoomService roomService;
 
     @Inject
-    HomeServiceImpl(HomeRepository repository, UserService userService) {
+    HomeServiceImpl(HomeRepository repository, UserService userService, RoomService roomService) {
         super(repository);
         this.userService = userService;
+        this.roomService = roomService;
     }
 
     public void start(@Observes StartupEvent event) {
@@ -108,6 +111,9 @@ public class HomeServiceImpl extends CRUDServiceImpl<HomeModel, HomeRepository> 
     public boolean deleteByID(Long id) {
         HomeModel found = super.findByID(id);
         if (found != null) {
+            found.getChildren().forEach(f -> {
+                roomService.deleteByID(f.getID());
+            });
             return super.deleteByID(id);
         }
         return false;

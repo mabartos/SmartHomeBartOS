@@ -45,9 +45,6 @@ const deviceService = new DeviceService(urlServer);
 const homeStore = new HomeStore(homeService);
 const userStore = new UserStore(userService);
 const roomStore = new RoomStore(roomService);
-/*
-const homeStore = undefined;
-*/
 
 const services = {
     userService,
