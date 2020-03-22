@@ -2,14 +2,18 @@ import React from "react";
 import MainDisplayCard from "../MainDisplayCard";
 import CardIcon from "components/Card/CardIcon.js";
 import {HomeComponent} from "../../../index";
-import {useHistory, useRouteMatch} from "react-router-dom";
+import {useHistory, useLocation, useParams, useRouteMatch} from "react-router-dom";
 
 export default function RoomCard(props) {
-    const {path} = useRouteMatch();
+    const match = useRouteMatch();
+    const {homeID} = useParams();
     const history = useHistory();
+    const location = useLocation();
 
     const onSelect = () => {
-        history.push(`${path}/${props.value.id}`);
+        console.log(match.params);
+        console.log(location);
+
     };
 
     return (

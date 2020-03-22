@@ -13,7 +13,7 @@ export default function ErrorNotification(props) {
 
     return (
         <div>
-            <Notification message={message} color={"danger"} icon={ErrorIcon}/>
+            <Notification message={message} color={"danger"} icon={ErrorIcon} showLoading={props.showLoading}/>
         </div>
     );
 }

@@ -23,25 +23,32 @@ import {Redirect, Route, Router, Switch} from "react-router-dom";
 import Admin from "layouts/Admin.js";
 
 import "assets/css/material-dashboard-react.css?v=1.8.0";
-import UserService from "./services/UserService";
-import HomeService from "./services/HomeService";
-import RoomService from "./services/RoomService";
-import DeviceService from "./services/DeviceService";
-import {HomeStore} from "./stores/HomeStore";
-import {UserStore} from "./stores/UserStore";
-import {RoomStore} from "./stores/RoomStore";
+import UserService from "./services/homeComponent/UserService";
+import HomeService from "./services/homeComponent/HomeService";
+import RoomService from "./services/homeComponent/RoomService";
+import DeviceService from "./services/homeComponent/DeviceService";
+import {HomeStore} from "./stores/homeComponent/HomeStore";
+import {UserStore} from "./stores/homeComponent/UserStore";
+import {RoomStore} from "./stores/homeComponent/RoomStore";
+import LoginPage from "./views/SignIn/LoginPage";
+import AuthService from "./services/auth/AuthService";
+import AuthStore from "./stores/auth/AuthStore";
 
 export const history = createBrowserHistory();
 
 const urlServer = "http://localhost:8888";
 
 // SERVICES
+const authService = new AuthService(urlServer);
+
 const userService = new UserService(urlServer);
 const homeService = new HomeService(urlServer);
 const roomService = new RoomService(urlServer);
 const deviceService = new DeviceService(urlServer);
 
 // STORES
+const authStore = new AuthStore(authService);
+
 const homeStore = new HomeStore(homeService);
 const userStore = new UserStore(userService);
 const roomStore = new RoomStore(roomService);
@@ -50,10 +57,12 @@ const services = {
     userService,
     homeService,
     roomService,
-    deviceService
+    deviceService,
+    authService
 };
 
 const stores = {
+    authStore,
     homeStore,
     userStore,
     roomStore
@@ -67,12 +76,12 @@ export const HomeComponent = {
 };
 
 export const storesContext = React.createContext(stores);
-export const servicesContext = React.createContext(services);
 
 ReactDOM.render(
     <Router history={history}>
         <Switch>
             <Route path="/admin" component={Admin}/>
+            <Route path="/auth/login" component={LoginPage}/>
             <Redirect from="/" to="/admin/dashboard"/>
         </Switch>
     </Router>,

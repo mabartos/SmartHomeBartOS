@@ -42,6 +42,15 @@ public class DataLoader {
             user.setLastname("LastUser" + i);
             services.users().create(user);
         }
+
+        UserModel userDefault = new UserModel();
+        userDefault.setUsername("admin");
+        userDefault.setPassword("admin");
+        userDefault.setEmail("userDefault@gmail.com");
+        userDefault.setFirstname("User");
+        userDefault.setLastname("Default");
+        services.users().create(userDefault);
+
     }
 
     private void addHomes() {
@@ -61,7 +70,7 @@ public class DataLoader {
         home = new HomeModel();
         home.setName("homeDefault");
         home.setBrokerURL("tcp://127.0.0.1:1212");
-        RoomModel room=new RoomModel("room1");
+        RoomModel room = new RoomModel("room1");
         home.addChild(room);
         room.setHome(home);
 

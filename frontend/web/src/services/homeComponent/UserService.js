@@ -1,4 +1,4 @@
-import GeneralService from "./GeneralService";
+import GeneralService from "../GeneralService";
 
 export default class UserService extends GeneralService {
 

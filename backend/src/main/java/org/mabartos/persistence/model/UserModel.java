@@ -3,6 +3,7 @@ package org.mabartos.persistence.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import org.mabartos.general.UserRole;
 import org.mabartos.interfaces.HasChildren;
@@ -28,6 +29,7 @@ import java.util.Set;
 @Table(name = "Users")
 @Cacheable
 @JsonIgnoreProperties(ignoreUnknown = true)
+@JsonPropertyOrder({"id","name","email"})
 public class UserModel extends PanacheEntityBase implements HasChildren<HomeModel> {
 
     @Id

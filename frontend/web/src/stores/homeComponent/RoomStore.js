@@ -1,4 +1,4 @@
-import GeneralStore from "./GeneralStore";
+import GeneralStore from "../GeneralStore";
 import {action, computed, decorate, observable} from "mobx";
 
 export class RoomStore extends GeneralStore {

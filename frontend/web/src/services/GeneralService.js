@@ -15,9 +15,6 @@ export default class GeneralService {
 
             fetch(`${this.urlServer}${path}`, {...settings, headers})
                 .then(response => {
-                    console.log(`${this.urlServer}${path}`);
-                    console.log(response);
-
                     switch (response.status) {
                         case 200:
                         case 201:
@@ -60,8 +57,6 @@ export default class GeneralService {
     };
 
     patch = (path, body) => {
-        console.log("STRIG");
-        console.log(JSON.stringify(body));
         return this.fetch(path, {
             body: JSON.stringify(body),
             method: "PATCH"

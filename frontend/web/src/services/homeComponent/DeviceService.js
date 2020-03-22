@@ -1,4 +1,4 @@
-import GeneralService from "./GeneralService";
+import GeneralService from "../GeneralService";
 import RoomService from "./RoomService";
 
 export default class DeviceService extends GeneralService {

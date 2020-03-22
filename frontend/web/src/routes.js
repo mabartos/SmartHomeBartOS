@@ -33,6 +33,7 @@ import NotificationsPage from "views/Notifications/Notifications.js";
 // core components/views for RTL layout
 import Homes from "./views/Homes/Homes";
 import Home from "./views/Homes/Home.jsx";
+import Room from "./views/Room/Room";
 
 const dashboardRoutes = [
     {
@@ -47,6 +48,22 @@ const dashboardRoutes = [
         name: "Home",
         icon: Person,
         component: Home,
+        layout: "/admin",
+        inSidebar: false
+    },
+    {
+        path: "/homes/:homeID/rooms",
+        name: "Room",
+        icon: Person,
+        component: Room,
+        layout: "/admin",
+        inSidebar: false
+    },
+    {
+        path: "/rooms",
+        name: "Room",
+        icon: Person,
+        component: Room,
         layout: "/admin",
         inSidebar: false
     },

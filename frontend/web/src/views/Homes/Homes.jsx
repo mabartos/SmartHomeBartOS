@@ -50,7 +50,6 @@ export default function Homes() {
                 {actionInvoked && <SuccessNotification message={actionInvoked}/>}
                 {loading && <SemipolarLoading/>}
                 <GridContainer>
-
                     {printAllHomes}
                     <AddCard title="Add Home" color="success"/>
                 </GridContainer>

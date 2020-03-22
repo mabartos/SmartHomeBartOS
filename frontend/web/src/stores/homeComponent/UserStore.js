@@ -1,5 +1,5 @@
 import {action, computed, decorate, observable} from "mobx";
-import GeneralStore from "./GeneralStore";
+import GeneralStore from "../GeneralStore";
 
 export class UserStore extends GeneralStore {
 

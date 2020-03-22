@@ -7,8 +7,11 @@ import {SemipolarLoading} from "react-loadingg";
 
 export default function Notification(props) {
     const [open, setOpen] = React.useState(false);
+    const [showLoading,setShowLoading]=React.useState(props.showLoading);
 
     useEffect(() => {
+        console.log("show");
+        console.log(props.showLoading)
         setOpen(true);
         if (props.close) (
             setTimeout(() => {
@@ -34,7 +37,7 @@ export default function Notification(props) {
                     open={open}
                 />
             </GridItem>
-            {open && props.color === "danger" && <SemipolarLoading/>}
+            {props.showLoading!==false && open && props.color === "danger" && <SemipolarLoading/>}
         </GridContainer>
     );
 }
