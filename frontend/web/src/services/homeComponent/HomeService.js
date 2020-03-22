@@ -5,37 +5,46 @@ export default class HomeService extends GeneralService {
 
     static HOME_ENDPOINT = "/homes";
 
+    _userID;
+
     constructor(urlServer) {
         super(urlServer);
     }
 
-    getAllHomes = () => {
-        return this.fetch(HomeService.HOME_ENDPOINT);
+    setUserID = (userID) => {
+        this._userID = userID;
     };
 
-    getHomeByID = (id) => {
-        return this.fetch(`${HomeService.HOME_ENDPOINT}/${id}`);
+    getURL(homeID) {
+        const basic = `/users/${this._userID}${HomeService.HOME_ENDPOINT}`;
+        return (homeID !== undefined) ? basic + `/${homeID}` : basic;
+    }
+
+    getAllHomes = () => {
+        return this.fetch(this.getURL());
+    };
+
+    getHomeByID = (homeID) => {
+        return this.fetch(this.getURL(homeID));
     };
 
     createHome = (home) => {
-        return this.post(HomeService.HOME_ENDPOINT, home);
+        return this.post(this.getURL(), home);
     };
 
-    updateHome = (id, home) => {
-        return this.patch(`${HomeService.HOME_ENDPOINT}/${id}`, home);
+    updateHome = (homeID, home) => {
+        return this.patch(this.getURL(homeID), home);
     };
 
-    deleteHome = (id) => {
-        return this.delete(`${HomeService.HOME_ENDPOINT}/${id}`);
+    deleteHome = (homeID) => {
+        return this.delete(this.getURL(homeID));
     };
 
-    getDevicesInHome = (id) => {
-        return this.fetch(`${HomeService.HOME_ENDPOINT}/${id}/devices`);
+    getDevicesInHome = (homeID) => {
+        return this.fetch(this.getURL(homeID) + "/devices");
     };
 
-    addHomeToUser = (homeID, userID) => {
-        return this.post(`/users/${userID}/${HomeService.HOME_ENDPOINT}/${homeID}`, null);
+    addHomeToUser = (homeID) => {
+        return this.post(this.getURL(homeID), null);
     };
-
-
 }

@@ -13,6 +13,10 @@ export class HomeStore extends GeneralStore {
         this.getAllHomes();
     }
 
+    setUserID = (userID) => {
+        this._homeService.setUserID(userID);
+    };
+
     setHomes = (homesList) => {
         this._homes.clear();
         this._homes = this.getMapFromList(homesList);
@@ -74,7 +78,7 @@ export class HomeStore extends GeneralStore {
         this._homeService
             .createHome(home)
             .then(this.setHome)
-            .then( this.setActionInvoked("Home is successfully created."))
+            .then(this.setActionInvoked("Home is successfully created."))
             .catch(this.setError)
             .finally(this.stopLoading);
     };

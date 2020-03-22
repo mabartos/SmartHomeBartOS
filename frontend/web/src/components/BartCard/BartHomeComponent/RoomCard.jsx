@@ -11,8 +11,6 @@ export default function RoomCard(props) {
     const location = useLocation();
 
     const onSelect = () => {
-        console.log(match.params);
-        console.log(location);
 
     };
 

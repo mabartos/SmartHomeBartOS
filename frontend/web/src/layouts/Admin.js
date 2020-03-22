@@ -16,7 +16,8 @@ import styles from "assets/jss/material-dashboard-react/layouts/adminStyle.js";
 
 import bgImage from "assets/img/home.jpg";
 import logo from "assets/img/reactlogo.png";
-import Notification from "../components/Notifications/Notification";
+import useStores from "../hooks/useStores";
+import {history} from "../index";
 
 let ps;
 
@@ -51,6 +52,10 @@ const switchRoutes = (
 const useStyles = makeStyles(styles);
 
 export default function Admin({...rest}) {
+
+    const {authStore} = useStores();
+
+
     // styles
     const classes = useStyles();
     // ref to help us initialize PerfectScrollbar on windows devices
@@ -84,6 +89,13 @@ export default function Admin({...rest}) {
             setMobileOpen(false);
         }
     };
+
+    React.useEffect(() => {
+        if (!authStore.isUserLogged) {
+            history.push("/auth/login");
+        }
+    }, []);
+
     // initialize and destroy the PerfectScrollbar plugin
     React.useEffect(() => {
         if (navigator.platform.indexOf("Win") > -1) {

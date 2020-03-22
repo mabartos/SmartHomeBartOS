@@ -82,7 +82,7 @@ ReactDOM.render(
         <Switch>
             <Route path="/admin" component={Admin}/>
             <Route path="/auth/login" component={LoginPage}/>
-            <Redirect from="/" to="/admin/dashboard"/>
+            <Redirect from="/" to="/auth/login"/>
         </Switch>
     </Router>,
     document.getElementById("root")

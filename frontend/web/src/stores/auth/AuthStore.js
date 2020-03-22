@@ -1,5 +1,6 @@
 import GeneralStore from "../GeneralStore";
 import {action, computed, decorate, observable} from "mobx";
+import {history} from "../../index";
 
 export default class AuthStore extends GeneralStore {
 
@@ -15,6 +16,7 @@ export default class AuthStore extends GeneralStore {
     setUser = (user) => {
         this._user = user;
         this.checkError();
+        history.push("/admin");
     };
 
     get user() {

@@ -1,52 +1,41 @@
 import React, {useEffect} from "react";
 import GridContainer from "components/Grid/GridContainer.js";
-
-import MainDisplayCard from "../../components/BartCard/MainDisplayCard";
 import AddCard from "../../components/BartCard/AddCard";
 import {useObserver} from "mobx-react-lite";
 import useStores from "../../hooks/useStores";
-import CardIcon from "components/Card/CardIcon.js";
 import NoItemsAvailable from "../../components/BartCard/NoItemsAvailable";
 import {SemipolarLoading} from 'react-loadingg';
 import ErrorNotification from "../../components/Notifications/ErrorNotification";
 import SuccessNotification from "../../components/Notifications/SuccessNotification";
-import {HomeComponent} from "../../index";
 import HomeCard from "../../components/BartCard/BartHomeComponent/HomeCard";
+import {history} from "../../index";
 
 export default function Homes() {
-    const {homeStore} = useStores();
+    const {homeStore, authStore} = useStores();
     const [mounted, setMounted] = React.useState(false);
 
     useEffect(() => {
-        setMounted(true);
+        authStore.isUserLogged ? homeStore.setUserID(authStore.user.id) : history.push("/auth/login");
     }, []);
 
     useEffect(() => {
-        if (mounted) {
-            homeStore.getAllHomes();
-        }
+        homeStore.getAllHomes();
         const interval = setInterval(() => {
             homeStore.reloadHomes();
         }, 2000);
         return () => clearInterval(interval);
     }, [homeStore]);
 
-    useEffect(() => {
-        return () => {
-            setMounted(false);
-        }
-    });
-
     return useObserver(() => {
         const {error, loading, actionInvoked, homes} = homeStore;
         const allHomes = [...homes].map(([key, item], index) => (
             <HomeCard key={index} value={item} colorIndex={index}/>
         ));
-        const printAllHomes = homes.length === 0 ? <NoItemsAvailable message={"No Homes found"}/> : allHomes;
+        const printAllHomes = [...homes].length === 0 ? <NoItemsAvailable message={"No Homes found"}/> : allHomes;
 
         return (
             <div>
-                {error && <ErrorNotification message={error.message}/>}
+                {error && <ErrorNotification message={error.message || "Error occurred."}/>}
                 {actionInvoked && <SuccessNotification message={actionInvoked}/>}
                 {loading && <SemipolarLoading/>}
                 <GridContainer>

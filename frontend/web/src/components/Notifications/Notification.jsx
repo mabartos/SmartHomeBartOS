@@ -10,8 +10,6 @@ export default function Notification(props) {
     const [showLoading,setShowLoading]=React.useState(props.showLoading);
 
     useEffect(() => {
-        console.log("show");
-        console.log(props.showLoading)
         setOpen(true);
         if (props.close) (
             setTimeout(() => {

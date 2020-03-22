@@ -44,14 +44,10 @@ export default function LoginPage() {
     const [password, setPassword] = useState('');
 
     return useObserver(() => {
-        const {error, loading, actionInvoked, user,isUserLogged} = authStore;
-
+        const {error, loading, actionInvoked} = authStore;
 
         const verifyLogin = () => {
             authStore.login(username, password);
-            if (isUserLogged) {
-                history.push("/admin");
-            }
         };
 
         const manageKeys = (e) => {

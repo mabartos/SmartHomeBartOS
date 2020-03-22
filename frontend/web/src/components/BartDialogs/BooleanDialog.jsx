@@ -47,7 +47,6 @@ export const BooleanDialog = forwardRef((props, ref) => {
                 }
                 break;
             case HomeComponent.HOME:
-                console.log(homeID)
                 if (homeID !== undefined) {
                     homeStore.deleteHome(homeID);
                     return;

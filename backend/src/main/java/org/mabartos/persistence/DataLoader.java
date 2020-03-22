@@ -54,18 +54,30 @@ public class DataLoader {
     }
 
     private void addHomes() {
+        UserModel user = services.users().findByUsername("admin");
+        
         final int CNT = 3;
         for (int i = 0; i < CNT; i++) {
             HomeModel home = new HomeModel();
             StringBuilder builder = new StringBuilder();
             home.setName(builder.append("home").append(i + 2).toString());
             home.setBrokerURL("tcp://127.0.0.1:1883");
-            services.homes().create(home);
+            HomeModel created = services.homes().create(home);
+
+            if (user != null) {
+                services.homes().addUserToHome(user.getID(), created.getID());
+            }
         }
         HomeModel home = new HomeModel();
         home.setName("home1");
         home.setBrokerURL("tcp://127.0.0.1:1883");
-        services.homes().create(home);
+        if (user != null) {
+            home.addUser(user);
+        }
+        HomeModel created = services.homes().create(home);
+        if (user != null) {
+            services.homes().addUserToHome(user.getID(), created.getID());
+        }
 
         home = new HomeModel();
         home.setName("homeDefault");
@@ -74,8 +86,10 @@ public class DataLoader {
         home.addChild(room);
         room.setHome(home);
 
-        services.homes().create(home);
-
+        created = services.homes().create(home);
+        if (user != null) {
+            services.homes().addUserToHome(user.getID(), created.getID());
+        }
     }
 
     private void addUsersToHomes() {

@@ -162,15 +162,6 @@ public class UserModel extends PanacheEntityBase implements HasChildren<HomeMode
         return homesSet.removeIf(home -> home.getID().equals(id));
     }
 
-    /* COMPUTED */
-    @JsonProperty("homesCount")
-    public Integer getHomesCount() {
-        if (homesSet != null) {
-            return homesSet.size();
-        }
-        return 0;
-    }
-
     /* MANAGE */
     @Override
     public boolean equals(Object obj) {
