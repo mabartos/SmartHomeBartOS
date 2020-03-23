@@ -1,29 +1,59 @@
 package org.mabartos.services.auth;
 
-import io.quarkus.runtime.StartupEvent;
+import io.quarkus.security.identity.SecurityIdentity;
 import org.mabartos.api.service.UserService;
-import org.mabartos.api.service.auth.AuthData;
 import org.mabartos.api.service.auth.AuthService;
 import org.mabartos.persistence.model.UserModel;
 
-import javax.enterprise.context.Dependent;
-import javax.enterprise.event.Observes;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import java.security.Principal;
 
-@Dependent
+@RequestScoped
 public class AuthServiceImpl implements AuthService {
 
     @Inject
-    UserService service;
+    UserService userService;
 
-    public void start(@Observes StartupEvent event) {
+    @Inject
+    SecurityIdentity securityIdentity;
+
+    @Inject
+    public AuthServiceImpl() {
+        checkNewUser();
+    }
+
+    private void checkNewUser() {
+        UserModel user = getUserInfo();
+        if (securityIdentity != null && user == null) {
+            UserModel createUser = new UserModel();
+            // createUser.setID(securityIdentity.getAttribute("id"));
+            // createUser.setUsername(securityIdentity.getAttribute("username"));
+            // createUser.setEmail(securityIdentity.getAttribute("email"));
+            userService.create(createUser);
+        }
     }
 
     @Override
-    public UserModel login(AuthData authData) {
-        if (authData != null) {
-            UserModel user = service.findByUsername(authData.getUsername());
-            return (user != null && user.getPassword().equals(authData.getPassword())) ? user : null;
+    public Principal getAuthUser() {
+        if (securityIdentity != null) {
+            return securityIdentity.getPrincipal();
+        }
+        return null;
+    }
+
+    @Override
+    public UserModel getUserInfo() {
+        String username = getPrincipalName();
+        if (username != null) {
+            return userService.findByUsername(username);
+        }
+        return null;
+    }
+
+    private String getPrincipalName() {
+        if (securityIdentity != null && securityIdentity.getPrincipal() != null) {
+            return securityIdentity.getPrincipal().getName();
         }
         return null;
     }

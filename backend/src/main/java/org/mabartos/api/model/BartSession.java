@@ -2,6 +2,7 @@ package org.mabartos.api.model;
 
 import org.mabartos.api.protocol.MqttClientManager;
 import org.mabartos.api.service.AppServices;
+import org.mabartos.api.service.auth.AuthService;
 import org.mabartos.persistence.model.CapabilityModel;
 import org.mabartos.persistence.model.DeviceModel;
 import org.mabartos.persistence.model.HomeModel;
@@ -35,4 +36,6 @@ public interface BartSession extends Serializable {
     MqttClientManager getClientManager();
 
     AppServices services();
+
+    AuthService auth();
 }

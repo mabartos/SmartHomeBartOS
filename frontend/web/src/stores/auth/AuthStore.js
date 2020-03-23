@@ -4,7 +4,15 @@ import {history} from "../../index";
 
 export default class AuthStore extends GeneralStore {
 
+    _keycloak;
+
+    _authenticated;
+
     _user;
+
+    _token;
+
+    _refresh_token;
 
     _authService;
 
@@ -23,6 +31,38 @@ export default class AuthStore extends GeneralStore {
         return this._user;
     }
 
+    setKeycloak = (keycloak) => {
+        this._keycloak = keycloak;
+    };
+
+    get keycloak() {
+        return this._keycloak;
+    };
+
+    setAuthenticated = (authenticated) => {
+        this._authenticated = authenticated;
+    };
+
+    get isAuthenticated() {
+        return this._authenticated;
+    };
+
+    get token() {
+        return this._token;
+    }
+
+    setToken = (token) => {
+        this._token = token;
+    };
+
+    get refreshToken() {
+        return this._refresh_token;
+    }
+
+    setRefreshToken = (refreshToken) => {
+        this._refresh_token = refreshToken;
+    };
+
     login = (username, password) => {
         this.startLoading();
         this._authService
@@ -40,9 +80,21 @@ export default class AuthStore extends GeneralStore {
 
 decorate(AuthStore, {
     _user: observable,
+    _keycloak: observable,
+    _authenticated: observable,
+    _token: observable,
+    _refresh_token: observable,
 
     setUser: action,
+    setKeycloak: action,
+    setAuthenticated: action,
+    setToken: action,
+    setRefreshToken: action,
 
     user: computed,
-    isUserLogged: computed
+    keycloak: computed,
+    token: computed,
+    refreshToken: computed,
+    isUserLogged: computed,
+    isAuthenticated: computed,
 });

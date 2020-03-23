@@ -9,7 +9,6 @@ import org.mabartos.api.service.DeviceService;
 import org.mabartos.api.service.HomeService;
 import org.mabartos.api.service.RoomService;
 import org.mabartos.api.service.UserService;
-import org.mabartos.api.service.auth.AuthService;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.spi.CreationalContext;
@@ -99,10 +98,5 @@ public class DefaultAppServices implements AppServices {
     @Override
     public Vertx getVertx() {
         return vertx;
-    }
-
-    @Override
-    public AuthService auth() {
-        return getProvider(AuthService.class);
     }
 }

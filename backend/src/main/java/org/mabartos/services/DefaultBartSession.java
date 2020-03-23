@@ -8,6 +8,7 @@ import org.mabartos.api.service.DeviceService;
 import org.mabartos.api.service.HomeService;
 import org.mabartos.api.service.RoomService;
 import org.mabartos.api.service.UserService;
+import org.mabartos.api.service.auth.AuthService;
 import org.mabartos.persistence.model.CapabilityModel;
 import org.mabartos.persistence.model.DeviceModel;
 import org.mabartos.persistence.model.HomeModel;
@@ -20,14 +21,17 @@ import java.util.logging.Logger;
 
 @RequestScoped
 public class DefaultBartSession implements BartSession {
+    public static Logger logger = Logger.getLogger(DefaultBartSession.class.getName());
 
     @Inject
     AppServices services;
 
     @Inject
+    AuthService authService;
+
+    @Inject
     MqttClientManager mqttClientManager;
 
-    public static Logger logger = Logger.getLogger(DefaultBartSession.class.getName());
 
     private UserModel actualUser;
     private Long actualUserID;
@@ -116,5 +120,10 @@ public class DefaultBartSession implements BartSession {
     @Override
     public AppServices services() {
         return services;
+    }
+
+    @Override
+    public AuthService auth() {
+        return authService;
     }
 }

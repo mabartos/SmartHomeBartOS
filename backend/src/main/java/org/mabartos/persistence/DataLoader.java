@@ -25,37 +25,23 @@ public class DataLoader {
     }
 
     public void addRecords(@Observes StartupEvent start) {
-        addUsers();
+        addDefaultUser();
         addHomes();
         addUsersToHomes();
         manager.initAllClients();
     }
 
-    private void addUsers() {
-        final int CNT = 10;
-        for (int i = 0; i < CNT; i++) {
-            UserModel user = new UserModel();
-            user.setUsername("user" + i);
-            user.setPassword("user" + i);
-            user.setEmail("user" + i + "@localhost");
-            user.setFirstname("FirstUser" + i);
-            user.setLastname("LastUser" + i);
-            services.users().create(user);
-        }
-
+    private UserModel addDefaultUser() {
         UserModel userDefault = new UserModel();
+        userDefault.setID((long) 2);
         userDefault.setUsername("admin");
-        userDefault.setPassword("admin");
         userDefault.setEmail("userDefault@gmail.com");
-        userDefault.setFirstname("User");
-        userDefault.setLastname("Default");
-        services.users().create(userDefault);
-
+        return services.users().create(userDefault);
     }
 
     private void addHomes() {
         UserModel user = services.users().findByUsername("admin");
-        
+
         final int CNT = 3;
         for (int i = 0; i < CNT; i++) {
             HomeModel home = new HomeModel();
@@ -93,8 +79,6 @@ public class DataLoader {
     }
 
     private void addUsersToHomes() {
-        services.homes().addUserToHome((long) 1, (long) 12);
-        //services.homes().addUserToHome((long)2, (long)24);
-        //services.homes().addUserToHome((long)3, (long)22);
+       // services.homes().addUserToHome((long) 1, (long) 12);
     }
 }

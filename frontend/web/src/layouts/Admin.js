@@ -17,7 +17,9 @@ import styles from "assets/jss/material-dashboard-react/layouts/adminStyle.js";
 import bgImage from "assets/img/home.jpg";
 import logo from "assets/img/reactlogo.png";
 import useStores from "../hooks/useStores";
-import {history} from "../index";
+import KeycloakConfig from "../keycloak";
+import * as Keycloak from "keycloak-js";
+import {useObserver} from "mobx-react-lite";
 
 let ps;
 
@@ -55,7 +57,6 @@ export default function Admin({...rest}) {
 
     const {authStore} = useStores();
 
-
     // styles
     const classes = useStyles();
     // ref to help us initialize PerfectScrollbar on windows devices
@@ -91,10 +92,24 @@ export default function Admin({...rest}) {
     };
 
     React.useEffect(() => {
-        if (!authStore.isUserLogged) {
-            history.push("/auth/login");
-        }
-    }, []);
+        const keycloak = Keycloak(KeycloakConfig);
+        keycloak.init({onLoad: 'login-required'}).success(authenticated => {
+            authStore.setKeycloak(keycloak);
+            authStore.setAuthenticated(authenticated);
+            authStore.setToken(keycloak.token);
+            authStore.setRefreshToken(keycloak.refreshToken);
+
+            setTimeout(() => {
+                keycloak.updateToken(70).success((refresh) => {
+                    refresh ? console.debug('Token refreshed' + refresh) : console.warn('Token not refreshed, valid for '
+                        + Math.round(keycloak.tokenParsed.exp + keycloak.timeSkew - new Date().getTime() / 1000) + ' seconds');
+                }).error(() => {
+                    console.error('Failed to refresh token');
+                });
+
+            }, 60000);
+        });
+    }, [authStore]);
 
     // initialize and destroy the PerfectScrollbar plugin
     React.useEffect(() => {
@@ -114,34 +129,40 @@ export default function Admin({...rest}) {
             window.removeEventListener("resize", resizeFunction);
         };
     }, [mainPanel]);
-    return (
-        <div className={classes.wrapper}>
-            <Sidebar
-                routes={sidebarRoutes()}
-                logoText={"Smart Home"}
-                logo={logo}
-                image={image}
-                handleDrawerToggle={handleDrawerToggle}
-                open={mobileOpen}
-                color={color}
-                {...rest}
-            />
-            <div className={classes.mainPanel} ref={mainPanel}>
-                <Navbar
-                    routes={routes}
+
+    return useObserver(() => {
+
+        const {isAuthenticated, user, keycloak} = authStore;
+
+        return (
+            <div className={classes.wrapper}>
+                <Sidebar
+                    routes={sidebarRoutes()}
+                    logoText={"Smart Home"}
+                    logo={logo}
+                    image={image}
                     handleDrawerToggle={handleDrawerToggle}
+                    open={mobileOpen}
+                    color={color}
                     {...rest}
                 />
-                {/* On the /maps route we want the map to be on full screen - this is not possible if the content and conatiner classes are present because they have some paddings which would make the map smaller */}
-                {getRoute() ? (
-                    <div className={classes.content}>
-                        <div className={classes.container}>{switchRoutes}</div>
-                    </div>
-                ) : (
-                    <div className={classes.map}>{switchRoutes}</div>
-                )}
-                {getRoute() ? <Footer/> : null}
+                <div className={classes.mainPanel} ref={mainPanel}>
+                    <Navbar
+                        routes={routes}
+                        handleDrawerToggle={handleDrawerToggle}
+                        {...rest}
+                    />
+                    {/* On the /maps route we want the map to be on full screen - this is not possible if the content and conatiner classes are present because they have some paddings which would make the map smaller */}
+                    {getRoute() ? (
+                        <div className={classes.content}>
+                            <div className={classes.container}>{switchRoutes}</div>
+                        </div>
+                    ) : (
+                        <div className={classes.map}>{switchRoutes}</div>
+                    )}
+                    {getRoute() ? <Footer/> : null}
+                </div>
             </div>
-        </div>
-    );
+        );
+    });
 }

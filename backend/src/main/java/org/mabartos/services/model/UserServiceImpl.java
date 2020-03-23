@@ -21,12 +21,19 @@ public class UserServiceImpl extends CRUDServiceImpl<UserModel, UserRepository> 
     }
 
     @Override
+    public UserModel findByID(Long id) {
+        return (UserModel) getEntityManager().createQuery("select user from UserModel user where user.idExternalUser = :id")
+                .setParameter("id", id)
+                .getSingleResult();
+    }
+
+    @Override
     public UserModel findByUsername(String username) {
-        return getRepository().find("username", username).firstResult();
+        return getRepository().find("username", username).firstResultOptional().orElse(null);
     }
 
     @Override
     public UserModel findByEmail(String email) {
-        return getRepository().find("email", email).firstResult();
+        return getRepository().find("email", email).firstResultOptional().orElse(null);
     }
 }
