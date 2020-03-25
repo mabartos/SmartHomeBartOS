@@ -1,6 +1,8 @@
 import GeneralStore from "../GeneralStore";
 import {action, computed, decorate, observable} from "mobx";
 import {history} from "../../index";
+import * as Keycloak from "keycloak-js";
+import KeycloakConfig from "../../keycloak";
 
 export default class AuthStore extends GeneralStore {
 
@@ -10,15 +12,11 @@ export default class AuthStore extends GeneralStore {
 
     _user;
 
-    _token;
-
-    _refresh_token;
-
     _authService;
 
     constructor(authService) {
-        super();
-        this._authService = authService;
+        super(authService);
+        this._authService = this._service;
     }
 
     setUser = (user) => {
@@ -47,33 +45,73 @@ export default class AuthStore extends GeneralStore {
         return this._authenticated;
     };
 
-    get token() {
-        return this._token;
+    getToken() {
+        return this._service.token;
     }
 
     setToken = (token) => {
-        this._token = token;
+        this._service.setToken(token);
     };
 
-    get refreshToken() {
-        return this._refresh_token;
+    getRefreshToken() {
+        return this._authService.refreshToken;
     }
 
     setRefreshToken = (refreshToken) => {
-        this._refresh_token = refreshToken;
+        this._service.setRefreshToken(refreshToken);
     };
 
-    login = (username, password) => {
-        this.startLoading();
-        this._authService
-            .login(username, password)
-            .then(this.setUser)
-            .catch(this.setError)
-            .finally(this.stopLoading);
+    initKeycloak = () => {
+        if (!this.isAuthenticated) {
+            let keycloak = Keycloak(KeycloakConfig);
+            this._keycloak = keycloak;
+
+            const auth = keycloak.init({onLoad: 'login-required'}).then(authenticated => {
+                localStorage.setItem("keycloak-token", keycloak.token);
+                localStorage.setItem("keycloak-refresh-token", keycloak.refreshToken);
+
+                setTimeout(() => {
+                    keycloak.updateToken(70).then((refresh) => {
+                        refresh ? console.debug('Token refreshed' + refresh) : console.warn('Token not refreshed, valid for ' +
+                            Math.round(keycloak.tokenParsed.exp + keycloak.timeSkew - new Date().getTime() / 1000) + ' seconds');
+                    }).catch(() => {
+                        console.error('Failed to refresh token');
+                    });
+
+                }, 60000);
+                return authenticated;
+            }).catch(err => console.error(err))
+
+            auth.then(authenticated => {
+                this._authenticated = authenticated;
+            });
+
+            this.setToken(localStorage.getItem("keycloak-token"));
+            this.setRefreshToken(localStorage.getItem("keycloak-refresh-token"));
+
+            this.getInfo().then(this.setUser).catch();
+        }
     };
 
-    get isUserLogged() {
-        return this._user !== undefined && this._user !== null;
+    getInfo = () => {
+        return new Promise((resolve, reject) => {
+            fetch(`${this.keycloak.authServerUrl}realms/${this.keycloak.realm}/protocol/openid-connect/userinfo`, {
+                headers: new Headers({
+                    'Authorization': 'Bearer ' + this.getToken(),
+                    "Accept": "application/json",
+                    "Content-type": "application/json"
+                })
+            }).then(response => {
+                response.json().then(resolve).catch(reject);
+            });
+        });
+    };
+
+    logout = () => {
+        if (this._keycloak) {
+            this._keycloak.logout();
+            history.push("/");
+        }
     };
 
 }
@@ -82,19 +120,12 @@ decorate(AuthStore, {
     _user: observable,
     _keycloak: observable,
     _authenticated: observable,
-    _token: observable,
-    _refresh_token: observable,
 
     setUser: action,
     setKeycloak: action,
     setAuthenticated: action,
-    setToken: action,
-    setRefreshToken: action,
 
     user: computed,
     keycloak: computed,
-    token: computed,
-    refreshToken: computed,
-    isUserLogged: computed,
     isAuthenticated: computed,
 });

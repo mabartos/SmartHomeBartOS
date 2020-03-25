@@ -1,11 +1,17 @@
 import {action, computed, decorate, observable} from "mobx";
 
 export default class GeneralStore {
+    _service = null;
+
     _loading = false;
 
     _error = null;
 
     _actionInvoked = false;
+
+    constructor(service) {
+        this._service = service;
+    }
 
     startLoading = () => {
         this._loading = true;
@@ -25,6 +31,10 @@ export default class GeneralStore {
         this._actionInvoked = message;
     };
 
+    setService = (service) => {
+        this._service = service;
+    };
+
     clearActionInvoked = () => {
         this._actionInvoked = undefined;
     };
@@ -41,6 +51,10 @@ export default class GeneralStore {
         return this._actionInvoked;
     };
 
+    get service() {
+        return this._service;
+    }
+
     checkError = () => {
         if (this._error !== undefined) {
             this._error = undefined;
@@ -54,6 +68,10 @@ export default class GeneralStore {
         }
         return map;
     };
+
+    setToken = (token) => {
+        //this._service.setToken(token);
+    }
 }
 decorate(GeneralStore, {
     _loading: observable,
@@ -64,8 +82,10 @@ decorate(GeneralStore, {
     stopLoading: action,
     setError: action,
     setActionInvoked: action,
+    setService: action,
 
     loading: computed,
     error: computed,
-    actionInvoked: computed
+    actionInvoked: computed,
+    service: computed
 });

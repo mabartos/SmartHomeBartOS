@@ -47,6 +47,7 @@ const roomService = new RoomService(urlServer);
 const deviceService = new DeviceService(urlServer);
 
 // STORES
+// Auth store must be first initialized
 const authStore = new AuthStore(authService);
 
 const homeStore = new HomeStore(homeService);
@@ -76,6 +77,7 @@ export const HomeComponent = {
 };
 
 export const storesContext = React.createContext(stores);
+export const servicesContext = React.createContext(services);
 
 ReactDOM.render(
     <Router history={history}>

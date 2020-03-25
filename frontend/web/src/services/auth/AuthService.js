@@ -8,12 +8,4 @@ export default class AuthService extends GeneralService {
     constructor(urlServer) {
         super(urlServer);
     }
-
-    login = (username, password) => {
-        let authData = {};
-        authData.username = username;
-        authData.password = password;
-        return this.post(`${AuthService.AUTH_ENDPOINT}/login`, authData);
-    };
-
 };

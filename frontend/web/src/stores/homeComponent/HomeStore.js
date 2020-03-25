@@ -8,8 +8,8 @@ export class HomeStore extends GeneralStore {
     _homeService;
 
     constructor(homeService) {
-        super();
-        this._homeService = homeService;
+        super(homeService);
+        this._homeService = this._service;
         this.getAllHomes();
     }
 

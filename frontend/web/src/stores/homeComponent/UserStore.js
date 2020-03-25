@@ -8,8 +8,8 @@ export class UserStore extends GeneralStore {
     _userService;
 
     constructor(userService) {
-        super();
-        this._userService = userService;
+        super(userService);
+        this._userService = this._service;
     }
 
     setUsers = (usersList) => {

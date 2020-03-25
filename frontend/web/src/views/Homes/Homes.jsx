@@ -8,14 +8,11 @@ import {SemipolarLoading} from 'react-loadingg';
 import ErrorNotification from "../../components/Notifications/ErrorNotification";
 import SuccessNotification from "../../components/Notifications/SuccessNotification";
 import HomeCard from "../../components/BartCard/BartHomeComponent/HomeCard";
-import {history} from "../../index";
 
 export default function Homes() {
     const {homeStore, authStore} = useStores();
-    const [mounted, setMounted] = React.useState(false);
 
     useEffect(() => {
-        authStore.isUserLogged ? homeStore.setUserID(authStore.user.id) : history.push("/auth/login");
     }, []);
 
     useEffect(() => {

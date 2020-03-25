@@ -8,6 +8,7 @@ import org.mabartos.persistence.repository.UserRepository;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
+import javax.persistence.NoResultException;
 
 @Dependent
 public class UserServiceImpl extends CRUDServiceImpl<UserModel, UserRepository> implements UserService {
@@ -22,9 +23,13 @@ public class UserServiceImpl extends CRUDServiceImpl<UserModel, UserRepository> 
 
     @Override
     public UserModel findByID(Long id) {
-        return (UserModel) getEntityManager().createQuery("select user from UserModel user where user.idExternalUser = :id")
-                .setParameter("id", id)
-                .getSingleResult();
+        try {
+            return (UserModel) getEntityManager().createQuery("select user from UserModel user where user.idExternalUser = :id")
+                    .setParameter("id", id)
+                    .getSingleResult();
+        } catch (NoResultException nre) {
+            return null;
+        }
     }
 
     @Override

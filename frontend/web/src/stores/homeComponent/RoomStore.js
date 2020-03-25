@@ -8,8 +8,8 @@ export class RoomStore extends GeneralStore {
     _roomService;
 
     constructor(roomService) {
-        super();
-        this._roomService = roomService;
+        super(roomService);
+        this._roomService = this._service;
     }
 
     setRooms = (roomsList) => {

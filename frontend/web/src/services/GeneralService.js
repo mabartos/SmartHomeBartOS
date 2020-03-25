@@ -1,8 +1,26 @@
 export default class GeneralService {
-    urlServer;
+    _urlServer;
+    _token;
+    _refreshToken;
 
     constructor(urlServer) {
-        this.urlServer = urlServer
+        this._urlServer = urlServer
+    }
+
+    setToken = (token) => {
+        this._token = token;
+    };
+
+    setRefreshToken = (refreshToken) => {
+        this._refreshToken = refreshToken;
+    };
+
+    get token() {
+        return this._token;
+    }
+
+    get refreshToken() {
+        return this._refreshToken;
     }
 
     fetch = (path, settings) => {
@@ -13,8 +31,13 @@ export default class GeneralService {
                 "Content-type": "application/json"
             };
 
-            fetch(`${this.urlServer}${path}`, {...settings, headers})
+            if (this._token) {
+                headers["Authorization"] = `Bearer +${this._token}`;
+            }
+
+            fetch(`${this._urlServer}${path}`, {...settings, headers})
                 .then(response => {
+                    console.log(response.reason);
                     switch (response.status) {
                         case 200:
                         case 201:
@@ -23,25 +46,25 @@ export default class GeneralService {
                                 .catch(reject);
                             break;
                         case 400:
-                            reject("Bad request");
+                            reject(response.reason);
                             break;
                         case 401:
-                            reject("You are not authorized");
+                            reject(response.reason);
                             break;
                         case 403:
-                            reject("Forbidden");
+                            reject(response.reason);
                             break;
                         case 404:
-                            reject("Not found");
+                            reject(response.reason);
                             break;
                         case 409:
-                            reject("Conflict");
+                            reject(response.reason);
                             break;
                         case 500:
-                            reject("Server error");
+                            reject(response.reason);
                             break;
                         default:
-                            reject("Error occured");
+                            reject("Error occurred");
                             break;
                     }
                 })
@@ -68,6 +91,4 @@ export default class GeneralService {
             method: "DELETE"
         });
     };
-
-
 }

@@ -16,6 +16,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.Map;
 import java.util.Set;
 
 @Path("/auth")
@@ -38,12 +39,15 @@ public class AuthResourceProvider implements AuthResource {
     @Path("/test")
     @GET
     public Response get() {
-        Set<Credential> cred = securityIdentity.getCredentials();
+       Set<Credential> cred = securityIdentity.getCredentials();
         System.out.println("AUTH");
         cred.forEach(System.out::println);
         Set<String> sd = securityIdentity.getRoles();
         sd.forEach(System.out::println);
-        return Response.ok(securityIdentity.toString()).build();
+
+        Map<String,Object> map=securityIdentity.getAttributes();
+        map.forEach((key,value)-> System.out.println(key));
+        return Response.ok(securityIdentity.getPrincipal()).build();
     }
 
     @Override

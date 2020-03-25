@@ -20,13 +20,18 @@ import CustomInput from "components/CustomInput/CustomInput.js";
 import Button from "components/CustomButtons/Button.js";
 
 import styles from "assets/jss/material-dashboard-react/components/headerLinksStyle.js";
+import useStores from "../../hooks/useStores";
+import {history} from "../../index";
 
 const useStyles = makeStyles(styles);
 
 export default function AdminNavbarLinks() {
     const classes = useStyles();
+    const {authStore} = useStores();
+
     const [openNotification, setOpenNotification] = React.useState(null);
     const [openProfile, setOpenProfile] = React.useState(null);
+
     const handleClickNotification = event => {
         if (openNotification && openNotification.contains(event.target)) {
             setOpenNotification(null);
@@ -34,9 +39,11 @@ export default function AdminNavbarLinks() {
             setOpenNotification(event.currentTarget);
         }
     };
+
     const handleCloseNotification = () => {
         setOpenNotification(null);
     };
+
     const handleClickProfile = event => {
         if (openProfile && openProfile.contains(event.target)) {
             setOpenProfile(null);
@@ -47,6 +54,17 @@ export default function AdminNavbarLinks() {
     const handleCloseProfile = () => {
         setOpenProfile(null);
     };
+
+    const handleLogout = () => {
+        authStore.logout();
+        handleCloseProfile();
+    };
+
+    const handleOpenProfile=()=>{
+        history.push("/admin/user");
+        handleCloseProfile();
+    };
+
     return (
         <div>
             <div className={classes.searchWrapper}>
@@ -65,18 +83,7 @@ export default function AdminNavbarLinks() {
                     <Search/>
                 </Button>
             </div>
-            <Button
-                color={window.innerWidth > 959 ? "transparent" : "white"}
-                justIcon={window.innerWidth > 959}
-                simple={!(window.innerWidth > 959)}
-                aria-label="Dashboard"
-                className={classes.buttonLink}
-            >
-                <Dashboard className={classes.icons}/>
-                <Hidden mdUp implementation="css">
-                    <p className={classes.linkText}>Dashboard</p>
-                </Hidden>
-            </Button>
+
             <div className={classes.manager}>
                 <Button
                     color={window.innerWidth > 959 ? "transparent" : "white"}
@@ -194,7 +201,7 @@ export default function AdminNavbarLinks() {
                                 <ClickAwayListener onClickAway={handleCloseProfile}>
                                     <MenuList role="menu">
                                         <MenuItem
-                                            onClick={handleCloseProfile}
+                                            onClick={handleOpenProfile}
                                             className={classes.dropdownItem}
                                         >
                                             Profile
@@ -207,7 +214,7 @@ export default function AdminNavbarLinks() {
                                         </MenuItem>
                                         <Divider light/>
                                         <MenuItem
-                                            onClick={handleCloseProfile}
+                                            onClick={handleLogout}
                                             className={classes.dropdownItem}
                                         >
                                             Logout
