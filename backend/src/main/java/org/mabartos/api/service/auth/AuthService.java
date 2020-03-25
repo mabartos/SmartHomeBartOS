@@ -6,7 +6,11 @@ import java.security.Principal;
 
 public interface AuthService {
 
+    void checkNewUser();
+
     Principal getAuthUser();
 
     UserModel getUserInfo();
+
+    String getID();
 }

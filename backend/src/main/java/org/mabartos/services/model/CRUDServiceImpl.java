@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 @Transactional
 public class CRUDServiceImpl
-        <T extends Identifiable, Repo extends PanacheRepository<T>> implements CRUDService<T> {
+        <T extends Identifiable<ID>, Repo extends PanacheRepository<T>, ID> implements CRUDService<T, ID> {
 
     private Repo repository;
 
@@ -48,7 +48,7 @@ public class CRUDServiceImpl
     }
 
     @Override
-    public T updateByID(Long id, T entity) {
+    public T updateByID(ID id, T entity) {
         T found = findByID(id);
         if (entity != null && found != null) {
             entity.setID(id);
@@ -65,7 +65,7 @@ public class CRUDServiceImpl
     }
 
     @Override
-    public T findByID(Long id) {
+    public T findByID(ID id) {
         try {
             return repository.find("id", id).firstResult();
         } catch (ClassCastException e) {
@@ -74,7 +74,7 @@ public class CRUDServiceImpl
     }
 
     @Override
-    public boolean deleteByID(Long id) {
+    public boolean deleteByID(ID id) {
         return repository.delete("id", id) > 0;
     }
 

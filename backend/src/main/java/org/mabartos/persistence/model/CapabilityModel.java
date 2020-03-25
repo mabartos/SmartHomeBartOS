@@ -23,7 +23,7 @@ import java.util.Objects;
 @Table(name = "CAPABILITY")
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class CapabilityModel extends PanacheEntityBase implements Serializable, Identifiable {
+public class CapabilityModel extends PanacheEntityBase implements Serializable, Identifiable<Long> {
 
     @Id
     @GeneratedValue

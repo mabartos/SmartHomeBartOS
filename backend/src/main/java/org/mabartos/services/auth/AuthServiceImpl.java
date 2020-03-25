@@ -1,13 +1,17 @@
 package org.mabartos.services.auth;
 
 import io.quarkus.security.identity.SecurityIdentity;
+import org.eclipse.microprofile.jwt.Claim;
+import org.eclipse.microprofile.jwt.Claims;
 import org.mabartos.api.service.UserService;
 import org.mabartos.api.service.auth.AuthService;
 import org.mabartos.persistence.model.UserModel;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.json.JsonString;
 import java.security.Principal;
+import java.util.UUID;
 
 @RequestScoped
 public class AuthServiceImpl implements AuthService {
@@ -19,19 +23,30 @@ public class AuthServiceImpl implements AuthService {
     SecurityIdentity securityIdentity;
 
     @Inject
+    @Claim(standard = Claims.sub)
+    JsonString id;
+
+    @Inject
+    @Claim(standard = Claims.email)
+    JsonString email;
+
+    @Inject
     public AuthServiceImpl() {
-        checkNewUser();
     }
 
-    private void checkNewUser() {
-        UserModel user = getUserInfo();
-        if (securityIdentity != null && user == null) {
+    @Override
+    public void checkNewUser() {
+        if (ableToCreateNewUser(getUserInfo())) {
             UserModel createUser = new UserModel();
-            // createUser.setID(securityIdentity.getAttribute("id"));
-            // createUser.setUsername(securityIdentity.getAttribute("username"));
-            // createUser.setEmail(securityIdentity.getAttribute("email"));
+            createUser.setID(UUID.fromString(id.getString()));
+            createUser.setUsername(securityIdentity.getPrincipal().getName());
+            createUser.setEmail(email.getString());
             userService.create(createUser);
         }
+    }
+
+    private boolean ableToCreateNewUser(UserModel user) {
+        return (securityIdentity != null && user == null && id != null && email != null);
     }
 
     @Override
@@ -49,6 +64,11 @@ public class AuthServiceImpl implements AuthService {
             return userService.findByUsername(username);
         }
         return null;
+    }
+
+    @Override
+    public String getID() {
+        return id.getString();
     }
 
     private String getPrincipalName() {

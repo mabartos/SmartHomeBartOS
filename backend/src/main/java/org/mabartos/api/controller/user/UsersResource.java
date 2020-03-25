@@ -13,6 +13,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import java.util.Set;
+import java.util.UUID;
 
 @Path("/users")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -39,8 +40,8 @@ public interface UsersResource {
 
     @POST
     @Path(USER_ID + "/add")
-    UserModel addUserToHome(@PathParam(USER_ID_NAME) Long id);
+    UserModel addUserToHome(@PathParam(USER_ID_NAME) UUID id);
 
     @Path(USER_ID)
-    UserResource forwardToUser(@PathParam(USER_ID_NAME) Long id);
+    UserResource forwardToUser(@PathParam(USER_ID_NAME) UUID id);
 }

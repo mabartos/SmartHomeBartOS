@@ -2,7 +2,9 @@ package org.mabartos.api.service;
 
 import org.mabartos.persistence.model.UserModel;
 
-public interface UserService extends CRUDService<UserModel> {
+import java.util.UUID;
+
+public interface UserService extends CRUDService<UserModel, UUID> {
 
     UserModel findByUsername(String username);
 

@@ -38,11 +38,15 @@ export default function UserProfile() {
     const classes = useStyles();
     const {authStore} = useStores();
 
+    React.useEffect(() => {
+        authStore.initKeycloak();
+    }, []);
+
     return useObserver(() => {
         const {user} = authStore;
 
         const onSelect = () => {
-          authStore.test();
+            authStore.test();
         };
 
         return (
@@ -56,11 +60,11 @@ export default function UserProfile() {
                                 </a>
                             </CardAvatar>
                             <CardBody profile>
-                                <h4>{user.name}</h4>
-                                <h5>ID: {user.sub}</h5>
-                                <h5>Email: {user.email}</h5>
+                                <h4>{user.name || "Undefined name"}</h4>
+                                <h5>ID: {user.sub || "Undefined ID"}</h5>
+                                <h5>Email: {user.email || "Undefined email"}</h5>
 
-                                <p>{authStore.getToken()}</p>
+                                <p>{authStore.getToken() || "Undefined token"}</p>
 
                                 {/* <p className={classes.description}>
                                     Don{"'"}t be scared of the truth because we need to restart the

@@ -12,7 +12,7 @@ import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 
 @Dependent
-public class MqttClientServiceImpl extends CRUDServiceImpl<MqttClientModel, BartMqttClientRepository> implements MqttClientService {
+public class MqttClientServiceImpl extends CRUDServiceImpl<MqttClientModel, BartMqttClientRepository, Long> implements MqttClientService {
 
     @Inject
     AppServices services;

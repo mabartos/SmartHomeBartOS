@@ -14,7 +14,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Dependent
-public class DeviceServiceImpl extends CRUDServiceImpl<DeviceModel, DeviceRepository> implements DeviceService {
+public class DeviceServiceImpl extends CRUDServiceImpl<DeviceModel, DeviceRepository, Long> implements DeviceService {
 
     @Inject
     DeviceServiceImpl(DeviceRepository repository) {

@@ -10,7 +10,7 @@ import Notification from "../../components/Notifications/Notification";
 import RoomCard from "../../components/BartCard/BartHomeComponent/RoomCard";
 
 export default function Home(props) {
-    const {homeStore, roomStore} = useStores();
+    const {homeStore, roomStore, authStore} = useStores();
     const {homeID} = useParams();
     const {path} = useRouteMatch();
     const history = useHistory();
@@ -24,6 +24,7 @@ export default function Home(props) {
     }, [homeStore, roomStore, id]);
 
     React.useEffect(() => {
+        authStore.initKeycloak();
         const interval = setInterval(() => {
             roomStore.reloadAllRooms(id);
         }, 2000);

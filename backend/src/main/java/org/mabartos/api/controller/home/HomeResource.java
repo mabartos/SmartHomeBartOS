@@ -7,13 +7,10 @@ import org.mabartos.api.controller.user.UsersResource;
 import org.mabartos.persistence.model.DeviceModel;
 import org.mabartos.persistence.model.HomeModel;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.PATCH;
 import javax.ws.rs.Path;
-import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 import java.util.Set;
 

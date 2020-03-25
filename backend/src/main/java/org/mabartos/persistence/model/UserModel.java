@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-import org.mabartos.interfaces.HasChildren;
+import org.mabartos.interfaces.Identifiable;
 
 import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
@@ -21,13 +21,14 @@ import javax.validation.constraints.Email;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Table(name = "Users")
 @Cacheable
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonPropertyOrder({"id", "name", "email"})
-public class UserModel extends PanacheEntityBase implements HasChildren<HomeModel> {
+public class UserModel extends PanacheEntityBase implements Identifiable<UUID> {
 
     @Id
     @GeneratedValue
@@ -35,7 +36,7 @@ public class UserModel extends PanacheEntityBase implements HasChildren<HomeMode
     Long id;
 
     @Column(unique = true, nullable = false)
-    private Long idExternalUser;
+    private UUID uuid;
 
     @Column(unique = true, nullable = false)
     private String username;
@@ -60,9 +61,9 @@ public class UserModel extends PanacheEntityBase implements HasChildren<HomeMode
         this.username = username;
     }
 
-    public UserModel(Long id, String username) {
+    public UserModel(UUID id, String username) {
         this(username);
-        this.idExternalUser = id;
+        this.uuid = id;
     }
 
     public void setUsername(String username) {
@@ -75,13 +76,13 @@ public class UserModel extends PanacheEntityBase implements HasChildren<HomeMode
     }
 
     @Override
-    public Long getID() {
-        return idExternalUser;
+    public UUID getID() {
+        return uuid;
     }
 
     @Override
-    public void setID(Long id) {
-        this.idExternalUser = id;
+    public void setID(UUID id) {
+        this.uuid = id;
     }
 
     public String getEmail() {
@@ -93,24 +94,20 @@ public class UserModel extends PanacheEntityBase implements HasChildren<HomeMode
     }
 
     /* HOMES */
-    @Override
     @JsonIgnore
-    public Set<HomeModel> getChildren() {
+    public Set<HomeModel> getHomes() {
         return homesSet;
     }
 
-    @Override
-    public boolean addChild(HomeModel child) {
+    public boolean addHome(HomeModel child) {
         return homesSet.add(child);
     }
 
-    @Override
-    public boolean removeChild(HomeModel child) {
+    public boolean removeHome(HomeModel child) {
         return homesSet.remove(child);
     }
 
-    @Override
-    public boolean removeChildByID(Long id) {
+    public boolean removeHomeByID(Long id) {
         return homesSet.removeIf(home -> home.getID().equals(id));
     }
 
@@ -132,6 +129,6 @@ public class UserModel extends PanacheEntityBase implements HasChildren<HomeMode
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, email);
+        return Objects.hash(uuid, username, email);
     }
 }

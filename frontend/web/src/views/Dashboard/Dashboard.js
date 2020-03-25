@@ -36,11 +36,18 @@ import {completedTasksChart, dailySalesChart, emailsSubscriptionChart} from "var
 
 import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js";
 import MainDisplayCard from "../../components/BartCard/MainDisplayCard";
+import useStores from "../../hooks/useStores";
 
 const useStyles = makeStyles(styles);
 
 export default function Dashboard() {
     const classes = useStyles();
+    const {authStore} = useStores();
+
+    React.useEffect(() => {
+        authStore.initKeycloak();
+    }, []);
+
     return useObserver(() => (
         <div>
             <GridContainer>

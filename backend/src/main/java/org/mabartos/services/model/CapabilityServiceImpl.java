@@ -10,7 +10,7 @@ import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 
 @Dependent
-public class CapabilityServiceImpl extends CRUDServiceImpl<CapabilityModel, CapabilityRepository> implements CapabilityService {
+public class CapabilityServiceImpl extends CRUDServiceImpl<CapabilityModel, CapabilityRepository, Long> implements CapabilityService {
 
     @Inject
     CapabilityServiceImpl(CapabilityRepository repository) {

@@ -13,6 +13,7 @@ export default function Homes() {
     const {homeStore, authStore} = useStores();
 
     useEffect(() => {
+        authStore.initKeycloak();
     }, []);
 
     useEffect(() => {

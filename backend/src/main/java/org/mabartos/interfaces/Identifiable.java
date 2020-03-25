@@ -1,10 +1,10 @@
 package org.mabartos.interfaces;
 
-public interface Identifiable {
+public interface Identifiable<ID> {
 
     String getName();
 
-    Long getID();
+    ID getID();
 
-    void setID(Long id);
+    void setID(ID id);
 }

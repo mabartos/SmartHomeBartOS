@@ -17,6 +17,7 @@ import org.mabartos.persistence.model.UserModel;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 @RequestScoped
@@ -32,9 +33,8 @@ public class DefaultBartSession implements BartSession {
     @Inject
     MqttClientManager mqttClientManager;
 
-
     private UserModel actualUser;
-    private Long actualUserID;
+    private UUID actualUserID;
 
     protected HomeModel actualHome;
     protected Long actualHomeID;
@@ -53,12 +53,17 @@ public class DefaultBartSession implements BartSession {
     }
 
     @Override
+    public void initEnvironment() {
+        authService.checkNewUser();
+    }
+
+    @Override
     public UserModel getActualUser() {
         return actualUser != null ? actualUser : services().getProvider(UserService.class).findByID(actualUserID);
     }
 
     @Override
-    public BartSession setActualUser(Long id) {
+    public BartSession setActualUser(UUID id) {
         this.actualUser = services().getProvider(UserService.class).findByID(id);
         this.actualUserID = id;
         return this;

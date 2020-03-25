@@ -1,14 +1,13 @@
 package org.mabartos.persistence.model.capability;
 
 import org.mabartos.general.CapabilityType;
-import org.mabartos.interfaces.Identifiable;
 import org.mabartos.persistence.model.CapabilityModel;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
-public class TemperatureCapModel extends CapabilityModel implements Identifiable, HasValue {
+public class TemperatureCapModel extends CapabilityModel implements HasValue {
 
     @Column
     private Double value;

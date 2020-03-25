@@ -3,7 +3,7 @@ package org.mabartos.interfaces;
 import java.io.Serializable;
 import java.util.Set;
 
-public interface HasChildren<T> extends Serializable, Identifiable {
+public interface HasChildren<T> extends Serializable {
 
     Set<T> getChildren();
 

@@ -33,6 +33,7 @@ public class HomeResourceProvider implements HomeResource {
 
     public HomeResourceProvider(BartSession session) {
         this.session = session;
+        this.session.initEnvironment();
     }
 
     @GET

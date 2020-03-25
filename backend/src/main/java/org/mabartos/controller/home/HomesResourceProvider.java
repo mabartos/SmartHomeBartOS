@@ -33,11 +33,12 @@ public class HomesResourceProvider implements HomesResource {
     @Inject
     public HomesResourceProvider(BartSession session) {
         this.session = session;
+        this.session.initEnvironment();
     }
 
     @GET
     public Set<HomeModel> getAll() {
-        return (session.getActualUser() != null) ? session.getActualUser().getChildren() : session.services().homes().getAll();
+        return (session.getActualUser() != null) ? session.getActualUser().getHomes() : session.services().homes().getAll();
     }
 
     @POST
@@ -51,7 +52,7 @@ public class HomesResourceProvider implements HomesResource {
         HomeModel home = session.services().homes().findByID(id);
         if (home != null && session.getActualUser() != null) {
             home.addUser(session.getActualUser());
-            session.getActualUser().addChild(home);
+            session.getActualUser().addHome(home);
             return session.services().homes().updateByID(id, home);
         }
         return null;
@@ -60,7 +61,7 @@ public class HomesResourceProvider implements HomesResource {
     @Path(HOME_ID)
     public HomeResource forwardToHome(@PathParam(HOME_ID_NAME) Long id) {
         if (ControllerUtil.existsItem(session.services().homes(), id)
-                && (session.getActualUser() == null || (ControllerUtil.containsItem(session.getActualUser().getChildren(), id)))) {
+                && (session.getActualUser() == null || (ControllerUtil.containsItem(session.getActualUser().getHomes(), id)))) {
             return new HomeResourceProvider(session.setActualHome(id));
         }
         return null;

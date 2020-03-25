@@ -19,6 +19,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import java.util.Set;
+import java.util.UUID;
 
 @Path("/users")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -32,6 +33,7 @@ public class UsersResourceProvider implements UsersResource {
     @Inject
     public UsersResourceProvider(BartSession session) {
         this.session = session;
+        this.session.initEnvironment();
     }
 
     @GET
@@ -69,10 +71,10 @@ public class UsersResourceProvider implements UsersResource {
 
     @POST
     @Path(USER_ID + "/add")
-    public UserModel addUserToHome(@PathParam(USER_ID_NAME) Long id) {
+    public UserModel addUserToHome(@PathParam(USER_ID_NAME) UUID id) {
         UserModel user = session.services().users().findByID(id);
         if (user != null && session.getActualHome() != null) {
-            user.addChild(session.getActualHome());
+            user.addHome(session.getActualHome());
             session.getActualHome().addUser(user);
             return session.services().users().updateByID(id, user);
         }
@@ -80,7 +82,7 @@ public class UsersResourceProvider implements UsersResource {
     }
 
     @Path(USER_ID)
-    public UserResourceProvider forwardToUser(@PathParam(USER_ID_NAME) Long id) {
+    public UserResourceProvider forwardToUser(@PathParam(USER_ID_NAME) UUID id) {
         if (session.getActualHome() == null || ControllerUtil.containsItem(session.getActualHome().getUsers(), id)) {
             return new UserResourceProvider(session.setActualUser(id));
         }

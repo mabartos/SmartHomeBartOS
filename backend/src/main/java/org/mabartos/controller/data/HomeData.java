@@ -2,7 +2,6 @@ package org.mabartos.controller.data;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import org.mabartos.persistence.model.HomeModel;
 import org.mabartos.protocols.mqtt.data.ConvertableToModel;
 import org.mabartos.protocols.mqtt.utils.MqttSerializeUtils;

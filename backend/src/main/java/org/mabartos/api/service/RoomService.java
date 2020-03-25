@@ -5,7 +5,7 @@ import org.mabartos.persistence.model.RoomModel;
 
 import java.util.Set;
 
-public interface RoomService extends CRUDService<RoomModel> {
+public interface RoomService extends CRUDService<RoomModel, Long> {
 
     Set<RoomModel> findByType(RoomType type);
 }

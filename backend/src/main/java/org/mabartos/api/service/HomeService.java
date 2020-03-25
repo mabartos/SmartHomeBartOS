@@ -4,12 +4,13 @@ import org.mabartos.persistence.model.DeviceModel;
 import org.mabartos.persistence.model.HomeModel;
 
 import java.util.Set;
+import java.util.UUID;
 
-public interface HomeService extends CRUDService<HomeModel> {
+public interface HomeService extends CRUDService<HomeModel, Long> {
 
     boolean addDeviceToHome(DeviceModel device, Long homeID);
 
-    boolean addUserToHome(Long userID, Long homeID);
+    boolean addUserToHome(UUID userID, Long homeID);
 
     boolean removeDeviceFromHome(DeviceModel device, Long homeID);
 

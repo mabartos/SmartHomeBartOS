@@ -23,6 +23,7 @@ public class CapabilityResourceProvider implements CapabilityResource {
 
     public CapabilityResourceProvider(BartSession session) {
         this.session = session;
+        this.session.initEnvironment();
     }
 
     @GET

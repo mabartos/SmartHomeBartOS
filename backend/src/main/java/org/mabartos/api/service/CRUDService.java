@@ -2,15 +2,15 @@ package org.mabartos.api.service;
 
 import java.util.Set;
 
-public interface CRUDService<T> {
+public interface CRUDService<T, ID> {
 
     T create(T entity);
 
-    T updateByID(Long id, T entity);
+    T updateByID(ID id, T entity);
 
     Set<T> getAll();
 
-    T findByID(Long id);
+    T findByID(ID id);
 
-    boolean deleteByID(Long id);
+    boolean deleteByID(ID id);
 }

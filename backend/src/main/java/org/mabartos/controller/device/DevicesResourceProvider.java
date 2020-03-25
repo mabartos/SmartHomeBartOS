@@ -31,6 +31,7 @@ public class DevicesResourceProvider implements DevicesResource {
     @Inject
     public DevicesResourceProvider(BartSession session) {
         this.session = session;
+        this.session.initEnvironment();
     }
 
     @GET

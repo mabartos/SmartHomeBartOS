@@ -7,10 +7,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
-import org.hibernate.annotations.NamedQueries;
-import org.hibernate.annotations.NamedQuery;
 import org.mabartos.general.UserRole;
 import org.mabartos.interfaces.HasChildren;
+import org.mabartos.interfaces.Identifiable;
 import org.mabartos.utils.DedicatedUserRole;
 
 import javax.persistence.Cacheable;
@@ -30,13 +29,14 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Table(name = "Homes")
 @Cacheable
-@JsonIgnoreProperties(value = {"mqttClientID","active","usersCount"}, ignoreUnknown = true)
+@JsonIgnoreProperties(value = {"mqttClientID", "active", "usersCount"}, ignoreUnknown = true)
 @JsonPropertyOrder({"id", "name", "active"})
-public class HomeModel extends PanacheEntityBase implements HasChildren<RoomModel> {
+public class HomeModel extends PanacheEntityBase implements HasChildren<RoomModel>, Identifiable<Long> {
 
     @Id
     @GeneratedValue
@@ -122,10 +122,10 @@ public class HomeModel extends PanacheEntityBase implements HasChildren<RoomMode
     }
 
     public boolean removeUser(UserModel user) {
-        return user.removeChild(this) && usersSet.remove(user);
+        return user.removeHome(this) && usersSet.remove(user);
     }
 
-    public boolean removeUserByID(Long id) {
+    public boolean removeUserByID(UUID id) {
         return usersSet.removeIf(user -> user.getID().equals(id));
     }
 

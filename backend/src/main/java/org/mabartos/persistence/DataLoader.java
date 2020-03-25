@@ -10,6 +10,7 @@ import org.mabartos.persistence.model.UserModel;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
+import java.util.UUID;
 
 @ApplicationScoped
 public class DataLoader {
@@ -33,7 +34,7 @@ public class DataLoader {
 
     private UserModel addDefaultUser() {
         UserModel userDefault = new UserModel();
-        userDefault.setID((long) 2);
+        userDefault.setID(UUID.randomUUID());
         userDefault.setUsername("admin");
         userDefault.setEmail("userDefault@gmail.com");
         return services.users().create(userDefault);
@@ -79,6 +80,6 @@ public class DataLoader {
     }
 
     private void addUsersToHomes() {
-       // services.homes().addUserToHome((long) 1, (long) 12);
+        // services.homes().addUserToHome((long) 1, (long) 12);
     }
 }

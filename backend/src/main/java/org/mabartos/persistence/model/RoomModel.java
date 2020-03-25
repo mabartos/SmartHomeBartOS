@@ -8,6 +8,7 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.mabartos.general.RoomType;
 import org.mabartos.interfaces.HasChildren;
+import org.mabartos.interfaces.Identifiable;
 
 import javax.persistence.Cacheable;
 import javax.persistence.Column;
@@ -27,7 +28,7 @@ import java.util.Set;
 @Table(name = "Rooms")
 @Cacheable
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class RoomModel extends PanacheEntityBase implements HasChildren<DeviceModel> {
+public class RoomModel extends PanacheEntityBase implements HasChildren<DeviceModel>, Identifiable<Long> {
 
     @Id
     @GeneratedValue
@@ -100,7 +101,7 @@ public class RoomModel extends PanacheEntityBase implements HasChildren<DeviceMo
             this.home.addChild(this);
         }
     }
-    
+
     /* DEVICES */
     @Override
     @JsonProperty("devices")

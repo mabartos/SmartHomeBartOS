@@ -18,7 +18,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "MqttClients")
 @Cacheable
-public class MqttClientModel extends PanacheEntityBase implements Serializable, Identifiable {
+public class MqttClientModel extends PanacheEntityBase implements Serializable, Identifiable<Long> {
 
     @Id
     @GeneratedValue

@@ -27,6 +27,7 @@ public class UserResourceProvider implements UserResource {
 
     public UserResourceProvider(BartSession session) {
         this.session = session;
+        this.session.initEnvironment();
     }
 
     @GET
@@ -43,7 +44,7 @@ public class UserResourceProvider implements UserResource {
     public UserModel addUserToHome() {
         UserModel user = session.getActualUser();
         if (session.getActualHome() != null) {
-            user.addChild(session.getActualHome());
+            user.addHome(session.getActualHome());
             return session.services().users().updateByID(session.getActualUser().getID(), user);
         }
         return null;

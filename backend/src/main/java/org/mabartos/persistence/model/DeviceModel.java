@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 @Cacheable
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class DeviceModel extends PanacheEntityBase implements Serializable, Identifiable {
+public class DeviceModel extends PanacheEntityBase implements Serializable, Identifiable<Long> {
 
     @Id
     @GeneratedValue

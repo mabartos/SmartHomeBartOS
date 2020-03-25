@@ -10,12 +10,15 @@ import org.mabartos.persistence.model.RoomModel;
 import org.mabartos.persistence.model.UserModel;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 public interface BartSession extends Serializable {
 
+    void initEnvironment();
+
     UserModel getActualUser();
 
-    BartSession setActualUser(Long id);
+    BartSession setActualUser(UUID id);
 
     HomeModel getActualHome();
 

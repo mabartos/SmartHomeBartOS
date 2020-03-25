@@ -13,7 +13,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Dependent
-public class RoomServiceImpl extends CRUDServiceImpl<RoomModel, RoomRepository> implements RoomService {
+public class RoomServiceImpl extends CRUDServiceImpl<RoomModel, RoomRepository, Long> implements RoomService {
 
     @Inject
     RoomServiceImpl(RoomRepository repository) {

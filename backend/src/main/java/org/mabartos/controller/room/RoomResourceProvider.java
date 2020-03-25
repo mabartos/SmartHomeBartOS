@@ -25,6 +25,7 @@ public class RoomResourceProvider implements RoomResource {
 
     public RoomResourceProvider(BartSession session) {
         this.session = session;
+        this.session.initEnvironment();
     }
 
     @GET

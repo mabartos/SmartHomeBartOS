@@ -14,9 +14,10 @@ import javax.enterprise.context.Dependent;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import java.util.Set;
+import java.util.UUID;
 
 @Dependent
-public class HomeServiceImpl extends CRUDServiceImpl<HomeModel, HomeRepository> implements HomeService {
+public class HomeServiceImpl extends CRUDServiceImpl<HomeModel, HomeRepository, Long> implements HomeService {
 
     private UserService userService;
     private RoomService roomService;
@@ -50,12 +51,12 @@ public class HomeServiceImpl extends CRUDServiceImpl<HomeModel, HomeRepository> 
     }
 
     @Override
-    public boolean addUserToHome(Long userID, Long homeID) {
+    public boolean addUserToHome(UUID userID, Long homeID) {
         try {
             HomeModel home = getRepository().findById(homeID);
             UserModel user = userService.findByID(userID);
             if (home != null && user != null) {
-                user.addChild(home);
+                user.addHome(home);
                 home.addUser(user);
                 getRepository().persistAndFlush(home);
                 return true;
