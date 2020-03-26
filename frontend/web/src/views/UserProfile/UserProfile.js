@@ -8,6 +8,7 @@ import Button from "components/CustomButtons/Button.js";
 import Card from "components/Card/Card.js";
 import CardAvatar from "components/Card/CardAvatar.js";
 import CardBody from "components/Card/CardBody.js";
+import {SemipolarLoading} from "react-loadingg";
 
 import avatar from "assets/img/faces/marc.jpg";
 import useStores from "../../hooks/useStores";
@@ -38,47 +39,57 @@ export default function UserProfile() {
     const classes = useStyles();
     const {authStore} = useStores();
 
-    React.useEffect(() => {
-        authStore.initKeycloak();
-    }, []);
-
     return useObserver(() => {
-        const {user} = authStore;
+        authStore.initKeycloak();
+        const {user, isAuthenticated} = authStore;
 
         const onSelect = () => {
             authStore.test();
         };
 
-        return (
-            <div>
-                <GridContainer justify={"center"}>
-                    <GridItem xs={12} sm={12} md={6}>
-                        <Card profile>
-                            <CardAvatar profile>
-                                <a href="#pablo" onClick={e => e.preventDefault()}>
-                                    <img src={avatar} alt="..."/>
-                                </a>
-                            </CardAvatar>
-                            <CardBody profile>
-                                <h4>{user.name || "Undefined name"}</h4>
-                                <h5>ID: {user.sub || "Undefined ID"}</h5>
-                                <h5>Email: {user.email || "Undefined email"}</h5>
+        const showUserProperty = () => {
+            if (user) {
+                return (
+                    <div>
+                        <h4>{user.name || "Undefined name"}</h4>
+                        <h5>ID: {user.sub || "Undefined ID"}</h5>
+                        <h5>Email: {user.email || "Undefined email"}</h5>
+                    </div>)
+            }
+        };
 
-                                <p>{authStore.getToken() || "Undefined token"}</p>
+        if (isAuthenticated) {
+            return (
+                <div>
+                    <GridContainer justify={"center"}>
+                        <GridItem xs={12} sm={12} md={6}>
+                            <Card profile>
+                                <CardAvatar profile>
+                                    <a href="#pablo" onClick={e => e.preventDefault()}>
+                                        <img src={avatar} alt="..."/>
+                                    </a>
+                                </CardAvatar>
+                                <CardBody profile>
+                                    {showUserProperty()}
 
-                                {/* <p className={classes.description}>
+                                    <p>{authStore.getToken() || "Undefined token"}</p>
+
+                                    {/* <p className={classes.description}>
                                     Don{"'"}t be scared of the truth because we need to restart the
                                     human foundation in truth And I love you like Kanye loves Kanye
                                     I love Rick Owens’ bed design but the back is...
                                 </p>*/}
-                                <Button color="primary" round>
-                                    EDIT
-                                </Button>
-                            </CardBody>
-                        </Card>
-                    </GridItem>
-                </GridContainer>
-            </div>
-        );
+                                    <Button color="primary" round>
+                                        EDIT
+                                    </Button>
+                                </CardBody>
+                            </Card>
+                        </GridItem>
+                    </GridContainer>
+                </div>
+            );
+        } else {
+            return (<SemipolarLoading/>);
+        }
     });
 }

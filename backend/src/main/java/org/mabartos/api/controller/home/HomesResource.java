@@ -11,6 +11,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.Set;
 
 @Path("/homes")
@@ -24,13 +25,13 @@ public interface HomesResource {
     String HOME_PATH = "/homes";
 
     @GET
-    Set<HomeModel> getAll();
+    Response getAll();
 
     @POST
     HomeModel createHome(@Valid HomeModel home);
 
     @POST
-    @Path(HOME_ID + "/add")
+    @Path("/add" + HOME_ID)
     HomeModel addHomeToUser(@PathParam(HOME_ID_NAME) Long id);
 
     @Path(HOME_ID)

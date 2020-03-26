@@ -1,5 +1,6 @@
 import React from "react";
 import GeneralService from "../GeneralService";
+import {keycloakURL} from "../../index";
 
 export default class AuthService extends GeneralService {
 
@@ -8,4 +9,8 @@ export default class AuthService extends GeneralService {
     constructor(urlServer) {
         super(urlServer);
     }
+
+    getUserInfo = () => {
+        return this.fetch("/protocol/openid-connect/userinfo");
+    };
 };

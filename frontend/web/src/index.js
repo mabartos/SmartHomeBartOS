@@ -36,15 +36,19 @@ import AuthStore from "./stores/auth/AuthStore";
 
 export const history = createBrowserHistory();
 
-const urlServer = "http://localhost:8888";
+export const backendURL = "http://localhost:8888";
+export const keycloakURL = "http://localhost:8180/auth/realms/SmartHome";
+
+//seconds
+export const TOKEN_LIFESPAN = 60;
 
 // SERVICES
-const authService = new AuthService(urlServer);
+const authService = new AuthService(keycloakURL);
 
-const userService = new UserService(urlServer);
-const homeService = new HomeService(urlServer);
-const roomService = new RoomService(urlServer);
-const deviceService = new DeviceService(urlServer);
+const userService = new UserService(backendURL);
+const homeService = new HomeService(backendURL);
+const roomService = new RoomService(backendURL);
+const deviceService = new DeviceService(backendURL);
 
 // STORES
 // Auth store must be first initialized

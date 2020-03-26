@@ -1,6 +1,6 @@
 package org.mabartos.api.service;
 
-import io.vertx.core.Vertx;
+import io.vertx.mutiny.core.Vertx;
 import org.mabartos.api.model.MqttClientService;
 
 import javax.persistence.EntityManager;

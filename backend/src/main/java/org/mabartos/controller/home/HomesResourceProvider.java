@@ -5,6 +5,7 @@ import org.mabartos.api.controller.home.HomesResource;
 import org.mabartos.api.model.BartSession;
 import org.mabartos.controller.utils.ControllerUtil;
 import org.mabartos.persistence.model.HomeModel;
+import org.mabartos.persistence.model.UserModel;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -17,6 +18,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -37,8 +39,18 @@ public class HomesResourceProvider implements HomesResource {
     }
 
     @GET
-    public Set<HomeModel> getAll() {
-        return (session.getActualUser() != null) ? session.getActualUser().getHomes() : session.services().homes().getAll();
+    @Path("/test")
+    public Set<HomeModel> getAllTest() {
+        return session.services().homes().getAll();
+    }
+
+    @GET
+    public Response getAll() {
+        UserModel user = session.auth().getUserInfo();
+        if (user != null) {
+            return Response.ok(user.getHomes()).build();
+        }
+        return Response.status(400).build();
     }
 
     @POST
@@ -47,12 +59,13 @@ public class HomesResourceProvider implements HomesResource {
     }
 
     @POST
-    @Path(HOME_ID + "/add")
+    @Path("/add" + HOME_ID)
     public HomeModel addHomeToUser(@PathParam(HOME_ID_NAME) Long id) {
         HomeModel home = session.services().homes().findByID(id);
-        if (home != null && session.getActualUser() != null) {
-            home.addUser(session.getActualUser());
-            session.getActualUser().addHome(home);
+        UserModel user = session.auth().getUserInfo();
+        if (home != null && user != null) {
+            home.addUser(user);
+            user.addHome(home);
             return session.services().homes().updateByID(id, home);
         }
         return null;

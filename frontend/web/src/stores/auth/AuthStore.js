@@ -22,7 +22,7 @@ export default class AuthStore extends GeneralStore {
     setUser = (user) => {
         this._user = user;
         this.checkError();
-        history.push("/admin");
+        /*history.push("/admin");*/
     };
 
     get user() {
@@ -69,18 +69,22 @@ export default class AuthStore extends GeneralStore {
             const auth = keycloak.init({onLoad: 'login-required'}).then(authenticated => {
                 localStorage.setItem("keycloak-token", keycloak.token);
                 localStorage.setItem("keycloak-refresh-token", keycloak.refreshToken);
-
-                setTimeout(() => {
-                    keycloak.updateToken(70).then((refresh) => {
-                        refresh ? console.debug('Token refreshed' + refresh) : console.warn('Token not refreshed, valid for ' +
-                            Math.round(keycloak.tokenParsed.exp + keycloak.timeSkew - new Date().getTime() / 1000) + ' seconds');
-                    }).catch(() => {
-                        console.error('Failed to refresh token');
-                    });
-
-                }, 60000);
                 return authenticated;
-            }).catch(err => console.error(err))
+            }).catch(err => console.error(err));
+
+            setInterval(() => {
+                keycloak.updateToken(30).then((refresh) => {
+                    if (refresh) {
+                        this.setToken(keycloak.token);
+                        this.setRefreshToken(keycloak.refreshToken);
+                        this.getUserInfo().then(this.setUser);
+                    }
+                    refresh ? console.info('Token refreshed' + refresh) : console.warn('Token not refreshed, valid for ' +
+                        Math.round(keycloak.tokenParsed.exp + keycloak.timeSkew - new Date().getTime() / 1000) + ' seconds');
+                }).catch((err) => {
+                    console.error('Failed to refresh token');
+                });
+            }, 5000);
 
             auth.then(authenticated => {
                 this._authenticated = authenticated;
@@ -89,22 +93,8 @@ export default class AuthStore extends GeneralStore {
             this.setToken(localStorage.getItem("keycloak-token"));
             this.setRefreshToken(localStorage.getItem("keycloak-refresh-token"));
 
-            this.getInfo().then(this.setUser).catch();
+            this.getUserInfo().then(this.setUser).catch();
         }
-    };
-
-    getInfo = () => {
-        return new Promise((resolve, reject) => {
-            fetch(`${this.keycloak.authServerUrl}realms/${this.keycloak.realm}/protocol/openid-connect/userinfo`, {
-                headers: new Headers({
-                    'Authorization': 'Bearer ' + this.getToken(),
-                    "Accept": "application/json",
-                    "Content-type": "application/json"
-                })
-            }).then(response => {
-                response.json().then(resolve).catch(reject);
-            });
-        });
     };
 
     logout = () => {
@@ -112,6 +102,10 @@ export default class AuthStore extends GeneralStore {
             this._keycloak.logout();
             history.push("/");
         }
+    };
+
+    getUserInfo = () => {
+        return this._authService.getUserInfo();
     };
 
 }

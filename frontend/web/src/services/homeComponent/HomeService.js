@@ -16,7 +16,7 @@ export default class HomeService extends GeneralService {
     };
 
     getURL(homeID) {
-        const basic = `/users/${this._userID}${HomeService.HOME_ENDPOINT}`;
+        const basic = `${HomeService.HOME_ENDPOINT}`;
         return (homeID !== undefined) ? basic + `/${homeID}` : basic;
     }
 

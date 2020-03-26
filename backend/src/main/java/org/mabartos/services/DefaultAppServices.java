@@ -1,7 +1,7 @@
 package org.mabartos.services;
 
 import io.quarkus.runtime.StartupEvent;
-import io.vertx.core.Vertx;
+import io.vertx.mutiny.core.Vertx;
 import org.mabartos.api.model.MqttClientService;
 import org.mabartos.api.service.AppServices;
 import org.mabartos.api.service.CapabilityService;

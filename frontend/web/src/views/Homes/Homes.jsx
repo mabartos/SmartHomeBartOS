@@ -26,22 +26,27 @@ export default function Homes() {
 
     return useObserver(() => {
         const {error, loading, actionInvoked, homes} = homeStore;
+        const {isAuthenticated} = authStore;
         const allHomes = [...homes].map(([key, item], index) => (
             <HomeCard key={index} value={item} colorIndex={index}/>
         ));
         const printAllHomes = [...homes].length === 0 ? <NoItemsAvailable message={"No Homes found"}/> : allHomes;
 
-        return (
-            <div>
-                {error && <ErrorNotification message={error.message || "Error occurred."}/>}
-                {actionInvoked && <SuccessNotification message={actionInvoked}/>}
-                {loading && <SemipolarLoading/>}
-                <GridContainer>
-                    {printAllHomes}
-                    <AddCard title="Add Home" color="success"/>
-                </GridContainer>
-            </div>
-        );
+        if (isAuthenticated) {
+            return (
+                <div>
+                    {error && <ErrorNotification message={error.message || "Error occurred."}/>}
+                    {actionInvoked && <SuccessNotification message={actionInvoked}/>}
+                    {loading && <SemipolarLoading/>}
+                    <GridContainer>
+                        {printAllHomes}
+                        <AddCard title="Add Home" color="success"/>
+                    </GridContainer>
+                </div>
+            );
+        } else {
+            return (<SemipolarLoading/>)
+        }
     })
 
 }

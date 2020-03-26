@@ -25,19 +25,17 @@ export default class GeneralService {
 
     fetch = (path, settings) => {
         return new Promise((resolve, reject) => {
-
             const headers = {
                 "Accept": "application/json",
                 "Content-type": "application/json"
             };
 
             if (this._token) {
-                headers["Authorization"] = `Bearer +${this._token}`;
+                headers["Authorization"] = `Bearer ${this._token}`;
             }
-
+            console.log(this.token);
             fetch(`${this._urlServer}${path}`, {...settings, headers})
                 .then(response => {
-                    console.log(response.reason);
                     switch (response.status) {
                         case 200:
                         case 201:
