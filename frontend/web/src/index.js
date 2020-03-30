@@ -36,8 +36,8 @@ import AuthStore from "./stores/auth/AuthStore";
 
 export const history = createBrowserHistory();
 
-export const backendURL = "http://localhost:8888";
-export const keycloakURL = "http://localhost:8180/auth/realms/SmartHome";
+export const backendURL = "http://127.0.0.1:8888";
+export const keycloakURL = "http://127.0.0.1:8180/auth/realms/SmartHome";
 
 //seconds
 export const TOKEN_LIFESPAN = 60;

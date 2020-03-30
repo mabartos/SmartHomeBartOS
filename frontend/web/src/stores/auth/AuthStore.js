@@ -46,11 +46,11 @@ export default class AuthStore extends GeneralStore {
     };
 
     getToken() {
-        return this._service.token;
+        return this._authService.token;
     }
 
     setToken = (token) => {
-        this._service.setToken(token);
+        this._authService.setToken(token);
     };
 
     getRefreshToken() {
@@ -58,7 +58,7 @@ export default class AuthStore extends GeneralStore {
     }
 
     setRefreshToken = (refreshToken) => {
-        this._service.setRefreshToken(refreshToken);
+        this._authService.setRefreshToken(refreshToken);
     };
 
     initKeycloak = () => {
@@ -75,8 +75,8 @@ export default class AuthStore extends GeneralStore {
             setInterval(() => {
                 keycloak.updateToken(30).then((refresh) => {
                     if (refresh) {
-                        this.setToken(keycloak.token);
-                        this.setRefreshToken(keycloak.refreshToken);
+                        localStorage.setItem("keycloak-token", keycloak.token);
+                        localStorage.setItem("keycloak-refresh-token", keycloak.refreshToken);
                         this.getUserInfo().then(this.setUser);
                     }
                     refresh ? console.info('Token refreshed' + refresh) : console.warn('Token not refreshed, valid for ' +

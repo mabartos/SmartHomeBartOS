@@ -1,26 +1,8 @@
 export default class GeneralService {
     _urlServer;
-    _token;
-    _refreshToken;
 
     constructor(urlServer) {
         this._urlServer = urlServer
-    }
-
-    setToken = (token) => {
-        this._token = token;
-    };
-
-    setRefreshToken = (refreshToken) => {
-        this._refreshToken = refreshToken;
-    };
-
-    get token() {
-        return this._token;
-    }
-
-    get refreshToken() {
-        return this._refreshToken;
     }
 
     fetch = (path, settings) => {
@@ -29,11 +11,13 @@ export default class GeneralService {
                 "Accept": "application/json",
                 "Content-type": "application/json"
             };
-
-            if (this._token) {
-                headers["Authorization"] = `Bearer ${this._token}`;
+            const token = localStorage.getItem("keycloak-token");
+            if (token) {
+                headers["Authorization"] = `Bearer ${token}`;
+                console.log("token");
+                console.log(token);
             }
-            console.log(this.token);
+
             fetch(`${this._urlServer}${path}`, {...settings, headers})
                 .then(response => {
                     switch (response.status) {
