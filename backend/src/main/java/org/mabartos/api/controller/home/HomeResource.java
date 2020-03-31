@@ -24,7 +24,7 @@ public interface HomeResource {
     HomeModel getHome();
 
     @PATCH
-    HomeModel updateHome(String json);
+    HomeModel updateHome(String JSON);
 
     @DELETE
     Response deleteHome();

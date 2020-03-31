@@ -44,26 +44,18 @@ const dashboardRoutes = [
         layout: "/admin"
     },
     {
+        path: "/homes/:homeID/rooms/:roomID",
+        name: "Room",
+        icon: Person,
+        component: Room,
+        layout: "/admin",
+        inSidebar: false
+    },
+    {
         path: "/homes/:homeID",
         name: "Home",
         icon: Person,
         component: Home,
-        layout: "/admin",
-        inSidebar: false
-    },
-    {
-        path: "/homes/:homeID/rooms",
-        name: "Room",
-        icon: Person,
-        component: Room,
-        layout: "/admin",
-        inSidebar: false
-    },
-    {
-        path: "/rooms",
-        name: "Room",
-        icon: Person,
-        component: Room,
         layout: "/admin",
         inSidebar: false
     },

@@ -36,9 +36,13 @@ export const AddRoomForm = forwardRef((props, ref) => {
             return name.length !== 0;
         };
 
+        const clearStates = () => {
+            setName("");
+        };
+
         return (
             <AddForm ref={ref} type={HomeComponent.ROOM} {...props} color="info" handleAdd={createRoom}
-                     areValidValues={areValidValues}>
+                     areValidValues={areValidValues} clearStates={clearStates}>
                 <GridContainer>
                     <GridItem xs={12} sm={12} md={9}>
                         <CustomInput

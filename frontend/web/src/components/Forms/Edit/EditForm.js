@@ -23,12 +23,32 @@ export const EditForm = forwardRef((props, ref) => {
     };
 
     const closeForm = () => {
+        clearStates();
         setOpen(false);
     };
 
+    const handleKeys = (event) => {
+        switch (event.key) {
+            case 'Enter':
+                handleUpdate();
+                break;
+            case 'Escape':
+                closeForm();
+                break;
+        }
+    };
+
+    const clearStates = () => {
+        if (props.clearStates !== undefined) {
+            props.clearStates();
+        }
+    };
+
     const handleUpdate = () => {
-        if (props.handleUpdate !== undefined)
+        if (props.handleUpdate !== undefined) {
             props.handleUpdate();
+            clearStates();
+        }
         if (props.areValidValues())
             closeForm();
     };
@@ -72,6 +92,7 @@ export const EditForm = forwardRef((props, ref) => {
                 aria-describedby="transition-modal-description"
                 className={classes.modal}
                 open={open}
+                onKeyDown={handleKeys}
                 closeAfterTransition
                 BackdropComponent={Backdrop}
                 BackdropProps={{

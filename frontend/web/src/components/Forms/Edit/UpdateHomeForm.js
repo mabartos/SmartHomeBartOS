@@ -5,7 +5,7 @@ import GridContainer from "../../Grid/GridContainer";
 import {makeStyles} from "@material-ui/core/styles";
 import {EditForm} from "./EditForm";
 import useStores from "../../../hooks/useStores";
-import {BROKER_URL_REGEX} from "../../../index";
+import {BROKER_URL_REGEX, HomeComponent} from "../../../index";
 
 const useStyles = makeStyles(theme => ({
     label: {
@@ -55,8 +55,14 @@ export const UpdateHomeForm = forwardRef((props, ref) => {
         return !errorName && !errorBrokerURL && name.length !== 0;
     };
 
+    const clearStates = () => {
+        setName("");
+        setBrokerURL("");
+    };
+
     return (
-        <EditForm ref={ref} type={props.type} {...props} handleUpdate={handleUpdate} areValidValues={areValidValues}>
+        <EditForm ref={ref} type={HomeComponent.HOME} {...props} handleUpdate={handleUpdate}
+                  areValidValues={areValidValues} clearStates={clearStates}>
             <GridContainer>
                 <GridItem xs={12} sm={12} md={3}>
                     <div className={classes.label}>Name</div>

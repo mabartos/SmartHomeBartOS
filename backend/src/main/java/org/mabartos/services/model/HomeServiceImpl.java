@@ -4,6 +4,7 @@ import io.quarkus.runtime.StartupEvent;
 import org.mabartos.api.service.HomeService;
 import org.mabartos.api.service.RoomService;
 import org.mabartos.api.service.UserService;
+import org.mabartos.controller.data.HomeData;
 import org.mabartos.persistence.model.DeviceModel;
 import org.mabartos.persistence.model.HomeModel;
 import org.mabartos.persistence.model.MqttClientModel;
@@ -103,6 +104,18 @@ public class HomeServiceImpl extends CRUDServiceImpl<HomeModel, HomeRepository, 
         HomeModel found = super.findByID(homeID);
         if (found != null) {
             return found.getUnAssignedDevices();
+        }
+        return null;
+    }
+
+    @Override
+    public HomeModel updateFromJson(Long homeID, String JSON) {
+        HomeModel home = getRepository().findById(homeID);
+        if (home != null) {
+            HomeData data = HomeData.fromJson(JSON);
+            home.setName(data.getName());
+            home.setBrokerURL(data.getBrokerURL());
+            return updateByID(homeID, home);
         }
         return null;
     }

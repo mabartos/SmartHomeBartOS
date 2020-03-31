@@ -38,6 +38,7 @@ public class RoomModel extends PanacheEntityBase implements HasChildren<DeviceMo
     @Column(nullable = false)
     private String name;
 
+    //TODO Is it useful?
     @Column(nullable = false)
     @Enumerated
     private RoomType type = RoomType.NONE;
@@ -104,7 +105,7 @@ public class RoomModel extends PanacheEntityBase implements HasChildren<DeviceMo
 
     /* DEVICES */
     @Override
-    @JsonProperty("devices")
+    @JsonIgnore
     public Set<DeviceModel> getChildren() {
         return devicesSet;
     }

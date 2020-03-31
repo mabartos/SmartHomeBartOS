@@ -12,6 +12,8 @@ import Menu from "@material-ui/icons/Menu";
 // core components
 import AdminNavbarLinks from "./AdminNavbarLinks.js";
 import Button from "components/CustomButtons/Button.js";
+import {useHistory} from "react-router-dom";
+
 
 import styles from "assets/jss/material-dashboard-react/components/headerStyle.js";
 
@@ -19,6 +21,7 @@ const useStyles = makeStyles(styles);
 
 export default function Header(props) {
     const classes = useStyles();
+    const history = useHistory();
 
     function makeBrand() {
         var name;
@@ -40,6 +43,9 @@ export default function Header(props) {
             <Toolbar className={classes.container}>
                 <div className={classes.flex}>
                     {/* Here we create navbar brand, based on route name */}
+                    <Button color="transparent" href="#" className={classes.title} onClick={() => console.log("BACK IN HISTORY")}>
+                        Back
+                    </Button>
                     <Button color="transparent" href="#" className={classes.title}>
                         {makeBrand()}
                     </Button>

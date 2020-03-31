@@ -1,4 +1,4 @@
-import React, {useRef, useState} from "react";
+import React, {useRef} from "react";
 import {Clickable} from "react-clickable";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import {makeStyles} from "@material-ui/core/styles";
@@ -23,8 +23,6 @@ const useInfoStyle = makeStyles(style => ({
 export default function AddCard(props) {
     const infoClasses = useInfoStyle();
     const ref = useRef(null);
-
-    const [showForm, setShowForm] = useState(false);
 
     const getForm = () => {
         switch (props.type) {

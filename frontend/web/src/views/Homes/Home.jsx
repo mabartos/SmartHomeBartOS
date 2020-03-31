@@ -1,20 +1,19 @@
 import React from "react";
-import {useHistory, useParams, useRouteMatch} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import {useObserver} from "mobx-react-lite";
 import useStores from "../../hooks/useStores";
 import GridContainer from "../../components/Grid/GridContainer";
 import NoItemsAvailable from "../../components/BartCard/NoItemsAvailable";
 import AddCard from "../../components/BartCard/AddCard";
 import {SemipolarLoading} from 'react-loadingg';
-import Notification from "../../components/Notifications/Notification";
 import RoomCard from "../../components/BartCard/BartHomeComponent/RoomCard";
 import {HomeComponent} from "../../index";
+import ErrorNotification from "../../components/Notifications/ErrorNotification";
+import SuccessNotification from "../../components/Notifications/SuccessNotification";
 
 export default function Home(props) {
     const {homeStore, roomStore, authStore} = useStores();
     const {homeID} = useParams();
-    const {path} = useRouteMatch();
-    const history = useHistory();
     const id = parseInt(homeID || -1);
 
     React.useEffect(() => {
@@ -33,7 +32,8 @@ export default function Home(props) {
     }, []);
 
     return useObserver(() => {
-        const {error, loading, rooms} = roomStore;
+        const {isAuthenticated} = authStore;
+        const {error, loading, rooms, actionInvoked} = roomStore;
 
         const filterRooms = (rooms, idHome) => {
             let tmp = new Map();
@@ -47,21 +47,26 @@ export default function Home(props) {
 
         const allRooms = [...filterRooms(rooms, id)]
             .map(([key, item], index) => (
-                <RoomCard key={index} value={item}/>
+                <RoomCard key={index} value={item} colorIndex={index + 3}/>
             ));
 
         const printAllRooms = allRooms.length === 0 ? <NoItemsAvailable message={"No Rooms found"}/> : allRooms;
 
-        return (
-            <div>
-                {error && <Notification/>}
-                {loading && <SemipolarLoading/>}
-                <GridContainer>
-                    {printAllRooms}
-                    <AddCard type={HomeComponent.ROOM} title="Add Room" color="success"/>
-                </GridContainer>
-            </div>
-        );
+        if (isAuthenticated) {
+            return (
+                <div>
+                    {error && <ErrorNotification message={error.message || "Error occurred"}/>}
+                    {actionInvoked && <SuccessNotification message={actionInvoked}/>}
+                    {loading && <SemipolarLoading/>}
+                    <GridContainer>
+                        {printAllRooms}
+                        <AddCard type={HomeComponent.ROOM} title="Add Room" color="success"/>
+                    </GridContainer>
+                </div>
+            );
+        } else {
+            return (<SemipolarLoading/>)
+        }
     });
 
 }

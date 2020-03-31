@@ -4,7 +4,6 @@ import org.mabartos.api.controller.device.DevicesResource;
 import org.mabartos.persistence.model.RoomModel;
 
 import javax.transaction.Transactional;
-import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -22,7 +21,7 @@ public interface RoomResource {
     RoomModel getRoom();
 
     @PATCH
-    RoomModel updateRoom(@Valid RoomModel room);
+    RoomModel updateRoom(String JSON);
 
     @DELETE
     boolean deleteRoom();

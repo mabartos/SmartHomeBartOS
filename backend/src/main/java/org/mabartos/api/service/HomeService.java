@@ -15,4 +15,6 @@ public interface HomeService extends CRUDService<HomeModel, Long> {
     boolean removeDeviceFromHome(DeviceModel device, Long homeID);
 
     Set<DeviceModel> getAllUnAssignedDevices(Long homeID);
+
+    HomeModel updateFromJson(Long homeID, String JSON);
 }

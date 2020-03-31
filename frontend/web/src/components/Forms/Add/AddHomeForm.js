@@ -9,8 +9,8 @@ import useStores from "../../../hooks/useStores";
 export const AddHomeForm = forwardRef((props, ref) => {
     const {homeStore} = useStores();
 
-    let name = "";
-    let brokerURL = "";
+    const [name, setName] = React.useState("");
+    const [brokerURL, setBrokerURL] = React.useState("");
 
     const [errorName, setErrorName] = React.useState(false);
     const [errorBrokerURL, setErrorBrokerURL] = React.useState(false);
@@ -18,7 +18,7 @@ export const AddHomeForm = forwardRef((props, ref) => {
     const changeName = (event) => {
         const value = event.target.value;
         setErrorName(value.length === 0);
-        name = value;
+        setName(value);
     };
 
     const validateBrokerURL = (value) => {
@@ -29,7 +29,7 @@ export const AddHomeForm = forwardRef((props, ref) => {
     const changeBrokerURL = (event) => {
         const value = event.target.value;
         setErrorBrokerURL(!validateBrokerURL(value));
-        brokerURL = value;
+        setBrokerURL(value);
     };
 
     const createHome = () => {
@@ -41,12 +41,18 @@ export const AddHomeForm = forwardRef((props, ref) => {
         }
     };
 
+    const clearForms = () => {
+        setName("");
+        setBrokerURL("");
+    };
+
     const areValidValues = () => {
         return !errorName && !errorBrokerURL && name.length !== 0;
     };
 
     return (
-        <AddForm ref={ref} type={HomeComponent.HOME} {...props} handleAdd={createHome} areValidValues={areValidValues}>
+        <AddForm ref={ref} type={HomeComponent.HOME} {...props} clearStates={clearForms} handleAdd={createHome}
+                 areValidValues={areValidValues}>
             <GridContainer>
                 <GridItem xs={12} sm={12} md={9}>
                     <CustomInput

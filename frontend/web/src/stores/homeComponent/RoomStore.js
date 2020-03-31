@@ -27,10 +27,17 @@ export class RoomStore extends GeneralStore {
     }
 
     reloadAllRooms = (homeID) => {
+        const handleError = (error) => {
+            this._rooms = new Map();
+            this.setError(error);
+        };
+
+        this.clearActionInvoked();
+
         this._roomService
             .getAllRooms(homeID)
             .then(this.setRooms)
-            .catch(this.setError);
+            .catch(handleError);
     };
 
     getAllRooms = (homeID) => {
@@ -56,6 +63,7 @@ export class RoomStore extends GeneralStore {
         this._roomService
             .createRoom(homeID, room)
             .then(this.setRoom)
+            .then(this.setActionInvoked("Room was successfully created"))
             .catch(this.setError)
             .finally(this.stopLoading);
     };
@@ -65,6 +73,7 @@ export class RoomStore extends GeneralStore {
         this._roomService
             .addRoomToHome(homeID, roomID)
             .then(this.setRooms)
+            .then(this.setActionInvoked("Room was successfully added to home"))
             .catch(this.setError)
             .finally(this.stopLoading);
     };
@@ -74,6 +83,7 @@ export class RoomStore extends GeneralStore {
         this._roomService
             .updateRoom(homeID, roomID, room)
             .then(this.setRoom)
+            .then(this.setActionInvoked("Room was successfully updated"))
             .catch(this.setError)
             .finally(this.stopLoading);
     };
@@ -82,6 +92,7 @@ export class RoomStore extends GeneralStore {
         this.startLoading();
         this._roomService
             .deleteRoom(homeID, roomID)
+            .then(this.setActionInvoked("Room was successfully deleted"))
             .catch(this.setError)
             .finally(this.stopLoading);
     };

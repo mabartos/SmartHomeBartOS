@@ -7,7 +7,6 @@ import org.mabartos.controller.device.DevicesResourceProvider;
 import org.mabartos.persistence.model.RoomModel;
 
 import javax.transaction.Transactional;
-import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -34,8 +33,8 @@ public class RoomResourceProvider implements RoomResource {
     }
 
     @PATCH
-    public RoomModel updateRoom(@Valid RoomModel room) {
-        return session.services().rooms().updateByID(session.getActualRoom().getID(), room);
+    public RoomModel updateRoom(String JSON) {
+        return session.services().rooms().updateFromJson(session.getActualRoom().getID(), JSON);
     }
 
     @DELETE

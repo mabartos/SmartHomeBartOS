@@ -6,7 +6,6 @@ import org.mabartos.api.controller.home.mqtt.MqttResource;
 import org.mabartos.api.controller.room.RoomsResource;
 import org.mabartos.api.controller.user.UsersResource;
 import org.mabartos.api.model.BartSession;
-import org.mabartos.controller.data.HomeData;
 import org.mabartos.controller.home.mqtt.MqttResourceProvider;
 import org.mabartos.controller.room.RoomsResourceProvider;
 import org.mabartos.controller.user.UsersResourceProvider;
@@ -48,12 +47,8 @@ public class HomeResourceProvider implements HomeResource {
     }
 
     @PATCH
-    public HomeModel updateHome(String json) {
-        HomeModel found = session.services().homes().findByID(session.getActualHome().getID());
-        HomeData data = HomeData.fromJson(json);
-        found.setName(data.getName());
-        found.setBrokerURL(data.getBrokerURL());
-        return session.services().homes().updateByID(session.getActualHome().getID(), found);
+    public HomeModel updateHome(String JSON) {
+        return session.services().homes().updateFromJson(session.getActualHome().getID(), JSON);
     }
 
     @DELETE

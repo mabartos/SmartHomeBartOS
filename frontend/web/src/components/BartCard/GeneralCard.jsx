@@ -22,7 +22,7 @@ import {BooleanDialog} from "../BartDialogs/BooleanDialog";
 import {HomeComponent} from "../../index";
 import {UpdateHomeForm} from "../Forms/Edit/UpdateHomeForm";
 import {ClickAwayListener} from "@material-ui/core";
-import {EditForm} from "../Forms/Edit/EditForm";
+import {UpdateRoomForm} from "../Forms/Edit/UpdateRoomForm";
 
 const useStyles = makeStyles(styles);
 const useDashboardStyle = makeStyles(dashboardStyles);
@@ -84,7 +84,7 @@ export default function GeneralCard(props) {
             case HomeComponent.USER:
                 break;
             case HomeComponent.ROOM:
-                break;
+                return (<UpdateRoomForm ref={refEdit} {...props}/>);
             case HomeComponent.DEVICE:
                 break;
         }
