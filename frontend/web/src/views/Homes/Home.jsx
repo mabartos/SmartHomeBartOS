@@ -8,6 +8,7 @@ import AddCard from "../../components/BartCard/AddCard";
 import {SemipolarLoading} from 'react-loadingg';
 import Notification from "../../components/Notifications/Notification";
 import RoomCard from "../../components/BartCard/BartHomeComponent/RoomCard";
+import {HomeComponent} from "../../index";
 
 export default function Home(props) {
     const {homeStore, roomStore, authStore} = useStores();
@@ -57,7 +58,7 @@ export default function Home(props) {
                 {loading && <SemipolarLoading/>}
                 <GridContainer>
                     {printAllRooms}
-                    <AddCard title="Add Room" color="success"/>
+                    <AddCard type={HomeComponent.ROOM} title="Add Room" color="success"/>
                 </GridContainer>
             </div>
         );

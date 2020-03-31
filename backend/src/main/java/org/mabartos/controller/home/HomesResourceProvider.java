@@ -55,20 +55,19 @@ public class HomesResourceProvider implements HomesResource {
 
     @POST
     public HomeModel createHome(@Valid HomeModel home) {
-        return session.services().homes().create(home);
+        UserModel user = session.auth().getUserInfo();
+        if (user != null) {
+            home.addUser(user);
+            user.addHome(home);
+            return session.services().homes().create(home);
+        }
+        return null;
     }
 
     @POST
     @Path("/add" + HOME_ID)
     public HomeModel addHomeToUser(@PathParam(HOME_ID_NAME) Long id) {
-        HomeModel home = session.services().homes().findByID(id);
-        UserModel user = session.auth().getUserInfo();
-        if (home != null && user != null) {
-            home.addUser(user);
-            user.addHome(home);
-            return session.services().homes().updateByID(id, home);
-        }
-        return null;
+        return session.services().homes().addUserToHome(session.auth().getID(), id);
     }
 
     @Path(HOME_ID)

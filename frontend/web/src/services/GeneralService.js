@@ -14,8 +14,6 @@ export default class GeneralService {
             const token = localStorage.getItem("keycloak-token");
             if (token) {
                 headers["Authorization"] = `Bearer ${token}`;
-                console.log("token");
-                console.log(token);
             }
 
             fetch(`${this._urlServer}${path}`, {...settings, headers})

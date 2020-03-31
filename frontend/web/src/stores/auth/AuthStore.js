@@ -63,44 +63,48 @@ export default class AuthStore extends GeneralStore {
 
     initKeycloak = () => {
         if (!this.isAuthenticated) {
-            let keycloak = Keycloak(KeycloakConfig);
-            this._keycloak = keycloak;
-
-            const auth = keycloak.init({onLoad: 'login-required'}).then(authenticated => {
-                localStorage.setItem("keycloak-token", keycloak.token);
-                localStorage.setItem("keycloak-refresh-token", keycloak.refreshToken);
-                return authenticated;
-            }).catch(err => console.error(err));
-
-            setInterval(() => {
-                keycloak.updateToken(30).then((refresh) => {
-                    if (refresh) {
-                        localStorage.setItem("keycloak-token", keycloak.token);
-                        localStorage.setItem("keycloak-refresh-token", keycloak.refreshToken);
-                        this.getUserInfo().then(this.setUser);
-                    }
-                    refresh ? console.info('Token refreshed' + refresh) : console.warn('Token not refreshed, valid for ' +
-                        Math.round(keycloak.tokenParsed.exp + keycloak.timeSkew - new Date().getTime() / 1000) + ' seconds');
-                }).catch((err) => {
-                    console.error('Failed to refresh token');
-                });
-            }, 5000);
-
-            auth.then(authenticated => {
-                this._authenticated = authenticated;
-            });
-
-            this.setToken(localStorage.getItem("keycloak-token"));
-            this.setRefreshToken(localStorage.getItem("keycloak-refresh-token"));
-
-            this.getUserInfo().then(this.setUser).catch();
+            this.reconnectKeycloak();
         }
+    };
+
+    reconnectKeycloak = () => {
+        let keycloak = Keycloak(KeycloakConfig);
+        this._keycloak = keycloak;
+
+        const auth = keycloak.init({onLoad: 'login-required'}).then(authenticated => {
+            localStorage.setItem("keycloak-token", keycloak.token);
+            localStorage.setItem("keycloak-refresh-token", keycloak.refreshToken);
+            this.getUserInfo().then(this.setUser).catch();
+
+            return authenticated;
+        }).catch(err => console.error(err));
+
+        setInterval(() => {
+            keycloak.updateToken(30).then((refresh) => {
+                if (refresh) {
+                    localStorage.setItem("keycloak-token", keycloak.token);
+                    localStorage.setItem("keycloak-refresh-token", keycloak.refreshToken);
+                    this.getUserInfo().then(this.setUser);
+                }
+                refresh ? console.info('Token refreshed' + refresh) : console.warn('Token not refreshed, valid for ' +
+                    Math.round(keycloak.tokenParsed.exp + keycloak.timeSkew - new Date().getTime() / 1000) + ' seconds');
+            }).catch((err) => {
+                console.error('Failed to refresh token');
+            });
+        }, 5000);
+
+        auth.then(authenticated => {
+            this._authenticated = authenticated;
+        });
+
+        this.setToken(localStorage.getItem("keycloak-token"));
+        this.setRefreshToken(localStorage.getItem("keycloak-refresh-token"));
     };
 
     logout = () => {
         if (this._keycloak) {
             this._keycloak.logout();
-            history.push("/");
+            //history.push("/");
         }
     };
 

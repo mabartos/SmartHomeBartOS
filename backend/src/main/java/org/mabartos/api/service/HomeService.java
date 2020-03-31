@@ -10,7 +10,7 @@ public interface HomeService extends CRUDService<HomeModel, Long> {
 
     boolean addDeviceToHome(DeviceModel device, Long homeID);
 
-    boolean addUserToHome(UUID userID, Long homeID);
+    HomeModel addUserToHome(UUID userID, Long homeID);
 
     boolean removeDeviceFromHome(DeviceModel device, Long homeID);
 

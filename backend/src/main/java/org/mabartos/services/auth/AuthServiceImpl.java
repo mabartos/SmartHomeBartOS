@@ -67,8 +67,8 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public String getID() {
-        return id.getString();
+    public UUID getID() {
+        return UUID.fromString(id.getString());
     }
 
     private String getPrincipalName() {

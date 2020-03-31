@@ -3,25 +3,16 @@ import {makeStyles} from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
-import GridItem from "../Grid/GridItem";
-import CardFooter from "../Card/CardFooter";
+import GridItem from "../../Grid/GridItem";
+import CardFooter from "../../Card/CardFooter";
 import Button from "@material-ui/core/Button";
-import CardBody from "../Card/CardBody";
-import CardHeader from "../Card/CardHeader";
+import CardBody from "../../Card/CardBody";
+import CardHeader from "../../Card/CardHeader";
 import Card from "@material-ui/core/Card";
-import useStores from "../../hooks/useStores";
-import {HomeComponent} from "../../index"
+import {HomeComponent} from "../../../index"
+import {formStyle} from "../../../assets/jss/material-dashboard-react/components/BartStyles/formStyle";
 
-const useStyles = makeStyles(theme => ({
-    modal: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    label: {
-        paddingTop: "20px"
-    }
-}));
+const useStyles = makeStyles(formStyle);
 
 export const EditForm = forwardRef((props, ref) => {
     const classes = useStyles();
@@ -36,9 +27,10 @@ export const EditForm = forwardRef((props, ref) => {
     };
 
     const handleUpdate = () => {
-       if(props.handleUpdate!==undefined)
-           props.handleUpdate();
-        closeForm();
+        if (props.handleUpdate !== undefined)
+            props.handleUpdate();
+        if (props.areValidValues())
+            closeForm();
     };
 
     useImperativeHandle(ref, () => {

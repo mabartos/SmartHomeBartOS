@@ -7,6 +7,7 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.mabartos.api.protocol.BartMqttClient;
 import org.mabartos.api.protocol.MqttClientManager;
 import org.mabartos.api.service.AppServices;
+import org.mabartos.persistence.ValidityUtils;
 import org.mabartos.persistence.model.HomeModel;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -44,27 +45,33 @@ public class DefaultMqttClientManager implements MqttClientManager {
                 .getAll()
                 .stream()
                 .filter(home -> !home.getMqttClient().isBrokerActive())
-                .forEach(home -> initClient(home.getID()));
+                .filter(ValidityUtils::isBrokerURLValid)
+                .map(HomeModel::getID)
+                .forEach(this::initClient);
     }
 
     @Override
     public boolean initAllClients() {
         try {
-            services.homes().getAll().forEach(home -> {
-                BartMqttClient initCl = clients.get()
-                        .stream()
-                        .filter(client -> client.getHome().equals(home))
-                        .findFirst()
-                        .orElse(null);
+            services.homes()
+                    .getAll()
+                    .stream()
+                    .filter(ValidityUtils::isBrokerURLValid)
+                    .forEach(home -> {
+                        BartMqttClient initCl = clients.get()
+                                .stream()
+                                .filter(client -> client.getHome().equals(home))
+                                .findFirst()
+                                .orElse(null);
 
-                if (initCl != null) {
-                    initCl.init(services, home, handler);
-                } else {
-                    initCl = new DefaultBartMqttClient(services, home, handler);
-                    clients.get().add(new DefaultBartMqttClient(services, home, handler));
-                }
-                services.homes().updateByID(home.getID(), initCl.getHome());
-            });
+                        if (initCl != null) {
+                            initCl.init(services, home, handler);
+                        } else {
+                            initCl = new DefaultBartMqttClient(services, home, handler);
+                            clients.get().add(new DefaultBartMqttClient(services, home, handler));
+                        }
+                        services.homes().updateByID(home.getID(), initCl.getHome());
+                    });
             return true;
         } catch (RuntimeException e) {
             e.printStackTrace();
@@ -98,7 +105,7 @@ public class DefaultMqttClientManager implements MqttClientManager {
     public boolean initClient(Long idHome) {
         try {
             HomeModel home = services.homes().findByID(idHome);
-            if (home != null) {
+            if (ValidityUtils.isBrokerURLValid(home)) {
                 BartMqttClient initCl = clients.get()
                         .stream()
                         .filter(f -> f.getHome().getID().equals(idHome))

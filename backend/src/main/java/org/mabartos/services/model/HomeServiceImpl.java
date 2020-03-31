@@ -51,20 +51,19 @@ public class HomeServiceImpl extends CRUDServiceImpl<HomeModel, HomeRepository, 
     }
 
     @Override
-    public boolean addUserToHome(UUID userID, Long homeID) {
+    public HomeModel addUserToHome(UUID userID, Long homeID) {
         try {
             HomeModel home = getRepository().findById(homeID);
             UserModel user = userService.findByID(userID);
             if (home != null && user != null) {
-                user.addHome(home);
                 home.addUser(user);
-                getRepository().persistAndFlush(home);
-                return true;
+                user.addHome(home);
+                return updateByID(homeID, home);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return false;
+        return null;
     }
 
     @Override

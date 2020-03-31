@@ -39,8 +39,11 @@ export default function UserProfile() {
     const classes = useStyles();
     const {authStore} = useStores();
 
+    React.useEffect(() => {
+        authStore.getUserInfo();
+    });
+
     return useObserver(() => {
-        authStore.initKeycloak();
         const {user, isAuthenticated} = authStore;
 
         const onSelect = () => {

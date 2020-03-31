@@ -39,8 +39,7 @@ export const history = createBrowserHistory();
 export const backendURL = "http://127.0.0.1:8888";
 export const keycloakURL = "http://127.0.0.1:8180/auth/realms/SmartHome";
 
-//seconds
-export const TOKEN_LIFESPAN = 60;
+export const BROKER_URL_REGEX = "(tcp|http|https)://.+:*.*";
 
 // SERVICES
 const authService = new AuthService(keycloakURL);

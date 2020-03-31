@@ -20,9 +20,9 @@ import Divider from "@material-ui/core/Divider";
 import Paper from "@material-ui/core/Paper";
 import {BooleanDialog} from "../BartDialogs/BooleanDialog";
 import {HomeComponent} from "../../index";
-import {UpdateHomeForm} from "../Forms/UpdateHomeForm";
+import {UpdateHomeForm} from "../Forms/Edit/UpdateHomeForm";
 import {ClickAwayListener} from "@material-ui/core";
-import {EditForm} from "../Forms/EditForm";
+import {EditForm} from "../Forms/Edit/EditForm";
 
 const useStyles = makeStyles(styles);
 const useDashboardStyle = makeStyles(dashboardStyles);
