@@ -93,8 +93,13 @@ export class RoomStore extends GeneralStore {
         this._roomService
             .deleteRoom(homeID, roomID)
             .then(this.setActionInvoked("Room was successfully deleted"))
+            .then(this.removeFromRoomMap(roomID))
             .catch(this.setError)
             .finally(this.stopLoading);
+    };
+
+    removeFromRoomMap = (id) => {
+        this._rooms.delete(id);
     };
 }
 

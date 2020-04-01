@@ -32,6 +32,9 @@ public interface HomeResource {
     @Path("/mqtt")
     MqttResource forwardToMqttInfo();
 
+    @Path(DevicesResource.DEVICE_PATH)
+    DevicesResource forwardToDevices();
+
     @Path(UsersResource.USER_PATH)
     UsersResource forwardToUsers();
 

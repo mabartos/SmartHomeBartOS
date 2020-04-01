@@ -2,6 +2,7 @@ package org.mabartos.persistence.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -81,8 +82,19 @@ public class DeviceModel extends PanacheEntityBase implements Serializable, Iden
         this.id = id;
     }
 
+    @JsonIgnore
     public RoomModel getRoom() {
         return room;
+    }
+
+    @JsonProperty("roomID")
+    public Long getRoomID() {
+        return (room != null) ? room.getID() : -1;
+    }
+
+    @JsonProperty("homeID")
+    public Long getHomeID() {
+        return (home != null) ? home.getID() : -1;
     }
 
     public void setRoom(RoomModel room) {
@@ -96,6 +108,7 @@ public class DeviceModel extends PanacheEntityBase implements Serializable, Iden
         return null;
     }
 
+    @JsonIgnore
     public HomeModel getHome() {
         return home;
     }
@@ -115,7 +128,6 @@ public class DeviceModel extends PanacheEntityBase implements Serializable, Iden
         return Collections.emptySet();
     }
 
-    @JsonIgnore
     public Set<CapabilityModel> getCapabilities() {
         return capabilities;
     }

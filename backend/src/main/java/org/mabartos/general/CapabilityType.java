@@ -13,7 +13,7 @@ public enum CapabilityType {
     PIR("pir"),
     GAS_SENSOR("gas"),
     STATISTICS("stats"),
-    AIRCONDITIONER("ac"),
+    AIR_CONDITIONER("ac"),
     OTHER("other");
 
     private String name;

@@ -33,6 +33,7 @@ import {RoomStore} from "./stores/homeComponent/RoomStore";
 import LoginPage from "./views/SignIn/LoginPage";
 import AuthService from "./services/auth/AuthService";
 import AuthStore from "./stores/auth/AuthStore";
+import {DeviceStore} from "./stores/homeComponent/DeviceStore";
 
 export const history = createBrowserHistory();
 
@@ -56,6 +57,7 @@ const authStore = new AuthStore(authService);
 const homeStore = new HomeStore(homeService);
 const userStore = new UserStore(userService);
 const roomStore = new RoomStore(roomService);
+const deviceStore = new DeviceStore(deviceService);
 
 const services = {
     userService,
@@ -69,7 +71,8 @@ const stores = {
     authStore,
     homeStore,
     userStore,
-    roomStore
+    roomStore,
+    deviceStore
 };
 
 export const HomeComponent = {

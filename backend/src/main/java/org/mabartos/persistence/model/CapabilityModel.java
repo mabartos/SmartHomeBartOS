@@ -32,6 +32,9 @@ public class CapabilityModel extends PanacheEntityBase implements Serializable, 
     @Column(name = "NAME")
     private String name;
 
+    @Column
+    private boolean enabled = true;
+
     @Enumerated
     private CapabilityType type;
 
@@ -66,6 +69,14 @@ public class CapabilityModel extends PanacheEntityBase implements Serializable, 
         this.name = name;
     }
 
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
     public CapabilityType getType() {
         return type;
     }
@@ -81,9 +92,7 @@ public class CapabilityModel extends PanacheEntityBase implements Serializable, 
 
     @JsonProperty("deviceID")
     public Long getDeviceID() {
-        if (device != null)
-            return device.getID();
-        return null;
+        return (device != null) ? device.getID() : -1;
     }
 
     public void setDevice(DeviceModel device) {

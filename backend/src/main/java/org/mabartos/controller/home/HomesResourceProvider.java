@@ -4,7 +4,11 @@ import org.mabartos.api.controller.home.HomeResource;
 import org.mabartos.api.controller.home.HomesResource;
 import org.mabartos.api.model.BartSession;
 import org.mabartos.controller.utils.ControllerUtil;
+import org.mabartos.general.CapabilityType;
+import org.mabartos.persistence.model.CapabilityModel;
+import org.mabartos.persistence.model.DeviceModel;
 import org.mabartos.persistence.model.HomeModel;
+import org.mabartos.persistence.model.RoomModel;
 import org.mabartos.persistence.model.UserModel;
 
 import javax.enterprise.context.RequestScoped;
@@ -38,6 +42,38 @@ public class HomesResourceProvider implements HomesResource {
         this.session.initEnvironment();
     }
 
+
+    //TODO test init
+    @GET
+    @Path("/init")
+    public HomeModel init() {
+        HomeModel home = new HomeModel("homeTest");
+        UserModel user = session.auth().getUserInfo();
+        home.addUser(user);
+        user.addHome(home);
+        home = session.services().homes().create(home);
+        RoomModel room = new RoomModel("roomTest");
+        room.setHome(home);
+        home.addChild(room);
+        room = session.services().rooms().create(room);
+
+        DeviceModel device = new DeviceModel("device1");
+        device.setRoom(room);
+        device.setHome(home);
+        device = session.services().devices().create(device);
+
+        CapabilityModel cap1 = new CapabilityModel("cap1", CapabilityType.LIGHT);
+        CapabilityModel cap2 = new CapabilityModel("cap2", CapabilityType.GAS_SENSOR);
+        cap1.setDevice(device);
+        cap2.setDevice(device);
+        device.addCapability(cap1);
+        device.addCapability(cap2);
+        session.services().capabilities().create(cap1);
+        session.services().capabilities().create(cap2);
+        return home;
+    }
+
+    //TODO
     @GET
     @Path("/test")
     public Set<HomeModel> getAllTest() {

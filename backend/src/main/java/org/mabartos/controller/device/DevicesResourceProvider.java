@@ -4,13 +4,9 @@ import org.mabartos.api.controller.device.DeviceResource;
 import org.mabartos.api.controller.device.DevicesResource;
 import org.mabartos.api.model.BartSession;
 import org.mabartos.controller.utils.ControllerUtil;
-import org.mabartos.persistence.model.CapabilityModel;
 import org.mabartos.persistence.model.DeviceModel;
 
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
 import javax.transaction.Transactional;
-import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -20,15 +16,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.util.Set;
 
-@Path("/devices")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Transactional
-@RequestScoped
 public class DevicesResourceProvider implements DevicesResource {
     private final BartSession session;
 
-    @Inject
     public DevicesResourceProvider(BartSession session) {
         this.session = session;
         this.session.initEnvironment();
@@ -39,20 +32,17 @@ public class DevicesResourceProvider implements DevicesResource {
         return session.getActualRoom() != null ? session.getActualRoom().getChildren() : session.services().devices().getAll();
     }
 
+    
     @GET
-    @Path("/caps")
-    public Set<CapabilityModel> getCaps() {
-        return session.services().capabilities().getAll();
-    }
-
-    @POST
-    public DeviceModel createDevice(@Valid DeviceModel device) {
+    @Path("test")
+    public DeviceModel createDevice() {
         if (session.getActualHome() != null) {
-            device.setHome(session.getActualHome());
+            DeviceModel test = new DeviceModel("test");
+            test.setHome(session.getActualHome());
             if (session.getActualRoom() != null) {
-                device.setRoom(session.getActualRoom());
+                test.setRoom(session.getActualRoom());
             }
-            return session.services().devices().create(device);
+            return session.services().devices().create(test);
         }
         return null;
     }

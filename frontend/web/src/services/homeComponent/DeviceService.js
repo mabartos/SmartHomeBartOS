@@ -6,16 +6,27 @@ export default class DeviceService extends GeneralService {
     static DEVICE_ENDPOINT = "/devices";
     static CAPABILITY_ENDPOINT = "/capability";
 
+    homeID;
+    roomID;
+
     constructor(urlServer) {
         super(urlServer);
     }
 
-    static getPath(homeID, roomID) {
-        return `${RoomService.getPath(homeID)}/${roomID}/${this.DEVICE_ENDPOINT}`;
+    setHomeID = (id) => {
+        this.homeID = id;
+    };
+
+    setRoomID = (id) => {
+        this.roomID = id;
+    };
+
+    getPath() {
+        return `${RoomService.getPath(this.homeID)}/${this.roomID}${DeviceService.DEVICE_ENDPOINT}`;
     }
 
     getAllDevices = () => {
-        return this.fetch(DeviceService.DEVICE_ENDPOINT);
+        return this.fetch(this.getPath());
     };
 
     getDeviceByID = (id) => {

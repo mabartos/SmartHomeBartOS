@@ -97,6 +97,7 @@ export class HomeStore extends GeneralStore {
         this.startLoading();
         this._homeService
             .deleteHome(id)
+            .then(this.removeFromHomesMap(id))
             .then(this.setActionInvoked("Home is successfully deleted."))
             .catch(this.setError)
             .finally(this.stopLoading)
@@ -117,6 +118,10 @@ export class HomeStore extends GeneralStore {
             .addHomeToUser(homeID, userID)
             .catch(this.setError)
             .finally(this.stopLoading);
+    };
+
+    removeFromHomesMap = (id) => {
+        this._homes.delete(id);
     };
 }
 
