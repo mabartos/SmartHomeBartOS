@@ -2,6 +2,7 @@ package org.mabartos.protocols.mqtt.data;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.mabartos.protocols.mqtt.utils.MqttSerializeUtils;
 
@@ -9,8 +10,8 @@ import java.util.Set;
 
 public class AddDeviceRequestData implements MqttSerializable {
 
-    @JsonProperty("idMessage")
-    private Long idMessage;
+    @JsonProperty("msgID")
+    private Long mgsID;
 
     @JsonProperty("name")
     private String name;
@@ -21,20 +22,20 @@ public class AddDeviceRequestData implements MqttSerializable {
 
     @JsonCreator
     public AddDeviceRequestData(
-            @JsonProperty("idMessage") Long idMessage,
+            @JsonProperty("msgID") Long msgID,
             @JsonProperty("name") String name,
             @JsonProperty("capabilities") Set<CapabilityData> capabilities) {
-        this.idMessage = idMessage;
+        this.mgsID = msgID;
         this.name = name;
         this.capabilities = capabilities;
     }
 
-    public Long getIdMessage() {
-        return idMessage;
+    public Long getMgsID() {
+        return mgsID;
     }
 
-    public void setIdMessage(Long idMessage) {
-        this.idMessage = idMessage;
+    public void setMgsID(Long mgsID) {
+        this.mgsID = mgsID;
     }
 
     public String getName() {

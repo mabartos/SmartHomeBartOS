@@ -1,5 +1,6 @@
 import GeneralService from "../GeneralService";
 import RoomService from "./RoomService";
+import HomeService from "./HomeService";
 
 export default class DeviceService extends GeneralService {
 
@@ -8,6 +9,14 @@ export default class DeviceService extends GeneralService {
 
     homeID;
     roomID;
+
+    static getTopic(homeID, roomID) {
+        return `${HomeService.HOME_ENDPOINT}/${homeID}/${RoomService.ROOM_ENDPOINT}/${roomID}`;
+    }
+
+    static getFullTopic(homeID, roomID, capability, id) {
+        return DeviceService.getTopic(homeID, roomID) + "/" + capability + "/" + id;
+    }
 
     constructor(urlServer) {
         super(urlServer);
@@ -30,26 +39,28 @@ export default class DeviceService extends GeneralService {
     };
 
     getDeviceByID = (id) => {
-        return this.fetch(`${DeviceService.DEVICE_ENDPOINT}/${id}`);
+        return this.fetch(`${this.getPath()}/${id}`);
     };
 
     getCapabilities = (id) => {
-        return this.fetch(`${DeviceService.DEVICE_ENDPOINT}/${id}${DeviceService.CAPABILITY_ENDPOINT}`)
+        return this.fetch(`${this.getPath()}/${id}${DeviceService.CAPABILITY_ENDPOINT}`)
     };
 
     createDevice = (device) => {
-        return this.post(DeviceService.DEVICE_ENDPOINT, device);
+        return this.post(`${this.getPath()}`, device);
     };
 
     addDeviceToRoom = (homeID, roomID, deviceID) => {
-        return this.post(`${DeviceService.getPath(homeID, roomID)}/${deviceID}`);
+        this.setHomeID(homeID);
+        this.setRoomID(roomID);
+        return this.post(`${this.getPath()}/${deviceID}/add`);
     };
 
     updateDevice = (id, device) => {
-        return this.patch(`${DeviceService.DEVICE_ENDPOINT} /${id}`, device);
+        return this.patch(`${this.getPath()}/${id}`, device);
     };
 
     deleteDevice = (id) => {
-        return this.delete(`${DeviceService.DEVICE_ENDPOINT} /${id}`);
+        return this.delete(`${this.getPath()} /${id}`);
     };
 }

@@ -19,6 +19,8 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.io.Serializable;
@@ -33,6 +35,11 @@ import java.util.stream.Collectors;
 @Cacheable
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @JsonIgnoreProperties(ignoreUnknown = true)
+@NamedQueries({
+        @NamedQuery(name = "setDeviceRoomToNull", query = "update DeviceModel set room=null where room.id=:roomID"),
+        @NamedQuery(name = "deleteDeviceFromHome", query = "delete from DeviceModel where home.id=:homeID")
+}
+)
 public class DeviceModel extends PanacheEntityBase implements Serializable, Identifiable<Long> {
 
     @Id
@@ -43,7 +50,7 @@ public class DeviceModel extends PanacheEntityBase implements Serializable, Iden
     @Column(name = "NAME", nullable = false)
     private String name;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne()
     @JoinColumn(name = "ROOM")
     private RoomModel room;
 

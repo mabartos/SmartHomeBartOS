@@ -10,6 +10,7 @@ import org.mabartos.protocols.mqtt.exceptions.DeviceConflictException;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
+import javax.persistence.Query;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -38,5 +39,14 @@ public class DeviceServiceImpl extends CRUDServiceImpl<DeviceModel, DeviceReposi
 
     private boolean isDeviceInHome(DeviceModel device) {
         return DeviceModel.find("name", device.getName()).count() > 0;
+    }
+
+    @Override
+    public boolean deleteByID(Long id) {
+        Query query = entityManager.createNamedQuery("deleteCapsFromDevice");
+        query.setParameter("deviceID", id);
+        query.executeUpdate();
+
+        return super.deleteByID(id);
     }
 }

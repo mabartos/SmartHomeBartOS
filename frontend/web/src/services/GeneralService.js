@@ -1,6 +1,14 @@
 export default class GeneralService {
     _urlServer;
 
+    static getObjectFromString = (string) => {
+        try {
+            return JSON.parse(string);
+        } catch (e) {
+            return null;
+        }
+    };
+
     constructor(urlServer) {
         this._urlServer = urlServer
     }

@@ -106,8 +106,8 @@ export class DeviceStore extends GeneralStore {
         this.startLoading();
         this._deviceService
             .addDeviceToRoom(homeID, roomID, deviceID)
-            .then(this.setDevice)
             .then(this.setActionInvoked("Device is successfully added to room."))
+            .then(this.setDevice)
             .catch(this.setError)
             .finally(this.stopLoading);
     };

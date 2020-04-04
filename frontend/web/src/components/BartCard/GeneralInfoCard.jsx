@@ -37,7 +37,7 @@ export default function GeneralInfoCard(props) {
     };
 
     return (
-        <GridItem xs={12} sm={6} md={3}>
+        <GridItem xs={props.xs || 12} sm={props.sm || 6} md={props.md || 3}>
             <Card>
                 <CardHeader color={props.color || "info"} className={useInfoStyle.container}>
                     <h4 className={infoClasses.title}>{props.title || "Add Item"}</h4>

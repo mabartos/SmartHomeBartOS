@@ -18,8 +18,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -28,6 +31,9 @@ import java.util.Set;
 @Table(name = "Rooms")
 @Cacheable
 @JsonIgnoreProperties(ignoreUnknown = true)
+@NamedQueries({
+        @NamedQuery(name = "deleteRoomByID", query = "delete from RoomModel where id=:id")
+})
 public class RoomModel extends PanacheEntityBase implements HasChildren<DeviceModel>, Identifiable<Long> {
 
     @Id
@@ -123,6 +129,10 @@ public class RoomModel extends PanacheEntityBase implements HasChildren<DeviceMo
     @Override
     public boolean removeChildByID(Long id) {
         return devicesSet.removeIf(device -> device.getID().equals(id));
+    }
+
+    public void removeAllChidlren() {
+        devicesSet = Collections.emptySet();
     }
 
     /* COMPUTED */

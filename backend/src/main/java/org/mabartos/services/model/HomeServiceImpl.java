@@ -1,6 +1,7 @@
 package org.mabartos.services.model;
 
 import io.quarkus.runtime.StartupEvent;
+import org.mabartos.api.service.DeviceService;
 import org.mabartos.api.service.HomeService;
 import org.mabartos.api.service.RoomService;
 import org.mabartos.api.service.UserService;
@@ -22,12 +23,14 @@ public class HomeServiceImpl extends CRUDServiceImpl<HomeModel, HomeRepository, 
 
     private UserService userService;
     private RoomService roomService;
+    private DeviceService deviceService;
 
     @Inject
-    HomeServiceImpl(HomeRepository repository, UserService userService, RoomService roomService) {
+    HomeServiceImpl(HomeRepository repository, UserService userService, RoomService roomService, DeviceService deviceService) {
         super(repository);
         this.userService = userService;
         this.roomService = roomService;
+        this.deviceService = deviceService;
     }
 
     public void start(@Observes StartupEvent event) {
@@ -127,6 +130,9 @@ public class HomeServiceImpl extends CRUDServiceImpl<HomeModel, HomeRepository, 
             found.getChildren().forEach(f -> {
                 roomService.deleteByID(f.getID());
             });
+            found.getUnAssignedDevices().forEach(f ->
+                    deviceService.deleteByID(f.getID()));
+
             return super.deleteByID(id);
         }
         return false;

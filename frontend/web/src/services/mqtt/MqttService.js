@@ -1,67 +1,55 @@
 import Paho from "paho-mqtt";
 import {BROKER_URL_REGEX} from "../../index";
+import * as React from "react";
 
-export default class MqttService {
-    _client;
-    _isInitialized = false;
+export function MqttService(brokerURL, userID, topic) {
+    const regex = new RegExp(BROKER_URL_REGEX);
+    const group = brokerURL.match(regex);
+    const hostname = (group && group.length > 2) ? group[2] : brokerURL;
+    let client;
+    let shouldBeEnabled = true;
 
-    _brokerURL;
-    _userID;
+    this.init = () => {
+        client = new Paho.Client(hostname, Number(8000), userID);
 
-    constructor(brokerURL, userID) {
-        this._brokerURL = brokerURL;
-        this._userID = userID;
-        this.initClient();
-        this._client.onConnectionLost = this.onConnectionLost;
-        this._client.onMessageArrived = this.onMessageArrived;
+        client.onConnectionLost = onConnectionLost;
+        client.onMessageArrived = onMessageArrived;
 
-        this._client.connect({onSuccess: this.onConnect});
-    }
-
-    initClient = () => {
-        try {
-            let regex = new RegExp(BROKER_URL_REGEX);
-            let group = this._brokerURL.match(regex);
-            this._brokerURL = group[2];
-            this._client = new Paho.Client(this._brokerURL, Number(8000), this._userID);
-        } catch (e) {
-            console.log(e);
-            this._isInitialized = false;
-        }
+        client.connect({onSuccess: onConnect});
     };
 
-    onConnect() {
-        this._isInitialized = true;
-        console.log("onConnect");
-        this._client.subscribe("World");
-        let message = new Paho.Message("Hello");
-        message.destinationName = "World";
-        this._client.send(message);
+    function onConnect() {
+        console.log("Connected MQTT over WS");
+        client.subscribe(topic);
+        shouldBeEnabled = true;
     }
 
-    onConnectionLost(responseObject) {
+    function onConnectionLost(responseObject) {
         if (responseObject.errorCode !== 0) {
             console.log("onConnectionLost:" + responseObject.errorMessage);
         }
     }
 
-    onMessageArrived(message) {
+    function onMessageArrived(message) {
         console.log("onMessageArrived:" + message.payloadString);
     }
 
-    get client() {
-        return this._client;
-    }
+    this.disconnect = () => {
+        if (client && client.isConnected) {
+            client.disconnect();
+            shouldBeEnabled = false;
+        }
+    };
 
-    get isInitialized() {
-        return this._isInitialized;
-    }
+    this.init();
 
-    get hostname() {
-        return this._brokerURL;
-    }
+    this.client = client;
 
-    get userID() {
-        return this._userID;
-    }
+    setInterval(() => {
+        if (client && !client.isConnected() && shouldBeEnabled) {
+            this.init();
+        }
+    }, 3000);
+
+    return this;
 }

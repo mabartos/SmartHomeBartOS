@@ -5,6 +5,8 @@ export class HomeStore extends GeneralStore {
 
     _homes = new Map();
 
+    _devices = new Map();
+
     _homeService;
 
     constructor(homeService) {
@@ -28,8 +30,18 @@ export class HomeStore extends GeneralStore {
         this.checkError();
     };
 
+    setDevices = (deviceList) => {
+        this._devices.clear();
+        this._devices = this.getMapFromList(deviceList);
+        this.checkError();
+    };
+
     get homes() {
         return this._homes;
+    }
+
+    get devices() {
+        return this._devices;
     }
 
     getByIDstore = (id) => {
@@ -107,7 +119,7 @@ export class HomeStore extends GeneralStore {
         this.startLoading();
         this._homeService
             .getDevicesInHome(id)
-            .then(this.setDevicesInHome)
+            .then(this.setDevices)
             .catch(this.setError)
             .finally(this.stopLoading);
     };
@@ -127,9 +139,13 @@ export class HomeStore extends GeneralStore {
 
 decorate(HomeStore, {
     _homes: observable,
+    _devices: observable,
 
     setHome: action,
     setHomes: action,
 
-    homes: computed
+    setDevices: action,
+
+    homes: computed,
+    devices: computed
 });

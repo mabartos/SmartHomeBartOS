@@ -10,6 +10,7 @@ import org.mabartos.persistence.model.DeviceModel;
 import org.mabartos.persistence.model.HomeModel;
 import org.mabartos.persistence.model.capability.HeaterCapModel;
 import org.mabartos.persistence.model.capability.HumidityCapModel;
+import org.mabartos.persistence.model.capability.LightCapModel;
 import org.mabartos.persistence.model.capability.TemperatureCapModel;
 import org.mabartos.protocols.mqtt.data.AddDeviceRequestData;
 import org.mabartos.protocols.mqtt.data.BartMqttSender;
@@ -92,7 +93,7 @@ public class HandleManageMessage implements Serializable {
                     throw new WrongMessageTopicException();
 
                 if (services.homes().addDeviceToHome(device, home.getID())) {
-                    DeviceData response = new DeviceData(deviceMessage.getIdMessage(), device);
+                    DeviceData response = new DeviceData(deviceMessage.getMgsID(), device);
                     client.publish(receivedTopic, response.toJson());
                     return true;
                 }
@@ -154,6 +155,8 @@ public class HandleManageMessage implements Serializable {
 
     }
 
+
+    //TODO
     private CapabilityModel getTypedInstance(String name, CapabilityType type) {
         if (name != null && type != null) {
             switch (type) {
@@ -166,7 +169,7 @@ public class HandleManageMessage implements Serializable {
                 case HEATER:
                     return new HeaterCapModel(name);
                 case LIGHT:
-                    break;
+                    return new LightCapModel(name);
                 case RELAY:
                     break;
                 case SOCKET:
@@ -177,7 +180,7 @@ public class HandleManageMessage implements Serializable {
                     break;
                 case STATISTICS:
                     break;
-                case AIRCONDITIONER:
+                case AIR_CONDITIONER:
                     break;
                 case OTHER:
                     break;
@@ -195,15 +198,22 @@ public class HandleManageMessage implements Serializable {
     }
 
     private DeviceModel createDeviceFromMessage(AddDeviceRequestData message) {
-        Set<CapabilityModel> capabilities = CapabilityData.toModel(message.getCapabilities())
-                .stream()
-                .map(f -> getTypedInstance(f.getName(), f.getType()))
-                .collect(Collectors.toSet());
-        Set<CapabilityModel> result = new HashSet<>();
-        if (services != null && services.capabilities() != null) {
-            capabilities.forEach(f -> result.add(services.capabilities().create(f)));
-            DeviceModel deviceModel = new DeviceModel(message.getName(), result);
-            return services.devices().create(deviceModel);
+        try {
+            Set<CapabilityModel> capabilities = CapabilityData.toModel(message.getCapabilities())
+                    .stream()
+                    .map(f -> getTypedInstance(f.getName(), f.getType()))
+                    .collect(Collectors.toSet());
+
+            Set<CapabilityModel> result = new HashSet<>();
+
+            if (services != null && services.capabilities() != null) {
+                capabilities.forEach(f -> result.add(services.capabilities().create(f)));
+                DeviceModel deviceModel = new DeviceModel(message.getName(), result);
+                return services.devices().create(deviceModel);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
         return null;
     }

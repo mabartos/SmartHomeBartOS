@@ -28,6 +28,7 @@ public interface DevicesResource {
     @Path(DEVICE_ID + "/add")
     DeviceModel addDeviceToRoom(@PathParam(DEVICE_ID_NAME) Long id);
 
+
     @Path(DEVICE_ID)
     DeviceResource forwardToDevice(@PathParam(DEVICE_ID_NAME) Long id);
 }

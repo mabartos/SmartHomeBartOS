@@ -1,80 +1,60 @@
-import React from "react";
+import React, {useState} from "react";
 import {useObserver} from "mobx-react-lite";
 import {SemipolarLoading} from 'react-loadingg';
 import useStores from "../../hooks/useStores";
 import {useParams} from "react-router-dom";
-import Paho from "paho-mqtt";
-import MqttService from "../../services/mqtt/MqttService";
+import {MqttService} from "../../services/mqtt/MqttService";
+import DeviceDataCard from "../../components/DeviceData/DeviceDataCard";
+import GridContainer from "../../components/Grid/GridContainer";
 
-const client = () => {
-    const client = new Paho.Client("0.0.0.0", Number(8000), "testClient");
-
-// set callback handlers
-    client.onConnectionLost = onConnectionLost;
-    client.onMessageArrived = onMessageArrived;
-
-// connect the client
-    client.connect({onSuccess: onConnect});
-
-// called when the client connects
-    function onConnect() {
-        // Once a connection has been made, make a subscription and send a message.
-        console.log("onConnect");
-        client.subscribe("World");
-        let message = new Paho.Message("Hello");
-        message.destinationName = "World";
-        client.send(message);
-    }
-
-// called when the client loses its connection
-    function onConnectionLost(responseObject) {
-        if (responseObject.errorCode !== 0) {
-            console.log("onConnectionLost:" + responseObject.errorMessage);
-        }
-    }
-
-// called when a message arrives
-    function onMessageArrived(message) {
-        console.log("onMessageArrived:" + message.payloadString);
-    }
-
-};
-
-export default function Room(props) {
+export default function Room() {
     const {authStore, deviceStore, homeStore} = useStores();
     const {homeID, roomID} = useParams();
 
-    React.useEffect(() => {
-        //client();
-        const client = new MqttService("tcp://localhost:8080", "clientTest");
-    }, []);// Create a client instance
+    const [data, setData] = useState("");
 
+    React.useEffect(() => {
+        const mqtt = new MqttService("localhost", "userID", `/homes/${homeID}/rooms/${roomID}/#`, "sdsd");
+        mqtt.client.onMessageArrived = (message) => setData(message);
+
+        return function cleanup() {
+            mqtt.disconnect();
+        };
+    }, []);
 
     React.useEffect(() => {
         deviceStore.setHomeID(homeID);
         deviceStore.setRoomID(roomID);
         deviceStore.getAllDevices();
     }, []);
-    let home;
+
+    let caps = [];
 
     return useObserver(() => {
         const {isAuthenticated, user} = authStore;
         const {devices} = deviceStore;
-        const {homes} = homeStore;
+        const {error} = homeStore;
 
-        devices.forEach((value, index) => {
-            value.capabilities.forEach((value) => {
-                console.log(value);
-                console.log(value.name);
-                console.log(value.enabled);
-            });
-
+        const setUpCapabilities = devices.forEach((value, index) => {
+            value.capabilities.map(value => {
+                caps.push(value);
+            })
         });
+
+        const getCapabilities = caps.map((value, index) => (
+            <DeviceDataCard key={index} device={value} data={data} homeID={homeID} roomID={roomID}/>
+        ));
 
         if (isAuthenticated) {
             return (
                 <div>
+                    Home ID={homeID}
                     Room ID={roomID}
+                    Message: {data.payloadString}
+                    ERR:{error}
+                    <GridContainer>
+                        {getCapabilities}
+                    </GridContainer>
                 </div>
             )
         } else {

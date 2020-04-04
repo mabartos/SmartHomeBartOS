@@ -23,6 +23,7 @@ import {HomeComponent} from "../../index";
 import {UpdateHomeForm} from "../Forms/Edit/UpdateHomeForm";
 import {ClickAwayListener} from "@material-ui/core";
 import {UpdateRoomForm} from "../Forms/Edit/UpdateRoomForm";
+import {AddDeviceToRoom} from "../BartDialogs/AddDeviceToRoom";
 
 const useStyles = makeStyles(styles);
 const useDashboardStyle = makeStyles(dashboardStyles);
@@ -48,6 +49,7 @@ export default function GeneralCard(props) {
 
     const refDelete = useRef(null);
     const refEdit = useRef(null);
+    const refAddDevice = useRef(null);
 
     const [settingsAnchor, setSettingsAnchor] = React.useState(null);
     const [openSettingsAnchor,setOpenSettingsAnchor]=React.useState(false);
@@ -77,6 +79,10 @@ export default function GeneralCard(props) {
         console.log('Item selected!');
     };
 
+    const handleAddDevice = () => {
+        refAddDevice.current.openDialog();
+    };
+
     const getEditForm = () => {
         switch (props.type) {
             case HomeComponent.HOME:
@@ -94,6 +100,7 @@ export default function GeneralCard(props) {
         <GridItem xs={12} sm={6} md={3}>
             <BooleanDialog ref={refDelete} type={props.type} {...props}/>
             {getEditForm()}
+            <AddDeviceToRoom ref={refAddDevice} {...props}/>
             <Clickable onClick={() => onSelect()}>
                 <Card className={classes.container}>
                     <BartGeneralHeaderCard title={props.title} active={props.active} color={props.color}
@@ -120,6 +127,12 @@ export default function GeneralCard(props) {
                                 <ClickAwayListener onClickAway={closeSettings}>
                                     <Paper>
                                         <MenuList role="menu">
+                                            {props.type === HomeComponent.ROOM && (
+                                                <MenuItem className={dropDownStyle.dropdownItem}
+                                                          onClick={handleAddDevice}>
+                                                    Add device
+                                                </MenuItem>
+                                            )}
                                             <MenuItem className={dropDownStyle.dropdownItem} onClick={handleEdit}>
                                                 Edit
                                             </MenuItem>

@@ -2,15 +2,17 @@ package org.mabartos.protocols.mqtt.data;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import org.mabartos.persistence.model.DeviceModel;
 import org.mabartos.protocols.mqtt.utils.MqttSerializeUtils;
 
 import java.util.Set;
 
+@JsonPropertyOrder({"msgID", "id", "name"})
 public class DeviceData implements MqttSerializable {
 
-    @JsonProperty("idMessage")
-    private Long idMessage;
+    @JsonProperty("msgID")
+    private Long msgID;
 
     @JsonProperty("id")
     private Long id;
@@ -22,16 +24,16 @@ public class DeviceData implements MqttSerializable {
     private Set<CapabilityData> capabilities;
 
     @JsonCreator
-    public DeviceData(@JsonProperty("idMessage") Long idMessage,
+    public DeviceData(@JsonProperty("msgID") Long msgID,
                       @JsonProperty("id") Long id,
                       @JsonProperty("name") String name) {
-        this.idMessage = idMessage;
+        this.msgID = msgID;
         this.id = id;
         this.name = name;
     }
 
     public DeviceData(Long idMessage, DeviceModel device) {
-        this.idMessage = idMessage;
+        this.msgID = idMessage;
         this.id = device.getID();
         this.name = device.getName();
         this.capabilities = CapabilityData.fromModel(device.getCapabilities());
@@ -46,12 +48,12 @@ public class DeviceData implements MqttSerializable {
         this.capabilities = capabilities;
     }
 
-    public Long getIdMessage() {
-        return idMessage;
+    public Long getMsgID() {
+        return msgID;
     }
 
-    public void setIdMessage(Long idMessage) {
-        this.idMessage = idMessage;
+    public void setMsgID(Long msgID) {
+        this.msgID = msgID;
     }
 
     public Long getId() {

@@ -16,6 +16,8 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Objects;
@@ -23,6 +25,9 @@ import java.util.Objects;
 @Table(name = "CAPABILITY")
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@NamedQueries({
+        @NamedQuery(name = "deleteCapsFromDevice", query = "delete from CapabilityModel where device.id=:deviceID")
+})
 public class CapabilityModel extends PanacheEntityBase implements Serializable, Identifiable<Long> {
 
     @Id

@@ -87,7 +87,7 @@ public class BartMqttHandler implements Serializable {
                 break;
             case STATISTICS:
                 break;
-            case AIRCONDITIONER:
+            case AIR_CONDITIONER:
                 break;
             case OTHER:
                 break;

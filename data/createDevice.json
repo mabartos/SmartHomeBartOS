@@ -1,0 +1,14 @@
+{
+   "msgID":10,
+   "name":"testDevice",
+   "capabilities":[
+      {
+         "name":"tempTest",
+         "type":"TEMPERATURE"
+      },
+      {
+         "name":"lightTest",
+         "type":"LIGHT"
+      }
+   ]
+}

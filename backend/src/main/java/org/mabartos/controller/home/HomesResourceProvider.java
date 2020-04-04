@@ -10,6 +10,7 @@ import org.mabartos.persistence.model.DeviceModel;
 import org.mabartos.persistence.model.HomeModel;
 import org.mabartos.persistence.model.RoomModel;
 import org.mabartos.persistence.model.UserModel;
+import org.mabartos.persistence.model.capability.TemperatureCapModel;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -51,6 +52,7 @@ public class HomesResourceProvider implements HomesResource {
         UserModel user = session.auth().getUserInfo();
         home.addUser(user);
         user.addHome(home);
+        home.setBrokerURL("tcp://localhost:1883");
         home = session.services().homes().create(home);
         RoomModel room = new RoomModel("roomTest");
         room.setHome(home);
@@ -63,7 +65,7 @@ public class HomesResourceProvider implements HomesResource {
         device = session.services().devices().create(device);
 
         CapabilityModel cap1 = new CapabilityModel("cap1", CapabilityType.LIGHT);
-        CapabilityModel cap2 = new CapabilityModel("cap2", CapabilityType.GAS_SENSOR);
+        TemperatureCapModel cap2 = new TemperatureCapModel("temp1");
         cap1.setDevice(device);
         cap2.setDevice(device);
         device.addCapability(cap1);
