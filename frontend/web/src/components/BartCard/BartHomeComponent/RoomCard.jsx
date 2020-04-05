@@ -14,7 +14,7 @@ export default function RoomCard(props) {
 
     return (
         <MainDisplayCard type={HomeComponent.ROOM} roomID={props.value.id} homeID={props.value.homeID}
-                         title={props.value.name}
+                         title={props.value.name} displayActivity={false}
                          onSelect={onSelect}
                          color={CardIcon.getColorID(props.colorIndex)}/>
     );

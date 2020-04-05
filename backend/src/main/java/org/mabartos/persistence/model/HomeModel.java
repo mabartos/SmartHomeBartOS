@@ -34,7 +34,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "Homes")
 @Cacheable
-@JsonIgnoreProperties(value = {"mqttClientID", "active", "usersCount"}, ignoreUnknown = true)
+@JsonIgnoreProperties(value = {"mqttClientID", "usersCount"}, ignoreUnknown = true)
 @JsonPropertyOrder({"id", "name", "active"})
 public class HomeModel extends PanacheEntityBase implements HasChildren<RoomModel>, Identifiable<Long> {
 

@@ -51,8 +51,10 @@ export default function GeneralCard(props) {
     const refEdit = useRef(null);
     const refAddDevice = useRef(null);
 
+    const {type} = props;
+
     const [settingsAnchor, setSettingsAnchor] = React.useState(null);
-    const [openSettingsAnchor,setOpenSettingsAnchor]=React.useState(false);
+    const [openSettingsAnchor, setOpenSettingsAnchor] = React.useState(false);
 
     const handleClickSettings = event => {
         setOpenSettingsAnchor(!openSettingsAnchor);
@@ -84,7 +86,7 @@ export default function GeneralCard(props) {
     };
 
     const getEditForm = () => {
-        switch (props.type) {
+        switch (type) {
             case HomeComponent.HOME:
                 return (<UpdateHomeForm ref={refEdit} {...props}/>);
             case HomeComponent.USER:
@@ -98,13 +100,13 @@ export default function GeneralCard(props) {
 
     return (
         <GridItem xs={12} sm={6} md={3}>
-            <BooleanDialog ref={refDelete} type={props.type} {...props}/>
+            <BooleanDialog ref={refDelete} type={type} {...props}/>
             {getEditForm()}
-            <AddDeviceToRoom ref={refAddDevice} {...props}/>
+            {type === HomeComponent.ROOM && <AddDeviceToRoom ref={refAddDevice} {...props}/>}
             <Clickable onClick={() => onSelect()}>
                 <Card className={classes.container}>
                     <BartGeneralHeaderCard title={props.title} active={props.active} color={props.color}
-                                           displayActivity={props.displayActivity}/>
+                                           displayActivity={props.displayActivity} {...props}/>
 
                     <CardFooter stats/>
                     {props.children}
@@ -127,7 +129,7 @@ export default function GeneralCard(props) {
                                 <ClickAwayListener onClickAway={closeSettings}>
                                     <Paper>
                                         <MenuList role="menu">
-                                            {props.type === HomeComponent.ROOM && (
+                                            {type === HomeComponent.ROOM && (
                                                 <MenuItem className={dropDownStyle.dropdownItem}
                                                           onClick={handleAddDevice}>
                                                     Add device

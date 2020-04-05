@@ -1,4 +1,5 @@
-import {grayColor, hexToRgb, successColor, whiteColor,dangerColor} from "assets/jss/material-dashboard-react.js";
+import {dangerColor, grayColor, hexToRgb, successColor, whiteColor} from "assets/jss/material-dashboard-react.js";
+import {blackColor} from "../../material-dashboard-react";
 //import {dangerColor} from "../../material-dashboard-react";
 
 const generalTileStyles = {
@@ -20,8 +21,16 @@ const generalTileStyles = {
         paddingTop: "10px",
         marginBottom: "0"
     },
-    cardStatusActive:{
-        color:successColor[0],
+    cardStatusActive: {
+        color: successColor[0],
+        margin: "0",
+        fontSize: "14px",
+        marginTop: "0",
+        paddingTop: "10px",
+        marginBottom: "0"
+    },
+    cardStatusNormal: {
+        color: grayColor[1],
         margin: "0",
         fontSize: "14px",
         marginTop: "0",
@@ -29,7 +38,7 @@ const generalTileStyles = {
         marginBottom: "0"
     },
     cardCategory: {
-        color:grayColor[0],
+        color: grayColor[0],
         margin: "0",
         fontSize: "14px",
         marginTop: "0",

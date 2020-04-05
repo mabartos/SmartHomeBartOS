@@ -8,15 +8,16 @@ export default function HomeCard(props) {
     const {path} = useRouteMatch();
     const history = useHistory();
 
+    const {value, colorIndex} = props;
+
     const onSelect = () => {
         history.push(`${path}/${props.value.id}`);
     };
 
     return (
-        <MainDisplayCard type={HomeComponent.HOME} homeID={props.value.id} title={props.value.name}
-                         active={props.value.active} onSelect={onSelect} brokerURL={props.value.brokerURL}
-                         home={props.value}
-                         color={CardIcon.getColorID(props.colorIndex + 2)}/>
+        <MainDisplayCard type={HomeComponent.HOME} homeID={value.id} title={value.name}
+                         active={value.active} onSelect={onSelect} brokerURL={value.brokerURL}
+                         home={value}
+                         color={CardIcon.getColorID(colorIndex + 2)}/>
     );
-
 }

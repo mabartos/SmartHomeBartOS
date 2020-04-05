@@ -27,8 +27,16 @@ export const AddDeviceToRoom = forwardRef(((props, ref) => {
     const {homeStore, deviceStore} = useStores();
 
     React.useEffect(() => {
-        homeStore.getDevicesInHome(homeID);
-    },[homeStore]);
+        if (open) {
+            const interval = setInterval(() => {
+                homeStore.getDevicesInHome(homeID);
+            }, 2000);
+
+            return function cleanup() {
+                clearInterval(interval);
+            }
+        }
+    }, [open]);
 
     const callbackSetChecked = (ids) => {
         setChecked(ids);
@@ -37,6 +45,7 @@ export const AddDeviceToRoom = forwardRef(((props, ref) => {
     const openDialog = () => {
         setOpen(true);
     };
+
     const closeDialog = () => {
         setOpen(false);
     };
@@ -120,6 +129,4 @@ export const AddDeviceToRoom = forwardRef(((props, ref) => {
             </div>
         )
     });
-
-
 }));

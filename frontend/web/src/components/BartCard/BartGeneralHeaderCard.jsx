@@ -7,6 +7,7 @@ import CardIcon from "components/Card/CardIcon.js";
 import DynamicFont from 'react-dynamic-font';
 
 import styles from "assets/jss/material-dashboard-react/components/generalTile.js";
+import {HomeComponent} from "../../index";
 
 const useStyles = makeStyles(styles);
 
@@ -27,14 +28,20 @@ export default function BartGeneralHeaderCard(props) {
         [headerStyle.title]: true
     });
 
+    const getNormalStatus = () => {
+        if (props.type === HomeComponent.ROOM) {
+            return ("Room");
+        }
+    };
+
     const activityStatus = () => {
         if (displayActivity) {
             return (<p className={colorActivity}>
                 <span style={{display: "inline-block"}}>{isActive}</span>
             </p>);
         } else {
-            return (<p className={colorActivity}>
-                <span style={{display: "inline-block"}}/>
+            return (<p className={classes.cardStatusNormal}>
+                <span style={{display: "inline-block"}}>{getNormalStatus()}</span>
             </p>);
         }
     };
