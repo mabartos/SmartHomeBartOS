@@ -9,8 +9,10 @@ import org.mabartos.api.service.HomeService;
 import org.mabartos.api.service.RoomService;
 import org.mabartos.api.service.UserService;
 import org.mabartos.api.service.auth.AuthService;
+import org.mabartos.api.service.invitations.HomeInvitationService;
 import org.mabartos.persistence.model.CapabilityModel;
 import org.mabartos.persistence.model.DeviceModel;
+import org.mabartos.persistence.model.HomeInvitationModel;
 import org.mabartos.persistence.model.HomeModel;
 import org.mabartos.persistence.model.RoomModel;
 import org.mabartos.persistence.model.UserModel;
@@ -47,6 +49,9 @@ public class DefaultBartSession implements BartSession {
 
     private CapabilityModel actualCapability;
     private Long actualCapabilityID;
+
+    private HomeInvitationModel actualInvitation;
+    private Long actualInvitationID;
 
     @Inject
     public DefaultBartSession() {
@@ -114,6 +119,18 @@ public class DefaultBartSession implements BartSession {
     public BartSession setActualCapability(Long id) {
         this.actualCapability = services().getProvider(CapabilityService.class).findByID(id);
         this.actualCapabilityID = id;
+        return this;
+    }
+
+    @Override
+    public HomeInvitationModel getActualInvitation() {
+        return (actualInvitation != null) ? actualInvitation : services().getProvider(HomeInvitationService.class).findByID(actualInvitationID);
+    }
+
+    @Override
+    public BartSession setActualInvitation(Long id) {
+        this.actualInvitation = services.getProvider(HomeInvitationService.class).findByID(id);
+        this.actualInvitationID = id;
         return this;
     }
 

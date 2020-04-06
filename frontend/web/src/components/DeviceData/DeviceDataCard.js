@@ -6,6 +6,7 @@ import {CapabilityType} from "../../index";
 import TemperatureCapCard from "./Temperature/TemperatureCapCard";
 import useStores from "../../hooks/useStores";
 import LightsCapCard from "./Light/LightsCapCard";
+import HumidityCapCard from "./Humidity/HumidityCapCard";
 
 export default function DeviceDataCard(props) {
     const {deviceStore} = useStores();
@@ -27,7 +28,7 @@ export default function DeviceDataCard(props) {
                 case CapabilityType.TEMPERATURE.name:
                     return (<TemperatureCapCard {...props}/>);
                 case CapabilityType.HUMIDITY.name:
-                    break;
+                    return (<HumidityCapCard {...props}/>);
                 case CapabilityType.HEATER.name:
                     break;
                 case CapabilityType.LIGHT.name:

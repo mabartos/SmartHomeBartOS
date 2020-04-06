@@ -1,22 +1,18 @@
-import React from "react";
-
 import {useObserver} from "mobx-react-lite";
-import GridItem from "../../Grid/GridItem";
 import DeviceService from "../../../services/homeComponent/DeviceService";
 import {CapabilityType} from "../../../index";
+import React from "react";
 import GeneralService from "../../../services/GeneralService";
-import 'react-circular-progressbar/dist/styles.css';
+import GridItem from "../../Grid/GridItem";
 import CircularProgress from "../../ProgressBar/CircularProgress";
 
-export default function TemperatureCapCard(props) {
+export default function HumidityCapCard(props) {
     const {device, homeID, roomID} = props;
 
     const id = device.id;
-    const topic = DeviceService.getFullTopic(homeID, roomID, CapabilityType.TEMPERATURE.topic, id);
+    const topic = DeviceService.getFullTopic(homeID, roomID, CapabilityType.HUMIDITY.topic, id);
 
     const [value, setValue] = React.useState(device.value);
-    const [units, setUnits] = React.useState(device.units);
-
     const [data, setData] = React.useState("");
 
     React.useEffect(() => {
@@ -33,9 +29,8 @@ export default function TemperatureCapCard(props) {
         return (
             <GridItem xs={12} sm={12} md={12}>
                 {id}
-                <CircularProgress value={value} units={units} minValue={-20} maxValue={50}/>
+                <CircularProgress value={value} units={"%"} minValue={0} maxValue={100}/>
             </GridItem>
         )
-
     });
 }

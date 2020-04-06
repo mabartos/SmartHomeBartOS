@@ -86,8 +86,6 @@ export default class AuthStore extends GeneralStore {
                     localStorage.setItem("keycloak-refresh-token", keycloak.refreshToken);
                     this.getUserInfo().then(this.setUser);
                 }
-                refresh ? console.info('Token refreshed' + refresh) : console.warn('Token not refreshed, valid for ' +
-                    Math.round(keycloak.tokenParsed.exp + keycloak.timeSkew - new Date().getTime() / 1000) + ' seconds');
             }).catch((err) => {
                 console.error('Failed to refresh token');
             });
@@ -104,14 +102,12 @@ export default class AuthStore extends GeneralStore {
     logout = () => {
         if (this._keycloak) {
             this._keycloak.logout();
-            //history.push("/");
         }
     };
 
     getUserInfo = () => {
         return this._authService.getUserInfo();
     };
-
 }
 
 decorate(AuthStore, {

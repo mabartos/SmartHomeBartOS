@@ -60,6 +60,10 @@ public class HomeModel extends PanacheEntityBase implements HasChildren<RoomMode
     @LazyCollection(LazyCollectionOption.FALSE)
     private Set<RoomModel> roomsSet = new HashSet<>();
 
+    @OneToMany(targetEntity = HomeInvitationModel.class, mappedBy = "home", cascade = CascadeType.ALL, orphanRemoval = true)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private Set<HomeInvitationModel> invitations = new HashSet<>();
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "mqttClient", referencedColumnName = "mqttClientID")
     private MqttClientModel mqttClient;
@@ -196,9 +200,27 @@ public class HomeModel extends PanacheEntityBase implements HasChildren<RoomMode
         return roomsSet.removeIf(room -> room.getID().equals(id));
     }
 
+    /* MQTT */
     @JsonIgnore
     public MqttClientModel getMqttClient() {
         return mqttClient;
+    }
+
+    /* INVITATIONS */
+    public Set<HomeInvitationModel> getInvitations() {
+        return invitations;
+    }
+
+    public boolean addInvitation(HomeInvitationModel invitation) {
+        return invitations.add(invitation);
+    }
+
+    public boolean removeInvitation(HomeInvitationModel invitation) {
+        return invitations.remove(invitation);
+    }
+
+    public void removeAllInvitations() {
+        invitations = Collections.emptySet();
     }
 
     /* COMPUTED */

@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 @Transactional
 public class CRUDServiceImpl
-        <T extends Identifiable<ID>, Repo extends PanacheRepository<T>, ID> implements CRUDService<T, ID> {
+        <Model extends Identifiable<ID>, Repo extends PanacheRepository<Model>, ID> implements CRUDService<Model, ID> {
 
     private Repo repository;
 
@@ -21,7 +21,7 @@ public class CRUDServiceImpl
     protected EntityManager entityManager;
 
     @Inject
-    CRUDServiceImpl(Repo repository) {
+    public CRUDServiceImpl(Repo repository) {
         this.repository = repository;
     }
 
@@ -34,7 +34,7 @@ public class CRUDServiceImpl
     }
 
     @Override
-    public T create(T entity) {
+    public Model create(Model entity) {
         try {
             if (!repository.isPersistent(entity)) {
                 repository.persist(entity);
@@ -48,8 +48,8 @@ public class CRUDServiceImpl
     }
 
     @Override
-    public T updateByID(ID id, T entity) {
-        T found = findByID(id);
+    public Model updateByID(ID id, Model entity) {
+        Model found = findByID(id);
         if (entity != null && found != null) {
             entity.setID(id);
             entityManager.merge(entity);
@@ -60,12 +60,12 @@ public class CRUDServiceImpl
     }
 
     @Override
-    public Set<T> getAll() {
+    public Set<Model> getAll() {
         return repository.findAll().stream().collect(Collectors.toSet());
     }
 
     @Override
-    public T findByID(ID id) {
+    public Model findByID(ID id) {
         try {
             return repository.find("id", id).firstResult();
         } catch (ClassCastException e) {

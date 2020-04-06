@@ -9,6 +9,7 @@ import org.mabartos.api.service.DeviceService;
 import org.mabartos.api.service.HomeService;
 import org.mabartos.api.service.RoomService;
 import org.mabartos.api.service.UserService;
+import org.mabartos.api.service.invitations.HomeInvitationService;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.spi.CreationalContext;
@@ -88,6 +89,11 @@ public class DefaultAppServices implements AppServices {
     @Override
     public CapabilityService capabilities() {
         return getProvider(CapabilityService.class);
+    }
+
+    @Override
+    public HomeInvitationService invitations() {
+        return getProvider(HomeInvitationService.class);
     }
 
     @Override

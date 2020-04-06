@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.mabartos.interfaces.Identifiable;
 
 import javax.persistence.Cacheable;
@@ -16,8 +18,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -53,6 +57,10 @@ public class UserModel extends PanacheEntityBase implements Identifiable<UUID> {
                     @JoinColumn(referencedColumnName = "HOME_ID")}
     )
     private Set<HomeModel> homesSet = new HashSet<>();
+
+    @OneToMany(targetEntity = HomeInvitationModel.class, mappedBy = "receiver", cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private Set<HomeInvitationModel> invitations = new HashSet<>();
 
     public UserModel() {
     }
@@ -109,6 +117,23 @@ public class UserModel extends PanacheEntityBase implements Identifiable<UUID> {
 
     public boolean removeHomeByID(Long id) {
         return homesSet.removeIf(home -> home.getID().equals(id));
+    }
+
+    /* INVITATIONS */
+    public Set<HomeInvitationModel> getInvitations() {
+        return invitations;
+    }
+
+    public boolean addInvitation(HomeInvitationModel invitation) {
+        return invitations.add(invitation);
+    }
+
+    public boolean removeInvitation(HomeInvitationModel invitation) {
+        return invitations.remove(invitation);
+    }
+
+    public void removeAllInvitations() {
+        invitations = Collections.emptySet();
     }
 
     /* MANAGE */
