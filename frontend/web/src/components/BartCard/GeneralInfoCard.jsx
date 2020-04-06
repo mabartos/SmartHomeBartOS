@@ -5,6 +5,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import {whiteColor} from "../../assets/jss/material-dashboard-react";
+import BartGeneralFooterCard from "./BartGeneralFooterCard";
 
 const useInfoStyle = makeStyles(style => ({
     container: {
@@ -45,6 +46,7 @@ export default function GeneralInfoCard(props) {
                 <CardBody>
                     {props.children}
                 </CardBody>
+                {!props.hideFooter && <BartGeneralFooterCard {...props}/>}
             </Card>
         </GridItem>
     );

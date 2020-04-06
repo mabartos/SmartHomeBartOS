@@ -4,8 +4,20 @@ import GeneralInfoCard from "../BartCard/GeneralInfoCard";
 import PropTypes from "prop-types";
 import {CapabilityType} from "../../index";
 import TemperatureCapCard from "./Temperature/TemperatureCapCard";
+import useStores from "../../hooks/useStores";
+import LightsCapCard from "./Light/LightsCapCard";
 
 export default function DeviceDataCard(props) {
+    const {deviceStore} = useStores();
+    const {color, device} = props;
+
+    const removeDeviceFromRoom = () => {
+        deviceStore.removeDeviceFromRoom(device.deviceID);
+    };
+
+    const deleteDevice = () => {
+        deviceStore.deleteDevice(device.deviceID);
+    };
 
     return useObserver(() => {
         const determineDevice = () => {
@@ -19,7 +31,7 @@ export default function DeviceDataCard(props) {
                 case CapabilityType.HEATER.name:
                     break;
                 case CapabilityType.LIGHT.name:
-                    break;
+                    return (<LightsCapCard {...props}/>);
                 case CapabilityType.RELAY.name:
                     break;
                 case CapabilityType.SOCKET.name:
@@ -40,7 +52,9 @@ export default function DeviceDataCard(props) {
         };
 
         return (
-            <GeneralInfoCard color={props.color} title={props.device.name}>
+            <GeneralInfoCard color={color} title={device.name} {...props} deleteLabel={"Delete device"}
+                             handleDelete={deleteDevice}
+                             nextLabel={"Remove device from room"} handleNext={removeDeviceFromRoom}>
                 {determineDevice()}
             </GeneralInfoCard>
         )

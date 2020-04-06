@@ -1,10 +1,8 @@
 package org.mabartos.services.model;
 
 import io.quarkus.runtime.StartupEvent;
-import org.mabartos.api.service.DeviceService;
+import org.mabartos.api.service.AppServices;
 import org.mabartos.api.service.HomeService;
-import org.mabartos.api.service.RoomService;
-import org.mabartos.api.service.UserService;
 import org.mabartos.controller.data.HomeData;
 import org.mabartos.persistence.model.DeviceModel;
 import org.mabartos.persistence.model.HomeModel;
@@ -21,16 +19,12 @@ import java.util.UUID;
 @Dependent
 public class HomeServiceImpl extends CRUDServiceImpl<HomeModel, HomeRepository, Long> implements HomeService {
 
-    private UserService userService;
-    private RoomService roomService;
-    private DeviceService deviceService;
+    private AppServices services;
 
     @Inject
-    HomeServiceImpl(HomeRepository repository, UserService userService, RoomService roomService, DeviceService deviceService) {
+    HomeServiceImpl(HomeRepository repository, AppServices services) {
         super(repository);
-        this.userService = userService;
-        this.roomService = roomService;
-        this.deviceService = deviceService;
+        this.services = services;
     }
 
     public void start(@Observes StartupEvent event) {
@@ -58,7 +52,7 @@ public class HomeServiceImpl extends CRUDServiceImpl<HomeModel, HomeRepository, 
     public HomeModel addUserToHome(UUID userID, Long homeID) {
         try {
             HomeModel home = getRepository().findById(homeID);
-            UserModel user = userService.findByID(userID);
+            UserModel user = services.users().findByID(userID);
             if (home != null && user != null) {
                 home.addUser(user);
                 user.addHome(home);
@@ -128,10 +122,10 @@ public class HomeServiceImpl extends CRUDServiceImpl<HomeModel, HomeRepository, 
         HomeModel found = super.findByID(id);
         if (found != null) {
             found.getChildren().forEach(f -> {
-                roomService.deleteByID(f.getID());
+                services.rooms().deleteByID(f.getID());
             });
             found.getUnAssignedDevices().forEach(f ->
-                    deviceService.deleteByID(f.getID()));
+                    services.devices().deleteByID(f.getID()));
 
             return super.deleteByID(id);
         }

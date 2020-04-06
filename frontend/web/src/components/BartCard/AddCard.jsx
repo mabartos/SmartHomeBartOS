@@ -40,7 +40,7 @@ export default function AddCard(props) {
     };
 
     return (
-        <GeneralInfoCard color={props.color} title={props.title}>
+        <GeneralInfoCard hideFooter color={props.color} title={props.title}>
             {getForm()}
             <Clickable onClick={onSelect}>
                 <div className={infoClasses.container}>

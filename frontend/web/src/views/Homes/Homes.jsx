@@ -5,10 +5,10 @@ import {useObserver} from "mobx-react-lite";
 import useStores from "../../hooks/useStores";
 import NoItemsAvailable from "../../components/BartCard/NoItemsAvailable";
 import {SemipolarLoading} from 'react-loadingg';
-import ErrorNotification from "../../components/Notifications/ErrorNotification";
-import SuccessNotification from "../../components/Notifications/SuccessNotification";
 import HomeCard from "../../components/BartCard/BartHomeComponent/HomeCard";
 import {HomeComponent} from "../../index";
+import ErrorNotification from "../../components/Notifications/ErrorNotification";
+import SuccessNotification from "../../components/Notifications/SuccessNotification";
 
 export default function Homes() {
     const {homeStore, authStore} = useStores();

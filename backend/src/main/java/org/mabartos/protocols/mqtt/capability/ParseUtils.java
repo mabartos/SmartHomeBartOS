@@ -14,8 +14,10 @@ public class ParseUtils {
     }
 
     public static void parse(AppServices services, BartMqttClient client, CapabilityTopic capabilityTopic, CapabilityData data, String message) {
-        if (data != null) {
-            CapabilityModel updated = services.capabilities().updateByID(capabilityTopic.getCapabilityID(), data.toModel());
+        CapabilityModel model = services.capabilities().findByID(capabilityTopic.getCapabilityID());
+        if (data != null && model != null) {
+            CapabilityModel result = data.editModel(model);
+            CapabilityModel updated = services.capabilities().updateByID(capabilityTopic.getCapabilityID(), result);
             if (updated != null) {
                 BartMqttSender.sendResponse(client, 200, message);
                 return;

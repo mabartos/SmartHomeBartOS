@@ -56,11 +56,15 @@ export default class DeviceService extends GeneralService {
         return this.post(`${this.getPath()}/${deviceID}/add`);
     };
 
+    removeDeviceFromRoom = (deviceID) => {
+        return this.post(`${this.getPath()}/${deviceID}/remove`);
+    };
+
     updateDevice = (id, device) => {
         return this.patch(`${this.getPath()}/${id}`, device);
     };
 
     deleteDevice = (id) => {
-        return this.delete(`${this.getPath()} /${id}`);
+        return this.delete(`${this.getPath()}/${id}`);
     };
 }

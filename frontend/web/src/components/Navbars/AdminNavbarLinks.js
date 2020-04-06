@@ -13,7 +13,6 @@ import Divider from "@material-ui/core/Divider";
 // @material-ui/icons
 import Person from "@material-ui/icons/Person";
 import Notifications from "@material-ui/icons/Notifications";
-import Dashboard from "@material-ui/icons/Dashboard";
 import Search from "@material-ui/icons/Search";
 // core components
 import CustomInput from "components/CustomInput/CustomInput.js";
@@ -21,13 +20,14 @@ import Button from "components/CustomButtons/Button.js";
 
 import styles from "assets/jss/material-dashboard-react/components/headerLinksStyle.js";
 import useStores from "../../hooks/useStores";
-import {history} from "../../index";
+import {useHistory} from "react-router-dom";
 
 const useStyles = makeStyles(styles);
 
 export default function AdminNavbarLinks() {
     const classes = useStyles();
     const {authStore} = useStores();
+    const history = useHistory();
 
     const [openNotification, setOpenNotification] = React.useState(null);
     const [openProfile, setOpenProfile] = React.useState(null);

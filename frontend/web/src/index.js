@@ -35,7 +35,7 @@ import AuthService from "./services/auth/AuthService";
 import AuthStore from "./stores/auth/AuthStore";
 import {DeviceStore} from "./stores/homeComponent/DeviceStore";
 
-export const history = createBrowserHistory();
+//export const history = createBrowserHistory();
 
 export const backendURL = "http://127.0.0.1:8888";
 export const keycloakURL = "http://127.0.0.1:8180/auth/realms/SmartHome";
@@ -97,11 +97,12 @@ export const CapabilityType = {
     OTHER: {name: "OTHER", topic: "other"}
 };
 
+export let title="asd";
 export const storesContext = React.createContext(stores);
 export const servicesContext = React.createContext(services);
 
 ReactDOM.render(
-    <Router history={history}>
+    <Router history={createBrowserHistory()}>
         <Switch>
             <Route path="/admin" component={Admin}/>
             <Route path="/auth/login" component={LoginPage}/>

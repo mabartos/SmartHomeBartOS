@@ -5,20 +5,20 @@ import org.mabartos.general.CapabilityType;
 public class CapabilityTopic implements GeneralTopic {
     private CapabilityType capabilityType;
     private Long homeID;
-    private Long deviceID;
+    private Long roomID;
     private Long capabilityID;
 
-    public CapabilityTopic(CapabilityType capabilityType, Long homeID, Long deviceID, Long capabilityID) {
+    public CapabilityTopic(CapabilityType capabilityType, Long homeID, Long roomID, Long capabilityID) {
         this.capabilityType = capabilityType;
         this.homeID = homeID;
-        this.deviceID = deviceID;
+        this.roomID = roomID;
         this.capabilityID = capabilityID;
     }
 
-    public CapabilityTopic(String capabilityType, String homeID, String deviceID, String capabilityID) {
+    public CapabilityTopic(String capabilityType, String homeID, String roomID, String capabilityID) {
         setCapabilityType(capabilityType);
         this.homeID = Long.parseLong(homeID);
-        this.deviceID = Long.parseLong(deviceID);
+        this.roomID = Long.parseLong(roomID);
         this.capabilityID = Long.parseLong(capabilityID);
     }
 
@@ -34,8 +34,8 @@ public class CapabilityTopic implements GeneralTopic {
         return capabilityType;
     }
 
-    public Long getDeviceID() {
-        return deviceID;
+    public Long getRoomID() {
+        return roomID;
     }
 
     public Long getCapabilityID() {

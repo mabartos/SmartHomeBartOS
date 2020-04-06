@@ -2,11 +2,9 @@ package org.mabartos.controller.data;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.mabartos.persistence.model.HomeModel;
-import org.mabartos.protocols.mqtt.data.ConvertableToModel;
 import org.mabartos.protocols.mqtt.utils.MqttSerializeUtils;
 
-public class HomeData implements ConvertableToModel<HomeModel> {
+public class HomeData {
 
     @JsonProperty("id")
     private Long id;
@@ -33,13 +31,6 @@ public class HomeData implements ConvertableToModel<HomeModel> {
         this.name = name;
         this.brokerURL = brokerURL;
         this.mqttClientID = mqttClientID;
-    }
-
-    @Override
-    public HomeModel toModel() {
-        HomeModel created = new HomeModel(name, brokerURL);
-        created.setID(id);
-        return created;
     }
 
     public Long getId() {

@@ -2,7 +2,6 @@ package org.mabartos.persistence.model.capability;
 
 import org.mabartos.general.CapabilityType;
 import org.mabartos.persistence.model.CapabilityModel;
-import org.mabartos.protocols.mqtt.data.capability.State;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,7 +13,7 @@ public class HeaterCapModel extends CapabilityModel implements HasState {
     private Double destTemperature;
 
     @Column
-    private State state;
+    private boolean isTurnedOn;
 
     public HeaterCapModel() {
     }
@@ -32,17 +31,17 @@ public class HeaterCapModel extends CapabilityModel implements HasState {
     }
 
     @Override
-    public State getState() {
-        return state;
+    public boolean isTurnedOn() {
+        return isTurnedOn;
     }
 
     @Override
-    public void setState(State state) {
-        this.state = state;
+    public void setState(boolean state) {
+        this.isTurnedOn = state;
     }
 
     @Override
     public void changeState() {
-        state = State.changeState(state);
+        this.isTurnedOn = !this.isTurnedOn;
     }
 }

@@ -9,6 +9,15 @@ export default class GeneralService {
         }
     };
 
+    static getStringFromObject = (object) => {
+        try {
+            return JSON.stringify(object);
+        } catch (e) {
+            console.error(e);
+            return null;
+        }
+    };
+
     constructor(urlServer) {
         this._urlServer = urlServer
     }

@@ -2,11 +2,9 @@ package org.mabartos.controller.data;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.mabartos.persistence.model.RoomModel;
-import org.mabartos.protocols.mqtt.data.ConvertableToModel;
 import org.mabartos.protocols.mqtt.utils.MqttSerializeUtils;
 
-public class RoomData implements ConvertableToModel<RoomModel> {
+public class RoomData {
 
     @JsonProperty("id")
     private Long id;
@@ -48,13 +46,6 @@ public class RoomData implements ConvertableToModel<RoomModel> {
 
     public void setHomeID(Long homeID) {
         this.homeID = homeID;
-    }
-
-    @Override
-    public RoomModel toModel() {
-        RoomModel room = new RoomModel(name);
-        room.setID(id);
-        return room;
     }
 
     public static RoomData fromJson(String json) {

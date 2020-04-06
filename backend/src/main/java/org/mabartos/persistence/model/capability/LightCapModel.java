@@ -1,8 +1,8 @@
 package org.mabartos.persistence.model.capability;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.mabartos.general.CapabilityType;
 import org.mabartos.persistence.model.CapabilityModel;
-import org.mabartos.protocols.mqtt.data.capability.State;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,7 +17,7 @@ public class LightCapModel extends CapabilityModel implements HasState {
     private Double minIntensity = 0.0;
 
     @Column
-    private State state;
+    private boolean isTurnedOn = false;
 
     public LightCapModel() {
     }
@@ -43,17 +43,18 @@ public class LightCapModel extends CapabilityModel implements HasState {
     }
 
     @Override
-    public State getState() {
-        return state;
+    @JsonProperty("isTurnedOn")
+    public boolean isTurnedOn() {
+        return isTurnedOn;
     }
 
     @Override
-    public void setState(State state) {
-        this.state = state;
+    public void setState(boolean state) {
+        this.isTurnedOn = state;
     }
 
     @Override
     public void changeState() {
-        this.state = State.changeState(state);
+        this.isTurnedOn = !this.isTurnedOn;
     }
 }

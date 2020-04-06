@@ -59,11 +59,6 @@ public class CapabilityData implements MqttSerializable, ConvertableToModel<Capa
         this.type = type;
     }
 
-    @Override
-    public CapabilityModel toModel() {
-        return new CapabilityModel(name, type);
-    }
-
     public static Capabilities toCapabilities(Set<CapabilityData> capabilities) {
         if (capabilities != null) {
             return new Capabilities(toModel(capabilities));
@@ -91,5 +86,12 @@ public class CapabilityData implements MqttSerializable, ConvertableToModel<Capa
 
     public static CapabilityData fromJson(String json) {
         return MqttSerializeUtils.fromJson(json, CapabilityData.class);
+    }
+
+    @Override
+    public CapabilityModel editModel(CapabilityModel model) {
+        model.setName(this.getName());
+        model.setType(this.getType());
+        return model;
     }
 }

@@ -29,9 +29,6 @@ public class DataLoader {
         addDefaultUser();
         addHomes();
         addUsersToHomes();
-
-        //TODO should be moved away, after getting the real data
-        manager.initAllClients();
     }
 
     private UserModel addDefaultUser() {

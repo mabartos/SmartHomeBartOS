@@ -45,7 +45,7 @@ const dashboardRoutes = [
     },
     {
         path: "/homes/:homeID/rooms/:roomID",
-        name: "Room",
+        name: "Devices",
         icon: Person,
         component: Room,
         layout: "/admin",
@@ -53,7 +53,7 @@ const dashboardRoutes = [
     },
     {
         path: "/homes/:homeID",
-        name: "Home",
+        name: "Rooms",
         icon: Person,
         component: Home,
         layout: "/admin",

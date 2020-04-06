@@ -5,7 +5,6 @@ import org.mabartos.persistence.model.HomeModel;
 import org.mabartos.protocols.mqtt.topics.CRUDTopic;
 import org.mabartos.protocols.mqtt.topics.CRUDTopicType;
 import org.mabartos.protocols.mqtt.topics.CapabilityTopic;
-import org.mabartos.protocols.mqtt.topics.DeviceTopic;
 import org.mabartos.protocols.mqtt.topics.GeneralTopic;
 import org.mabartos.protocols.mqtt.topics.Topics;
 
@@ -29,8 +28,7 @@ public class TopicUtils {
      * <p>
      * 1. Manage topic CREATE                   /homes/5/create
      * 2. Manage topic OTHER with device ID     /homes/5/update/2
-     * 3. Device topic                          /homes/5/device/1
-     * 4. Capability Topic                      /homes/5/device/1/temp/4
+     * 3. Capability Topic                      /homes/5/rooms/12/temp/4
      */
     public static GeneralTopic getSpecificTopic(String topic) {
         try {
@@ -55,16 +53,10 @@ public class TopicUtils {
             Arrays.stream(CapabilityType.values()).map(CapabilityType::getName).forEach(item -> builder.append(item).append("|"));
 
             //General topic
-            String GENERAL = "^/homes/(\\d+)/devices/(\\d+).*";
+            String GENERAL = "^/homes/(\\d+)/rooms/(\\d+)/(" + builder.toString() + ")/(\\d+).*";
             Matcher generalTopic = Pattern.compile(GENERAL).matcher(topic);
-
-            if (generalTopic.matches() && generalTopic.groupCount() > 1) {
-                GENERAL += "/(" + builder.toString() + ")/(\\d+)$";
-                Matcher capabilityTopic = Pattern.compile(GENERAL).matcher(topic);
-                if (capabilityTopic.matches() && capabilityTopic.groupCount() > 3) {
-                    return new CapabilityTopic(capabilityTopic.group(3), generalTopic.group(1), generalTopic.group(2), capabilityTopic.group(4));
-                }
-                return new DeviceTopic(generalTopic.group(1), generalTopic.group(2));
+            if (generalTopic.matches() && generalTopic.groupCount() > 3) {
+                return new CapabilityTopic(generalTopic.group(3), generalTopic.group(1), generalTopic.group(2), generalTopic.group(4));
             }
         } catch (RuntimeException e) {
             e.printStackTrace();

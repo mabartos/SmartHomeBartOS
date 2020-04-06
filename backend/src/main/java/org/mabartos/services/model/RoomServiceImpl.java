@@ -1,7 +1,6 @@
 package org.mabartos.services.model;
 
 import io.quarkus.runtime.StartupEvent;
-import org.mabartos.api.service.DeviceService;
 import org.mabartos.api.service.RoomService;
 import org.mabartos.controller.data.RoomData;
 import org.mabartos.general.RoomType;
@@ -18,12 +17,10 @@ import java.util.stream.Collectors;
 @Dependent
 public class RoomServiceImpl extends CRUDServiceImpl<RoomModel, RoomRepository, Long> implements RoomService {
 
-    private DeviceService deviceService;
 
     @Inject
-    RoomServiceImpl(RoomRepository repository, DeviceService deviceService) {
+    RoomServiceImpl(RoomRepository repository) {
         super(repository);
-        this.deviceService = deviceService;
     }
 
     public void start(@Observes StartupEvent event) {

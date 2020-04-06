@@ -7,12 +7,13 @@ import {CapabilityType} from "../../../index";
 import GeneralService from "../../../services/GeneralService";
 
 export default function TemperatureCapCard(props) {
-    const id = props.device.id;
+    const {device, homeID, roomID, mqtt} = props;
 
-    const topic = DeviceService.getFullTopic(props.homeID, props.roomID, CapabilityType.TEMPERATURE.topic, id);
+    const id = device.id;
+    const topic = DeviceService.getFullTopic(homeID, roomID, CapabilityType.TEMPERATURE.topic, id);
 
-    const [value, setValue] = React.useState(props.device.value);
-    const [units, setUnits] = React.useState(props.device.units);
+    const [value, setValue] = React.useState(device.value);
+    const [units, setUnits] = React.useState("°C");
 
     const [data, setData] = React.useState("");
 
@@ -21,12 +22,9 @@ export default function TemperatureCapCard(props) {
             const object = GeneralService.getObjectFromString(props.data.payloadString);
             if (object !== null) {
                 setData(object);
-                setUnits(data.units);
-                setValue(data.value);
+                setValue(object.actual);
             }
-
         }
-
     }, [props.data]);
 
     return useObserver(() => {

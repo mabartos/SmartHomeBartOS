@@ -24,7 +24,7 @@ export default function Header(props) {
     const history = useHistory();
 
     function makeBrand() {
-        var name;
+        let name;
         props.routes.map(prop => {
             if (window.location.href.indexOf(prop.layout + prop.path) !== -1) {
                 name = props.rtlActive ? prop.rtlName : prop.name;
@@ -33,6 +33,16 @@ export default function Header(props) {
         });
         return name;
     }
+
+    const handleClickBrand = () => {
+        if (window.location.href.indexOf("/homes") !== -1) {
+            history.push("/admin/homes")
+        }
+    };
+
+    const goBackInHistory = () => {
+        history.goBack();
+    };
 
     const {color} = props;
     const appBarClasses = classNames({
@@ -43,10 +53,10 @@ export default function Header(props) {
             <Toolbar className={classes.container}>
                 <div className={classes.flex}>
                     {/* Here we create navbar brand, based on route name */}
-                    <Button color="transparent" href="#" className={classes.title} onClick={() => console.log("BACK IN HISTORY")}>
+                    <Button color="transparent" href="#" className={classes.title} onClick={goBackInHistory}>
                         Back
                     </Button>
-                    <Button color="transparent" href="#" className={classes.title}>
+                    <Button color="transparent" onClick={handleClickBrand} className={classes.title}>
                         {makeBrand()}
                     </Button>
                 </div>

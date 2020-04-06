@@ -28,6 +28,7 @@ export const AddDeviceToRoom = forwardRef(((props, ref) => {
 
     React.useEffect(() => {
         if (open) {
+            homeStore.getDevicesInHome(homeID);
             const interval = setInterval(() => {
                 homeStore.getDevicesInHome(homeID);
             }, 2000);

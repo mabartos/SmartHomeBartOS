@@ -112,6 +112,15 @@ export class DeviceStore extends GeneralStore {
             .finally(this.stopLoading);
     };
 
+    removeDeviceFromRoom = (deviceID) => {
+        this.startLoading();
+        this._deviceService
+            .removeDeviceFromRoom(deviceID)
+            .then(this.setActionInvoked("Device is removed from room"))
+            .catch(this.setError)
+            .finally(this.stopLoading);
+    };
+
     updateDevice = (id, device) => {
         this.startLoading();
         this._deviceService

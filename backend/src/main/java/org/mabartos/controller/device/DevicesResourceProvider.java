@@ -14,6 +14,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.Set;
 
 @Consumes(MediaType.APPLICATION_JSON)
@@ -50,13 +51,16 @@ public class DevicesResourceProvider implements DevicesResource {
     @POST
     @Path(DEVICE_ID + "/add")
     public DeviceModel addDeviceToRoom(@PathParam(DEVICE_ID_NAME) Long id) {
-        DeviceModel device = session.services().devices().findByID(id);
-        if (device != null && session.getActualRoom() != null) {
-            device.setRoom(session.getActualRoom());
-            session.getActualRoom().addChild(device);
-            return session.services().devices().updateByID(id, device);
+        return session.services().devices().addDeviceToRoom(session.getActualRoom().getID(), id);
+    }
+
+    @POST
+    @Path(DEVICE_ID + "/remove")
+    public Response removeDeviceFromRoom(@PathParam(DEVICE_ID_NAME) Long id) {
+        if (session.services().devices().removeDeviceFromRoom(session.getActualRoom().getID(), id)) {
+            return Response.ok().build();
         }
-        return null;
+        return Response.status(400).build();
     }
 
     @Path(DEVICE_ID)

@@ -1,16 +1,20 @@
 package org.mabartos.protocols.mqtt.data.capability;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.mabartos.general.CapabilityType;
+import org.mabartos.persistence.model.CapabilityModel;
 import org.mabartos.persistence.model.capability.LightCapModel;
 import org.mabartos.protocols.mqtt.data.CapabilityData;
 import org.mabartos.protocols.mqtt.utils.MqttSerializeUtils;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class LightsData extends CapabilityData {
 
-    @JsonProperty("state")
-    protected State state;
+    @JsonProperty("isTurnedOn")
+    protected boolean isTurnedOn;
 
     @JsonProperty("intensity")
     protected Double intensity;
@@ -22,17 +26,17 @@ public class LightsData extends CapabilityData {
     public LightsData(@JsonProperty("id") Long id,
                       @JsonProperty("name") String name,
                       @JsonProperty("type") CapabilityType type,
-                      @JsonProperty("state") State state,
+                      @JsonProperty("isTurnedOn") boolean state,
                       @JsonProperty("intensity") Double intensity,
                       @JsonProperty("minIntensity") Double minIntensity) {
         super(id, name, type);
-        this.state = state;
+        this.isTurnedOn = state;
         this.intensity = intensity;
         this.minIntensity = minIntensity;
     }
 
-    public State getState() {
-        return state;
+    public boolean isTurnedOn() {
+        return isTurnedOn;
     }
 
     public Double getIntensity() {
@@ -44,14 +48,16 @@ public class LightsData extends CapabilityData {
     }
 
     @Override
-    public LightCapModel toModel() {
-        LightCapModel model = new LightCapModel(this.name);
-        model.setID(this.id);
-        model.setType(this.type);
-        model.setState(this.state);
-        model.setIntensity(this.intensity);
-        model.setMinIntensity(this.minIntensity);
-        return model;
+    public CapabilityModel editModel(CapabilityModel model) {
+        if (model != null) {
+            super.editModel(model);
+            LightCapModel result = (LightCapModel) model;
+            result.setState(this.isTurnedOn());
+            result.setIntensity(this.getIntensity());
+            result.setMinIntensity(this.getMinIntensity());
+            return result;
+        }
+        return null;
     }
 
     public static LightsData fromJson(String json) {
