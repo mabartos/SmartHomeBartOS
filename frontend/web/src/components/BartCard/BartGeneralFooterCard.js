@@ -83,6 +83,11 @@ export default function BartGeneralFooterCard(props) {
         }
     };
 
+    const handleInviteUser = () => {
+        if (props.handleInviteUser !== undefined) {
+            props.handleInviteUser();
+        }
+    };
 
     return (
         <CardFooter stats>
@@ -107,6 +112,12 @@ export default function BartGeneralFooterCard(props) {
                                     <MenuItem className={dropDownStyle.dropdownItem}
                                               onClick={handleAddDevice}>
                                         Add device
+                                    </MenuItem>
+                                )}
+                                {type === HomeComponent.HOME && (
+                                    <MenuItem className={dropDownStyle.dropdownItem}
+                                              onClick={handleInviteUser}>
+                                        Invite user
                                     </MenuItem>
                                 )}
                                 {nextLabel && (

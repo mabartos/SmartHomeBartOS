@@ -15,6 +15,7 @@ import {UpdateHomeForm} from "../Forms/Edit/UpdateHomeForm";
 import {UpdateRoomForm} from "../Forms/Edit/UpdateRoomForm";
 import {AddDeviceToRoom} from "../BartDialogs/AddDeviceToRoom";
 import BartGeneralFooterCard from "./BartGeneralFooterCard";
+import {InviteUserToHome} from "../BartDialogs/InviteUserToHome";
 
 const useStyles = makeStyles(styles);
 const useDashboardStyle = makeStyles(dashboardStyles);
@@ -38,6 +39,7 @@ export default function GeneralCard(props) {
     const refDelete = useRef(null);
     const refEdit = useRef(null);
     const refAddDevice = useRef(null);
+    const refInviteUser = useRef(null);
 
     const {type} = props;
 
@@ -49,6 +51,16 @@ export default function GeneralCard(props) {
         refDelete.current.openDialog()
     };
 
+    // ROOM
+    const handleAddDevice = () => {
+        refAddDevice.current.openDialog();
+    };
+
+    // HOME
+    const handleInviteUser = () => {
+        refInviteUser.current.openDialog();
+    };
+
     const onSelect = () => {
         if (props.onClick !== undefined) {
             props.onClick();
@@ -57,9 +69,6 @@ export default function GeneralCard(props) {
         console.log('Item selected!');
     };
 
-    const handleAddDevice = () => {
-        refAddDevice.current.openDialog();
-    };
 
     const getEditForm = () => {
         switch (type) {
@@ -79,6 +88,7 @@ export default function GeneralCard(props) {
             <BooleanDialog ref={refDelete} type={type} {...props}/>
             {getEditForm()}
             {type === HomeComponent.ROOM && <AddDeviceToRoom ref={refAddDevice} {...props}/>}
+            {type === HomeComponent.HOME && <InviteUserToHome ref={refInviteUser} {...props}/>}
             <Clickable onClick={() => onSelect()}>
                 <Card className={classes.container}>
                     <BartGeneralHeaderCard title={props.title} active={props.active} color={props.color}
@@ -88,8 +98,8 @@ export default function GeneralCard(props) {
                     {props.children}
 
                     <BartGeneralFooterCard handleAddDevice={handleAddDevice} handleEdit={handleEdit}
-                                           handleDelete={handleDelete} {...props}/>
-
+                                           handleDelete={handleDelete}
+                                           handleInviteUser={handleInviteUser}{...props}/>
                 </Card>
             </Clickable>
         </GridItem>

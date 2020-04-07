@@ -10,7 +10,6 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import java.util.Set;
 import java.util.UUID;
@@ -28,12 +27,12 @@ public interface UsersResource {
     Set<UserModel> getAll();
 
     @GET
-    @Path("/search")
-    UserModel getUserByEmail(@QueryParam("email") String email);
+    @Path("/searchEmail/{email}")
+    UserModel getUserByEmail(@PathParam("email") String email);
 
     @GET
-    @Path("/search")
-    UserModel getUserByUsername(@QueryParam("username") String username);
+    @Path("/searchUsername/{username}")
+    UserModel getUserByUsername(@PathParam("username") String username);
 
     @POST
     UserModel createUser(@Valid UserModel user);

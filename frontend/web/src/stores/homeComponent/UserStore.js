@@ -3,49 +3,55 @@ import GeneralStore from "../GeneralStore";
 
 export class UserStore extends GeneralStore {
 
-    _users = [];
+    _users = new Map();
+
+    _invitations = new Map();
 
     _userService;
 
-    constructor(userService) {
+    _authService;
+
+    constructor(userService, authService) {
         super(userService);
         this._userService = this._service;
+        this._authService = authService;
     }
 
     setUsers = (usersList) => {
-        for (let i = 0; i < usersList.length; i++) {
-            this._users.push(usersList[i]);
-        }
+        this._users = this.getMapFromList(usersList);
     };
 
     setUser = (user) => {
-        this._users[user.id] = user;
+        this._users.set(user.id, user);
+    };
+
+    setInvitations = (invitationList) => {
+        this._invitations = this.getMapFromList(invitationList);
+    };
+
+    setInvitation = (invitation) => {
+        this._invitations.set(invitation.id, invitation);
     };
 
     get users() {
         return this._users;
     }
 
+    get invitations() {
+        return this._invitations;
+    }
+
     get usersValues() {
         return Object.values(this._users);
     }
-
-    getAllUsers = () => {
-        this.startLoading();
-        this._userService
-            .getAllUsers()
-            .then(this.setUsers)
-            .catch(super.setError)
-            .finally(super.stopLoading);
-    };
 
     getUserByID = (id) => {
         this.startLoading();
         this._userService
             .getUserByID(id)
             .then(this.setUser)
-            .catch(super.setError)
-            .finally(super.stopLoading);
+            .catch(this.setError)
+            .finally(this.stopLoading);
     };
 
     getUserByEmail = (email) => {
@@ -53,8 +59,8 @@ export class UserStore extends GeneralStore {
         this._userService
             .getUserByEmail(email)
             .then(this.setUser)
-            .catch(super.setError)
-            .finally(super.stopLoading);
+            .catch(this.setError)
+            .finally(this.stopLoading);
     };
 
     getUserByUsername = (username) => {
@@ -62,43 +68,109 @@ export class UserStore extends GeneralStore {
         this._userService
             .getUserByUsername(username)
             .then(this.setUser)
-            .catch(super.setError)
-            .finally(super.stopLoading);
+            .catch(this.setError)
+            .finally(this.stopLoading);
     };
 
-    createUser = (user) => {
+    getAllInvitations = () => {
         this.startLoading();
         this._userService
-            .createUser(user)
-            .then(this.setUser)
-            .catch(super.setError)
-            .finally(super.stopLoading);
+            .getAllInvitations()
+            .then(this.setInvitations)
+            .catch(this.setError)
+            .finally(this.stopLoading);
     };
 
-    updateUser = (id, user) => {
+    getInvitationByID = (id) => {
         this.startLoading();
         this._userService
-            .updateUser(id, user)
-            .then(this.setUser)
-            .catch(super.setError)
-            .finally(super.stopLoading);
+            .getInvitationByID(id)
+            .then(this.setInvitation)
+            .catch(this.setError)
+            .finally(this.stopLoading);
     };
 
-    deleteUser = (id) => {
+    createInvitation = (invitation) => {
         this.startLoading();
         this._userService
-            .deleteUser(id)
-            .catch(super.setError)
-            .finally(super.stopLoading);
+            .createInvitation(invitation)
+            .then(this.setInvitation)
+            .then(this.setActionInvoked(`Invitation was created.`))
+            .catch(this.setError)
+            .finally(this.stopLoading);
+    };
+
+    updateInvitation = (id, invitation) => {
+        this.startLoading();
+        this._userService
+            .updateInvitation(id, invitation)
+            .then(this.setInvitation)
+            .then(this.setActionInvoked(`Invitation '${id}' was updated.`))
+            .catch(this.setError)
+            .finally(this.stopLoading);
+    };
+
+    deleteInvitation = (id) => {
+        this.startLoading();
+        this._userService
+            .deleteInvitation(id)
+            .then(this.removeFromInvitationMap(id))
+            .then(this.setActionInvoked(`Invitation '${id}' was deleted.`))
+            .catch(this.setError)
+            .finally(this.stopLoading);
+    };
+
+    acceptInvitation = (id) => {
+        this.startLoading();
+        this._userService
+            .acceptInvitation(id)
+            .then(this.setActionInvoked(`Invitation '${id}' was accepted.`))
+            .catch(this.setError)
+            .finally(this.stopLoading);
+    };
+
+    dismissInvitation = (id) => {
+        this.startLoading();
+        this._userService
+            .dismissInvitation(id)
+            .then(this.setActionInvoked(`Invitation '${id}' was dismissed.`))
+            .catch(this.setError)
+            .finally(this.stopLoading);
+    };
+
+    reloadInvitations = () => {
+        const handleError = (error) => {
+            this._invitations.clear();
+            this.setError(error);
+        };
+        this.clearActionInvoked();
+
+        this._userService
+            .getAllInvitations()
+            .then(this.setInvitations)
+            .catch(handleError)
+    };
+
+    removeUsers = () => {
+        this._users.clear();
+    };
+
+    removeFromInvitationMap = (id) => {
+        this._invitations.delete(id);
     };
 }
 
 decorate(UserStore, {
     _users: observable,
+    _invitations: observable,
 
     setUsers: action,
     setUser: action,
 
-    users: computed
+    setInvitations: action,
+    setInvitation: action,
+
+    users: computed,
+    invitations: computed
 });
 

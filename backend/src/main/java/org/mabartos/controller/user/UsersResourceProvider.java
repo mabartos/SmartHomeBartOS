@@ -49,16 +49,16 @@ public class UsersResourceProvider implements UsersResource {
     }
 
     @GET
-    @Path("/search")
-    public UserModel getUserByEmail(@QueryParam("email") String email) {
+    @Path("/searchEmail/{email}")
+    public UserModel getUserByEmail(@PathParam("email") String email) {
         if (email != null)
             return session.services().users().findByEmail(email);
         return null;
     }
 
     @GET
-    @Path("/search")
-    public UserModel getUserByUsername(@QueryParam("username") String username) {
+    @Path("/searchUsername/{username}")
+    public UserModel getUserByUsername(@PathParam("username") String username) {
         if (username != null)
             return session.services().users().findByUsername(username);
         return null;

@@ -90,8 +90,9 @@ public class HomeInvitationImpl extends CRUDServiceImpl<HomeInvitationModel, Hom
     }
 
     @Override
-    public boolean acceptInvitation(Long invitationID, UserModel user) {
-        HomeInvitationModel invitation = getValidUserInvitation(invitationID, user);
+    public boolean acceptInvitation(Long invitationID, UserModel authUser) {
+        HomeInvitationModel invitation = getValidUserInvitation(invitationID, authUser);
+        UserModel user = services.users().findByID(authUser.getID());
         if (invitation != null) {
             HomeModel home = services.homes().findByID(invitation.getHomeID());
             if (home != null) {
@@ -116,7 +117,8 @@ public class HomeInvitationImpl extends CRUDServiceImpl<HomeInvitationModel, Hom
     }
 
     @Override
-    public boolean dismissInvitation(Long invitationID, UserModel user) {
+    public boolean dismissInvitation(Long invitationID, UserModel authUser) {
+        UserModel user = services.users().findByID(authUser.getID());
         if (getValidUserInvitation(invitationID, user) != null) {
             return services.invitations().deleteByID(invitationID);
         }

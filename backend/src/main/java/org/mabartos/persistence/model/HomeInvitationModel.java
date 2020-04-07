@@ -23,7 +23,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "HomeInvitation")
 @Cacheable
-@JsonPropertyOrder({"id", "homeID", "receiverID", "issuerID"})
+@JsonPropertyOrder({"id", "homeID", "homeName", "receiverID", "issuerID"})
 @NamedQueries({
         @NamedQuery(name = "getHomesInvitations", query = "select inv from HomeInvitationModel inv where inv.home.id=:homeID"),
         @NamedQuery(name = "getUsersInvitations", query = "select inv from HomeInvitationModel inv where inv.issuerID=:userID"),
@@ -105,6 +105,11 @@ public class HomeInvitationModel extends PanacheEntityBase implements Serializab
     @JsonProperty("homeID")
     public Long getHomeID() {
         return (home != null) ? home.getID() : -1;
+    }
+
+    @JsonProperty("homeName")
+    public String getHomeName() {
+        return (home != null) ? home.getName() : "";
     }
 
     public boolean equalsWithoutID(Object obj) {

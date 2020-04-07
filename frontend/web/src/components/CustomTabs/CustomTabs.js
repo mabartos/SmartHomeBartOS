@@ -13,6 +13,7 @@ import CardBody from "components/Card/CardBody.js";
 import CardHeader from "components/Card/CardHeader.js";
 
 import styles from "assets/jss/material-dashboard-react/components/customTabsStyle.js";
+import CardFooter from "../Card/CardFooter";
 
 const useStyles = makeStyles(styles);
 
@@ -72,6 +73,9 @@ export default function CustomTabs(props) {
                     return null;
                 })}
             </CardBody>
+            <CardFooter>
+                {props.children}
+            </CardFooter>
         </Card>
     );
 }

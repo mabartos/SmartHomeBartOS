@@ -195,7 +195,8 @@ const cardActions = {
 const cardHeader = {
   margin: "-20px 15px 0",
   borderRadius: "3px",
-  padding: "15px"
+  padding: "15px",
+  color:grayColor[0]
 };
 
 const card = {
