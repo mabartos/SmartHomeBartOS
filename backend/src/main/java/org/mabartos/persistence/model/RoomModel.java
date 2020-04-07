@@ -32,7 +32,8 @@ import java.util.Set;
 @Cacheable
 @JsonIgnoreProperties(ignoreUnknown = true)
 @NamedQueries({
-        @NamedQuery(name = "deleteRoomByID", query = "delete from RoomModel where id=:id")
+        @NamedQuery(name = "deleteRoomByID", query = "delete from RoomModel where id=:id"),
+        @NamedQuery(name = "deleteRoomsFromHome", query = "delete from RoomModel where home.id=:homeID")
 })
 public class RoomModel extends PanacheEntityBase implements HasChildren<DeviceModel>, Identifiable<Long> {
 

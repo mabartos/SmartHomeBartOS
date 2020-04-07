@@ -55,6 +55,13 @@ public class DeviceServiceImpl extends CRUDServiceImpl<DeviceModel, DeviceReposi
     }
 
     @Override
+    public int deleteAllFromHome(Long homeID) {
+        Query query = entityManager.createNamedQuery("deleteDevicesFromHome");
+        query.setParameter("homeID", homeID);
+        return query.executeUpdate();
+    }
+
+    @Override
     public boolean removeDeviceFromRoom(Long roomID, Long deviceID) {
         DeviceModel device = findByID(deviceID);
         RoomModel room = services.rooms().findByID(roomID);

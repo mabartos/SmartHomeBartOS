@@ -2,9 +2,12 @@ package org.mabartos.services.model.invitations;
 
 import io.quarkus.runtime.StartupEvent;
 import org.mabartos.api.service.AppServices;
+import org.mabartos.api.service.invitations.HomeInvitationConflictException;
 import org.mabartos.api.service.invitations.HomeInvitationService;
 import org.mabartos.controller.data.HomeInvitationData;
 import org.mabartos.persistence.model.HomeInvitationModel;
+import org.mabartos.persistence.model.HomeModel;
+import org.mabartos.persistence.model.UserModel;
 import org.mabartos.persistence.repository.HomeInvitationRepository;
 import org.mabartos.services.model.CRUDServiceImpl;
 
@@ -45,15 +48,85 @@ public class HomeInvitationImpl extends CRUDServiceImpl<HomeInvitationModel, Hom
     }
 
     @Override
+    public HomeInvitationModel createFromJSON(UserModel issuer, String JSON) throws HomeInvitationConflictException {
+        HomeInvitationData data = HomeInvitationData.fromJSON(JSON);
+
+        if (data != null && issuer != null) {
+            UserModel receiver = services.users().findByID(data.getReceiverID());
+            HomeModel home = services.homes().findByID(data.getHomeID());
+
+            if (receiver != null && home != null) {
+                HomeInvitationModel invitation = new HomeInvitationModel(receiver, home);
+                invitation.setIssuerID(issuer.getID());
+
+                boolean isUnique = getUsersInvitations(issuer.getID())
+                        .stream()
+                        .noneMatch(f -> f.equalsWithoutID(invitation));
+
+                if (!isUnique) {
+                    throw new HomeInvitationConflictException();
+                }
+                return services.invitations().create(invitation);
+            }
+        }
+        return null;
+    }
+
+    @Override
     public HomeInvitationModel updateFromJSON(Long invitationID, String JSON) {
         HomeInvitationModel model = getRepository().findById(invitationID);
         HomeInvitationData data = HomeInvitationData.fromJSON(JSON);
         if (model != null && data != null) {
             model.setIssuerID(data.getIssuerID());
-            model.setReceiver(services.users().findByID(data.getReceiverID()));
-            model.setHome(services.homes().findByID(data.getHomeID()));
-            services.invitations().updateByID(invitationID, model);
+            UserModel receiver = services.users().findByID(data.getReceiverID());
+            HomeModel home = services.homes().findByID(data.getHomeID());
+            if (receiver != null && home != null) {
+                model.setReceiver(receiver);
+                model.setHome(home);
+                services.invitations().updateByID(invitationID, model);
+            }
         }
         return null;
+    }
+
+    @Override
+    public boolean acceptInvitation(Long invitationID, UserModel user) {
+        HomeInvitationModel invitation = getValidUserInvitation(invitationID, user);
+        if (invitation != null) {
+            HomeModel home = services.homes().findByID(invitation.getHomeID());
+            if (home != null) {
+                user.addHome(home);
+                home.addUser(user);
+                services.invitations().deleteByID(invitationID);
+                return services.users().updateByID(user.getID(), user) != null;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public HomeInvitationModel getValidUserInvitation(Long invitationID, UserModel user) {
+        if (user != null) {
+            HomeInvitationModel invitation = user.getInvitationByID(invitationID);
+            if (invitation != null && invitation.getReceiver().equals(user)) {
+                return invitation;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public boolean dismissInvitation(Long invitationID, UserModel user) {
+        if (getValidUserInvitation(invitationID, user) != null) {
+            return services.invitations().deleteByID(invitationID);
+        }
+        return false;
+    }
+
+    @Override
+    public int deleteAllFromHome(Long homeID) {
+        Query query = entityManager.createNamedQuery("deleteHomeInvitations");
+        query.setParameter("homeID", homeID);
+        return query.executeUpdate();
     }
 }

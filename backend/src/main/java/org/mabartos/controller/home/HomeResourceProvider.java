@@ -2,11 +2,13 @@ package org.mabartos.controller.home;
 
 import org.mabartos.api.controller.device.DevicesResource;
 import org.mabartos.api.controller.home.HomeResource;
+import org.mabartos.api.controller.home.invitations.HomeInvitationsResource;
 import org.mabartos.api.controller.home.mqtt.MqttResource;
 import org.mabartos.api.controller.room.RoomsResource;
 import org.mabartos.api.controller.user.UsersResource;
 import org.mabartos.api.model.BartSession;
 import org.mabartos.controller.device.DevicesResourceProvider;
+import org.mabartos.controller.home.invitations.HomeInvitationsProvider;
 import org.mabartos.controller.home.mqtt.MqttResourceProvider;
 import org.mabartos.controller.room.RoomsResourceProvider;
 import org.mabartos.controller.user.UsersResourceProvider;
@@ -78,5 +80,10 @@ public class HomeResourceProvider implements HomeResource {
     @Path(RoomsResource.ROOM_PATH)
     public RoomsResource forwardToRooms() {
         return new RoomsResourceProvider(session);
+    }
+
+    @Override
+    public HomeInvitationsResource forwardToInvitations() {
+        return new HomeInvitationsProvider(session);
     }
 }

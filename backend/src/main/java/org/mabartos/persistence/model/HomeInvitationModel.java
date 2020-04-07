@@ -1,6 +1,8 @@
 package org.mabartos.persistence.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import org.mabartos.interfaces.Identifiable;
 
@@ -9,6 +11,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -20,9 +23,11 @@ import java.util.UUID;
 @Entity
 @Table(name = "HomeInvitation")
 @Cacheable
+@JsonPropertyOrder({"id", "homeID", "receiverID", "issuerID"})
 @NamedQueries({
         @NamedQuery(name = "getHomesInvitations", query = "select inv from HomeInvitationModel inv where inv.home.id=:homeID"),
-        @NamedQuery(name = "getUsersInvitations", query = "select inv from HomeInvitationModel inv where inv.receiver.id=:userID")
+        @NamedQuery(name = "getUsersInvitations", query = "select inv from HomeInvitationModel inv where inv.issuerID=:userID"),
+        @NamedQuery(name = "deleteHomeInvitations", query = "delete from HomeInvitationModel where home.id=:homeID")
 })
 public class HomeInvitationModel extends PanacheEntityBase implements Serializable, Identifiable<Long> {
 
@@ -34,12 +39,12 @@ public class HomeInvitationModel extends PanacheEntityBase implements Serializab
     @Column
     private UUID issuerID;
 
-    @Column(nullable = false)
     @ManyToOne
+    @JoinColumn(name = "USER_ID")
     private UserModel receiver;
 
-    @Column(nullable = false)
     @ManyToOne
+    @JoinColumn(name = "HOME_ID")
     private HomeModel home;
 
     public HomeInvitationModel() {
@@ -51,6 +56,7 @@ public class HomeInvitationModel extends PanacheEntityBase implements Serializab
     }
 
     @Override
+    @JsonIgnore
     public String getName() {
         return null;
     }
@@ -91,16 +97,17 @@ public class HomeInvitationModel extends PanacheEntityBase implements Serializab
 
     // Computed
 
+    @JsonProperty("receiverID")
     public UUID getReceiverID() {
         return (receiver != null) ? receiver.getID() : null;
     }
 
+    @JsonProperty("homeID")
     public Long getHomeID() {
         return (home != null) ? home.getID() : -1;
     }
 
-    @Override
-    public boolean equals(Object obj) {
+    public boolean equalsWithoutID(Object obj) {
         if (this == obj) {
             return true;
         } else if (!(obj instanceof HomeInvitationModel)) {
@@ -108,12 +115,20 @@ public class HomeInvitationModel extends PanacheEntityBase implements Serializab
         } else {
             HomeInvitationModel object = (HomeInvitationModel) obj;
 
-            return (this.getID().equals(object.getID())
-                    && this.getIssuerID().equals(object.getIssuerID())
+            return (this.getIssuerID().equals(object.getIssuerID())
                     && this.getReceiver().equals(object.getReceiver())
                     && this.getHome().equals(object.getHome())
             );
         }
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (equalsWithoutID(obj)) {
+            HomeInvitationModel object = (HomeInvitationModel) obj;
+            return (this.getID().equals(object.getID()));
+        }
+        return false;
     }
 
     public int hashCode() {

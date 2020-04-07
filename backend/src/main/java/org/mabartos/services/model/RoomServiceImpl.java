@@ -32,6 +32,13 @@ public class RoomServiceImpl extends CRUDServiceImpl<RoomModel, RoomRepository, 
     }
 
     @Override
+    public int deleteAllFromHome(Long homeID) {
+        Query query = entityManager.createNamedQuery("deleteRoomsFromHome");
+        query.setParameter("homeID", homeID);
+        return query.executeUpdate();
+    }
+
+    @Override
     public RoomModel updateFromJson(Long roomID, String JSON) {
         RoomModel room = getRepository().findById(roomID);
         if (room != null) {

@@ -1,6 +1,7 @@
 package org.mabartos.api.controller.home;
 
 import org.mabartos.api.controller.device.DevicesResource;
+import org.mabartos.api.controller.home.invitations.HomeInvitationsResource;
 import org.mabartos.api.controller.home.mqtt.MqttResource;
 import org.mabartos.api.controller.room.RoomsResource;
 import org.mabartos.api.controller.user.UsersResource;
@@ -40,4 +41,7 @@ public interface HomeResource {
 
     @Path(RoomsResource.ROOM_PATH)
     RoomsResource forwardToRooms();
+
+    @Path(HomeInvitationsResource.INVITE_PATH)
+    HomeInvitationsResource forwardToInvitations();
 }

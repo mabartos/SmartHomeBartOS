@@ -11,5 +11,7 @@ public interface DeviceService extends CRUDService<DeviceModel, Long> {
 
     DeviceModel addDeviceToRoom(Long roomID, Long deviceID);
 
+    int deleteAllFromHome(Long homeID);
+
     boolean removeDeviceFromRoom(Long roomID, Long deviceID);
 }

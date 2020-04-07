@@ -124,6 +124,16 @@ public class UserModel extends PanacheEntityBase implements Identifiable<UUID> {
         return invitations;
     }
 
+    public HomeInvitationModel getInvitationByID(Long id) {
+        if (invitations != null) {
+            return invitations.stream()
+                    .filter(f -> f.getID().equals(id))
+                    .findFirst()
+                    .orElse(null);
+        }
+        return null;
+    }
+
     public boolean addInvitation(HomeInvitationModel invitation) {
         return invitations.add(invitation);
     }

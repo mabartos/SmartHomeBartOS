@@ -121,11 +121,9 @@ public class HomeServiceImpl extends CRUDServiceImpl<HomeModel, HomeRepository, 
     public boolean deleteByID(Long id) {
         HomeModel found = super.findByID(id);
         if (found != null) {
-            found.getChildren().forEach(f -> {
-                services.rooms().deleteByID(f.getID());
-            });
-            found.getUnAssignedDevices().forEach(f ->
-                    services.devices().deleteByID(f.getID()));
+            services.rooms().deleteAllFromHome(found.getID());
+            services.devices().deleteAllFromHome(found.getID());
+            services.invitations().deleteAllFromHome(found.getID());
 
             return super.deleteByID(id);
         }

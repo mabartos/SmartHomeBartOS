@@ -3,7 +3,6 @@ package org.mabartos.api.controller.home.invitations;
 import org.mabartos.persistence.model.HomeInvitationModel;
 
 import javax.transaction.Transactional;
-import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -11,6 +10,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.Set;
 
 @Path("/invitations")
@@ -23,14 +23,10 @@ public interface HomeInvitationsResource {
     String INVITE_PATH = "/invitations";
 
     @GET
-    Set<HomeInvitationModel> getUsersInvitations();
-
-    @GET
-    @Path("/home")
-    Set<HomeInvitationModel> getHomesInvitations();
+    Set<HomeInvitationModel> getInvitations();
 
     @POST
-    HomeInvitationModel createInvitation(@Valid HomeInvitationModel invitation);
+    Response createInvitationFromJSON(String JSON);
 
     @Path(INVITE_ID)
     HomeInvitationResource forwardToInvitation(@PathParam(INVITE_ID_NAME) Long id);

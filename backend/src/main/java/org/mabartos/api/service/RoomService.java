@@ -9,5 +9,7 @@ public interface RoomService extends CRUDService<RoomModel, Long> {
 
     Set<RoomModel> findByType(RoomType type);
 
+    int deleteAllFromHome(Long homeID);
+
     RoomModel updateFromJson(Long roomID, String JSON);
 }

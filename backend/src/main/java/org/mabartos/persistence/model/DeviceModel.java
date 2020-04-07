@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @NamedQueries({
         @NamedQuery(name = "setDeviceRoomToNull", query = "update DeviceModel set room=null where room.id=:roomID"),
-        @NamedQuery(name = "deleteDeviceFromHome", query = "delete from DeviceModel where home.id=:homeID")
+        @NamedQuery(name = "deleteDevicesFromHome", query = "delete from DeviceModel where home.id=:homeID"),
 }
 )
 public class DeviceModel extends PanacheEntityBase implements Serializable, Identifiable<Long> {

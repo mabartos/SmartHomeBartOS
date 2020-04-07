@@ -52,7 +52,7 @@ public class HomeInvitationData {
     }
 
     public UUID getReceiverID() {
-        return UUID.fromString(receiverID);
+        return (receiverID != null) ? UUID.fromString(receiverID) : null;
     }
 
     public void setReceiverID(String receiverID) {
