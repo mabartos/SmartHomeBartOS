@@ -1,7 +1,7 @@
 package org.mabartos.protocols.mqtt.utils;
 
 import org.mabartos.general.CapabilityType;
-import org.mabartos.persistence.model.HomeModel;
+import org.mabartos.persistence.model.home.HomeModel;
 import org.mabartos.protocols.mqtt.topics.CRUDTopic;
 import org.mabartos.protocols.mqtt.topics.CRUDTopicType;
 import org.mabartos.protocols.mqtt.topics.CapabilityTopic;

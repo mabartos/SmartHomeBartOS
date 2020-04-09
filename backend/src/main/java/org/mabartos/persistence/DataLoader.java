@@ -3,9 +3,9 @@ package org.mabartos.persistence;
 import io.quarkus.runtime.StartupEvent;
 import org.mabartos.api.protocol.MqttClientManager;
 import org.mabartos.api.service.AppServices;
-import org.mabartos.persistence.model.HomeModel;
-import org.mabartos.persistence.model.RoomModel;
-import org.mabartos.persistence.model.UserModel;
+import org.mabartos.persistence.model.home.HomeModel;
+import org.mabartos.persistence.model.room.RoomModel;
+import org.mabartos.persistence.model.user.UserModel;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;

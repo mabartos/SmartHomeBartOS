@@ -1,11 +1,12 @@
 package org.mabartos.services.auth;
 
 import io.quarkus.security.identity.SecurityIdentity;
+import io.smallrye.jwt.auth.principal.DefaultJWTCallerPrincipal;
 import org.eclipse.microprofile.jwt.Claim;
 import org.eclipse.microprofile.jwt.Claims;
-import org.mabartos.api.service.UserService;
 import org.mabartos.api.service.auth.AuthService;
-import org.mabartos.persistence.model.UserModel;
+import org.mabartos.api.service.user.UserService;
+import org.mabartos.persistence.model.user.UserModel;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -69,6 +70,14 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public UUID getID() {
         return UUID.fromString(id.getString());
+    }
+
+    @Override
+    public DefaultJWTCallerPrincipal getAdvancedPrincipal() {
+        if (securityIdentity != null && securityIdentity.getPrincipal() instanceof DefaultJWTCallerPrincipal) {
+            return (DefaultJWTCallerPrincipal) securityIdentity.getPrincipal();
+        }
+        return null;
     }
 
     private String getPrincipalName() {

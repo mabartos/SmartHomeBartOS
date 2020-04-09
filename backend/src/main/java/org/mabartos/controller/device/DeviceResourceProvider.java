@@ -3,7 +3,9 @@ package org.mabartos.controller.device;
 import org.mabartos.api.controller.capability.CapabilitiesResource;
 import org.mabartos.api.controller.device.DeviceResource;
 import org.mabartos.api.model.BartSession;
+import org.mabartos.authz.annotations.HasRoleInHome;
 import org.mabartos.controller.capability.CapabilitiesResourceProvider;
+import org.mabartos.general.UserRole;
 import org.mabartos.persistence.model.DeviceModel;
 
 import javax.transaction.Transactional;
@@ -35,11 +37,13 @@ public class DeviceResourceProvider implements DeviceResource {
     }
 
     @PATCH
+    @HasRoleInHome(minRole = UserRole.HOME_ADMIN, orIsOwner = true)
     public DeviceModel updateDevice(@Valid DeviceModel device) {
         return session.services().devices().updateByID(session.getActualDevice().getID(), device);
     }
 
     @DELETE
+    @HasRoleInHome(minRole = UserRole.HOME_ADMIN, orIsOwner = true)
     public Response deleteDevice() {
         if (session.services().devices().deleteByID(session.getActualDevice().getID())) {
             return Response.ok().build();

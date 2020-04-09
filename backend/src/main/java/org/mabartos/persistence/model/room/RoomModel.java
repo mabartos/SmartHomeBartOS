@@ -1,4 +1,4 @@
-package org.mabartos.persistence.model;
+package org.mabartos.persistence.model.room;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -8,10 +8,13 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.mabartos.general.RoomType;
 import org.mabartos.interfaces.HasChildren;
-import org.mabartos.interfaces.Identifiable;
+import org.mabartos.interfaces.IdentifiableName;
+import org.mabartos.persistence.model.DeviceModel;
+import org.mabartos.persistence.model.home.HomeModel;
 
 import javax.persistence.Cacheable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
@@ -26,6 +29,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Table(name = "Rooms")
@@ -35,7 +39,7 @@ import java.util.Set;
         @NamedQuery(name = "deleteRoomByID", query = "delete from RoomModel where id=:id"),
         @NamedQuery(name = "deleteRoomsFromHome", query = "delete from RoomModel where home.id=:homeID")
 })
-public class RoomModel extends PanacheEntityBase implements HasChildren<DeviceModel>, Identifiable<Long> {
+public class RoomModel extends PanacheEntityBase implements HasChildren<DeviceModel>, IdentifiableName<Long> {
 
     @Id
     @GeneratedValue
@@ -53,6 +57,10 @@ public class RoomModel extends PanacheEntityBase implements HasChildren<DeviceMo
     @ManyToOne
     @JoinColumn
     private HomeModel home;
+
+    @Column
+    @ElementCollection
+    private Set<UUID> ownersID = new HashSet<>();
 
     @OneToMany(targetEntity = DeviceModel.class, mappedBy = "room")
     @LazyCollection(LazyCollectionOption.FALSE)
@@ -90,6 +98,24 @@ public class RoomModel extends PanacheEntityBase implements HasChildren<DeviceMo
 
     public void setType(RoomType type) {
         this.type = type;
+    }
+
+    /* Owners */
+    @JsonIgnore
+    public Set<UUID> getOwnersID() {
+        return ownersID;
+    }
+
+    public boolean addOwnerID(UUID id) {
+        return ownersID.add(id);
+    }
+
+    public boolean removeOwnerID(UUID id) {
+        return ownersID.remove(id);
+    }
+
+    public boolean isOwner(UUID id) {
+        return !ownersID.isEmpty() && ownersID.stream().anyMatch(id::equals);
     }
 
     /* HOME */

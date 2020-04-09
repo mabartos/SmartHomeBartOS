@@ -2,6 +2,8 @@ package org.mabartos.controller.capability;
 
 import org.mabartos.api.controller.capability.CapabilityResource;
 import org.mabartos.api.model.BartSession;
+import org.mabartos.authz.annotations.HasRoleInHome;
+import org.mabartos.general.UserRole;
 import org.mabartos.persistence.model.CapabilityModel;
 
 import javax.transaction.Transactional;
@@ -32,11 +34,13 @@ public class CapabilityResourceProvider implements CapabilityResource {
     }
 
     @PATCH
+    @HasRoleInHome(minRole = UserRole.HOME_ADMIN, orIsOwner = true)
     public CapabilityModel updateCapability(@Valid CapabilityModel capability) {
         return session.services().capabilities().updateByID(session.getActualCapability().getID(), capability);
     }
 
     @DELETE
+    @HasRoleInHome(minRole = UserRole.HOME_ADMIN, orIsOwner = true)
     public Response deleteCapability() {
         if (session.services().capabilities().deleteByID(session.getActualCapability().getID())) {
             return Response.status(200).build();

@@ -1,6 +1,6 @@
 package org.mabartos.persistence;
 
-import org.mabartos.persistence.model.HomeModel;
+import org.mabartos.persistence.model.home.HomeModel;
 
 public class ValidityUtils {
 

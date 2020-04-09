@@ -1,5 +1,7 @@
 package org.mabartos.api.controller.capability;
 
+import org.mabartos.authz.annotations.HasRoleInHome;
+import org.mabartos.general.UserRole;
 import org.mabartos.persistence.model.CapabilityModel;
 
 import javax.transaction.Transactional;
@@ -21,8 +23,10 @@ public interface CapabilityResource {
     CapabilityModel getCapability();
 
     @PATCH
+    @HasRoleInHome(minRole = UserRole.HOME_ADMIN, orIsOwner = true)
     CapabilityModel updateCapability(@Valid CapabilityModel capability);
 
     @DELETE
+    @HasRoleInHome(minRole = UserRole.HOME_ADMIN, orIsOwner = true)
     Response deleteCapability();
 }

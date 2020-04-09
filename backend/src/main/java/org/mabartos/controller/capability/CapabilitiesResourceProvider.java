@@ -3,7 +3,9 @@ package org.mabartos.controller.capability;
 import org.mabartos.api.controller.capability.CapabilitiesResource;
 import org.mabartos.api.controller.capability.CapabilityResource;
 import org.mabartos.api.model.BartSession;
+import org.mabartos.authz.annotations.HasRoleInHome;
 import org.mabartos.controller.utils.ControllerUtil;
+import org.mabartos.general.UserRole;
 import org.mabartos.persistence.model.CapabilityModel;
 
 import javax.transaction.Transactional;
@@ -37,6 +39,7 @@ public class CapabilitiesResourceProvider implements CapabilitiesResource {
     }
 
     @POST
+    @HasRoleInHome(minRole = UserRole.HOME_ADMIN, orIsOwner = true)
     public CapabilityModel createCapability(@Valid CapabilityModel capability) {
         CapabilityModel created = session.services().capabilities().create(capability);
         if (created != null && session.getActualDevice() != null) {

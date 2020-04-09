@@ -5,7 +5,7 @@ import org.mabartos.api.service.AppServices;
 import org.mabartos.api.service.DeviceService;
 import org.mabartos.general.CapabilityType;
 import org.mabartos.persistence.model.DeviceModel;
-import org.mabartos.persistence.model.RoomModel;
+import org.mabartos.persistence.model.room.RoomModel;
 import org.mabartos.persistence.repository.DeviceRepository;
 import org.mabartos.protocols.mqtt.exceptions.DeviceConflictException;
 

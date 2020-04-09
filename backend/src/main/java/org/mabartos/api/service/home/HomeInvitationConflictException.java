@@ -1,4 +1,4 @@
-package org.mabartos.api.service.invitations;
+package org.mabartos.api.service.home;
 
 public class HomeInvitationConflictException extends RuntimeException {
 

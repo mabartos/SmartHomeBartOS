@@ -3,7 +3,7 @@ package org.mabartos.services.model;
 import io.quarkus.runtime.StartupEvent;
 import org.mabartos.api.model.MqttClientService;
 import org.mabartos.api.service.AppServices;
-import org.mabartos.persistence.model.HomeModel;
+import org.mabartos.persistence.model.home.HomeModel;
 import org.mabartos.persistence.model.MqttClientModel;
 import org.mabartos.persistence.repository.BartMqttClientRepository;
 

@@ -1,4 +1,4 @@
-package org.mabartos.persistence.model;
+package org.mabartos.persistence.model.home;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -9,13 +9,16 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.mabartos.general.UserRole;
 import org.mabartos.interfaces.HasChildren;
-import org.mabartos.interfaces.Identifiable;
-import org.mabartos.utils.DedicatedUserRole;
+import org.mabartos.interfaces.IdentifiableName;
+import org.mabartos.persistence.model.DeviceModel;
+import org.mabartos.persistence.model.MqttClientModel;
+import org.mabartos.persistence.model.room.RoomModel;
+import org.mabartos.persistence.model.user.UserModel;
+import org.mabartos.persistence.model.user.UserRoleModel;
 
 import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -36,7 +39,7 @@ import java.util.UUID;
 @Cacheable
 @JsonIgnoreProperties(value = {"mqttClientID", "usersCount"})
 @JsonPropertyOrder({"id", "name", "active"})
-public class HomeModel extends PanacheEntityBase implements HasChildren<RoomModel>, Identifiable<Long> {
+public class HomeModel extends PanacheEntityBase implements HasChildren<RoomModel>, IdentifiableName<Long> {
 
     @Id
     @GeneratedValue
@@ -68,9 +71,9 @@ public class HomeModel extends PanacheEntityBase implements HasChildren<RoomMode
     @JoinColumn(name = "mqttClient", referencedColumnName = "mqttClientID")
     private MqttClientModel mqttClient;
 
-    @ElementCollection
-    @JsonIgnore
-    private Set<DedicatedUserRole> userRoles = new HashSet<>();
+    @OneToMany(targetEntity = UserRoleModel.class, mappedBy = "home", cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private Set<UserRoleModel> roles = new HashSet<>();
 
     public HomeModel() {
     }
@@ -122,38 +125,66 @@ public class HomeModel extends PanacheEntityBase implements HasChildren<RoomMode
     }
 
     public boolean addUser(UserModel user) {
-        return usersSet.add(user);
+        return addUser(user, UserRole.HOME_MEMBER);
+    }
+
+    public boolean addUser(UserModel user, UserRole role) {
+        if (usersSet.add(user)) {
+            if (!isContainedInRoles(user)) {
+                return roles.add(new UserRoleModel(user, this, role));
+            }
+            return true;
+        }
+        return false;
+    }
+
+    private boolean isContainedInRoles(UserModel user) {
+        if (roles != null && user != null && !roles.isEmpty()) {
+            return roles.stream().anyMatch(f -> f.getUser().equals(user));
+        }
+        return false;
     }
 
     public boolean removeUser(UserModel user) {
-        return user.removeHome(this) && usersSet.remove(user);
+        return (user != null && user.removeHome(this) && removeRoleForUser(user) && usersSet.remove(user));
     }
 
-    public boolean removeUserByID(UUID id) {
-        return usersSet.removeIf(user -> user.getID().equals(id));
+    private boolean removeRoleForUser(UserModel user) {
+        return (user != null) && roles.removeIf(f -> f.getUser().equals(user));
     }
-
 
     /* ROLES */
     @JsonIgnore
-    public Set<DedicatedUserRole> getUserRoles() {
-        return userRoles;
+    public Set<UserRoleModel> getUserRoles() {
+        return roles;
+    }
+
+    @JsonIgnore
+    public UserRole getUserRoleByID(UUID userID) {
+        if (roles != null && userID != null) {
+            return roles.stream()
+                    .filter(f -> f.getUser().getID().equals(userID))
+                    .map(UserRoleModel::getRole)
+                    .findFirst()
+                    .orElse(null);
+        }
+        return null;
     }
 
     public boolean changeRoleForUser(UserModel user, UserRole role) {
-        return userRoles.add(new DedicatedUserRole(user, role));
+        UserRoleModel found = roles.stream()
+                .filter(f -> f.getUser().equals(user))
+                .findFirst()
+                .orElse(null);
+        if (found != null) {
+            found.setRole(role);
+            return true;
+        }
+        return false;
     }
 
-    public boolean changeRoleForUser(DedicatedUserRole userRole) {
-        return userRoles.add(userRole);
-    }
-
-    public boolean removeRoleForUser(UserModel user, UserRole role) {
-        return userRoles.remove(new DedicatedUserRole(user, role));
-    }
-
-    public boolean removeRoleForUser(DedicatedUserRole userRole) {
-        return userRoles.remove(userRole);
+    public boolean removeRoleForUser(UUID userID) {
+        return roles.removeIf(f -> f.getUser().getID().equals(userID));
     }
 
     /* DEVICES */

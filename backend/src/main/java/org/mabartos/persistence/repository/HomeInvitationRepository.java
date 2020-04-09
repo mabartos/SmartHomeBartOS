@@ -1,7 +1,7 @@
 package org.mabartos.persistence.repository;
 
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
-import org.mabartos.persistence.model.HomeInvitationModel;
+import org.mabartos.persistence.model.home.HomeInvitationModel;
 
 import javax.enterprise.context.ApplicationScoped;
 

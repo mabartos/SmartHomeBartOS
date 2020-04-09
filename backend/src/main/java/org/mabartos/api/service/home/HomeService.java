@@ -1,12 +1,15 @@
-package org.mabartos.api.service;
+package org.mabartos.api.service.home;
 
+import org.mabartos.api.service.CRUDService;
 import org.mabartos.persistence.model.DeviceModel;
-import org.mabartos.persistence.model.HomeModel;
+import org.mabartos.persistence.model.home.HomeModel;
 
 import java.util.Set;
 import java.util.UUID;
 
 public interface HomeService extends CRUDService<HomeModel, Long> {
+
+    HomeInvitationService invitations();
 
     boolean addDeviceToHome(DeviceModel device, Long homeID);
 

@@ -3,8 +3,10 @@ package org.mabartos.controller.room;
 import org.mabartos.api.controller.room.RoomResource;
 import org.mabartos.api.controller.room.RoomsResource;
 import org.mabartos.api.model.BartSession;
+import org.mabartos.authz.annotations.HasRoleInHome;
 import org.mabartos.controller.utils.ControllerUtil;
-import org.mabartos.persistence.model.RoomModel;
+import org.mabartos.general.UserRole;
+import org.mabartos.persistence.model.room.RoomModel;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -20,6 +22,7 @@ import java.util.Set;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Transactional
+@HasRoleInHome
 public class RoomsResourceProvider implements RoomsResource {
 
     private final BartSession session;
@@ -35,6 +38,7 @@ public class RoomsResourceProvider implements RoomsResource {
     }
 
     @POST
+    @HasRoleInHome(minRole = UserRole.HOME_MEMBER)
     public RoomModel createRoom(@Valid RoomModel room) {
         room.setHome(session.getActualHome());
         return session.services().rooms().create(room);
@@ -42,6 +46,7 @@ public class RoomsResourceProvider implements RoomsResource {
 
     @POST
     @Path(ROOM_ID + "/add")
+    @HasRoleInHome(minRole = UserRole.HOME_MEMBER)
     public RoomModel addRoomToHome(@PathParam(ROOM_ID_NAME) Long id) {
         RoomModel room = session.services().rooms().findByID(id);
         if (room != null && session.getActualHome() != null) {

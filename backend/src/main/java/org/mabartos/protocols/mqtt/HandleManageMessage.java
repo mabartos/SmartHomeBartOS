@@ -7,7 +7,7 @@ import org.mabartos.api.service.AppServices;
 import org.mabartos.general.CapabilityType;
 import org.mabartos.persistence.model.CapabilityModel;
 import org.mabartos.persistence.model.DeviceModel;
-import org.mabartos.persistence.model.HomeModel;
+import org.mabartos.persistence.model.home.HomeModel;
 import org.mabartos.persistence.model.capability.HeaterCapModel;
 import org.mabartos.persistence.model.capability.HumidityCapModel;
 import org.mabartos.persistence.model.capability.LightCapModel;

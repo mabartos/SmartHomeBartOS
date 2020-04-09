@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import org.mabartos.interfaces.Identifiable;
+import org.mabartos.interfaces.IdentifiableName;
+import org.mabartos.persistence.model.home.HomeModel;
 
 import javax.persistence.Cacheable;
 import javax.persistence.Column;
@@ -18,7 +20,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "MqttClients")
 @Cacheable
-public class MqttClientModel extends PanacheEntityBase implements Serializable, Identifiable<Long> {
+public class MqttClientModel extends PanacheEntityBase implements IdentifiableName<Long> {
 
     @Id
     @GeneratedValue

@@ -1,16 +1,19 @@
 package org.mabartos.controller.home;
 
+import io.quarkus.security.Authenticated;
 import org.mabartos.api.controller.home.HomeResource;
 import org.mabartos.api.controller.home.HomesResource;
 import org.mabartos.api.model.BartSession;
+import org.mabartos.authz.annotations.HasRoleInHome;
 import org.mabartos.controller.utils.ControllerUtil;
 import org.mabartos.general.CapabilityType;
+import org.mabartos.general.UserRole;
 import org.mabartos.persistence.model.CapabilityModel;
 import org.mabartos.persistence.model.DeviceModel;
-import org.mabartos.persistence.model.HomeModel;
-import org.mabartos.persistence.model.RoomModel;
-import org.mabartos.persistence.model.UserModel;
+import org.mabartos.persistence.model.room.RoomModel;
 import org.mabartos.persistence.model.capability.TemperatureCapModel;
+import org.mabartos.persistence.model.home.HomeModel;
+import org.mabartos.persistence.model.user.UserModel;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -24,13 +27,13 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.Set;
 import java.util.logging.Logger;
 
 @Path("/homes")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Transactional
+@Authenticated
 @RequestScoped
 public class HomesResourceProvider implements HomesResource {
     public static Logger logger = Logger.getLogger(HomesResourceProvider.class.getName());
@@ -75,13 +78,6 @@ public class HomesResourceProvider implements HomesResource {
         return home;
     }
 
-    //TODO
-    @GET
-    @Path("/test")
-    public Set<HomeModel> getAllTest() {
-        return session.services().homes().getAll();
-    }
-
     @GET
     public Response getAll() {
         UserModel user = session.auth().getUserInfo();
@@ -95,7 +91,7 @@ public class HomesResourceProvider implements HomesResource {
     public HomeModel createHome(@Valid HomeModel home) {
         UserModel user = session.auth().getUserInfo();
         if (user != null) {
-            home.addUser(user);
+            home.addUser(user, UserRole.HOME_ADMIN);
             user.addHome(home);
             return session.services().homes().create(home);
         }
@@ -103,6 +99,7 @@ public class HomesResourceProvider implements HomesResource {
     }
 
     @POST
+    @HasRoleInHome(minRole = UserRole.HOME_ADMIN)
     @Path("/add" + HOME_ID)
     public HomeModel addHomeToUser(@PathParam(HOME_ID_NAME) Long id) {
         return session.services().homes().addUserToHome(session.auth().getID(), id);

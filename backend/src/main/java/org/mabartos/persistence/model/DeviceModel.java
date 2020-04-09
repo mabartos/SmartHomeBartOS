@@ -7,7 +7,9 @@ import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.mabartos.api.controller.device.DevicesResource;
-import org.mabartos.interfaces.Identifiable;
+import org.mabartos.interfaces.IdentifiableName;
+import org.mabartos.persistence.model.home.HomeModel;
+import org.mabartos.persistence.model.room.RoomModel;
 
 import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
@@ -40,7 +42,7 @@ import java.util.stream.Collectors;
         @NamedQuery(name = "deleteDevicesFromHome", query = "delete from DeviceModel where home.id=:homeID"),
 }
 )
-public class DeviceModel extends PanacheEntityBase implements Serializable, Identifiable<Long> {
+public class DeviceModel extends PanacheEntityBase implements Serializable, IdentifiableName<Long> {
 
     @Id
     @GeneratedValue

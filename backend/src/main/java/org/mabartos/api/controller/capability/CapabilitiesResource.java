@@ -1,5 +1,7 @@
 package org.mabartos.api.controller.capability;
 
+import org.mabartos.authz.annotations.HasRoleInHome;
+import org.mabartos.general.UserRole;
 import org.mabartos.persistence.model.CapabilityModel;
 
 import javax.transaction.Transactional;
@@ -16,6 +18,7 @@ import java.util.Set;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Transactional
+@HasRoleInHome
 public interface CapabilitiesResource {
 
     String CAP_ID_NAME = "idCaps";
@@ -25,6 +28,7 @@ public interface CapabilitiesResource {
     Set<CapabilityModel> getCapabilities();
 
     @POST
+    @HasRoleInHome(minRole = UserRole.HOME_ADMIN, orIsOwner = true)
     CapabilityModel createCapability(@Valid CapabilityModel capability);
 
     @Path(CAP_ID)

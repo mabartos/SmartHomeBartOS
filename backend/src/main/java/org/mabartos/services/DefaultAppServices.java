@@ -6,10 +6,10 @@ import org.mabartos.api.model.MqttClientService;
 import org.mabartos.api.service.AppServices;
 import org.mabartos.api.service.CapabilityService;
 import org.mabartos.api.service.DeviceService;
-import org.mabartos.api.service.HomeService;
 import org.mabartos.api.service.RoomService;
-import org.mabartos.api.service.UserService;
-import org.mabartos.api.service.invitations.HomeInvitationService;
+import org.mabartos.api.service.auth.AuthService;
+import org.mabartos.api.service.home.HomeService;
+import org.mabartos.api.service.user.UserService;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.spi.CreationalContext;
@@ -67,6 +67,11 @@ public class DefaultAppServices implements AppServices {
     }
 
     @Override
+    public AuthService auth() {
+        return getProvider(AuthService.class);
+    }
+
+    @Override
     public UserService users() {
         return getProvider(UserService.class);
     }
@@ -89,11 +94,6 @@ public class DefaultAppServices implements AppServices {
     @Override
     public CapabilityService capabilities() {
         return getProvider(CapabilityService.class);
-    }
-
-    @Override
-    public HomeInvitationService invitations() {
-        return getProvider(HomeInvitationService.class);
     }
 
     @Override

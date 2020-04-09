@@ -1,10 +1,11 @@
-package org.mabartos.persistence.model;
+package org.mabartos.persistence.model.home;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import org.mabartos.interfaces.Identifiable;
+import org.mabartos.persistence.model.user.UserModel;
 
 import javax.persistence.Cacheable;
 import javax.persistence.Column;
@@ -16,7 +17,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -29,7 +29,7 @@ import java.util.UUID;
         @NamedQuery(name = "getUsersInvitations", query = "select inv from HomeInvitationModel inv where inv.issuerID=:userID"),
         @NamedQuery(name = "deleteHomeInvitations", query = "delete from HomeInvitationModel where home.id=:homeID")
 })
-public class HomeInvitationModel extends PanacheEntityBase implements Serializable, Identifiable<Long> {
+public class HomeInvitationModel extends PanacheEntityBase implements Identifiable<Long> {
 
     @Id
     @GeneratedValue
@@ -53,12 +53,6 @@ public class HomeInvitationModel extends PanacheEntityBase implements Serializab
     public HomeInvitationModel(UserModel receiver, HomeModel home) {
         this.receiver = receiver;
         this.home = home;
-    }
-
-    @Override
-    @JsonIgnore
-    public String getName() {
-        return null;
     }
 
     public Long getID() {

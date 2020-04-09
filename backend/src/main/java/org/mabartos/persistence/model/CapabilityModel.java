@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import org.mabartos.general.CapabilityType;
 import org.mabartos.interfaces.Identifiable;
+import org.mabartos.interfaces.IdentifiableName;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -28,7 +29,7 @@ import java.util.Objects;
 @NamedQueries({
         @NamedQuery(name = "deleteCapsFromDevice", query = "delete from CapabilityModel where device.id=:deviceID")
 })
-public class CapabilityModel extends PanacheEntityBase implements Serializable, Identifiable<Long> {
+public class CapabilityModel extends PanacheEntityBase implements Serializable, IdentifiableName<Long> {
 
     @Id
     @GeneratedValue

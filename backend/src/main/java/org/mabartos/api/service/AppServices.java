@@ -2,7 +2,9 @@ package org.mabartos.api.service;
 
 import io.vertx.mutiny.core.Vertx;
 import org.mabartos.api.model.MqttClientService;
-import org.mabartos.api.service.invitations.HomeInvitationService;
+import org.mabartos.api.service.auth.AuthService;
+import org.mabartos.api.service.home.HomeService;
+import org.mabartos.api.service.user.UserService;
 
 import javax.persistence.EntityManager;
 
@@ -11,6 +13,8 @@ public interface AppServices {
     <T> T getProvider(Class<T> clazz);
 
     EntityManager getEntityManager();
+
+    AuthService auth();
 
     UserService users();
 
@@ -21,8 +25,6 @@ public interface AppServices {
     DeviceService devices();
 
     CapabilityService capabilities();
-
-    HomeInvitationService invitations();
 
     MqttClientService mqttClientsRepresentation();
 

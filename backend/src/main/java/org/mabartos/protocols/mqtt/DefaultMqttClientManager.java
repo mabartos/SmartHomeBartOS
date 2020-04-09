@@ -8,7 +8,7 @@ import org.mabartos.api.protocol.BartMqttClient;
 import org.mabartos.api.protocol.MqttClientManager;
 import org.mabartos.api.service.AppServices;
 import org.mabartos.persistence.ValidityUtils;
-import org.mabartos.persistence.model.HomeModel;
+import org.mabartos.persistence.model.home.HomeModel;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;

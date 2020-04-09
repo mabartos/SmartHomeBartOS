@@ -7,13 +7,17 @@ import org.mabartos.api.controller.home.mqtt.MqttResource;
 import org.mabartos.api.controller.room.RoomsResource;
 import org.mabartos.api.controller.user.UsersResource;
 import org.mabartos.api.model.BartSession;
+import org.mabartos.authz.annotations.HasRoleInHome;
 import org.mabartos.controller.device.DevicesResourceProvider;
 import org.mabartos.controller.home.invitations.HomeInvitationsProvider;
 import org.mabartos.controller.home.mqtt.MqttResourceProvider;
 import org.mabartos.controller.room.RoomsResourceProvider;
 import org.mabartos.controller.user.UsersResourceProvider;
+import org.mabartos.general.UserRole;
 import org.mabartos.persistence.model.DeviceModel;
-import org.mabartos.persistence.model.HomeModel;
+import org.mabartos.persistence.model.home.HomeModel;
+import org.mabartos.persistence.model.user.UserModel;
+import org.mabartos.persistence.model.user.UserRoleData;
 
 import javax.transaction.Transactional;
 import javax.ws.rs.Consumes;
@@ -29,6 +33,7 @@ import java.util.Set;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Transactional
+@HasRoleInHome
 public class HomeResourceProvider implements HomeResource {
 
     private final BartSession session;
@@ -49,12 +54,27 @@ public class HomeResourceProvider implements HomeResource {
         return session.getActualHome();
     }
 
+    @GET
+    @Path("/my-role")
+    public UserRoleData getAuthUserRole() {
+        UserModel user = session.services().users().findByID(session.auth().getID());
+        if (user != null) {
+            UserRole role = session.getActualHome().getUserRoleByID(user.getID());
+            if (role != null) {
+                return new UserRoleData(role);
+            }
+        }
+        return null;
+    }
+
     @PATCH
+    @HasRoleInHome(minRole = UserRole.HOME_ADMIN)
     public HomeModel updateHome(String JSON) {
         return session.services().homes().updateFromJson(session.getActualHome().getID(), JSON);
     }
 
     @DELETE
+    @HasRoleInHome(minRole = UserRole.HOME_ADMIN)
     public Response deleteHome() {
         if (session.services().homes().deleteByID(session.getActualHome().getID())) {
             return Response.ok().build();

@@ -4,7 +4,7 @@ import org.mabartos.api.controller.home.HomesResource;
 import org.mabartos.api.controller.user.UserResource;
 import org.mabartos.api.model.BartSession;
 import org.mabartos.controller.home.HomesResourceProvider;
-import org.mabartos.persistence.model.UserModel;
+import org.mabartos.persistence.model.user.UserModel;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;

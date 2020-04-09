@@ -5,10 +5,10 @@ import org.mabartos.api.service.AppServices;
 import org.mabartos.api.service.auth.AuthService;
 import org.mabartos.persistence.model.CapabilityModel;
 import org.mabartos.persistence.model.DeviceModel;
-import org.mabartos.persistence.model.HomeInvitationModel;
-import org.mabartos.persistence.model.HomeModel;
-import org.mabartos.persistence.model.RoomModel;
-import org.mabartos.persistence.model.UserModel;
+import org.mabartos.persistence.model.home.HomeInvitationModel;
+import org.mabartos.persistence.model.home.HomeModel;
+import org.mabartos.persistence.model.room.RoomModel;
+import org.mabartos.persistence.model.user.UserModel;
 
 import java.io.Serializable;
 import java.util.UUID;

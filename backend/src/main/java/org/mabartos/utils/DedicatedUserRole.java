@@ -1,7 +1,7 @@
 package org.mabartos.utils;
 
 import org.mabartos.general.UserRole;
-import org.mabartos.persistence.model.UserModel;
+import org.mabartos.persistence.model.user.UserModel;
 
 import java.io.Serializable;
 import java.util.Objects;

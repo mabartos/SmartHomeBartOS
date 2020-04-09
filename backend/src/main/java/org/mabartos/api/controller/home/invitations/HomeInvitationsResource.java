@@ -1,6 +1,8 @@
 package org.mabartos.api.controller.home.invitations;
 
-import org.mabartos.persistence.model.HomeInvitationModel;
+import org.mabartos.authz.annotations.HasRoleInHome;
+import org.mabartos.general.UserRole;
+import org.mabartos.persistence.model.home.HomeInvitationModel;
 
 import javax.transaction.Transactional;
 import javax.ws.rs.Consumes;
@@ -17,6 +19,7 @@ import java.util.Set;
 @Transactional
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
+@HasRoleInHome
 public interface HomeInvitationsResource {
     String INVITE_ID_NAME = "idInvite";
     String INVITE_ID = "/{" + INVITE_ID_NAME + ":[\\d]+}";
@@ -26,6 +29,7 @@ public interface HomeInvitationsResource {
     Set<HomeInvitationModel> getInvitations();
 
     @POST
+    @HasRoleInHome(minRole = UserRole.HOME_ADMIN)
     Response createInvitationFromJSON(String JSON);
 
     @Path(INVITE_ID)

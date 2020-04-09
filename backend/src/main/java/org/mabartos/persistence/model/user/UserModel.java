@@ -1,4 +1,4 @@
-package org.mabartos.persistence.model;
+package org.mabartos.persistence.model.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -6,7 +6,10 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
-import org.mabartos.interfaces.Identifiable;
+import org.mabartos.general.UserRole;
+import org.mabartos.interfaces.IdentifiableName;
+import org.mabartos.persistence.model.home.HomeInvitationModel;
+import org.mabartos.persistence.model.home.HomeModel;
 
 import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
@@ -32,7 +35,7 @@ import java.util.UUID;
 @Cacheable
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonPropertyOrder({"id", "name", "email"})
-public class UserModel extends PanacheEntityBase implements Identifiable<UUID> {
+public class UserModel extends PanacheEntityBase implements IdentifiableName<UUID> {
 
     @Id
     @GeneratedValue
@@ -61,6 +64,9 @@ public class UserModel extends PanacheEntityBase implements Identifiable<UUID> {
     @OneToMany(targetEntity = HomeInvitationModel.class, mappedBy = "receiver", cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     private Set<HomeInvitationModel> invitations = new HashSet<>();
+
+    @OneToMany(targetEntity = UserRoleModel.class, mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<UserRoleModel> roles = new HashSet<>();
 
     public UserModel() {
     }
@@ -144,6 +150,16 @@ public class UserModel extends PanacheEntityBase implements Identifiable<UUID> {
 
     public void removeAllInvitations() {
         invitations = Collections.emptySet();
+    }
+
+    /* ROLES */
+    @JsonIgnore
+    public Set<UserRoleModel> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<UserRoleModel> roles) {
+        this.roles = roles;
     }
 
     /* MANAGE */

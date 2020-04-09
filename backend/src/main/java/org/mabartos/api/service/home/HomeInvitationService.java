@@ -1,8 +1,8 @@
-package org.mabartos.api.service.invitations;
+package org.mabartos.api.service.home;
 
 import org.mabartos.api.service.CRUDService;
-import org.mabartos.persistence.model.HomeInvitationModel;
-import org.mabartos.persistence.model.UserModel;
+import org.mabartos.persistence.model.home.HomeInvitationModel;
+import org.mabartos.persistence.model.user.UserModel;
 
 import java.util.Set;
 import java.util.UUID;

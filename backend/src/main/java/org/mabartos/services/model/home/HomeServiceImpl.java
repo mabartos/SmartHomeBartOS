@@ -1,14 +1,16 @@
-package org.mabartos.services.model;
+package org.mabartos.services.model.home;
 
 import io.quarkus.runtime.StartupEvent;
 import org.mabartos.api.service.AppServices;
-import org.mabartos.api.service.HomeService;
+import org.mabartos.api.service.home.HomeInvitationService;
+import org.mabartos.api.service.home.HomeService;
 import org.mabartos.controller.data.HomeData;
 import org.mabartos.persistence.model.DeviceModel;
-import org.mabartos.persistence.model.HomeModel;
 import org.mabartos.persistence.model.MqttClientModel;
-import org.mabartos.persistence.model.UserModel;
+import org.mabartos.persistence.model.home.HomeModel;
+import org.mabartos.persistence.model.user.UserModel;
 import org.mabartos.persistence.repository.HomeRepository;
+import org.mabartos.services.model.CRUDServiceImpl;
 
 import javax.enterprise.context.Dependent;
 import javax.enterprise.event.Observes;
@@ -20,11 +22,13 @@ import java.util.UUID;
 public class HomeServiceImpl extends CRUDServiceImpl<HomeModel, HomeRepository, Long> implements HomeService {
 
     private AppServices services;
+    private HomeInvitationService invitationService;
 
     @Inject
-    HomeServiceImpl(HomeRepository repository, AppServices services) {
+    HomeServiceImpl(HomeRepository repository, AppServices services, HomeInvitationService invitationService) {
         super(repository);
         this.services = services;
+        this.invitationService = invitationService;
     }
 
     public void start(@Observes StartupEvent event) {
@@ -62,6 +66,11 @@ public class HomeServiceImpl extends CRUDServiceImpl<HomeModel, HomeRepository, 
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public HomeInvitationService invitations() {
+        return this.invitationService;
     }
 
     @Override
@@ -121,9 +130,11 @@ public class HomeServiceImpl extends CRUDServiceImpl<HomeModel, HomeRepository, 
     public boolean deleteByID(Long id) {
         HomeModel found = super.findByID(id);
         if (found != null) {
-            services.rooms().deleteAllFromHome(found.getID());
-            services.devices().deleteAllFromHome(found.getID());
-            services.invitations().deleteAllFromHome(found.getID());
+            Long foundID = found.getID();
+            services.rooms().deleteAllFromHome(foundID);
+            services.devices().deleteAllFromHome(foundID);
+            services.homes().invitations().deleteAllFromHome(foundID);
+            services.users().roles().deleteAllRolesFromHome(foundID);
 
             return super.deleteByID(id);
         }

@@ -3,7 +3,9 @@ package org.mabartos.controller.device;
 import org.mabartos.api.controller.device.DeviceResource;
 import org.mabartos.api.controller.device.DevicesResource;
 import org.mabartos.api.model.BartSession;
+import org.mabartos.authz.annotations.HasRoleInHome;
 import org.mabartos.controller.utils.ControllerUtil;
+import org.mabartos.general.UserRole;
 import org.mabartos.persistence.model.DeviceModel;
 
 import javax.transaction.Transactional;
@@ -20,6 +22,7 @@ import java.util.Set;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Transactional
+@HasRoleInHome
 public class DevicesResourceProvider implements DevicesResource {
     private final BartSession session;
 
@@ -33,29 +36,16 @@ public class DevicesResourceProvider implements DevicesResource {
         return session.getActualRoom() != null ? session.getActualRoom().getChildren() : session.services().devices().getAll();
     }
 
-    
-    @GET
-    @Path("test")
-    public DeviceModel createDevice() {
-        if (session.getActualHome() != null) {
-            DeviceModel test = new DeviceModel("test");
-            test.setHome(session.getActualHome());
-            if (session.getActualRoom() != null) {
-                test.setRoom(session.getActualRoom());
-            }
-            return session.services().devices().create(test);
-        }
-        return null;
-    }
-
     @POST
     @Path(DEVICE_ID + "/add")
+    @HasRoleInHome(minRole = UserRole.HOME_ADMIN, orIsOwner = true)
     public DeviceModel addDeviceToRoom(@PathParam(DEVICE_ID_NAME) Long id) {
         return session.services().devices().addDeviceToRoom(session.getActualRoom().getID(), id);
     }
 
     @POST
     @Path(DEVICE_ID + "/remove")
+    @HasRoleInHome(minRole = UserRole.HOME_ADMIN, orIsOwner = true)
     public Response removeDeviceFromRoom(@PathParam(DEVICE_ID_NAME) Long id) {
         if (session.services().devices().removeDeviceFromRoom(session.getActualRoom().getID(), id)) {
             return Response.ok().build();

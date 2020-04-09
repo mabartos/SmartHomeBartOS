@@ -10,7 +10,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.mabartos.api.protocol.BartMqttClient;
 import org.mabartos.api.service.AppServices;
-import org.mabartos.persistence.model.HomeModel;
+import org.mabartos.persistence.model.home.HomeModel;
 import org.mabartos.protocols.mqtt.utils.TopicUtils;
 
 import java.io.Serializable;

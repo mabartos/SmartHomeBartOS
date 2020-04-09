@@ -1,6 +1,8 @@
 package org.mabartos.api.controller.home.invitations;
 
-import org.mabartos.persistence.model.HomeInvitationModel;
+import org.mabartos.authz.annotations.HasRoleInHome;
+import org.mabartos.general.UserRole;
+import org.mabartos.persistence.model.home.HomeInvitationModel;
 
 import javax.transaction.Transactional;
 import javax.ws.rs.Consumes;
@@ -15,6 +17,7 @@ import javax.ws.rs.core.Response;
 @Transactional
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
+@HasRoleInHome
 public interface HomeInvitationResource {
 
     @GET
@@ -29,8 +32,10 @@ public interface HomeInvitationResource {
     Response dismissInvitation();
 
     @PATCH
+    @HasRoleInHome(minRole = UserRole.HOME_ADMIN)
     HomeInvitationModel update(String JSON);
 
     @DELETE
+    @HasRoleInHome(minRole = UserRole.HOME_ADMIN)
     Response delete();
 }

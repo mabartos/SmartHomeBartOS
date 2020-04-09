@@ -1,6 +1,6 @@
 package org.mabartos.api.controller.user;
 
-import org.mabartos.persistence.model.UserModel;
+import org.mabartos.persistence.model.user.UserModel;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;

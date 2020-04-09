@@ -4,7 +4,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.jboss.logmanager.Level;
 import org.mabartos.api.protocol.BartMqttClient;
 import org.mabartos.api.service.AppServices;
-import org.mabartos.persistence.model.HomeModel;
+import org.mabartos.persistence.model.home.HomeModel;
 import org.mabartos.protocols.mqtt.capability.HumidityCapability;
 import org.mabartos.protocols.mqtt.capability.LightCapability;
 import org.mabartos.protocols.mqtt.capability.TemperatureCapability;

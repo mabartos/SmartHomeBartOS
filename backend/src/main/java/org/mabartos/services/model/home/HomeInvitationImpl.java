@@ -1,13 +1,13 @@
-package org.mabartos.services.model.invitations;
+package org.mabartos.services.model.home;
 
 import io.quarkus.runtime.StartupEvent;
 import org.mabartos.api.service.AppServices;
-import org.mabartos.api.service.invitations.HomeInvitationConflictException;
-import org.mabartos.api.service.invitations.HomeInvitationService;
+import org.mabartos.api.service.home.HomeInvitationConflictException;
+import org.mabartos.api.service.home.HomeInvitationService;
 import org.mabartos.controller.data.HomeInvitationData;
-import org.mabartos.persistence.model.HomeInvitationModel;
-import org.mabartos.persistence.model.HomeModel;
-import org.mabartos.persistence.model.UserModel;
+import org.mabartos.persistence.model.home.HomeInvitationModel;
+import org.mabartos.persistence.model.home.HomeModel;
+import org.mabartos.persistence.model.user.UserModel;
 import org.mabartos.persistence.repository.HomeInvitationRepository;
 import org.mabartos.services.model.CRUDServiceImpl;
 
@@ -66,7 +66,7 @@ public class HomeInvitationImpl extends CRUDServiceImpl<HomeInvitationModel, Hom
                 if (!isUnique) {
                     throw new HomeInvitationConflictException();
                 }
-                return services.invitations().create(invitation);
+                return services.homes().invitations().create(invitation);
             }
         }
         return null;
@@ -83,7 +83,7 @@ public class HomeInvitationImpl extends CRUDServiceImpl<HomeInvitationModel, Hom
             if (receiver != null && home != null) {
                 model.setReceiver(receiver);
                 model.setHome(home);
-                services.invitations().updateByID(invitationID, model);
+                services.homes().invitations().updateByID(invitationID, model);
             }
         }
         return null;
@@ -98,7 +98,7 @@ public class HomeInvitationImpl extends CRUDServiceImpl<HomeInvitationModel, Hom
             if (home != null) {
                 user.addHome(home);
                 home.addUser(user);
-                services.invitations().deleteByID(invitationID);
+                services.homes().invitations().deleteByID(invitationID);
                 return services.users().updateByID(user.getID(), user) != null;
             }
         }
@@ -120,7 +120,7 @@ public class HomeInvitationImpl extends CRUDServiceImpl<HomeInvitationModel, Hom
     public boolean dismissInvitation(Long invitationID, UserModel authUser) {
         UserModel user = services.users().findByID(authUser.getID());
         if (getValidUserInvitation(invitationID, user) != null) {
-            return services.invitations().deleteByID(invitationID);
+            return services.homes().invitations().deleteByID(invitationID);
         }
         return false;
     }

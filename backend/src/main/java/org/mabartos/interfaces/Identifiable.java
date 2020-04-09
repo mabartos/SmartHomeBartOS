@@ -1,9 +1,9 @@
 package org.mabartos.interfaces;
 
-public interface Identifiable<ID> {
+import java.io.Serializable;
 
-    String getName();
-
+public interface Identifiable<ID> extends Serializable {
+    
     ID getID();
 
     void setID(ID id);

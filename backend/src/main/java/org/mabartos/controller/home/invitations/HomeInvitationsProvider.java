@@ -3,9 +3,11 @@ package org.mabartos.controller.home.invitations;
 import org.mabartos.api.controller.home.invitations.HomeInvitationResource;
 import org.mabartos.api.controller.home.invitations.HomeInvitationsResource;
 import org.mabartos.api.model.BartSession;
-import org.mabartos.api.service.invitations.HomeInvitationConflictException;
-import org.mabartos.persistence.model.HomeInvitationModel;
-import org.mabartos.persistence.model.UserModel;
+import org.mabartos.api.service.home.HomeInvitationConflictException;
+import org.mabartos.authz.annotations.HasRoleInHome;
+import org.mabartos.general.UserRole;
+import org.mabartos.persistence.model.home.HomeInvitationModel;
+import org.mabartos.persistence.model.user.UserModel;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -44,11 +46,12 @@ public class HomeInvitationsProvider implements HomeInvitationsResource {
     }
 
     @POST
+    @HasRoleInHome(minRole = UserRole.HOME_ADMIN)
     public Response createInvitationFromJSON(String JSON) {
         try {
             UserModel user = session.auth().getUserInfo();
             if (user != null) {
-                HomeInvitationModel invitation = session.services().invitations().createFromJSON(user, JSON);
+                HomeInvitationModel invitation = session.services().homes().invitations().createFromJSON(user, JSON);
                 if (invitation != null) {
                     return Response.ok(invitation).build();
                 }
