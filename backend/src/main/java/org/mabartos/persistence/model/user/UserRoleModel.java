@@ -25,7 +25,8 @@ import java.util.UUID;
 @Table(name = "UserRoles")
 @Cacheable
 @NamedQueries({
-        @NamedQuery(name = "deleteAllRolesFromHome", query = "delete from UserRoleModel where home.id=:homeID")
+        @NamedQuery(name = "deleteAllRolesFromHome", query = "delete from UserRoleModel where home.id=:homeID"),
+        @NamedQuery(name = "getAllUserRoleByUUID", query = "select roles from UserRoleModel roles where roles.user.uuid=:userID")
 })
 public class UserRoleModel extends PanacheEntityBase implements Identifiable<Long> {
 

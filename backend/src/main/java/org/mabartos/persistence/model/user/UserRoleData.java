@@ -7,12 +7,17 @@ import org.mabartos.protocols.mqtt.data.MqttSerializable;
 
 public class UserRoleData implements MqttSerializable {
 
+    @JsonProperty("id")
+    private Long homeID;
+
     @JsonProperty("role")
     private UserRole role;
 
     @JsonCreator
-    public UserRoleData(@JsonProperty("role") UserRole role) {
+    public UserRoleData(@JsonProperty("id") Long homeID,
+                        @JsonProperty("role") UserRole role) {
         this.role = role;
+        this.homeID = homeID;
     }
 
     public UserRole getRole() {
@@ -21,5 +26,13 @@ public class UserRoleData implements MqttSerializable {
 
     public void setRole(UserRole role) {
         this.role = role;
+    }
+
+    public Long getHomeID() {
+        return homeID;
+    }
+
+    public void setHomeID(Long homeID) {
+        this.homeID = homeID;
     }
 }

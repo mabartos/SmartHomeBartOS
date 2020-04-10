@@ -7,6 +7,10 @@ export class HomeStore extends GeneralStore {
 
     _devices = new Map();
 
+    _invitations = new Map();
+
+    _rolesInHome = new Map();
+
     _homeService;
 
     constructor(homeService) {
@@ -36,6 +40,29 @@ export class HomeStore extends GeneralStore {
         this.checkError();
     };
 
+    setInvitations = (invitationList) => {
+        this._invitations = this.getMapFromList(invitationList);
+        this.checkError();
+    };
+
+    setInvitation = (invitation) => {
+        this._invitations.set(invitation.id, invitation);
+        this.checkError();
+    };
+
+    setRoleInHome = (role) => {
+        this._rolesInHome.set(role.id, role.role);
+        this.checkError();
+    };
+
+    setAllRolesInHome = (roleList) => {
+        if (roleList) {
+            roleList.forEach(role => {
+                this._rolesInHome.set(role.id, role.role);
+            })
+        }
+    };
+
     get homes() {
         return this._homes;
     }
@@ -44,9 +71,17 @@ export class HomeStore extends GeneralStore {
         return this._devices;
     }
 
+    get invitations() {
+        return this._invitations;
+    }
+
     getByIDstore = (id) => {
         return this._homes.get(id);
     };
+
+    get rolesInHome() {
+        return this._rolesInHome;
+    }
 
     reloadHomes = () => {
         const handleError = (error) => {
@@ -58,7 +93,9 @@ export class HomeStore extends GeneralStore {
         this._homeService
             .getAllHomes()
             .then(this.setHomes)
-            .catch(handleError)
+            .catch(handleError);
+
+        this.reloadAllMyRoles();
     };
 
     stopLoadingAndMessage = (message) => {
@@ -69,6 +106,9 @@ export class HomeStore extends GeneralStore {
     getAllHomes = () => {
         this.clearActionInvoked();
         this.startLoading();
+
+        this.getAllMyRoles();
+
         this._homeService
             .getAllHomes()
             .then(this.setHomes)
@@ -132,6 +172,58 @@ export class HomeStore extends GeneralStore {
             .finally(this.stopLoading);
     };
 
+    createInvitation = (homeID, invitation) => {
+        this.startLoading();
+        this._homeService
+            .createInvitation(homeID, invitation)
+            .then(this.setInvitation)
+            .then(this.setActionInvoked(`Invitation was created.`))
+            .catch(this.setError)
+            .finally(this.stopLoading);
+    };
+
+    updateInvitation = (homeID, id, invitation) => {
+        this.startLoading();
+        this._homeService
+            .updateInvitation(homeID, id, invitation)
+            .then(this.setInvitation)
+            .then(this.setActionInvoked(`Invitation '${id}' was updated.`))
+            .catch(this.setError)
+            .finally(this.stopLoading);
+    };
+
+    deleteInvitation = (homeID, id) => {
+        this.startLoading();
+        this._homeService
+            .deleteInvitation(homeID, id)
+            .then(this.removeFromInvitationMap(id))
+            .then(this.setActionInvoked(`Invitation '${id}' was deleted.`))
+            .catch(this.setError)
+            .finally(this.stopLoading);
+    };
+
+    getMyRoleInHome = (homeID) => {
+        this.startLoading();
+        this._homeService
+            .getMyRoleInHome(homeID)
+            .then(this.setRoleInHome)
+            .catch(this.setError)
+            .finally(this.stopLoading);
+    };
+
+    getAllMyRoles = () => {
+        this.startLoading();
+        this.reloadAllMyRoles();
+        this.stopLoading();
+    };
+
+    reloadAllMyRoles = () => {
+        this._homeService
+            .getAllMyRoles()
+            .then(this.setAllRolesInHome)
+            .catch(this.setError);
+    };
+
     removeFromHomesMap = (id) => {
         this._homes.delete(id);
     };
@@ -140,12 +232,20 @@ export class HomeStore extends GeneralStore {
 decorate(HomeStore, {
     _homes: observable,
     _devices: observable,
+    _invitations: observable,
+    _rolesInHome: observable,
 
     setHome: action,
     setHomes: action,
-
     setDevices: action,
+    setInvitation: action,
+    setInvitations: action,
+
+    setRoleInHome: action,
+    setAllRolesInHome: action,
 
     homes: computed,
-    devices: computed
+    devices: computed,
+    invitations: computed,
+    rolesInHome: computed
 });

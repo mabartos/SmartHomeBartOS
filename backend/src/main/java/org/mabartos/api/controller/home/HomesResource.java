@@ -4,6 +4,7 @@ import io.quarkus.security.Authenticated;
 import org.mabartos.authz.annotations.HasRoleInHome;
 import org.mabartos.general.UserRole;
 import org.mabartos.persistence.model.home.HomeModel;
+import org.mabartos.persistence.model.user.UserRoleData;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -15,6 +16,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.Set;
 
 @Path("/homes")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -29,6 +31,10 @@ public interface HomesResource {
 
     @GET
     Response getAll();
+
+    @GET
+    @Path("/my-roles")
+    Set<UserRoleData> getMyHomesRoles();
 
     @POST
     HomeModel createHome(@Valid HomeModel home);

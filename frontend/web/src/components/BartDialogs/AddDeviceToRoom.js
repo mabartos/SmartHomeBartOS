@@ -91,7 +91,7 @@ export const AddDeviceToRoom = forwardRef(((props, ref) => {
             return tmp;
         };
         return (
-            <div>
+            <>
                 <Modal
                     aria-labelledby="transition-modal-title"
                     aria-describedby="transition-modal-description"
@@ -127,7 +127,7 @@ export const AddDeviceToRoom = forwardRef(((props, ref) => {
                         </GridItem>
                     </Fade>
                 </Modal>
-            </div>
+            </>
         )
     });
 }));

@@ -31,18 +31,6 @@ export default class UserService extends GeneralService {
         return this.fetch(`${UserService.INVITATION_ENDPOINT}/${id}`)
     };
 
-    createInvitation = (invitation) => {
-        return this.post(`${UserService.INVITATION_ENDPOINT}`, invitation);
-    };
-
-    updateInvitation = (id, invitation) => {
-        return this.patch(`${UserService.INVITATION_ENDPOINT}/${id}`, invitation);
-    };
-
-    deleteInvitation = (id) => {
-        return this.delete(`${UserService.INVITATION_ENDPOINT}/${id}`);
-    };
-
     acceptInvitation = (id) => {
         return this.fetch(`${UserService.INVITATION_ENDPOINT}/${id}${UserService.ACCEPT_INVITATION_ENDPOINT}`);
     };

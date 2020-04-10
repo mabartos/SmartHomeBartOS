@@ -1,5 +1,7 @@
 package org.mabartos.protocols.mqtt.data;
 
-public interface ConvertableToModel<T> {
-    T editModel(T model);
+import org.mabartos.persistence.model.CapabilityModel;
+
+public interface ConvertableToModel {
+    CapabilityModel editModel(CapabilityModel model);
 }

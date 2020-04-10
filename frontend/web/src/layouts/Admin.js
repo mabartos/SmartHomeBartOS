@@ -54,7 +54,7 @@ const useStyles = makeStyles(styles);
 
 export default function Admin({...rest}) {
 
-    const {authStore} = useStores();
+    const {authStore, homeStore} = useStores();
 
     // styles
     const classes = useStyles();
@@ -82,16 +82,27 @@ export default function Admin({...rest}) {
         setMobileOpen(!mobileOpen);
     };
     const getRoute = () => {
-        return window.location.pathname !== "/admin/maps";
+        return window.location.pathname !== "/admin";
     };
+
     const resizeFunction = () => {
-        if (window.innerWidth >= 960) {
+        if (window.innerWidth >= 1400) {
             setMobileOpen(false);
         }
     };
 
     React.useEffect(() => {
         authStore.initKeycloak();
+        homeStore.getAllHomes();
+
+        const intervalHomes = setInterval(() => {
+            homeStore.reloadHomes();
+        }, 2000);
+
+        return () => {
+            clearInterval(intervalHomes);
+        };
+
     }, []);
 
     // initialize and destroy the PerfectScrollbar plugin

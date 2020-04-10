@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @JsonPropertyOrder({"id", "name", "type"})
-public class CapabilityData implements MqttSerializable, ConvertableToModel<CapabilityModel> {
+public class CapabilityData implements MqttSerializable, ConvertableToModel {
 
     @JsonProperty("id")
     protected Long id;

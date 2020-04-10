@@ -19,15 +19,12 @@ export default function Homes() {
 
     useEffect(() => {
         homeStore.getAllHomes();
-        const interval = setInterval(() => {
-            homeStore.reloadHomes();
-        }, 2000);
-        return () => clearInterval(interval);
     }, [homeStore]);
 
     return useObserver(() => {
         const {error, loading, actionInvoked, homes} = homeStore;
         const {isAuthenticated} = authStore;
+
         const allHomes = [...homes].map(([key, item], index) => (
             <HomeCard key={index} value={item} colorIndex={index}/>
         ));

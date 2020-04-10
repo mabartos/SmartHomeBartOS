@@ -68,10 +68,6 @@ export default class GeneralStore {
         }
         return map;
     };
-
-    setToken = (token) => {
-        //this._service.setToken(token);
-    }
 }
 decorate(GeneralStore, {
     _loading: observable,

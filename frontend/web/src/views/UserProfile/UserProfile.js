@@ -63,7 +63,7 @@ export default function UserProfile() {
 
         if (isAuthenticated) {
             return (
-                <div>
+                <>
                     <GridContainer justify={"center"}>
                         <GridItem xs={12} sm={12} md={6}>
                             <Card profile>
@@ -89,7 +89,7 @@ export default function UserProfile() {
                             </Card>
                         </GridItem>
                     </GridContainer>
-                </div>
+                </>
             );
         } else {
             return (<SemipolarLoading/>);

@@ -15,11 +15,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Set;
 
-@Path("/invitations")
 @Transactional
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-@HasRoleInHome
 public interface HomeInvitationsResource {
     String INVITE_ID_NAME = "idInvite";
     String INVITE_ID = "/{" + INVITE_ID_NAME + ":[\\d]+}";

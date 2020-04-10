@@ -1,6 +1,6 @@
 import {useObserver} from "mobx-react-lite";
 import DeviceService from "../../../services/homeComponent/DeviceService";
-import {CapabilityType} from "../../../index";
+import {CapabilityType} from "../../../constants/Capabilities";
 import React from "react";
 import GeneralService from "../../../services/GeneralService";
 import GridItem from "../../Grid/GridItem";

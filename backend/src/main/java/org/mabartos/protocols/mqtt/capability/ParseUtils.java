@@ -4,20 +4,21 @@ import org.mabartos.api.protocol.BartMqttClient;
 import org.mabartos.api.service.AppServices;
 import org.mabartos.persistence.model.CapabilityModel;
 import org.mabartos.protocols.mqtt.data.BartMqttSender;
-import org.mabartos.protocols.mqtt.data.CapabilityData;
+import org.mabartos.protocols.mqtt.data.ConvertableToModel;
 import org.mabartos.protocols.mqtt.topics.CapabilityTopic;
 
 public class ParseUtils {
 
-    public static void parse(AppServices services, BartMqttClient client, CapabilityTopic capabilityTopic, CapabilityData data) {
+    public static <Data extends ConvertableToModel> void parse(AppServices services, BartMqttClient client, CapabilityTopic capabilityTopic, Data data) {
         parse(services, client, capabilityTopic, data, null);
     }
 
-    public static void parse(AppServices services, BartMqttClient client, CapabilityTopic capabilityTopic, CapabilityData data, String message) {
-        CapabilityModel model = services.capabilities().findByID(capabilityTopic.getCapabilityID());
+    @SuppressWarnings("unchecked")
+    public static <Model extends CapabilityModel, Data extends ConvertableToModel> void parse(AppServices services, BartMqttClient client, CapabilityTopic capabilityTopic, Data data, String message) {
+        Model model = (Model) services.capabilities().findByID(capabilityTopic.getCapabilityID());
         if (data != null && model != null) {
-            CapabilityModel result = data.editModel(model);
-            CapabilityModel updated = services.capabilities().updateByID(capabilityTopic.getCapabilityID(), result);
+            Model result = (Model) data.editModel(model);
+            Model updated = (Model) services.capabilities().updateByID(capabilityTopic.getCapabilityID(), result);
             if (updated != null) {
                 BartMqttSender.sendResponse(client, 200, message);
                 return;

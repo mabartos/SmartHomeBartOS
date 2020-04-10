@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import org.mabartos.general.CapabilityType;
-import org.mabartos.interfaces.Identifiable;
 import org.mabartos.interfaces.IdentifiableName;
 
 import javax.persistence.CascadeType;

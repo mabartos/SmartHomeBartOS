@@ -42,10 +42,11 @@ const useStyles = makeStyles(styles);
 
 export default function Dashboard() {
     const classes = useStyles();
-    const {authStore} = useStores();
+    const {authStore,homeStore} = useStores();
 
     React.useEffect(() => {
         authStore.initKeycloak();
+        homeStore.getAllHomes();
     }, []);
 
     return useObserver(() => (

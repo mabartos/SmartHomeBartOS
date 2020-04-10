@@ -6,6 +6,7 @@ import {ClickAwayListener} from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
 import MenuList from "@material-ui/core/MenuList";
 import {HomeComponent} from "../../index";
+import {Role} from "../../constants/Role";
 import MenuItem from "@material-ui/core/MenuItem";
 import Divider from "@material-ui/core/Divider";
 import React from "react";
@@ -15,6 +16,8 @@ import dashboardStyles from "assets/jss/material-dashboard-react/views/dashboard
 import dropDown from "assets/jss/material-dashboard-react/dropdownStyle.js";
 
 import CardFooter from "../Card/CardFooter";
+import Protected from "../Authorization/Protected";
+import {useObserver} from "mobx-react-lite";
 import CardIcon from "../Card/CardIcon";
 
 const useDashboardStyle = makeStyles(dashboardStyles);
@@ -28,10 +31,19 @@ const generalStyle = makeStyles(style => ({
 }));
 
 const iconStyles = makeStyles(iconStyle => ({
+    settingsContainer: {
+        textAlign: "center",
+        height: "40px",
+        width: "40px",
+        paddingTop: "-20px !important",
+        marginTop: "-20px !important",
+        paddingBottom: "-20px !important",
+        marginBottom: "-20px !important"
+    },
     settings: {
-        height: "30px",
         color: "gray",
         align: "center",
+        paddingTop: "8px",
         flex: 1
     },
     popperTextWarning: {
@@ -43,17 +55,12 @@ export default function BartGeneralFooterCard(props) {
     const dashboardStyle = useDashboardStyle();
     const iconStyle = iconStyles();
     const dropDownStyle = useDropDownStyle();
-    const classes=generalStyle();
+    const classes = generalStyle();
 
-    const {type, editLabel, deleteLabel, nextLabel} = props;
+    const {type, editLabel, deleteLabel, nextLabel, homeID} = props;
 
     const [settingsAnchor, setSettingsAnchor] = React.useState(null);
     const [openSettingsAnchor, setOpenSettingsAnchor] = React.useState(false);
-
-    const handleClickSettings = event => {
-        setOpenSettingsAnchor(!openSettingsAnchor);
-        setSettingsAnchor(openSettingsAnchor ? null : event.currentTarget);
-    };
 
     const closeSettings = () => {
         setOpenSettingsAnchor(false);
@@ -89,57 +96,67 @@ export default function BartGeneralFooterCard(props) {
         }
     };
 
-    return (
-        <CardFooter stats>
-            <StopPropagation>
-                <div className={dashboardStyle.stats}>
-                    <DateRange/>
-                    {props.notification || "Last 24 Hours"}
-                </div>
-            </StopPropagation>
-            <StopPropagation>
-                <CardIcon>
-                    <SettingsIcon className={iconStyle.settings} color={"secondary"}
-                                  onClick={handleClickSettings}/>
-                </CardIcon>
-                <Poppers id={'simple'} open={openSettingsAnchor} anchorEl={settingsAnchor}
-                         placement={'top'}
-                         transition className={classes.toForeground}>
-                    <ClickAwayListener onClickAway={closeSettings}>
-                        <Paper>
-                            <MenuList role="menu">
-                                {type === HomeComponent.ROOM && (
-                                    <MenuItem className={dropDownStyle.dropdownItem}
-                                              onClick={handleAddDevice}>
-                                        Add device
-                                    </MenuItem>
-                                )}
-                                {type === HomeComponent.HOME && (
-                                    <MenuItem className={dropDownStyle.dropdownItem}
-                                              onClick={handleInviteUser}>
-                                        Invite user
-                                    </MenuItem>
-                                )}
-                                {nextLabel && (
-                                    <MenuItem className={dropDownStyle.dropdownItem}
-                                              onClick={handleNext}>
-                                        {nextLabel || "Next"}
-                                    </MenuItem>
-                                )}
+    return useObserver(() => {
+        const handleClickSettings = event => {
+            setOpenSettingsAnchor(!openSettingsAnchor);
+            setSettingsAnchor(openSettingsAnchor ? null : event.currentTarget);
+        };
 
-                                <MenuItem className={dropDownStyle.dropdownItem} onClick={handleEdit}>
-                                    {editLabel || "Edit"}
-                                </MenuItem>
-                                <Divider light/>
-                                <MenuItem className={dropDownStyle.dropdownItem} onClick={handleDelete}>
-                                    <span style={{color: "red"}}>{deleteLabel || "Delete"}</span>
-                                </MenuItem>
-                            </MenuList>
-                        </Paper>
-                    </ClickAwayListener>
-                </Poppers>
-            </StopPropagation>
-        </CardFooter>
-    )
+        return (
+            <CardFooter stats>
+                <StopPropagation>
+                    <div className={dashboardStyle.stats}>
+                        <DateRange/>
+                        {props.notification || "Last 24 Hours"}
+                    </div>
+                </StopPropagation>
+                <StopPropagation>
+                    <CardIcon onClick={handleClickSettings} className={iconStyle.settingsContainer}>
+                        <SettingsIcon className={iconStyle.settings} color={"secondary"}/>
+                    </CardIcon>
+                    <Poppers id={'simple'} open={openSettingsAnchor} anchorEl={settingsAnchor}
+                             placement={'top'}
+                             transition className={classes.toForeground}>
+                        <ClickAwayListener onClickAway={closeSettings}>
+                            <Paper>
+                                <MenuList role="menu">
+                                    {type === HomeComponent.ROOM && (
+                                        <MenuItem className={dropDownStyle.dropdownItem}
+                                                  onClick={handleAddDevice}>
+                                            Add device
+                                        </MenuItem>
+                                    )}
+                                    {nextLabel && (
+                                        <MenuItem className={dropDownStyle.dropdownItem}
+                                                  onClick={handleNext}>
+                                            {nextLabel || "Next"}
+                                        </MenuItem>
+                                    )}
+                                    <Protected homeID={homeID} role={Role.ADMIN}>
+                                        {type === HomeComponent.HOME && (
+                                            <MenuItem className={dropDownStyle.dropdownItem}
+                                                      onClick={handleInviteUser}>
+                                                Invite user
+                                            </MenuItem>
+                                        )}
+
+                                        <MenuItem className={dropDownStyle.dropdownItem} onClick={handleEdit}>
+                                            {editLabel || "Edit"}
+                                        </MenuItem>
+
+                                        <Divider light/>
+
+                                        <MenuItem className={dropDownStyle.dropdownItem} onClick={handleDelete}>
+                                            <span style={{color: "red"}}>{deleteLabel || "Delete"}</span>
+                                        </MenuItem>
+                                    </Protected>
+                                </MenuList>
+                            </Paper>
+                        </ClickAwayListener>
+                    </Poppers>
+                </StopPropagation>
+            </CardFooter>
+        );
+    });
 
 }

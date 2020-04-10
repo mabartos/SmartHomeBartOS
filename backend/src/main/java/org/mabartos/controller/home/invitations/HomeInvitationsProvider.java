@@ -9,8 +9,6 @@ import org.mabartos.general.UserRole;
 import org.mabartos.persistence.model.home.HomeInvitationModel;
 import org.mabartos.persistence.model.user.UserModel;
 
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -22,16 +20,14 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Set;
 
-@Path("/invitations")
 @Transactional
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-@RequestScoped
+@HasRoleInHome
 public class HomeInvitationsProvider implements HomeInvitationsResource {
 
     private BartSession session;
 
-    @Inject
     public HomeInvitationsProvider(BartSession session) {
         this.session = session;
     }
@@ -39,8 +35,8 @@ public class HomeInvitationsProvider implements HomeInvitationsResource {
     @GET
     public Set<HomeInvitationModel> getInvitations() {
         UserModel user = session.auth().getUserInfo();
-        if (user != null) {
-            return (session.getActualHome() != null) ? session.getActualHome().getInvitations() : user.getInvitations();
+        if (user != null && session.getActualHome() != null) {
+            return session.getActualHome().getInvitations();
         }
         return null;
     }

@@ -1,13 +1,13 @@
 package org.mabartos.protocols.mqtt.data.capability;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.mabartos.general.CapabilityType;
 import org.mabartos.persistence.model.CapabilityModel;
 import org.mabartos.persistence.model.capability.LightCapModel;
 import org.mabartos.protocols.mqtt.data.CapabilityData;
+import org.mabartos.protocols.mqtt.data.ConvertableToModel;
 import org.mabartos.protocols.mqtt.utils.MqttSerializeUtils;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -63,6 +63,4 @@ public class LightsData extends CapabilityData {
     public static LightsData fromJson(String json) {
         return MqttSerializeUtils.fromJson(json, LightsData.class);
     }
-
-
 }

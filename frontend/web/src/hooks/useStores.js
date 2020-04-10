@@ -1,5 +1,5 @@
 import React from "react"
-import {storesContext} from "../"
+import {storesContext} from "../index"
 
 const useStores = () => React.useContext(storesContext)
 

@@ -89,37 +89,7 @@ export class UserStore extends GeneralStore {
             .catch(this.setError)
             .finally(this.stopLoading);
     };
-
-    createInvitation = (invitation) => {
-        this.startLoading();
-        this._userService
-            .createInvitation(invitation)
-            .then(this.setInvitation)
-            .then(this.setActionInvoked(`Invitation was created.`))
-            .catch(this.setError)
-            .finally(this.stopLoading);
-    };
-
-    updateInvitation = (id, invitation) => {
-        this.startLoading();
-        this._userService
-            .updateInvitation(id, invitation)
-            .then(this.setInvitation)
-            .then(this.setActionInvoked(`Invitation '${id}' was updated.`))
-            .catch(this.setError)
-            .finally(this.stopLoading);
-    };
-
-    deleteInvitation = (id) => {
-        this.startLoading();
-        this._userService
-            .deleteInvitation(id)
-            .then(this.removeFromInvitationMap(id))
-            .then(this.setActionInvoked(`Invitation '${id}' was deleted.`))
-            .catch(this.setError)
-            .finally(this.stopLoading);
-    };
-
+    
     acceptInvitation = (id) => {
         this.startLoading();
         this._userService

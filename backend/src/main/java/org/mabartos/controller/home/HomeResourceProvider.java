@@ -61,7 +61,7 @@ public class HomeResourceProvider implements HomeResource {
         if (user != null) {
             UserRole role = session.getActualHome().getUserRoleByID(user.getID());
             if (role != null) {
-                return new UserRoleData(role);
+                return new UserRoleData(session.getActualHome().getID(), role);
             }
         }
         return null;

@@ -2,7 +2,7 @@ import React from "react";
 import {useObserver} from "mobx-react-lite";
 import GeneralInfoCard from "../BartCard/GeneralInfoCard";
 import PropTypes from "prop-types";
-import {CapabilityType} from "../../index";
+import {CapabilityType} from "../../constants/Capabilities";
 import TemperatureCapCard from "./Temperature/TemperatureCapCard";
 import useStores from "../../hooks/useStores";
 import LightsCapCard from "./Light/LightsCapCard";

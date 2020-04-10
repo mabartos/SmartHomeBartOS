@@ -39,9 +39,10 @@ public class HomeRoleCheckFilter implements ContainerRequestFilter {
     public void filter(ContainerRequestContext containerRequestContext) {
 
         HasRoleInHome roleAnnotations = resourceInfo.getResourceClass().getAnnotation(HasRoleInHome.class);
+        HasRoleInHome methodRole = resourceInfo.getResourceMethod().getAnnotation(HasRoleInHome.class);
 
-        if (roleAnnotations == null) {
-            roleAnnotations = resourceInfo.getResourceMethod().getAnnotation(HasRoleInHome.class);
+        if (methodRole != null) {
+            roleAnnotations = methodRole;
         }
 
         Principal basicPrincipal = containerRequestContext.getSecurityContext().getUserPrincipal();

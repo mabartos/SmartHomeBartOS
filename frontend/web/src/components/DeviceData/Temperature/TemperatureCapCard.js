@@ -3,7 +3,7 @@ import React from "react";
 import {useObserver} from "mobx-react-lite";
 import GridItem from "../../Grid/GridItem";
 import DeviceService from "../../../services/homeComponent/DeviceService";
-import {CapabilityType} from "../../../index";
+import {CapabilityType} from "../../../constants/Capabilities";
 import GeneralService from "../../../services/GeneralService";
 import 'react-circular-progressbar/dist/styles.css';
 import CircularProgress from "../../ProgressBar/CircularProgress";

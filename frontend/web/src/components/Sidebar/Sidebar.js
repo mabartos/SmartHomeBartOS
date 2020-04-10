@@ -37,7 +37,6 @@ export default function Sidebar(props) {
                 {routes.map((prop, key) => {
                     return (<SidebarItem prop={prop} key={key} color={color}/>)
                 })}
-                <SidebarItem prop={myProps} key={myKeys} color={color} name={"Logout"} myIcon={ExitToAppIcon}/>
             </List>
         );
     };
@@ -57,7 +56,7 @@ export default function Sidebar(props) {
         </div>
     );
     return (
-        <div>
+        <>
             <Hidden mdUp implementation="css">
                 <Drawer
                     variant="temporary"
@@ -108,7 +107,7 @@ export default function Sidebar(props) {
                     ) : null}
                 </Drawer>
             </Hidden>
-        </div>
+        </>
     );
 }
 

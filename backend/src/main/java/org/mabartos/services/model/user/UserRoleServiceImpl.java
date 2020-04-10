@@ -1,5 +1,6 @@
 package org.mabartos.services.model.user;
 
+import com.google.common.collect.Sets;
 import io.quarkus.runtime.StartupEvent;
 import org.mabartos.api.service.user.UserRoleService;
 import org.mabartos.persistence.model.user.UserRoleModel;
@@ -10,6 +11,8 @@ import javax.enterprise.context.Dependent;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.persistence.Query;
+import java.util.Set;
+import java.util.UUID;
 
 @Dependent
 public class UserRoleServiceImpl extends CRUDServiceImpl<UserRoleModel, UserRoleRepository, Long> implements UserRoleService {
@@ -20,6 +23,14 @@ public class UserRoleServiceImpl extends CRUDServiceImpl<UserRoleModel, UserRole
     @Inject
     public UserRoleServiceImpl(UserRoleRepository repository) {
         super(repository);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public Set<UserRoleModel> getAllUserRoles(UUID userID) {
+        Query query = getEntityManager().createNamedQuery("getAllUserRoleByUUID");
+        query.setParameter("userID", userID);
+        return Sets.newHashSet(query.getResultList());
     }
 
     @Override

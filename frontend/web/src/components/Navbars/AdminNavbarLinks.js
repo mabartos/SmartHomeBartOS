@@ -86,9 +86,9 @@ export default function AdminNavbarLinks() {
 
             <div className={classes.manager}>
                 <Button
-                    color={window.innerWidth > 959 ? "transparent" : "white"}
-                    justIcon={window.innerWidth > 959}
-                    simple={!(window.innerWidth > 959)}
+                    color={window.innerWidth > 1400 ? "transparent" : "white"}
+                    justIcon={window.innerWidth > 1400}
+                    simple={!(window.innerWidth > 1400)}
                     aria-owns={openNotification ? "notification-menu-list-grow" : null}
                     aria-haspopup="true"
                     onClick={handleClickNotification}
@@ -164,9 +164,9 @@ export default function AdminNavbarLinks() {
             </div>
             <div className={classes.manager}>
                 <Button
-                    color={window.innerWidth > 959 ? "transparent" : "white"}
-                    justIcon={window.innerWidth > 959}
-                    simple={!(window.innerWidth > 959)}
+                    color={window.innerWidth > 1400 ? "transparent" : "white"}
+                    justIcon={window.innerWidth > 1400}
+                    simple={!(window.innerWidth > 1400)}
                     aria-owns={openProfile ? "profile-menu-list-grow" : null}
                     aria-haspopup="true"
                     onClick={handleClickProfile}

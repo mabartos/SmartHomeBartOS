@@ -10,10 +10,13 @@ import org.mabartos.general.CapabilityType;
 import org.mabartos.general.UserRole;
 import org.mabartos.persistence.model.CapabilityModel;
 import org.mabartos.persistence.model.DeviceModel;
-import org.mabartos.persistence.model.room.RoomModel;
+import org.mabartos.persistence.model.capability.LightCapModel;
 import org.mabartos.persistence.model.capability.TemperatureCapModel;
 import org.mabartos.persistence.model.home.HomeModel;
+import org.mabartos.persistence.model.room.RoomModel;
 import org.mabartos.persistence.model.user.UserModel;
+import org.mabartos.persistence.model.user.UserRoleData;
+import org.mabartos.persistence.model.user.UserRoleModel;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -27,6 +30,9 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Logger;
 
 @Path("/homes")
@@ -56,6 +62,7 @@ public class HomesResourceProvider implements HomesResource {
         home.addUser(user);
         user.addHome(home);
         home.setBrokerURL("tcp://localhost:1883");
+        home.changeRoleForUser(user,UserRole.HOME_ADMIN);
         home = session.services().homes().create(home);
         RoomModel room = new RoomModel("roomTest");
         room.setHome(home);
@@ -67,7 +74,7 @@ public class HomesResourceProvider implements HomesResource {
         device.setHome(home);
         device = session.services().devices().create(device);
 
-        CapabilityModel cap1 = new CapabilityModel("cap1", CapabilityType.LIGHT);
+        LightCapModel cap1 = new LightCapModel("cap1");
         TemperatureCapModel cap2 = new TemperatureCapModel("temp1");
         cap1.setDevice(device);
         cap2.setDevice(device);
@@ -85,6 +92,21 @@ public class HomesResourceProvider implements HomesResource {
             return Response.ok(user.getHomes()).build();
         }
         return Response.status(400).build();
+    }
+
+    @GET
+    @Path("/my-roles")
+    public Set<UserRoleData> getMyHomesRoles() {
+        UserModel user = session.auth().getUserInfo();
+        if (user != null) {
+            Set<UserRoleModel> roleModels = session.services().users().roles().getAllUserRoles(user.getID());
+            Set<UserRoleData> roleData = new HashSet<>();
+            if (roleModels != null) {
+                roleModels.forEach(role -> roleData.add(new UserRoleData(role.getHomeID(), role.getRole())));
+                return roleData;
+            }
+        }
+        return Collections.emptySet();
     }
 
     @POST

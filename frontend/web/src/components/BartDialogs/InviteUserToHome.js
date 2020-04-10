@@ -24,7 +24,7 @@ const useHeaderStyles = makeStyles(styles);
 export const InviteUserToHome = forwardRef((((props, ref) => {
     const classes = useStyles();
     const headerStyles = useHeaderStyles();
-    const {userStore, authStore} = useStores();
+    const {userStore, authStore, homeStore} = useStores();
     const {type, homeID, title} = props;
 
     const [open, setOpen] = React.useState(false);
@@ -77,7 +77,7 @@ export const InviteUserToHome = forwardRef((((props, ref) => {
                 invitation.issuerID = user.id;
                 invitation.receiverID = foundUser.id;
                 invitation.homeID = homeID;
-                userStore.createInvitation(invitation);
+                homeStore.createInvitation(homeID, invitation);
             }
             closeDialog();
         };

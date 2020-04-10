@@ -5,6 +5,7 @@ import org.mabartos.api.service.AppServices;
 import org.mabartos.api.service.DeviceService;
 import org.mabartos.general.CapabilityType;
 import org.mabartos.persistence.model.DeviceModel;
+import org.mabartos.persistence.model.home.HomeModel;
 import org.mabartos.persistence.model.room.RoomModel;
 import org.mabartos.persistence.repository.DeviceRepository;
 import org.mabartos.protocols.mqtt.exceptions.DeviceConflictException;
@@ -56,6 +57,15 @@ public class DeviceServiceImpl extends CRUDServiceImpl<DeviceModel, DeviceReposi
 
     @Override
     public int deleteAllFromHome(Long homeID) {
+        HomeModel home = services.homes().findByID(homeID);
+        if (home != null) {
+            home.getUnAssignedDevices().forEach(f -> {
+                Query queryCaps = entityManager.createNamedQuery("deleteCapsFromDevice");
+                queryCaps.setParameter("deviceID", f.getID());
+                queryCaps.executeUpdate();
+            });
+        }
+
         Query query = entityManager.createNamedQuery("deleteDevicesFromHome");
         query.setParameter("homeID", homeID);
         return query.executeUpdate();

@@ -131,8 +131,8 @@ public class HomeServiceImpl extends CRUDServiceImpl<HomeModel, HomeRepository, 
         HomeModel found = super.findByID(id);
         if (found != null) {
             Long foundID = found.getID();
-            services.rooms().deleteAllFromHome(foundID);
             services.devices().deleteAllFromHome(foundID);
+            services.rooms().deleteAllFromHome(foundID);
             services.homes().invitations().deleteAllFromHome(foundID);
             services.users().roles().deleteAllRolesFromHome(foundID);
 
