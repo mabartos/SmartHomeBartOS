@@ -26,7 +26,7 @@ const useStyles = makeStyles(styles);
 
 export default function AdminNavbarLinks() {
     const classes = useStyles();
-    const {authStore} = useStores();
+    const {authStore, homeStore} = useStores();
     const history = useHistory();
 
     const [openNotification, setOpenNotification] = React.useState(null);
@@ -56,6 +56,7 @@ export default function AdminNavbarLinks() {
     };
 
     const handleLogout = () => {
+        homeStore.resetStates();
         authStore.logout();
         handleCloseProfile();
     };
@@ -86,9 +87,9 @@ export default function AdminNavbarLinks() {
 
             <div className={classes.manager}>
                 <Button
-                    color={window.innerWidth > 1400 ? "transparent" : "white"}
-                    justIcon={window.innerWidth > 1400}
-                    simple={!(window.innerWidth > 1400)}
+                    color={window.innerWidth > 959 ? "transparent" : "white"}
+                    justIcon={window.innerWidth > 959}
+                    simple={!(window.innerWidth > 959)}
                     aria-owns={openNotification ? "notification-menu-list-grow" : null}
                     aria-haspopup="true"
                     onClick={handleClickNotification}
@@ -164,9 +165,9 @@ export default function AdminNavbarLinks() {
             </div>
             <div className={classes.manager}>
                 <Button
-                    color={window.innerWidth > 1400 ? "transparent" : "white"}
-                    justIcon={window.innerWidth > 1400}
-                    simple={!(window.innerWidth > 1400)}
+                    color={window.innerWidth > 959 ? "transparent" : "white"}
+                    justIcon={window.innerWidth > 959}
+                    simple={!(window.innerWidth > 959)}
                     aria-owns={openProfile ? "profile-menu-list-grow" : null}
                     aria-haspopup="true"
                     onClick={handleClickProfile}

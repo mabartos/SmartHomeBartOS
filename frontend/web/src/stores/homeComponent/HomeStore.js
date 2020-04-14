@@ -227,6 +227,13 @@ export class HomeStore extends GeneralStore {
     removeFromHomesMap = (id) => {
         this._homes.delete(id);
     };
+
+    resetStates = () => {
+        this._homes.clear();
+        this._rolesInHome.clear();
+        this._devices.clear();
+        this._invitations.clear();
+    }
 }
 
 decorate(HomeStore, {
@@ -237,12 +244,16 @@ decorate(HomeStore, {
 
     setHome: action,
     setHomes: action,
+
     setDevices: action,
+
     setInvitation: action,
     setInvitations: action,
 
     setRoleInHome: action,
     setAllRolesInHome: action,
+
+    resetStates: action,
 
     homes: computed,
     devices: computed,

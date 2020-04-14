@@ -1,6 +1,5 @@
 import GeneralStore from "../GeneralStore";
 import {action, computed, decorate, observable} from "mobx";
-import {history} from "../../index";
 import * as Keycloak from "keycloak-js";
 import KeycloakConfig from "../../keycloak";
 
@@ -101,7 +100,11 @@ export default class AuthStore extends GeneralStore {
 
     logout = () => {
         if (this._keycloak) {
+            localStorage.removeItem("keycloak-token");
+            localStorage.removeItem("keycloak-refresh-token");
+            this.startLoading();
             this._keycloak.logout();
+            this.stopLoading();
         }
     };
 
