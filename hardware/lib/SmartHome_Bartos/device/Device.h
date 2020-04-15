@@ -2,6 +2,8 @@
 #ifndef DEVICE_H
 #define DEVICE_H
 
+#include <ArduinoJson.h>
+
 #include <memory>
 #include <string>
 #include <vector>
@@ -20,7 +22,7 @@ class Device {
     vector<shared_ptr<Capability>> _capabilities;
 
    public:
-    Device() = default;
+    Device();
     ~Device() = default;
 
     string getName();
@@ -45,6 +47,13 @@ class Device {
     void initAllCapabilities();
 
     void executeAllCapabilities();
+
+    /* JSON */
+    DynamicJsonDocument getCreateJSON();
+
+    void publishCreateMessage();
+
+    size_t getCreateJSONSize();
 };
 
 #endif  // DEVICE_H

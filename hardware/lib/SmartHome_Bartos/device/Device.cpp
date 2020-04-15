@@ -1,6 +1,13 @@
 
 #include "Device.h"
 
+#include "mqtt/MqttClient.h"
+
+extern MqttClient client;
+
+Device::Device() : _name("asd") {
+}
+
 string Device::getName() {
     return _name;
 }
@@ -57,5 +64,34 @@ void Device::initAllCapabilities() {
 void Device::executeAllCapabilities() {
     for (auto &item : getCapabilities()) {
         item->execute();
+        client.checkAvailability();
     }
+}
+
+DynamicJsonDocument Device::getCreateJSON() {
+    const size_t capacity = getCreateJSONSize();
+    DynamicJsonDocument create(capacity);
+
+    create["msgID"] = "asd";
+    create["name"] = _name.c_str();
+    JsonArray caps = create.createNestedArray("capabilities");
+
+    for (auto &item : getCapabilities()) {
+        JsonObject obj = caps.createNestedObject();
+        item->editCreateCapNested(obj);
+    }
+
+    return create;
+}
+
+size_t Device::getCreateJSONSize() {
+    return JSON_ARRAY_SIZE(getCapabilities().size()) + getCapabilities().size() * JSON_OBJECT_SIZE(2) + JSON_OBJECT_SIZE(3);
+}
+
+void Device::publishCreateMessage() {
+    char buffer[1024];
+    size_t size = serializeJson(getCreateJSON(), buffer);
+    Serial.println(size);
+    Serial.println(buffer);
+    client.getMQTT().publish_P("outTopic", buffer, size);
 }

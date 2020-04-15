@@ -1,9 +1,13 @@
 #ifndef CAPABILITY_H
 #define CAPABILITY_H
 
+#include <ArduinoJson.h>
+
 #include <cstdint>
 
 #include "CapabilityType.h"
+
+using namespace std;
 
 class Capability {
    protected:
@@ -29,6 +33,9 @@ class Capability {
     void setType(CapabilityType type);
 
     bool isEnabled();
+
+    /* JSON */
+    void editCreateCapNested(JsonObject &nested);
 };
 
 #endif  // CAPABILITY_H

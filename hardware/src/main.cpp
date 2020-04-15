@@ -1,3 +1,5 @@
+using namespace std;
+
 #include "GeneralDeps.h"
 #include "credentials.h"
 
@@ -29,9 +31,13 @@ void setup() {
     device.addCapability(hum);
 
     device.initAllCapabilities();
+    client.reconnect();
+    client.getMQTT().publish("outTopic", "ahoj");
+    device.publishCreateMessage();
+    //client.getMQTT().publish("outTopic", "cau ");
 }
 
 void loop() {
     client.checkAvailability();
-    device.executeAllCapabilities();
+    //device.executeAllCapabilities();
 }

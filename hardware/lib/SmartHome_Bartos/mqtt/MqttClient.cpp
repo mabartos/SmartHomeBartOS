@@ -13,7 +13,6 @@ void MqttClient::init() {
 }
 
 void MqttClient::setupWifi() {
-    delay(10);
     Serial.println();
     Serial.print("Connecting to ");
     Serial.println(_ssid.c_str());
@@ -34,7 +33,8 @@ void MqttClient::setupWifi() {
 }
 
 bool MqttClient::reconnect() {
-    if (_mqttClient.connect("arduinoClient")) {
+    //TODO UUID
+    if (_mqttClient.connect("UUID")) {
         // Once connected, publish an announcement...
         _mqttClient.publish("outTopic", "hello world");
         // ... and resubscribe

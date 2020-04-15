@@ -1,5 +1,7 @@
 #include "Capability.h"
 
+#include "capability/utils/CapabilityUtils.h"
+
 Capability::Capability(const uint8_t &pin) : _pin(pin) {
 }
 
@@ -33,4 +35,15 @@ CapabilityType Capability::getType() {
 
 void Capability::setType(CapabilityType type) {
     _type = type;
+}
+
+/* JSON */
+void Capability::editCreateCapNested(JsonObject &nested) {
+    CapabilityUtils util(_type);
+    nested.clear();
+    const char *name = util.getTopic();
+    const char *type = util.getName();
+
+    nested["name"] = name;
+    nested["type"] = type;
 }

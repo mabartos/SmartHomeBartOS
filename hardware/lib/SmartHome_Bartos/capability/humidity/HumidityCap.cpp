@@ -12,5 +12,4 @@ void HumidityCap::init() {
 
 void HumidityCap::execute() {
     Serial.println("HUM_EXEC");
-    delay(2000);
 }
