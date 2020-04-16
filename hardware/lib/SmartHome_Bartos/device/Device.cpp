@@ -1,11 +1,14 @@
 
 #include "Device.h"
 
+#include <string>
+
 #include "mqtt/MqttClient.h"
 
 extern MqttClient client;
 
-Device::Device() : _name("asd") {
+Device::Device() {
+    setName("Dev_" + NumberGenerator::generateIntToString(2000, 9999));
 }
 
 string Device::getName() {
@@ -38,9 +41,49 @@ void Device::setRoomID(const long &roomID) {
     _roomID = roomID;
 }
 
+bool Device::isInitialized() {
+    return _initialized;
+}
+void Device::setInitialized(bool initialized) {
+    _initialized = initialized;
+}
+
+long Device::getManageMsgID() {
+    return _manageMsgID;
+}
+
+void Device::setManageMsgID(const long &msgID) {
+    _manageMsgID = msgID;
+}
+
+string Device::getHomeTopic() {
+    string topic = "homes/";
+    string homeID = NumberGenerator::longToString(_homeID);
+    return (topic + homeID);
+}
+
+string Device::getHomeTopicWildCard() {
+    return (getHomeTopic() + "/#");
+}
+
+/* CAPS */
 vector<shared_ptr<Capability>> Device::getCapabilities() {
     return _capabilities;
 }
+
+auto Device::getCapabilityByName(const string &name) -> shared_ptr<Capability> {
+    for (auto &item : getCapabilities()) {
+        if (item->getName() == name) {
+            return item;
+        }
+    }
+    return nullptr;
+}
+/*
+shared_ptr<Capability> Device::getCapabilityByName(const char *name) {
+    string result(name);
+    return getCapabilityByName(result);
+}*/
 
 void Device::addCapability(shared_ptr<Capability> cap) {
     _capabilities.push_back(cap);
@@ -71,8 +114,10 @@ void Device::executeAllCapabilities() {
 DynamicJsonDocument Device::getCreateJSON() {
     const size_t capacity = getCreateJSONSize();
     DynamicJsonDocument create(capacity);
+    long msgID = NumberGenerator::generateLong(100, 999);
+    setManageMsgID(msgID);
 
-    create["msgID"] = "asd";
+    create["msgID"] = msgID;
     create["name"] = _name.c_str();
     JsonArray caps = create.createNestedArray("capabilities");
 
@@ -85,13 +130,13 @@ DynamicJsonDocument Device::getCreateJSON() {
 }
 
 size_t Device::getCreateJSONSize() {
-    return JSON_ARRAY_SIZE(getCapabilities().size()) + getCapabilities().size() * JSON_OBJECT_SIZE(2) + JSON_OBJECT_SIZE(3);
+    return JSON_ARRAY_SIZE(getCapabilities().size()) + getCapabilities().size() * (JSON_OBJECT_SIZE(2) + 80) + JSON_OBJECT_SIZE(3) + 100;
 }
 
 void Device::publishCreateMessage() {
     char buffer[1024];
     size_t size = serializeJson(getCreateJSON(), buffer);
-    Serial.println(size);
-    Serial.println(buffer);
-    client.getMQTT().publish_P("outTopic", buffer, size);
+
+    const char *result = (getHomeTopic() + "/create").c_str();
+    client.getMQTT().publish_P(result, buffer, size);
 }

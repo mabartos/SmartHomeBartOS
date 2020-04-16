@@ -16,7 +16,7 @@ public enum Topics {
     }
 
     public String getTopic() {
-        return "/" + name;
+        return this.equals(HOME_TOPIC) ? name : "/" + name;
     }
 
 }

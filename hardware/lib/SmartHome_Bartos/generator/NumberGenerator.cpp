@@ -1,11 +1,32 @@
 
 #include "NumberGenerator.h"
 
-#include <stdio.h>
-#include <stdlib.h>
 #include <time.h>
-unsigned NumberGenerator::generateInt(int min, int max) {
-    srand((unsigned)time(NULL));
-    double seed = rand() / (RAND_MAX + 1.);
-    return seed * (max - min) + min;
+
+#include <sstream>
+
+#include "ESP8266TrueRandom.h"
+
+unsigned long NumberGenerator::generateLong(long min, long max) {
+    return random(max - min + 1) + min;
+}
+
+string NumberGenerator::generateIntToString(int min, int max) {
+    return intToString(generateLong(min, max));
+}
+
+string NumberGenerator::generateLongToString(long min, long max) {
+    return longToString(generateLong(min, max));
+}
+
+string NumberGenerator::intToString(int number) {
+    ostringstream stream;
+    stream << number;
+    return stream.str();
+}
+
+string NumberGenerator::longToString(long number) {
+    ostringstream stream;
+    stream << number;
+    return stream.str();
 }

@@ -1,6 +1,7 @@
 #include "Capability.h"
 
 #include "capability/utils/CapabilityUtils.h"
+#include "generator/NumberGenerator.h"
 
 Capability::Capability(const uint8_t &pin) : _pin(pin) {
 }
@@ -10,6 +11,20 @@ long Capability::getID() {
 }
 void Capability::setID(const long &id) {
     _ID = id;
+}
+
+string Capability::getRandomName() {
+    CapabilityUtils utils(_type);
+    string topic(utils.getTopic());
+    return topic + "_" + NumberGenerator::generateLongToString(10, 99);
+}
+
+string Capability::getName() {
+    return _name;
+}
+
+void Capability::setName(const string &name) {
+    _name = name;
 }
 
 void Capability::init() {
@@ -41,7 +56,7 @@ void Capability::setType(CapabilityType type) {
 void Capability::editCreateCapNested(JsonObject &nested) {
     CapabilityUtils util(_type);
     nested.clear();
-    const char *name = util.getTopic();
+    const char *name = getName().c_str();
     const char *type = util.getName();
 
     nested["name"] = name;

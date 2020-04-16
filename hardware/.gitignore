@@ -12,4 +12,5 @@ src/main.code-workspace
 .travis.yml
 
 lib/README
+lib/ESP8266TrueRandom-master
 test/README

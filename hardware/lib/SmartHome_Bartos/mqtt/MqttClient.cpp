@@ -1,5 +1,7 @@
 #include "MqttClient.h"
 
+#include "ESP8266TrueRandom.h"
+
 MqttClient::MqttClient(const string &ssid, const string &password, const string &brokerURL, PubSubClient &mqttClient) : _mqttClient(mqttClient) {
     _ssid = ssid;
     _password = password;
@@ -10,6 +12,7 @@ MqttClient::MqttClient(const string &ssid, const string &password, const string 
 void MqttClient::init() {
     setupWifi();
     _mqttClient.setServer(_brokerURL.c_str(), PORT);
+    reconnect();
 }
 
 void MqttClient::setupWifi() {
@@ -35,10 +38,7 @@ void MqttClient::setupWifi() {
 bool MqttClient::reconnect() {
     //TODO UUID
     if (_mqttClient.connect("UUID")) {
-        // Once connected, publish an announcement...
-        _mqttClient.publish("outTopic", "hello world");
-        // ... and resubscribe
-        _mqttClient.subscribe("inTopic");
+        _mqttClient.subscribe("#");
     }
     return _mqttClient.connected();
 }

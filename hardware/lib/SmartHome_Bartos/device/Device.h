@@ -1,4 +1,3 @@
-
 #ifndef DEVICE_H
 #define DEVICE_H
 
@@ -9,6 +8,7 @@
 #include <vector>
 
 #include "capability/Capability.h"
+#include "generator/NumberGenerator.h"
 
 using namespace std;
 
@@ -18,6 +18,10 @@ class Device {
     long _ID;
     long _homeID;
     long _roomID;
+
+    int _manageMsgID;
+
+    bool _initialized = false;
 
     vector<shared_ptr<Capability>> _capabilities;
 
@@ -37,8 +41,20 @@ class Device {
     long getRoomID();
     void setRoomID(const long &roomID);
 
+    long getManageMsgID();
+    void setManageMsgID(const long &msgID);
+
+    string getHomeTopic();
+    string getHomeTopicWildCard();
+
+    bool isInitialized();
+    void setInitialized(bool initialized);
+
     /* CAPS */
     vector<shared_ptr<Capability>> getCapabilities();
+
+    auto getCapabilityByName(const string &name) -> shared_ptr<Capability>;
+    //shared_ptr<Capability> getCapabilityByName(const char *name);
 
     void addCapability(shared_ptr<Capability> cap);
 

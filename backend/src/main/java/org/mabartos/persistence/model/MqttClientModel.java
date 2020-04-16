@@ -86,7 +86,7 @@ public class MqttClientModel extends PanacheEntityBase implements IdentifiableNa
 
     public String getTopic() {
         if (topic == null && home != null)
-            return "/homes/" + home.getID();
+            return "homes/" + home.getID();
         return topic;
     }
 

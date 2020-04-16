@@ -2,6 +2,7 @@
 
 HumidityCap::HumidityCap(const uint8_t &pin) : CapabilityWithValue(pin) {
     _type = CapabilityType::HUMIDITY;
+    setName(getRandomName());
 }
 
 //TODO

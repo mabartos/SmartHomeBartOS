@@ -7,6 +7,7 @@ extern MqttClient client;
 
 TemperatureCap::TemperatureCap(const uint8_t &pin) : CapabilityWithValue(pin) {
     _type = CapabilityType::TEMPERATURE;
+    setName(getRandomName());
 }
 
 void TemperatureCap::init() {

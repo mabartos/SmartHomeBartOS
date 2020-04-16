@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 
 public class TopicUtils {
 
-    // Topic f.e. "/homes/5/temp/3"
+    // Topic f.e. "homes/5/temp/3"
     public static String getHomeTopic(HomeModel home) {
         if (home != null) {
             return Topics.HOME_TOPIC.getTopic() + "/" + home.getID();
@@ -26,9 +26,9 @@ public class TopicUtils {
     /**
      * Create specific topic
      * <p>
-     * 1. Manage topic CREATE                   /homes/5/create
-     * 2. Manage topic OTHER with device ID     /homes/5/update/2
-     * 3. Capability Topic                      /homes/5/rooms/12/temp/4
+     * 1. Manage topic CREATE                   homes/5/create
+     * 2. Manage topic OTHER with device ID     homes/5/update/2
+     * 3. Capability Topic                      homes/5/rooms/12/temp/4
      */
     public static GeneralTopic getSpecificTopic(String topic) {
         try {
@@ -36,7 +36,7 @@ public class TopicUtils {
             // Manage topics
             Arrays.stream(CRUDTopicType.values()).forEach(f -> builder.append(f.getName()).append("|"));
             builder.deleteCharAt(builder.length() - 1);
-            final String MANAGE = "^/homes/(\\d+)/(" + builder.toString() + ")/*(\\d*)$";
+            final String MANAGE = "^homes/(\\d+)/(" + builder.toString() + ")/*(\\d*)$";
 
             // 1.
             Matcher manageTopic = Pattern.compile(MANAGE).matcher(topic);
@@ -53,7 +53,7 @@ public class TopicUtils {
             Arrays.stream(CapabilityType.values()).map(CapabilityType::getName).forEach(item -> builder.append(item).append("|"));
 
             //General topic
-            String GENERAL = "^/homes/(\\d+)/rooms/(\\d+)/(" + builder.toString() + ")/(\\d+).*";
+            String GENERAL = "^homes/(\\d+)/rooms/(\\d+)/(" + builder.toString() + ")/(\\d+).*";
             Matcher generalTopic = Pattern.compile(GENERAL).matcher(topic);
             if (generalTopic.matches() && generalTopic.groupCount() > 3) {
                 return new CapabilityTopic(generalTopic.group(3), generalTopic.group(1), generalTopic.group(2), generalTopic.group(4));

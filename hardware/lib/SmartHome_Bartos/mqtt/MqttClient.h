@@ -8,6 +8,7 @@ using namespace std;
 class MqttClient {
    private:
     const uint16_t PORT = 1883;
+    string _uuid;
     string _ssid;
     string _password;
     string _brokerURL;
