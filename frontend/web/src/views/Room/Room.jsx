@@ -32,6 +32,8 @@ export default function Room() {
         deviceStore.setHomeID(homeID);
         deviceStore.setRoomID(roomID);
         deviceStore.getAllDevices();
+
+        return () => deviceStore.deleteCapabilities();
     }, []);
 
     useEffect(() => {

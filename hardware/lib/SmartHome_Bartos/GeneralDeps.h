@@ -8,8 +8,6 @@
 
 #include <memory>
 
-#include "capability/humidity/HumidityCap.h"
-#include "capability/temperature/TemperatureCap.h"
 #include "device/Device_deps.h"
 #include "mqtt/MqttClient.h"
 

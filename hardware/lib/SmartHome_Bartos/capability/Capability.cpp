@@ -3,8 +3,10 @@
 #include "capability/utils/CapabilityUtils.h"
 #include "device/Device_deps.h"
 #include "generator/NumberGenerator.h"
+#include "mqtt/MqttClient.h"
 
 extern Device device;
+extern MqttClient client;
 
 Capability::Capability(const uint8_t &pin) : _pin(pin) {
 }
@@ -36,6 +38,14 @@ void Capability::init() {}
 void Capability::execute() {}
 
 void Capability::reactToMessage(const JsonObject &obj) {}
+
+void Capability::publishValues(CapabilityData &data) {
+    if (getTopic() == "")
+        return;
+    char buffer[600];
+    size_t size = serializeJson(data.toJSON(), buffer);
+    client.getMQTT().publish(getTopic().c_str(), buffer, size);
+}
 
 uint8_t Capability::getPin() {
     return _pin;
@@ -76,4 +86,12 @@ void Capability::editCreateCapNested(JsonObject &nested) {
 
     nested["name"] = name;
     nested["type"] = type;
+}
+
+bool Capability::executeAfterTime(unsigned seconds) {
+    if ((millis() - _lastExecution) >= (seconds * 1000)) {
+        _lastExecution = millis();
+        return true;
+    }
+    return false;
 }

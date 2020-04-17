@@ -189,6 +189,10 @@ export class DeviceStore extends GeneralStore {
             }
         });
     };
+
+    deleteCapabilities=()=>{
+        this._capabilities.clear();
+    }
 }
 
 decorate(DeviceStore, {

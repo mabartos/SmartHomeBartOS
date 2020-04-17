@@ -1,6 +1,7 @@
 
 #include "TemperatureCap.h"
 
+#include "data/temperature/TemperatureData.h"
 #include "mqtt/MqttClient.h"
 
 extern MqttClient client;
@@ -15,6 +16,14 @@ void TemperatureCap::init() {
 }
 
 void TemperatureCap::execute() {
+    if (!executeAfterTime(3) || _ID == -1)
+        return;
+
+    TemperatureData data(_ID, _name);
+    data.setActualTemp(23.3);
+
+    publishValues(data);
+
     Serial.println("TEMP_EXEC");
 }
 

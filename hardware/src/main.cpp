@@ -1,6 +1,8 @@
 using namespace std;
 
 #include "GeneralDeps.h"
+#include "capability/humidity/HumidityCap.h"
+#include "capability/temperature/TemperatureCap.h"
 #include "credentials.h"
 #include "mqtt/MessageForwarder.h"
 
@@ -28,7 +30,7 @@ void setup() {
     Serial.begin(9600);
     client.init();
     // TODO WifiManager
-    device.setHomeID(20);
+    device.setHomeID(22);
 
     client.getMQTT().subscribe(device.getHomeTopicWildCard().c_str());
     client.getMQTT().setCallback(forwardMessages);
@@ -43,6 +45,6 @@ void setup() {
 
 void loop() {
     client.checkAvailability();
-    //device.executeAllCapabilities();
+    device.executeAllCapabilities();
     delay(10);
 }

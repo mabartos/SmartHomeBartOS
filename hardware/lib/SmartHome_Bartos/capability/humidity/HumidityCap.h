@@ -1,7 +1,7 @@
 #ifndef HUMIDITY_CAP_H
 #define HUMIDITY_CAP_H
 
-#include "capability/CapabilityWithValue.h"
+#include "capability/CapabilityDeps.h"
 #include "device/Device_deps.h"
 
 class HumidityCap : public CapabilityWithValue {

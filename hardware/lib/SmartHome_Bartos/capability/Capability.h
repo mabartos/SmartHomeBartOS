@@ -6,6 +6,7 @@
 #include <cstdint>
 
 #include "CapabilityType.h"
+#include "data/CapabilityData.h"
 
 using namespace std;
 
@@ -17,6 +18,7 @@ class Capability {
     bool _enable;
     CapabilityType _type;
 
+    unsigned long _lastExecution;
     string getRandomName();
 
    public:
@@ -26,6 +28,8 @@ class Capability {
     virtual void init();
     virtual void execute();
     virtual void reactToMessage(const JsonObject &obj);
+
+    void publishValues(CapabilityData &data);
 
     long getID();
     void setID(const long &id);
@@ -42,6 +46,8 @@ class Capability {
     bool isEnabled();
 
     string getTopic();
+
+    bool executeAfterTime(unsigned seconds);
 
     /* JSON */
     void editCreateCapNested(JsonObject &nested);
