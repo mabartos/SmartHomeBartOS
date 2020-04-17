@@ -80,7 +80,7 @@ public class HomeServiceImpl extends CRUDServiceImpl<HomeModel, HomeRepository, 
             if (found != null && device != null) {
                 found.addDevice(device);
                 device.setHome(found);
-                getEntityManager().merge(found);
+                getEntityManager().merge(device);
                 getEntityManager().flush();
                 return true;
             }

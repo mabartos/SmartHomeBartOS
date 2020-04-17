@@ -17,3 +17,7 @@ void TemperatureCap::init() {
 void TemperatureCap::execute() {
     Serial.println("TEMP_EXEC");
 }
+
+void TemperatureCap::reactToMessage(const JsonObject &obj) {
+    Serial.println("TEMP_REACT");
+}

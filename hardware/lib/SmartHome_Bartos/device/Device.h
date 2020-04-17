@@ -15,9 +15,9 @@ using namespace std;
 class Device {
    private:
     string _name;
-    long _ID;
-    long _homeID;
-    long _roomID;
+    long _ID = -1;
+    long _homeID = -1;
+    long _roomID = -1;
 
     int _manageMsgID;
 
@@ -44,8 +44,13 @@ class Device {
     long getManageMsgID();
     void setManageMsgID(const long &msgID);
 
+    //TOPIC
     string getHomeTopic();
     string getHomeTopicWildCard();
+
+    string getRoomTopic();
+
+    string getDeviceTopic();
 
     bool isInitialized();
     void setInitialized(bool initialized);

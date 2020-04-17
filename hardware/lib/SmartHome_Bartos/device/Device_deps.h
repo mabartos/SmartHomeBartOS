@@ -2,6 +2,7 @@
 #define DEVICE_DEPS_H
 
 #include <Arduino.h>
+#include <ArduinoJson.h>
 
 #include <string>
 

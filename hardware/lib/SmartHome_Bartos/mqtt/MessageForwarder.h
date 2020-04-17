@@ -9,7 +9,12 @@ class MessageForwarder {
    private:
     char *_topic;
 
-    void manageCreate(DynamicJsonDocument &doc);
+    void manageAddDeviceToRoom(const JsonObject &obj);
+    void manageCreate(const JsonObject &obj);
+    void manageCapabilityReact(const JsonObject &obj);
+
+    bool equalsTopic(const char *receiveTopic);
+    bool equalsTopic(const string &receiveTopic);
 
    public:
     MessageForwarder() = default;

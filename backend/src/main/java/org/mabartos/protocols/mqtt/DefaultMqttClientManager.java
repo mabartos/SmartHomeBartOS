@@ -106,11 +106,7 @@ public class DefaultMqttClientManager implements MqttClientManager {
         try {
             HomeModel home = services.homes().findByID(idHome);
             if (ValidityUtils.isBrokerURLValid(home)) {
-                BartMqttClient initCl = clients.get()
-                        .stream()
-                        .filter(f -> f.getHome().getID().equals(idHome))
-                        .findFirst()
-                        .orElse(null);
+                BartMqttClient initCl=getMqttForHome(idHome);
 
                 if (initCl != null) {
                     initCl.init(services, home, handler);
@@ -144,5 +140,14 @@ public class DefaultMqttClientManager implements MqttClientManager {
             e.printStackTrace();
         }
         return false;
+    }
+
+    @Override
+    public BartMqttClient getMqttForHome(Long idHome) {
+        return clients.get()
+                .stream()
+                .filter(f -> f.getHome().getID().equals(idHome))
+                .findFirst()
+                .orElse(null);
     }
 }

@@ -52,7 +52,7 @@ public class HomeModel extends PanacheEntityBase implements HasChildren<RoomMode
     @Column
     private String brokerURL;
 
-    @OneToMany(targetEntity = DeviceModel.class, mappedBy = "home", cascade = CascadeType.MERGE, orphanRemoval = true)
+    @OneToMany(targetEntity = DeviceModel.class, mappedBy = "home", orphanRemoval = true)
     @LazyCollection(LazyCollectionOption.FALSE)
     private Set<DeviceModel> unAssignedDevices = new HashSet<>();
 

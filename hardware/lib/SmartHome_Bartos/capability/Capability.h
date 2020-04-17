@@ -11,7 +11,7 @@ using namespace std;
 
 class Capability {
    protected:
-    long _ID;
+    long _ID = -1;
     string _name;
     uint8_t _pin;
     bool _enable;
@@ -25,6 +25,7 @@ class Capability {
 
     virtual void init();
     virtual void execute();
+    virtual void reactToMessage(const JsonObject &obj);
 
     long getID();
     void setID(const long &id);
@@ -39,6 +40,8 @@ class Capability {
     void setType(CapabilityType type);
 
     bool isEnabled();
+
+    string getTopic();
 
     /* JSON */
     void editCreateCapNested(JsonObject &nested);

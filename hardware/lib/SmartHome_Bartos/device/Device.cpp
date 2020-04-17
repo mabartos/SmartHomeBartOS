@@ -56,14 +56,35 @@ void Device::setManageMsgID(const long &msgID) {
     _manageMsgID = msgID;
 }
 
+/* TOPIC */
+
 string Device::getHomeTopic() {
     string topic = "homes/";
-    string homeID = NumberGenerator::longToString(_homeID);
-    return (topic + homeID);
+    if (_homeID != -1) {
+        string homeID = NumberGenerator::longToString(_homeID);
+        return (topic + homeID);
+    }
+    return "";
+}
+
+string Device::getRoomTopic() {
+    if (_roomID != -1 && getHomeTopic() != "") {
+        string roomID = NumberGenerator::longToString(_roomID);
+        return (getHomeTopic() + "/rooms/" + roomID);
+    }
+    return "";
 }
 
 string Device::getHomeTopicWildCard() {
-    return (getHomeTopic() + "/#");
+    return (getHomeTopic() != "") ? getHomeTopic() + "/#" : nullptr;
+}
+
+string Device::getDeviceTopic() {
+    if (_ID != -1) {
+        string deviceID = NumberGenerator::longToString(_ID);
+        return (getHomeTopic() + "/devices/" + deviceID);
+    }
+    return "";
 }
 
 /* CAPS */

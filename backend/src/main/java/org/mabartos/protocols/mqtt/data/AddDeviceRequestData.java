@@ -11,7 +11,7 @@ import java.util.Set;
 public class AddDeviceRequestData implements MqttSerializable {
 
     @JsonProperty("msgID")
-    private Long mgsID;
+    private Long msgID;
 
     @JsonProperty("name")
     private String name;
@@ -25,17 +25,17 @@ public class AddDeviceRequestData implements MqttSerializable {
             @JsonProperty("msgID") Long msgID,
             @JsonProperty("name") String name,
             @JsonProperty("capabilities") Set<CapabilityData> capabilities) {
-        this.mgsID = msgID;
+        this.msgID = msgID;
         this.name = name;
         this.capabilities = capabilities;
     }
 
-    public Long getMgsID() {
-        return mgsID;
+    public Long getMsgID() {
+        return msgID;
     }
 
-    public void setMgsID(Long mgsID) {
-        this.mgsID = mgsID;
+    public void setMsgID(Long msgID) {
+        this.msgID = msgID;
     }
 
     public String getName() {

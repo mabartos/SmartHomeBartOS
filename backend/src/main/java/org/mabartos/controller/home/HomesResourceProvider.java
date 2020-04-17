@@ -86,6 +86,12 @@ public class HomesResourceProvider implements HomesResource {
     }
 
     @GET
+    @Path("/devTest")
+    public Set<DeviceModel> getDevs(){
+        return session.services().devices().getAll();
+    }
+
+    @GET
     public Response getAll() {
         UserModel user = session.auth().getUserInfo();
         if (user != null) {

@@ -5,7 +5,7 @@ import HomeService from "./HomeService";
 export default class DeviceService extends GeneralService {
 
     static DEVICE_ENDPOINT = "/devices";
-    static CAPABILITY_ENDPOINT = "/capability";
+    static CAPABILITY_ENDPOINT = "/caps";
 
     homeID;
     roomID;

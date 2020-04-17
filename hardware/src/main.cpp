@@ -43,6 +43,6 @@ void setup() {
 
 void loop() {
     client.checkAvailability();
-    device.executeAllCapabilities();
+    //device.executeAllCapabilities();
     delay(10);
 }

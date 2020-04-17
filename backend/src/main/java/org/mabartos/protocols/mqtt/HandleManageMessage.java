@@ -93,7 +93,7 @@ public class HandleManageMessage implements Serializable {
                     throw new WrongMessageTopicException();
 
                 if (services.homes().addDeviceToHome(device, home.getID())) {
-                    DeviceData response = new DeviceData(deviceMessage.getMgsID(), device);
+                    DeviceData response = new DeviceData(deviceMessage.getMsgID(), device);
                     client.publish(receivedTopic, response.toJson());
                     return true;
                 }
@@ -207,9 +207,8 @@ public class HandleManageMessage implements Serializable {
             Set<CapabilityModel> result = new HashSet<>();
 
             if (services != null && services.capabilities() != null) {
-                capabilities.forEach(f -> result.add(services.capabilities().create(f)));
-                DeviceModel deviceModel = new DeviceModel(message.getName(), result);
-                return services.devices().create(deviceModel);
+                DeviceModel device = services.devices().create(new DeviceModel(message.getName(),capabilities));
+                return device;
             }
         } catch (Exception e) {
             e.printStackTrace();

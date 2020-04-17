@@ -14,3 +14,7 @@ void HumidityCap::init() {
 void HumidityCap::execute() {
     Serial.println("HUM_EXEC");
 }
+
+void HumidityCap::reactToMessage(const JsonObject &obj) {
+    Serial.println("HUM_REACT");
+}

@@ -11,6 +11,7 @@ class HumidityCap : public CapabilityWithValue {
 
     void init();
     void execute();
+    void reactToMessage(const JsonObject &obj);
 };
 
 #endif  // HUMIDITY_CAP_H

@@ -136,6 +136,7 @@ public class DeviceModel extends PanacheEntityBase implements Serializable, Iden
         return Collections.emptySet();
     }
 
+    @JsonIgnore
     public Set<CapabilityModel> getCapabilities() {
         return capabilities;
     }

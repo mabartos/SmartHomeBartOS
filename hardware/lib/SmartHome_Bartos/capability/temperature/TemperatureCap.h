@@ -11,6 +11,7 @@ class TemperatureCap : public CapabilityWithValue {
 
     void init();
     void execute();
+    void reactToMessage(const JsonObject &obj);
 };
 
 #endif  // TEMPERATURE_CAP_H

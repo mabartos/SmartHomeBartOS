@@ -1,6 +1,7 @@
 package org.mabartos.protocols.mqtt.utils;
 
 import org.mabartos.general.CapabilityType;
+import org.mabartos.persistence.model.DeviceModel;
 import org.mabartos.persistence.model.home.HomeModel;
 import org.mabartos.protocols.mqtt.topics.CRUDTopic;
 import org.mabartos.protocols.mqtt.topics.CRUDTopicType;
@@ -15,12 +16,28 @@ import java.util.regex.Pattern;
 
 public class TopicUtils {
 
-    // Topic f.e. "homes/5/temp/3"
+    // Topic f.e. 'homes/5'
     public static String getHomeTopic(HomeModel home) {
         if (home != null) {
-            return Topics.HOME_TOPIC.getTopic() + "/" + home.getID();
+            return getHomeTopic(home.getID());
         }
         return null;
+    }
+
+    public static String getHomeTopic(Long homeID) {
+        return Topics.HOME_TOPIC.getTopic() + "/" + homeID;
+    }
+
+    // Topic f.e. 'homes/5/devices/2'
+    public static String getDeviceTopic(HomeModel home, DeviceModel device) {
+        if(home!=null && device!=null){
+            return getDeviceTopic(home.getID(),device.getID());
+        }
+        return null;
+    }
+
+    public static String getDeviceTopic(Long homeID, Long deviceID) {
+        return getHomeTopic(homeID)+Topics.DEVICE_TOPIC.getTopic()+"/"+deviceID;
     }
 
     /**

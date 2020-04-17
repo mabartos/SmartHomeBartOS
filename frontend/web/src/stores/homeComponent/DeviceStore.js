@@ -5,6 +5,8 @@ export class DeviceStore extends GeneralStore {
 
     _devices = new Map();
 
+    _capabilities = new Map();
+
     _deviceService;
 
     constructor(deviceService) {
@@ -24,23 +26,52 @@ export class DeviceStore extends GeneralStore {
     setDevices = (devicesList) => {
         this._devices.clear();
         this._devices = this.getMapFromList(devicesList);
+        this.addCapabilities(devicesList);
         this.checkError();
+        return devicesList;
     };
 
     setDevice = (device) => {
         this._devices.set(device.id, device);
+        this.addCapabilitiesForDevice(device.id);
         this.checkError();
     };
 
     setDeviceByID = (id, device) => {
         this._devices.set(id, device);
+        this.addCapabilitiesForDevice(id);
         this.checkError();
     };
 
-    setCapabilities = (deviceID, caps) => {
-        let device = this.getDevice(deviceID);
-        device.caps = caps;
-        this.setDeviceByID(deviceID, device);
+    setCapabilities = (capsList) => {
+        this._capabilities.clear();
+        this._capabilities = this.getMapFromList(capsList);
+        this.checkError();
+    };
+
+    addAllCapabilities=(capList)=>{
+        capList.forEach(cap=>{
+            this.setCapability(cap);
+        });
+    };
+
+    addCapabilitiesForDevice=(deviceID)=>{
+        this._deviceService
+            .getCapabilities(deviceID)
+            .then(this.addAllCapabilities)
+            .catch(this.setError)
+    };
+
+    addCapabilities = (deviceList) => {
+        deviceList.forEach(device => {
+            this.addCapabilitiesForDevice(device.id);
+        });
+        this.checkError();
+    };
+
+    setCapability = (cap) => {
+        this._capabilities.set(cap.id, cap);
+        this.checkError();
     };
 
     get devices() {
@@ -49,6 +80,14 @@ export class DeviceStore extends GeneralStore {
 
     getDevice = (id) => {
         return this._devices.get(id);
+    };
+
+    get capabilities(){
+        return this._capabilities;
+    }
+
+    getCapability=(id)=>{
+        return this._capabilities.get(id);
     };
 
     reloadDevices = () => {
@@ -116,6 +155,7 @@ export class DeviceStore extends GeneralStore {
         this.startLoading();
         this._deviceService
             .removeDeviceFromRoom(deviceID)
+            .then(this.removeFromDeviceMap(deviceID))
             .then(this.setActionInvoked("Device is removed from room"))
             .catch(this.setError)
             .finally(this.stopLoading);
@@ -143,14 +183,25 @@ export class DeviceStore extends GeneralStore {
 
     removeFromDeviceMap = (id) => {
         this._devices.delete(id);
+        this._capabilities.forEach((val,key)=>{
+            if(val.deviceID===id){
+                this._capabilities.delete(val.id);
+            }
+        });
     };
 }
 
 decorate(DeviceStore, {
     _devices: observable,
+    _capabilities: observable,
 
     setDevices: action,
     setDevice: action,
 
-    devices: computed
+    setCapabilities: action,
+    setCapability: action,
+    addCapabilities: action,
+
+    devices: computed,
+    capabilities: computed
 });

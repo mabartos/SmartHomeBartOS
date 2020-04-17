@@ -1,6 +1,7 @@
 package org.mabartos.services.model;
 
 import io.quarkus.runtime.StartupEvent;
+import org.mabartos.api.protocol.BartMqttClient;
 import org.mabartos.api.service.AppServices;
 import org.mabartos.api.service.DeviceService;
 import org.mabartos.general.CapabilityType;
@@ -8,7 +9,9 @@ import org.mabartos.persistence.model.DeviceModel;
 import org.mabartos.persistence.model.home.HomeModel;
 import org.mabartos.persistence.model.room.RoomModel;
 import org.mabartos.persistence.repository.DeviceRepository;
+import org.mabartos.protocols.mqtt.data.AddDeviceToRoomData;
 import org.mabartos.protocols.mqtt.exceptions.DeviceConflictException;
+import org.mabartos.protocols.mqtt.utils.TopicUtils;
 
 import javax.enterprise.context.Dependent;
 import javax.enterprise.event.Observes;
@@ -50,6 +53,10 @@ public class DeviceServiceImpl extends CRUDServiceImpl<DeviceModel, DeviceReposi
         if (device != null && room != null) {
             device.setRoom(room);
             room.addChild(device);
+            BartMqttClient client = services.mqttManager().getMqttForHome(room.getHomeID());
+            if (client != null) {
+                client.publish(TopicUtils.getDeviceTopic(room.getHomeID(), deviceID), new AddDeviceToRoomData(roomID, deviceID).toJson());
+            }
             return updateByID(deviceID, device);
         }
         return null;

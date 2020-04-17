@@ -43,6 +43,7 @@ public class CRUDServiceImpl
             return entity;
         } catch (Exception e) {
             // HIBERNATE BUG
+            e.printStackTrace();
             return entity;
         }
     }

@@ -9,6 +9,7 @@ import CardIcon from "../../components/Card/CardIcon.js";
 import GridContainer from "../../components/Grid/GridContainer";
 import ErrorNotification from "../../components/Notifications/ErrorNotification";
 import SuccessNotification from "../../components/Notifications/SuccessNotification";
+import {toJS} from 'mobx';
 
 export default function Room() {
     const {authStore, deviceStore, homeStore} = useStores();
@@ -41,22 +42,13 @@ export default function Room() {
         return () => clearInterval(interval);
     }, [deviceStore]);
 
-    let caps = [];
-
     return useObserver(() => {
-        const {isAuthenticated, user} = authStore;
-        const {devices, error, actionInvoked, loading} = deviceStore;
+        const {isAuthenticated} = authStore;
+        const {error, actionInvoked, loading, capabilities} = deviceStore;
 
-        const setUpCapabilities = devices.forEach((value, index) => {
-            value.capabilities.map(cap => {
-                cap.deviceName = value.name;
-                caps.push(cap);
-            })
-        });
-
-        const getCapabilities = caps.map((value, index) => (
+        const getCapabilities = [...capabilities].map(([key,value], index) => (
                 <DeviceDataCard key={index} device={value} data={data} homeID={homeID} roomID={roomID}
-                                notification={`Device '${value.deviceName}'`}
+                                notification={`Device '${value.name}'`}
                                 color={CardIcon.getColorID(value.deviceID)}
                                 mqtt={mqtt}
                 />

@@ -3,6 +3,7 @@ package org.mabartos.services;
 import io.quarkus.runtime.StartupEvent;
 import io.vertx.mutiny.core.Vertx;
 import org.mabartos.api.model.MqttClientService;
+import org.mabartos.api.protocol.MqttClientManager;
 import org.mabartos.api.service.AppServices;
 import org.mabartos.api.service.CapabilityService;
 import org.mabartos.api.service.DeviceService;
@@ -32,6 +33,9 @@ public class DefaultAppServices implements AppServices {
 
     @Inject
     Vertx vertx;
+
+    @Inject
+    MqttClientManager mqttClientManager;
 
     @PersistenceContext
     EntityManager entityManager;
@@ -97,8 +101,8 @@ public class DefaultAppServices implements AppServices {
     }
 
     @Override
-    public MqttClientService mqttClientsRepresentation() {
-        return getProvider(MqttClientService.class);
+    public MqttClientManager mqttManager() {
+        return mqttClientManager;
     }
 
     @Override

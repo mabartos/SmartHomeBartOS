@@ -4,10 +4,16 @@
 
 extern Device device;
 
-void MessageForwarder::manageCreate(DynamicJsonDocument &doc) {
-    if (strcmp(_topic, device.getHomeTopic().c_str()) == 0) {
-        JsonObject obj = doc.as<JsonObject>();
+bool MessageForwarder::equalsTopic(const char *receiveTopic) {
+    return (strcmp(_topic, receiveTopic) == 0);
+}
 
+bool MessageForwarder::equalsTopic(const string &receiveTopic) {
+    return (strcmp(_topic, receiveTopic.c_str()) == 0);
+}
+
+void MessageForwarder::manageCreate(const JsonObject &obj) {
+    if (equalsTopic(device.getHomeTopic())) {
         if (obj.containsKey("code") && obj["code"] != 200) {
             return;
         }
@@ -31,8 +37,34 @@ void MessageForwarder::manageCreate(DynamicJsonDocument &doc) {
         }
     }
 }
+void MessageForwarder::manageAddDeviceToRoom(const JsonObject &obj) {
+    if (equalsTopic(device.getDeviceTopic())) {
+        if (!obj.containsKey("deviceID") || !obj.containsKey("roomID"))
+            return;
+
+        long deviceID = obj["deviceID"];
+        long roomID = obj["roomID"];
+
+        if (deviceID != device.getID())
+            return;
+
+        device.setRoomID(roomID);
+    }
+}
+
+void MessageForwarder::manageCapabilityReact(const JsonObject &obj) {
+    for (auto &cap : device.getCapabilities()) {
+        if (equalsTopic(cap->getTopic())) {
+            cap->reactToMessage(obj);
+            return;
+        }
+    }
+}
 
 void MessageForwarder::forwardMessage(char *topic, DynamicJsonDocument &doc) {
     _topic = topic;
-    manageCreate(doc);
+    JsonObject obj = doc.as<JsonObject>();
+    manageCreate(obj);
+    manageAddDeviceToRoom(obj);
+    manageCapabilityReact(obj);
 }

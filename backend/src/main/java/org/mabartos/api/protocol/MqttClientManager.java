@@ -9,4 +9,6 @@ public interface MqttClientManager {
     boolean initClient(Long idHome);
 
     boolean shutdownClient(Long idHome);
+
+    BartMqttClient getMqttForHome(Long idHome);
 }
