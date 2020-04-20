@@ -12,7 +12,7 @@ class CapabilityData {
     long _id;
     string _name;
     size_t _jsonSize;
-    DynamicJsonDocument getJSON();
+    virtual DynamicJsonDocument getJSON();
 
    public:
     CapabilityData(const long &id, const string &name);

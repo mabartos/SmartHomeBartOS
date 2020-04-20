@@ -9,7 +9,7 @@ import CardIcon from "../../components/Card/CardIcon.js";
 import GridContainer from "../../components/Grid/GridContainer";
 import ErrorNotification from "../../components/Notifications/ErrorNotification";
 import SuccessNotification from "../../components/Notifications/SuccessNotification";
-import {toJS} from 'mobx';
+import {toJS} from "mobx";
 
 export default function Room() {
     const {authStore, deviceStore, homeStore} = useStores();
@@ -19,8 +19,12 @@ export default function Room() {
     const [mqtt, setMqtt] = useState(null);
 
     React.useEffect(() => {
-        const mqttClient = new MqttService("localhost", `/homes/${homeID}/rooms/${roomID}/#`);
-        mqttClient.client.onMessageArrived = (message) => setData(message);
+        let home = toJS(homeStore.homes);
+        let brokerURL = home[homeID].brokerURL;
+        const mqttClient = new MqttService(brokerURL, `homes/${homeID}/rooms/${roomID}/#`);
+        mqttClient.client.onMessageArrived = (message) => {
+            setData(message);
+        };
         setMqtt(mqttClient);
 
         return function cleanup() {

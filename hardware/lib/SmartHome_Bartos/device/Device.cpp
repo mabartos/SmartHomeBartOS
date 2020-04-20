@@ -100,11 +100,6 @@ auto Device::getCapabilityByName(const string &name) -> shared_ptr<Capability> {
     }
     return nullptr;
 }
-/*
-shared_ptr<Capability> Device::getCapabilityByName(const char *name) {
-    string result(name);
-    return getCapabilityByName(result);
-}*/
 
 void Device::addCapability(shared_ptr<Capability> cap) {
     _capabilities.push_back(cap);

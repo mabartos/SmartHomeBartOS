@@ -204,7 +204,6 @@ public class HandleManageMessage implements Serializable {
                     .map(f -> getTypedInstance(f.getName(), f.getType()))
                     .collect(Collectors.toSet());
 
-            Set<CapabilityModel> result = new HashSet<>();
 
             if (services != null && services.capabilities() != null) {
                 DeviceModel device = services.devices().create(new DeviceModel(message.getName(),capabilities));

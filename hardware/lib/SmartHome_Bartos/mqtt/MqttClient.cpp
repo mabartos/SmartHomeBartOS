@@ -10,7 +10,7 @@ MqttClient::MqttClient(const string &ssid, const string &password, const string 
 }
 
 void MqttClient::init() {
-    setupWifi();
+    //setupWifi();
     _mqttClient.setServer(_brokerURL.c_str(), PORT);
     reconnect();
 }

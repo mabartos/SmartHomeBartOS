@@ -1,9 +1,11 @@
 package org.mabartos.protocols.mqtt;
 
+import org.eclipse.paho.client.mqttv3.IMqttAsyncClient;
 import org.eclipse.paho.client.mqttv3.IMqttClient;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.IMqttToken;
+import org.eclipse.paho.client.mqttv3.MqttAsyncClient;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
-import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
@@ -22,12 +24,12 @@ public class DefaultBartMqttClient implements BartMqttClient, Serializable {
     public static Logger logger = Logger.getLogger(DefaultBartMqttClient.class.getName());
 
     private final Integer TIMEOUT = 20;
-    private final Integer STD_QOS = 2;
+    private final Integer STD_QOS = 1;
 
     private MemoryPersistence persistence;
     private String brokerURL;
     private String clientID;
-    private IMqttClient mqttClient;
+    private IMqttAsyncClient mqttClient;
     private HomeModel home;
     private AppServices services;
 
@@ -54,7 +56,7 @@ public class DefaultBartMqttClient implements BartMqttClient, Serializable {
             this.clientID = UUID.randomUUID().toString();
             this.brokerURL = home.getMqttClient().getBrokerURL();
             BartMqttClient actual = this;
-            this.mqttClient = new MqttClient(home.getMqttClient().getBrokerURL(), this.getClientID(), persistence);
+            this.mqttClient = new MqttAsyncClient(home.getMqttClient().getBrokerURL(), this.getClientID(), persistence);
 
             mqttClient.setCallback(new MqttCallback() {
                 @Override
@@ -73,7 +75,8 @@ public class DefaultBartMqttClient implements BartMqttClient, Serializable {
                     services.getVertx().eventBus().publish("test", "COMPLETED " + home.getName());
                 }
             });
-            mqttClient.connect(setConnectOptions());
+            IMqttToken token = mqttClient.connect(setConnectOptions());
+            token.waitForCompletion();
             mqttClient.subscribe(TopicUtils.getHomeTopic(home) + "/#", STD_QOS);
 
             checkAndSetState(true);
@@ -139,7 +142,7 @@ public class DefaultBartMqttClient implements BartMqttClient, Serializable {
     }
 
     @Override
-    public IMqttClient getMqttClient() {
+    public IMqttAsyncClient getMqttClient() {
         return mqttClient;
     }
 

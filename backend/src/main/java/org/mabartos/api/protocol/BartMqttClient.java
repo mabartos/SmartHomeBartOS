@@ -1,6 +1,6 @@
 package org.mabartos.api.protocol;
 
-import org.eclipse.paho.client.mqttv3.IMqttClient;
+import org.eclipse.paho.client.mqttv3.IMqttAsyncClient;
 import org.mabartos.api.service.AppServices;
 import org.mabartos.persistence.model.home.HomeModel;
 import org.mabartos.protocols.mqtt.BartMqttHandler;
@@ -17,7 +17,7 @@ public interface BartMqttClient {
 
     String getClientID();
 
-    IMqttClient getMqttClient();
+    IMqttAsyncClient getMqttClient();
 
     String getTopic();
 

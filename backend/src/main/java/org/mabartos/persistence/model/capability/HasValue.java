@@ -1,10 +1,10 @@
 package org.mabartos.persistence.model.capability;
 
-public interface HasValue {
+public interface HasValue<T> {
 
-    Double getValue();
+    T getValue();
 
-    void setValue(Double value);
+    void setValue(T value);
 
     String getUnits();
 

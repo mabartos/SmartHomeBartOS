@@ -86,6 +86,8 @@ export default function Admin({...rest}) {
     };
 
     const resizeFunction = () => {
+        console.log("WIDT");
+        console.log(window.innerWidth);
         if (window.innerWidth >= 1400) {
             setMobileOpen(false);
         }
@@ -125,7 +127,7 @@ export default function Admin({...rest}) {
     }, [mainPanel]);
 
     return useObserver(() => {
-        const {isAuthenticated, keycloak, token, user} = authStore;
+        const {isAuthenticated} = authStore;
 
         if (isAuthenticated) {
             return (

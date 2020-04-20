@@ -34,7 +34,6 @@ export default function Home(props) {
     return useObserver(() => {
         const {isAuthenticated} = authStore;
         const {error, loading, rooms, actionInvoked} = roomStore;
-        const {roleInHome} = homeStore;
 
         const getError = () => {
             if (error) {

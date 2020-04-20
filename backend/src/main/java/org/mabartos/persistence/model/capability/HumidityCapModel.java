@@ -7,13 +7,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
-public class HumidityCapModel extends CapabilityModel implements HasValue {
+public class HumidityCapModel extends CapabilityModel implements HasValue<Byte> {
 
     @Column
-    private Double value;
+    private Byte value;
 
     @Column
-    private String units;
+    private String units = "%";
 
     public HumidityCapModel() {
         super();
@@ -24,13 +24,15 @@ public class HumidityCapModel extends CapabilityModel implements HasValue {
     }
 
     @Override
-    public Double getValue() {
+    public Byte getValue() {
         return value;
     }
 
     @Override
-    public void setValue(Double value) {
-        this.value = value;
+    public void setValue(Byte value) {
+        if (value >= 0 && value <= 100) {
+            this.value = value;
+        }
     }
 
     @Override

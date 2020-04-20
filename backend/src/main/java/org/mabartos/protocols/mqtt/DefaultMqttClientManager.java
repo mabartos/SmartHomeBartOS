@@ -2,7 +2,7 @@ package org.mabartos.protocols.mqtt;
 
 import io.quarkus.runtime.ShutdownEvent;
 import io.quarkus.scheduler.Scheduled;
-import org.eclipse.paho.client.mqttv3.IMqttClient;
+import org.eclipse.paho.client.mqttv3.IMqttAsyncClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.mabartos.api.protocol.BartMqttClient;
 import org.mabartos.api.protocol.MqttClientManager;
@@ -84,7 +84,7 @@ public class DefaultMqttClientManager implements MqttClientManager {
         try {
             clients.get().forEach(client -> {
                 try {
-                    IMqttClient manageClient = client.getMqttClient();
+                    IMqttAsyncClient manageClient = client.getMqttClient();
                     if (manageClient.isConnected()) {
                         manageClient.disconnect();
                         manageClient.close();

@@ -4,11 +4,14 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.mabartos.api.protocol.BartMqttClient;
 import org.mabartos.api.service.AppServices;
 import org.mabartos.persistence.model.CapabilityModel;
+import org.mabartos.protocols.mqtt.data.BartMqttSender;
+import org.mabartos.protocols.mqtt.data.CapabilityData;
+import org.mabartos.protocols.mqtt.exceptions.WrongMessageTopicException;
 import org.mabartos.protocols.mqtt.topics.CapabilityTopic;
 
 import java.util.logging.Logger;
 
-public class GeneralMqttCapability {
+public abstract class GeneralMqttCapability<Data extends CapabilityData> {
 
     protected static Logger logger = Logger.getLogger(GeneralMqttCapability.class.getName());
 
@@ -18,9 +21,8 @@ public class GeneralMqttCapability {
     protected AppServices services;
     protected BartMqttClient client;
 
-    public GeneralMqttCapability() {
-    }
-
+    protected Data data;
+    
     public GeneralMqttCapability(AppServices services, BartMqttClient client, CapabilityTopic capabilityTopic, MqttMessage message) {
         this.services = services;
         this.capabilityTopic = capabilityTopic;
@@ -30,6 +32,15 @@ public class GeneralMqttCapability {
     }
 
     public void parseMessage() {
-        logger.info("Device type: " + capabilityTopic.getCapabilityType() + ", message: " + message);
+        ParseUtils.parse(services, client, capabilityTopic, data);
+    }
+
+    protected Data verifyData(Data data) {
+        try {
+            return data;
+        } catch (WrongMessageTopicException e) {
+            BartMqttSender.sendResponse(client, 400, "Wrong message");
+        }
+        return null;
     }
 }

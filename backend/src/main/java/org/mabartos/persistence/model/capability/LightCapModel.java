@@ -11,10 +11,10 @@ import javax.persistence.Entity;
 public class LightCapModel extends CapabilityModel implements HasState {
 
     @Column
-    private Double intensity = 0.0;
+    private Byte intensity = 0;
 
     @Column
-    private Double minIntensity = 0.0;
+    private Byte minIntensity = 0;
 
     @Column
     private boolean isTurnedOn = false;
@@ -26,19 +26,19 @@ public class LightCapModel extends CapabilityModel implements HasState {
         super(name, CapabilityType.LIGHT);
     }
 
-    public Double getIntensity() {
+    public Byte getIntensity() {
         return intensity;
     }
 
-    public void setIntensity(Double intensity) {
+    public void setIntensity(Byte intensity) {
         this.intensity = intensity;
     }
 
-    public Double getMinIntensity() {
+    public Byte getMinIntensity() {
         return minIntensity;
     }
 
-    public void setMinIntensity(Double minIntensity) {
+    public void setMinIntensity(Byte minIntensity) {
         this.minIntensity = minIntensity;
     }
 

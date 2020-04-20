@@ -6,45 +6,44 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.mabartos.general.CapabilityType;
 import org.mabartos.persistence.model.CapabilityModel;
 import org.mabartos.persistence.model.capability.LightCapModel;
-import org.mabartos.protocols.mqtt.data.CapabilityData;
-import org.mabartos.protocols.mqtt.data.ConvertableToModel;
+import org.mabartos.protocols.mqtt.data.CapabilityDataWithState;
 import org.mabartos.protocols.mqtt.utils.MqttSerializeUtils;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class LightsData extends CapabilityData {
-
-    @JsonProperty("isTurnedOn")
-    protected boolean isTurnedOn;
+public class LightsData extends CapabilityDataWithState {
 
     @JsonProperty("intensity")
-    protected Double intensity;
+    protected Byte intensity;
 
     @JsonProperty("minIntensity")
-    protected Double minIntensity;
+    protected Byte minIntensity;
 
     @JsonCreator
     public LightsData(@JsonProperty("id") Long id,
                       @JsonProperty("name") String name,
                       @JsonProperty("type") CapabilityType type,
                       @JsonProperty("isTurnedOn") boolean state,
-                      @JsonProperty("intensity") Double intensity,
-                      @JsonProperty("minIntensity") Double minIntensity) {
-        super(id, name, type);
-        this.isTurnedOn = state;
+                      @JsonProperty("intensity") Byte intensity,
+                      @JsonProperty("minIntensity") Byte minIntensity) {
+        super(id, name, type, state);
         this.intensity = intensity;
         this.minIntensity = minIntensity;
     }
 
-    public boolean isTurnedOn() {
-        return isTurnedOn;
-    }
-
-    public Double getIntensity() {
+    public Byte getIntensity() {
         return intensity;
     }
 
-    public Double getMinIntensity() {
+    public Byte getMinIntensity() {
         return minIntensity;
+    }
+
+    public void setIntensity(Byte intensity) {
+        this.intensity = intensity;
+    }
+
+    public void minIntensity(Byte minIntensity) {
+        this.minIntensity = minIntensity;
     }
 
     @Override
@@ -53,6 +52,7 @@ public class LightsData extends CapabilityData {
             super.editModel(model);
             LightCapModel result = (LightCapModel) model;
             result.setState(this.isTurnedOn());
+            result.setType(CapabilityType.LIGHT);
             result.setIntensity(this.getIntensity());
             result.setMinIntensity(this.getMinIntensity());
             return result;

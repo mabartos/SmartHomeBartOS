@@ -31,11 +31,9 @@ export default function TemperatureCapCard(props) {
 
     return useObserver(() => {
         return (
-            <GridItem xs={12} sm={12} md={12}>
-                {id}
+            <div>
                 <CircularProgress value={value} units={units} minValue={-20} maxValue={50}/>
-            </GridItem>
+            </div>
         )
-
     });
 }

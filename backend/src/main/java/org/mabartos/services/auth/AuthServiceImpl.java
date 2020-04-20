@@ -47,11 +47,11 @@ public class AuthServiceImpl implements AuthService {
     }
 
     private boolean ableToCreateNewUser(UserModel user) {
-        return (securityIdentity != null && user == null && id != null && email != null && !isUserExists());
+        return (securityIdentity != null && id != null && email != null && !isUserExists());
     }
 
     private boolean isUserExists() {
-        return (getAuthUser() != null && userService.findByUsername(getAuthUser().getName()) != null);
+        return (getAuthUser() != null && userService.findByID(UUID.fromString(id.getString())) != null);
     }
 
     @Override

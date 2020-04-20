@@ -7,7 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
-public class TemperatureCapModel extends CapabilityModel implements HasValue {
+public class TemperatureCapModel extends CapabilityModel implements HasValue<Double> {
 
     @Column
     private Double value;

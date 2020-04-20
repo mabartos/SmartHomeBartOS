@@ -8,6 +8,8 @@ import org.mabartos.persistence.model.home.HomeModel;
 import org.mabartos.protocols.mqtt.capability.HumidityCapability;
 import org.mabartos.protocols.mqtt.capability.LightCapability;
 import org.mabartos.protocols.mqtt.capability.TemperatureCapability;
+import org.mabartos.protocols.mqtt.data.BartMqttSender;
+import org.mabartos.protocols.mqtt.exceptions.WrongMessageTopicException;
 import org.mabartos.protocols.mqtt.topics.CapabilityTopic;
 import org.mabartos.protocols.mqtt.topics.GeneralTopic;
 import org.mabartos.protocols.mqtt.utils.TopicUtils;
@@ -32,7 +34,6 @@ public class BartMqttHandler implements Serializable {
         this.services = services;
     }
 
-    //TODO own exceptions, common topics
     public void executeMessage(BartMqttClient client, HomeModel home, final String receivedTopic, final MqttMessage message) {
         if (home == null || receivedTopic == null || message == null)
             return;
@@ -63,37 +64,41 @@ public class BartMqttHandler implements Serializable {
     }
 
     private void redirectParsing(CapabilityTopic capabilityTopic, MqttMessage message) {
-        switch (capabilityTopic.getCapabilityType()) {
-            case NONE:
-                break;
-            case TEMPERATURE:
-                new TemperatureCapability(services, mqttClient, capabilityTopic, message).parseMessage();
-                break;
-            case HUMIDITY:
-                new HumidityCapability(services, mqttClient, capabilityTopic, message).parseMessage();
-                break;
-            case HEATER:
-                break;
-            case LIGHT:
-                new LightCapability(services, mqttClient, capabilityTopic, message).parseMessage();
-                break;
-            case RELAY:
-                break;
-            case SOCKET:
-                break;
-            case PIR:
-                break;
-            case GAS_SENSOR:
-                break;
-            case STATISTICS:
-                break;
-            case AIR_CONDITIONER:
-                break;
-            case OTHER:
-                break;
-            default:
-                // NOP
-                break;
+        try {
+            switch (capabilityTopic.getCapabilityType()) {
+                case NONE:
+                    break;
+                case TEMPERATURE:
+                    new TemperatureCapability(services, mqttClient, capabilityTopic, message).parseMessage();
+                    break;
+                case HUMIDITY:
+                    new HumidityCapability(services, mqttClient, capabilityTopic, message).parseMessage();
+                    break;
+                case HEATER:
+                    break;
+                case LIGHT:
+                    new LightCapability(services, mqttClient, capabilityTopic, message).parseMessage();
+                    break;
+                case RELAY:
+                    break;
+                case SOCKET:
+                    break;
+                case PIR:
+                    break;
+                case GAS_SENSOR:
+                    break;
+                case STATISTICS:
+                    break;
+                case AIR_CONDITIONER:
+                    break;
+                case OTHER:
+                    break;
+                default:
+                    // NOP
+                    break;
+            }
+        } catch (WrongMessageTopicException wme) {
+            BartMqttSender.sendResponse(mqttClient, 400, "Wrong message");
         }
     }
 

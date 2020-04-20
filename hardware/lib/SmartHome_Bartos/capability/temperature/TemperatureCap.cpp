@@ -5,26 +5,35 @@
 #include "mqtt/MqttClient.h"
 
 extern MqttClient client;
+extern Device device;
 
-TemperatureCap::TemperatureCap(const uint8_t &pin) : CapabilityWithValue(pin) {
+TemperatureCap::TemperatureCap(const uint8_t &pin, DHT &dht) : CapabilityWithValue(pin), _dht(dht) {
     _type = CapabilityType::TEMPERATURE;
     setName(getRandomName());
 }
 
 void TemperatureCap::init() {
+    _dht.begin();
     Serial.println("TEMP_INIT");
 }
 
 void TemperatureCap::execute() {
-    if (!executeAfterTime(3) || _ID == -1)
+    if (!executeAfterTime(3) || _ID == -1 || device.getRoomID() == -1)
         return;
 
     TemperatureData data(_ID, _name);
-    data.setActualTemp(23.3);
+    float temp = _dht.readTemperature();
+
+    if (!isnan(temp)) {
+        _value = (int)temp;
+    } else
+        return;
+
+    data.setActualTemp(_value);
 
     publishValues(data);
 
-    Serial.println("TEMP_EXEC");
+    Serial.println("TEMP_EXEC-2");
 }
 
 void TemperatureCap::reactToMessage(const JsonObject &obj) {

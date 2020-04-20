@@ -52,7 +52,6 @@ export default function LightsCapCard(props) {
             setIntensity(newValue);
             result.intensity = newValue;
             mqtt.send(topic, result);
-
         }, 600)
     };
 
@@ -66,13 +65,8 @@ export default function LightsCapCard(props) {
             mqtt.send(topic, result);
         };
 
-        const getStateLabel = () => {
-            return isTurnedOn ? "ON" : "OFF";
-        };
-
         return (
             <GridItem xs={12} sm={12} md={12}>
-                {getStateLabel()}
                 <br/>
                 {intensity}
                 <br/>
@@ -104,7 +98,7 @@ export default function LightsCapCard(props) {
                             <FormGroup>
                                 <FormLabel>Settings</FormLabel>
                                 <FormControlLabel control={<Switch name={"state"} onChange={handleChangeState}/>}
-                                                  label={getStateLabel()}/>
+                                                  label={isTurnedOn}/>
                             </FormGroup>
                         </FormControl>
                     </GridItem>

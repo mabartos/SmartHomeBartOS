@@ -20,6 +20,7 @@ export default function HomeCard(props) {
 
     return useObserver(() => {
         const {rolesInHome} = homeStore;
+
         return (
             <MainDisplayCard type={HomeComponent.HOME} homeID={value.id} title={value.name}
                              active={value.active} onSelect={onSelect} brokerURL={value.brokerURL}

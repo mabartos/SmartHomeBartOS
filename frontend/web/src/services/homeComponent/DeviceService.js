@@ -11,7 +11,7 @@ export default class DeviceService extends GeneralService {
     roomID;
 
     static getTopic(homeID, roomID) {
-        return `${HomeService.HOME_ENDPOINT}/${homeID}/${RoomService.ROOM_ENDPOINT}/${roomID}`;
+        return `homes/${homeID}/${RoomService.ROOM_ENDPOINT}/${roomID}`;
     }
 
     static getFullTopic(homeID, roomID, capability, id) {
