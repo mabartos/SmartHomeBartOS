@@ -2,7 +2,7 @@ package org.mabartos.persistence.model.room;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.mabartos.protocols.mqtt.data.MqttSerializable;
+import org.mabartos.protocols.mqtt.data.general.MqttSerializable;
 import org.mabartos.protocols.mqtt.utils.MqttSerializeUtils;
 
 import java.util.UUID;

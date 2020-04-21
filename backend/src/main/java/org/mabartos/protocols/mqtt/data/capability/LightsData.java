@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.mabartos.general.CapabilityType;
 import org.mabartos.persistence.model.CapabilityModel;
 import org.mabartos.persistence.model.capability.LightCapModel;
-import org.mabartos.protocols.mqtt.data.CapabilityDataWithState;
 import org.mabartos.protocols.mqtt.utils.MqttSerializeUtils;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -22,10 +21,11 @@ public class LightsData extends CapabilityDataWithState {
     public LightsData(@JsonProperty("id") Long id,
                       @JsonProperty("name") String name,
                       @JsonProperty("type") CapabilityType type,
+                      @JsonProperty("pin") Integer pin,
                       @JsonProperty("isTurnedOn") boolean state,
                       @JsonProperty("intensity") Byte intensity,
                       @JsonProperty("minIntensity") Byte minIntensity) {
-        super(id, name, type, state);
+        super(id, name, type, pin, state);
         this.intensity = intensity;
         this.minIntensity = minIntensity;
     }
@@ -48,7 +48,7 @@ public class LightsData extends CapabilityDataWithState {
 
     @Override
     public CapabilityModel editModel(CapabilityModel model) {
-        if (model != null) {
+        if (model instanceof LightCapModel) {
             super.editModel(model);
             LightCapModel result = (LightCapModel) model;
             result.setState(this.isTurnedOn());

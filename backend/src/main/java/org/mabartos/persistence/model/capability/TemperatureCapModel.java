@@ -18,8 +18,8 @@ public class TemperatureCapModel extends CapabilityModel implements HasValue<Dou
     public TemperatureCapModel() {
     }
 
-    public TemperatureCapModel(String name) {
-        super(name, CapabilityType.TEMPERATURE);
+    public TemperatureCapModel(String name, Integer pin) {
+        super(name, CapabilityType.TEMPERATURE, pin);
         setUnits("°C");
     }
 

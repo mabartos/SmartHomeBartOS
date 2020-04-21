@@ -47,12 +47,16 @@ public class CapabilityModel extends PanacheEntityBase implements Serializable, 
     @JoinColumn(name = "DEVICE_ID")
     private DeviceModel device;
 
+    @Column
+    private Integer pin;
+
     public CapabilityModel() {
     }
 
-    public CapabilityModel(String name, CapabilityType type) {
+    public CapabilityModel(String name, CapabilityType type, Integer pin) {
         this.name = name;
         this.type = type;
+        this.pin = pin;
     }
 
     @Override
@@ -90,6 +94,14 @@ public class CapabilityModel extends PanacheEntityBase implements Serializable, 
         this.type = type;
     }
 
+    public Integer getPin() {
+        return pin;
+    }
+
+    public void setPin(Integer pin) {
+        this.pin = pin;
+    }
+
     @JsonIgnore
     public DeviceModel getDevice() {
         return device;
@@ -103,6 +115,11 @@ public class CapabilityModel extends PanacheEntityBase implements Serializable, 
     public void setDevice(DeviceModel device) {
         device.addCapability(this);
         this.device = device;
+    }
+
+    @JsonProperty("active")
+    public boolean isActive() {
+        return device.isActive();
     }
 
     @Override

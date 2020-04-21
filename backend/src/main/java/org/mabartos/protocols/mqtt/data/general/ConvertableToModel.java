@@ -1,4 +1,4 @@
-package org.mabartos.protocols.mqtt.data;
+package org.mabartos.protocols.mqtt.data.general;
 
 import org.mabartos.persistence.model.CapabilityModel;
 

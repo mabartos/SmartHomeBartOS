@@ -63,6 +63,9 @@ public class DeviceModel extends PanacheEntityBase implements Serializable, Iden
     @LazyCollection(LazyCollectionOption.FALSE)
     private Set<CapabilityModel> capabilities = new HashSet<>();
 
+    @Column
+    private boolean active=false;
+
     public DeviceModel() {
     }
 
@@ -123,6 +126,14 @@ public class DeviceModel extends PanacheEntityBase implements Serializable, Iden
 
     public void setHome(HomeModel home) {
         this.home = home;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     @JsonIgnore

@@ -18,8 +18,8 @@ public class HeaterCapModel extends CapabilityModel implements HasState {
     public HeaterCapModel() {
     }
 
-    public HeaterCapModel(String name) {
-        super(name, CapabilityType.HEATER);
+    public HeaterCapModel(String name, Integer pin) {
+        super(name, CapabilityType.HEATER, pin);
     }
 
     public Double getDestTemperature() {

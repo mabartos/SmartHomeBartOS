@@ -1,4 +1,4 @@
-package org.mabartos.protocols.mqtt.data;
+package org.mabartos.protocols.mqtt.data.general;
 
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.mabartos.api.protocol.BartMqttClient;

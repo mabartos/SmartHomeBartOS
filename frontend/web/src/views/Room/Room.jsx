@@ -33,6 +33,7 @@ export default function Room() {
     }, []);
 
     React.useEffect(() => {
+        deviceStore.deleteCapabilities();
         deviceStore.setHomeID(homeID);
         deviceStore.setRoomID(roomID);
         deviceStore.getAllDevices();
@@ -51,6 +52,7 @@ export default function Room() {
     return useObserver(() => {
         const {isAuthenticated} = authStore;
         const {error, actionInvoked, loading, capabilities} = deviceStore;
+        console.log([...capabilities]);
 
         const getCapabilities = [...capabilities].map(([key,value], index) => (
                 <DeviceDataCard key={index} device={value} data={data} homeID={homeID} roomID={roomID}

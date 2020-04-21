@@ -1,4 +1,4 @@
-package org.mabartos.protocols.mqtt.data;
+package org.mabartos.protocols.mqtt.data.general;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

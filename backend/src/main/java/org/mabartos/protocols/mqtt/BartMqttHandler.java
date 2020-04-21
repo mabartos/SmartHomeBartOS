@@ -8,7 +8,7 @@ import org.mabartos.persistence.model.home.HomeModel;
 import org.mabartos.protocols.mqtt.capability.HumidityCapability;
 import org.mabartos.protocols.mqtt.capability.LightCapability;
 import org.mabartos.protocols.mqtt.capability.TemperatureCapability;
-import org.mabartos.protocols.mqtt.data.BartMqttSender;
+import org.mabartos.protocols.mqtt.data.general.BartMqttSender;
 import org.mabartos.protocols.mqtt.exceptions.WrongMessageTopicException;
 import org.mabartos.protocols.mqtt.topics.CapabilityTopic;
 import org.mabartos.protocols.mqtt.topics.GeneralTopic;

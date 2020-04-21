@@ -19,6 +19,7 @@ export default function TemperatureCapCard(props) {
 
     const [data, setData] = React.useState("");
 
+    console.log(device.active);
     React.useEffect(() => {
         if (props.data.topic === topic) {
             const object = GeneralService.getObjectFromString(props.data.payloadString);
@@ -32,6 +33,7 @@ export default function TemperatureCapCard(props) {
     return useObserver(() => {
         return (
             <div>
+                {device.active && <p>TRUE</p>}
                 <CircularProgress value={value} units={units} minValue={-20} maxValue={50}/>
             </div>
         )

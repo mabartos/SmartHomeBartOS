@@ -3,7 +3,7 @@ package org.mabartos.persistence.model.user;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.mabartos.general.UserRole;
-import org.mabartos.protocols.mqtt.data.MqttSerializable;
+import org.mabartos.protocols.mqtt.data.general.MqttSerializable;
 
 public class UserRoleData implements MqttSerializable {
 

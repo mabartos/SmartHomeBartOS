@@ -1,5 +1,9 @@
 #include "CapabilityUtils.h"
 
+#include <string.h>
+
+using namespace std;
+
 CapabilityUtils::CapabilityUtils(const CapabilityType& capType) : _type(capType) {
 }
 
@@ -87,4 +91,13 @@ char* CapabilityUtils::getTopic() {
             break;
     }
     return result;
+}
+
+CapabilityType CapabilityUtils::getFromString(const string& type) {
+    return CapabilityType::HUMIDITY;
+}
+
+bool CapabilityUtils::isEqual(const string& str, CapabilityType type) {
+    CapabilityUtils utils(type);
+    return (strcmp(str.c_str(), utils.getName()) == 0);
 }

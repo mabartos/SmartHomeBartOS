@@ -1,8 +1,9 @@
-package org.mabartos.protocols.mqtt.data;
+package org.mabartos.protocols.mqtt.data.device;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import org.mabartos.protocols.mqtt.data.general.MqttSerializable;
 import org.mabartos.protocols.mqtt.utils.MqttSerializeUtils;
 
 @JsonPropertyOrder({"roomID", "deviceID"})

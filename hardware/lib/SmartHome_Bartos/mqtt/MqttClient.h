@@ -8,10 +8,10 @@ using namespace std;
 class MqttClient {
    private:
     const uint16_t PORT = 1883;
+
     string _uuid;
-    string _ssid;
-    string _password;
     string _brokerURL;
+
     char _msg[100];
 
     long _lastReconnectAttempt;
@@ -21,14 +21,18 @@ class MqttClient {
     void setupWifi();
 
    public:
-    MqttClient(const string &ssid, const string &password, const string &brokerURL, PubSubClient &mqttClient);
+    MqttClient(PubSubClient &mqttClient);
     ~MqttClient() = default;
 
-    void init();
+    string getUUID();
+    void setUUID(string UUID);
+
+    void init(const string &brokerURL);
     bool reconnect();
     void checkAvailability();
 
     string getBrokerURL();
+    void setBrokerURL(string brokerURL);
 
     PubSubClient &getMQTT();
 };

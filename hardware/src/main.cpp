@@ -8,14 +8,17 @@ using namespace std;
 #include "mqtt/MessageForwarder.h"
 #include "wifiUtils/WifiUtils.h"
 
+DynamicJsonDocument configDocument(800);
+
 WiFiClient espClient;
 PubSubClient clientPub(espClient);
-MqttClient client(SSID, PASS, BROKER_URL, clientPub);
+MqttClient client(clientPub);
 WiFiManager wifiManager;
-WifiUtils wifiUtils(wifiManager);
+WifiUtils wifiUtils(wifiManager, configDocument);
 
 // SENSORS
 #define DHTTYPE DHT11
+const char *CONFIG_FILE = "/config.json";
 
 DHT dht(D5, DHTTYPE);
 
@@ -27,6 +30,7 @@ Device device;
 MessageForwarder forwarder;
 
 void saveConfigCallback() {
+    Serial.println("SAVE");
     wifiUtils.setShouldSaveConfig(true);
 }
 
@@ -43,11 +47,26 @@ void forwardMessages(char *topic, byte *payload, unsigned int length) {
 void setup() {
     Serial.begin(9600);
 
-    wifiUtils.shouldClearStates(false);
+    wifiUtils.shouldClearStates(true);
     wifiManager.setSaveConfigCallback(saveConfigCallback);
     wifiUtils.begin();
 
-    client.init();
+    // DEBUG
+    Serial.println("NAME");
+    Serial.println(device.getName().c_str());
+    Serial.println("ID");
+    Serial.println(device.getID());
+    Serial.println("BROKER");
+    Serial.println(wifiUtils.getBrokerURL().c_str());
+
+    Serial.println("HOME_ID");
+    Serial.println(wifiUtils.getHomeID());
+    Serial.println("ROOM_ID");
+    Serial.println(device.getRoomID());
+
+    //
+
+    client.init(wifiUtils.getBrokerURL());
     device.setHomeID(wifiUtils.getHomeID());
 
     client.getMQTT().subscribe(device.getHomeTopicWildCard().c_str());
@@ -59,7 +78,14 @@ void setup() {
     device.addCapability(light);
 
     device.initAllCapabilities();
-    device.publishCreateMessage();
+
+    if (wifiUtils.shouldSaveConfig()) {
+        device.publishCreateMessage();
+    } else {
+        device.publishConnectMessage();
+    }
+
+    wifiUtils.setShouldSaveConfig(false);
 }
 
 void loop() {

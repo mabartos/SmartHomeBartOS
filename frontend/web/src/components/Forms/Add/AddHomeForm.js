@@ -166,7 +166,7 @@ export const AddHomeForm = forwardRef((props, ref) => {
                                                     <GridItem xs={12} sm={12} md={12}>
                                                         <CustomInput
                                                             labelText={"Broker URL"}
-                                                            id="brokerURL"
+                                                            id="url"
                                                             onChange={changeBrokerURL}
                                                             error={errorBrokerURL}
                                                             formControlProps={{

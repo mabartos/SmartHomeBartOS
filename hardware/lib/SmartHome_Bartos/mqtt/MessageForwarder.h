@@ -11,6 +11,7 @@ class MessageForwarder {
 
     void manageAddDeviceToRoom(const JsonObject &obj);
     void manageCreate(const JsonObject &obj);
+    void manageConnect(const JsonObject &obj);
     void manageCapabilityReact(const JsonObject &obj);
 
     bool equalsTopic(const char *receiveTopic);
@@ -20,6 +21,7 @@ class MessageForwarder {
     MessageForwarder() = default;
     ~MessageForwarder() = default;
 
+    static bool containKeys(const JsonObject &obj, vector<string> &keys);
     void forwardMessage(char *topic, DynamicJsonDocument &doc);
 };
 

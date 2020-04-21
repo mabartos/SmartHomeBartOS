@@ -74,8 +74,8 @@ public class HomesResourceProvider implements HomesResource {
         device.setHome(home);
         device = session.services().devices().create(device);
 
-        LightCapModel cap1 = new LightCapModel("cap1");
-        TemperatureCapModel cap2 = new TemperatureCapModel("temp1");
+        LightCapModel cap1 = new LightCapModel("cap1",10);
+        TemperatureCapModel cap2 = new TemperatureCapModel("temp1",9);
         cap1.setDevice(device);
         cap2.setDevice(device);
         device.addCapability(cap1);

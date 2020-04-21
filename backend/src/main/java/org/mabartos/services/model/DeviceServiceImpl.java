@@ -9,7 +9,7 @@ import org.mabartos.persistence.model.DeviceModel;
 import org.mabartos.persistence.model.home.HomeModel;
 import org.mabartos.persistence.model.room.RoomModel;
 import org.mabartos.persistence.repository.DeviceRepository;
-import org.mabartos.protocols.mqtt.data.AddDeviceToRoomData;
+import org.mabartos.protocols.mqtt.data.device.AddDeviceToRoomData;
 import org.mabartos.protocols.mqtt.exceptions.DeviceConflictException;
 import org.mabartos.protocols.mqtt.utils.TopicUtils;
 

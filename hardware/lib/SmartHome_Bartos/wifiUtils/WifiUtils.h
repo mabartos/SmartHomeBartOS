@@ -1,6 +1,7 @@
 #ifndef WIFI_UTILS_H
 #define WIFI_UTILS_H
 
+#include <ArduinoJson.h>
 #include <WiFiManager.h>
 
 #include <string>
@@ -13,6 +14,8 @@ class WifiUtils {
     long _homeID;
     WiFiManager& _wifiManager;
 
+    DynamicJsonDocument& _configDoc;
+
     bool _shouldSaveConfig = false;
 
     void readSaved();
@@ -24,7 +27,7 @@ class WifiUtils {
     void reset();
 
    public:
-    WifiUtils(WiFiManager& wifiManager);
+    WifiUtils(WiFiManager& wifiManager, DynamicJsonDocument& configDoc);
     ~WifiUtils() = default;
 
     void begin();
@@ -33,9 +36,13 @@ class WifiUtils {
     long getHomeID();
     WiFiManager& getWifiManager();
 
+    bool shouldSaveConfig();
+
     void setShouldSaveConfig(const bool& state);
 
     void shouldClearStates(const bool& state);
+
+    DynamicJsonDocument& getConfigDoc();
 };
 
 #endif

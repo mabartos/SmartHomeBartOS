@@ -83,9 +83,11 @@ void Capability::editCreateCapNested(JsonObject &nested) {
     nested.clear();
     const char *name = getName().c_str();
     const char *type = util.getName();
+    const uint8_t pin = getPin();
 
     nested["name"] = name;
     nested["type"] = type;
+    nested["pin"] = pin;
 }
 
 bool Capability::executeAfterTime(unsigned seconds) {

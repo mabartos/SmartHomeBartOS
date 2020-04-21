@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.mabartos.general.CapabilityType;
 import org.mabartos.persistence.model.CapabilityModel;
 import org.mabartos.persistence.model.capability.TemperatureCapModel;
-import org.mabartos.protocols.mqtt.data.CapabilityData;
 import org.mabartos.protocols.mqtt.utils.MqttSerializeUtils;
 
 public class TemperatureData extends CapabilityData {
@@ -16,8 +15,9 @@ public class TemperatureData extends CapabilityData {
     @JsonCreator
     public TemperatureData(@JsonProperty("name") String name,
                            @JsonProperty("type") CapabilityType type,
+                           @JsonProperty("pin") Integer pin,
                            @JsonProperty("actual") Double actualTemperature) {
-        super(name, type);
+        super(name, type, pin);
         this.actualTemperature = actualTemperature;
     }
 
@@ -31,7 +31,7 @@ public class TemperatureData extends CapabilityData {
 
     @Override
     public CapabilityModel editModel(CapabilityModel model) {
-        if (model != null) {
+        if (model instanceof TemperatureCapModel) {
             super.editModel(model);
             TemperatureCapModel temp = (TemperatureCapModel) model;
             temp.setType(CapabilityType.TEMPERATURE);

@@ -22,8 +22,8 @@ public class LightCapModel extends CapabilityModel implements HasState {
     public LightCapModel() {
     }
 
-    public LightCapModel(String name) {
-        super(name, CapabilityType.LIGHT);
+    public LightCapModel(String name, Integer pin) {
+        super(name, CapabilityType.LIGHT, pin);
     }
 
     public Byte getIntensity() {

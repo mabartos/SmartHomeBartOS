@@ -2,43 +2,31 @@
 
 #include "ESP8266TrueRandom.h"
 
-MqttClient::MqttClient(const string &ssid, const string &password, const string &brokerURL, PubSubClient &mqttClient) : _mqttClient(mqttClient) {
-    _ssid = ssid;
-    _password = password;
-    _brokerURL = brokerURL;
+extern Device device;
+
+MqttClient::MqttClient(PubSubClient &mqttClient) : _mqttClient(mqttClient) {
     _lastReconnectAttempt = 0;
 }
 
-void MqttClient::init() {
-    //setupWifi();
+void MqttClient::init(const string &brokerURL) {
+    _brokerURL = brokerURL;
     _mqttClient.setServer(_brokerURL.c_str(), PORT);
     reconnect();
 }
 
-void MqttClient::setupWifi() {
-    Serial.println();
-    Serial.print("Connecting to ");
-    Serial.println(_ssid.c_str());
-
-    WiFi.begin(_ssid.c_str(), _password.c_str());
-
-    while (WiFi.status() != WL_CONNECTED) {
-        delay(500);
-        Serial.print(".");
-    }
-
-    randomSeed(micros());
-
-    Serial.println("");
-    Serial.println("WiFi connected");
-    Serial.println("IP address: ");
-    Serial.println(WiFi.localIP());
+string MqttClient::getUUID() {
+    return _uuid;
+}
+void MqttClient::setUUID(string UUID) {
+    _uuid = UUID;
 }
 
 bool MqttClient::reconnect() {
-    //TODO UUID
-    if (_mqttClient.connect("UUID")) {
-        _mqttClient.subscribe("#");
+    Serial.println(getUUID().c_str());
+    Serial.println(device.getHomeTopicWildCard().c_str());
+
+    if (_mqttClient.connect(getUUID().c_str())) {
+        _mqttClient.subscribe(device.getHomeTopicWildCard().c_str());
     }
     return _mqttClient.connected();
 }
@@ -48,19 +36,21 @@ void MqttClient::checkAvailability() {
         long now = millis();
         if (now - _lastReconnectAttempt > 5000) {
             _lastReconnectAttempt = now;
-            // Attempt to reconnect
             if (reconnect()) {
                 _lastReconnectAttempt = 0;
             }
         }
     } else {
-        // Client connected
         _mqttClient.loop();
     }
 }
 
 string MqttClient::getBrokerURL() {
     return _brokerURL;
+}
+
+void MqttClient::setBrokerURL(string brokerURL) {
+    _brokerURL = brokerURL;
 }
 
 PubSubClient &MqttClient::getMQTT() {

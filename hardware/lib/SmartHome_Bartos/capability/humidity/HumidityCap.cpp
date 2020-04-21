@@ -16,21 +16,27 @@ void HumidityCap::init() {
 }
 
 void HumidityCap::execute() {
-    if (!executeAfterTime(5) || _ID == -1 || device.getRoomID() == -1)
-        return;
+    if (executeAfterTime(3)) {
+        Serial.println("HUM");
+        Serial.println(_ID);
+        Serial.println(device.getRoomID());
 
-    HumidityData data(_ID, _name);
+        if (_ID == -1 || device.getRoomID() == -1)
+            return;
 
-    float hum = _dht.readHumidity();
-    if (!isnan(hum)) {
-        _value = (int)hum;
-    } else
-        return;
+        HumidityData data(_ID, _name);
 
-    data.setActual(_value);
+        float hum = _dht.readHumidity();
+        if (!isnan(hum)) {
+            _value = (int)hum;
+        } else
+            return;
 
-    publishValues(data);
-    Serial.println("HUM_EXEC");
+        data.setActual(_value);
+
+        publishValues(data);
+        Serial.println("HUM_EXEC");
+    }
 }
 
 void HumidityCap::reactToMessage(const JsonObject &obj) {

@@ -10,10 +10,13 @@ class CapabilityUtils {
    private:
     CapabilityType _type;
 
+    bool isEqual(const string& str, CapabilityType type);
+
    public:
     CapabilityUtils(const CapabilityType& capType);
     ~CapabilityUtils() = default;
 
+    static CapabilityType getFromString(const string& type);
     char* getTopic();
     char* getName();
 };

@@ -58,8 +58,11 @@ class Device {
     /* CAPS */
     vector<shared_ptr<Capability>> getCapabilities();
 
+    void setCapsIDFromJSON(const JsonObject &obj);
+
     auto getCapabilityByName(const string &name) -> shared_ptr<Capability>;
-    //shared_ptr<Capability> getCapabilityByName(const char *name);
+
+    auto getCapByPinAndType(const uint8_t &pin, const CapabilityType &type) -> shared_ptr<Capability>;
 
     void addCapability(shared_ptr<Capability> cap);
 
@@ -70,11 +73,15 @@ class Device {
     void executeAllCapabilities();
 
     /* JSON */
+    // CREATE
     DynamicJsonDocument getCreateJSON();
-
     void publishCreateMessage();
-
     size_t getCreateJSONSize();
+
+    // CONNECT
+    DynamicJsonDocument getConnectJSON();
+    void publishConnectMessage();
+    size_t getConnectJSONSize();
 };
 
 #endif  // DEVICE_H

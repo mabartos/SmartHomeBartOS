@@ -101,6 +101,15 @@ auto Device::getCapabilityByName(const string &name) -> shared_ptr<Capability> {
     return nullptr;
 }
 
+auto Device::getCapByPinAndType(const uint8_t &pin, const CapabilityType &type) -> shared_ptr<Capability> {
+    for (auto &item : getCapabilities()) {
+        if (item->getPin() == pin && item->getType() == type) {
+            return item;
+        }
+    }
+    return nullptr;
+}
+
 void Device::addCapability(shared_ptr<Capability> cap) {
     _capabilities.push_back(cap);
 }
@@ -126,6 +135,8 @@ void Device::executeAllCapabilities() {
         client.checkAvailability();
     }
 }
+
+// CREATE
 
 DynamicJsonDocument Device::getCreateJSON() {
     const size_t capacity = getCreateJSONSize();
@@ -155,4 +166,48 @@ void Device::publishCreateMessage() {
 
     const char *result = (getHomeTopic() + "/create").c_str();
     client.getMQTT().publish_P(result, buffer, size);
+}
+
+// CONNECT
+
+DynamicJsonDocument Device::getConnectJSON() {
+    const size_t capacity = getConnectJSONSize();
+    DynamicJsonDocument connect(capacity);
+    long msgID = NumberGenerator::generateLong(100, 999);
+    setManageMsgID(msgID);
+
+    connect["msgID"] = msgID;
+    connect["id"] = getID();
+    connect["name"] = _name.c_str();
+
+    return connect;
+}
+
+size_t Device::getConnectJSONSize() {
+    return JSON_OBJECT_SIZE(3) + 80;
+}
+
+void Device::publishConnectMessage() {
+    char buffer[1024];
+    size_t size = serializeJson(getConnectJSON(), buffer);
+    string topic(getHomeTopic() + "/connect/" + NumberGenerator::longToString(getID()));
+
+    client.getMQTT().publish_P(topic.c_str(), buffer, size);
+}
+
+void Device::setCapsIDFromJSON(const JsonObject &obj) {
+    if (obj.containsKey("capabilities")) {
+        JsonArray caps = obj["capabilities"];
+        for (JsonObject cap : caps) {
+            long capID = cap["id"];
+            const char *name = cap["name"];
+            uint8_t pin = cap["pin"];
+            const char *type = cap["type"];
+            auto p_cap = getCapByPinAndType(pin, CapabilityUtils::);
+            if (p_cap != nullptr) {
+                p_cap->setID(capID);
+                p_cap->setName(name);
+            }
+        }
+    }
 }

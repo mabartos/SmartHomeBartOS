@@ -1,8 +1,14 @@
 #include "MessageForwarder.h"
 
+#include "FS.h"
 #include "device/Device_deps.h"
+#include "mqtt/MqttClient.h"
+#include "wifiUtils/WifiUtils.h"
 
 extern Device device;
+extern const char *CONFIG_FILE;
+extern WifiUtils wifiUtils;
+extern MqttClient client;
 
 bool MessageForwarder::equalsTopic(const char *receiveTopic) {
     return (strcmp(_topic, receiveTopic) == 0);
@@ -14,9 +20,9 @@ bool MessageForwarder::equalsTopic(const string &receiveTopic) {
 
 void MessageForwarder::manageCreate(const JsonObject &obj) {
     if (equalsTopic(device.getHomeTopic())) {
-        if (obj.containsKey("code") && obj["code"] != 200) {
+        vector<string> keys{"msgID", "id", "name", "capabilities"};
+        if (!containKeys(obj, keys) || (obj.containsKey("code") && obj["code"] != 200))
             return;
-        }
 
         long msgID = obj["msgID"];
 
@@ -24,22 +30,59 @@ void MessageForwarder::manageCreate(const JsonObject &obj) {
             long ID = obj["id"];
             device.setID(ID);
 
-            JsonArray caps = obj["capabilities"];
-            for (JsonObject cap : caps) {
-                long capID = cap["id"];
-                const char *name = cap["name"];
-                auto p_cap = device.getCapabilityByName(name);
-                if (p_cap != nullptr) {
-                    p_cap->setID(capID);
-                }
+            DynamicJsonDocument doc = wifiUtils.getConfigDoc();
+            doc["deviceID"] = ID;
+            doc["uuid"] = client.getUUID().c_str();
+
+            //TODO could be more encapsulated
+            File configFile = SPIFFS.open(CONFIG_FILE, "w");
+            if (!configFile) {
+                Serial.println("CANNOT WRITE");
+                return;
             }
+
+            serializeJson(doc, Serial);
+            if (serializeJson(doc, configFile) == 0) {
+                Serial.println("CANNOT SERIALIZE");
+                return;
+            }
+            configFile.close();
+
+            device.setCapsIDFromJSON(obj);
             device.setInitialized(true);
         }
     }
 }
+
+void MessageForwarder::manageConnect(const JsonObject &obj) {
+    if (equalsTopic(device.getHomeTopic())) {
+        vector<string> keys{"msgID", "id", "name", "roomID", "capabilities"};
+        if (!containKeys(obj, keys) || (obj.containsKey("code") && obj["code"] != 200))
+            return;
+
+        long msgID = obj["msgID"];
+        long id = obj["id"];
+        if (msgID != device.getManageMsgID() || id != device.getID())
+            return;
+
+        const char *name = obj["name"];
+        long roomID = obj["roomID"];
+        if (strcmp(name, device.getName().c_str()) != 0) {
+            device.setName(string(name));
+        }
+        if (roomID != device.getRoomID()) {
+            device.setRoomID(roomID);
+        }
+
+        device.setCapsIDFromJSON(obj);
+        device.setInitialized(true);
+    }
+}
+
 void MessageForwarder::manageAddDeviceToRoom(const JsonObject &obj) {
     if (equalsTopic(device.getDeviceTopic())) {
-        if (!obj.containsKey("deviceID") || !obj.containsKey("roomID"))
+        vector<string> keys{"deviceID", "roomID"};
+        if (!containKeys(obj, keys))
             return;
 
         long deviceID = obj["deviceID"];
@@ -65,6 +108,18 @@ void MessageForwarder::forwardMessage(char *topic, DynamicJsonDocument &doc) {
     _topic = topic;
     JsonObject obj = doc.as<JsonObject>();
     manageCreate(obj);
+    manageConnect(obj);
     manageAddDeviceToRoom(obj);
     manageCapabilityReact(obj);
+}
+
+bool MessageForwarder::containKeys(const JsonObject &obj, vector<string> &keys) {
+    if (keys.size() == 0)
+        return false;
+
+    for (string &key : keys) {
+        if (!obj.containsKey(key.c_str()))
+            return false;
+    }
+    return true;
 }

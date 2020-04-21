@@ -1,4 +1,4 @@
-package org.mabartos.protocols.mqtt.data;
+package org.mabartos.protocols.mqtt.data.capability;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -13,8 +13,9 @@ public abstract class CapabilityDataWithState extends CapabilityData {
     public CapabilityDataWithState(@JsonProperty("id") Long id,
                                    @JsonProperty("name") String name,
                                    @JsonProperty("type") CapabilityType type,
+                                   @JsonProperty("pin") Integer pin,
                                    @JsonProperty("isTurnedOn") boolean isTurnedOn) {
-        super(id, name, type);
+        super(id, name, type, pin);
         this.isTurnedOn = isTurnedOn;
     }
 

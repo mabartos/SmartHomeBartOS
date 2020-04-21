@@ -7,15 +7,17 @@ import org.mabartos.api.service.AppServices;
 import org.mabartos.general.CapabilityType;
 import org.mabartos.persistence.model.CapabilityModel;
 import org.mabartos.persistence.model.DeviceModel;
-import org.mabartos.persistence.model.home.HomeModel;
 import org.mabartos.persistence.model.capability.HeaterCapModel;
 import org.mabartos.persistence.model.capability.HumidityCapModel;
 import org.mabartos.persistence.model.capability.LightCapModel;
 import org.mabartos.persistence.model.capability.TemperatureCapModel;
-import org.mabartos.protocols.mqtt.data.AddDeviceRequestData;
-import org.mabartos.protocols.mqtt.data.BartMqttSender;
-import org.mabartos.protocols.mqtt.data.CapabilityData;
-import org.mabartos.protocols.mqtt.data.DeviceData;
+import org.mabartos.persistence.model.home.HomeModel;
+import org.mabartos.protocols.mqtt.data.capability.CapabilityData;
+import org.mabartos.protocols.mqtt.data.device.AddDeviceRequestData;
+import org.mabartos.protocols.mqtt.data.device.ConnectRequestData;
+import org.mabartos.protocols.mqtt.data.device.ConnectResponseData;
+import org.mabartos.protocols.mqtt.data.device.DeviceData;
+import org.mabartos.protocols.mqtt.data.general.BartMqttSender;
 import org.mabartos.protocols.mqtt.exceptions.DeviceConflictException;
 import org.mabartos.protocols.mqtt.exceptions.WrongMessageTopicException;
 import org.mabartos.protocols.mqtt.topics.CRUDTopic;
@@ -24,7 +26,6 @@ import org.mabartos.protocols.mqtt.topics.GeneralTopic;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -79,7 +80,26 @@ public class HandleManageMessage implements Serializable {
     }
 
     private boolean handleConnect() {
-        if (services != null) {
+        try {
+            System.out.println("CONNECT");
+            ConnectRequestData connect = ConnectRequestData.fromJson(message.toString());
+            if (connect == null)
+                throw new WrongMessageTopicException();
+
+            DeviceModel device = services.devices().findByID(connect.getID());
+            if (device == null)
+                throw new WrongMessageTopicException();
+
+            device.setActive(true);
+            device = services.devices().updateByID(device.getID(), device);
+            if (device != null) {
+                ConnectResponseData response = new ConnectResponseData(connect.getMsgID(), device);
+                client.publish(receivedTopic, response.toJson());
+                return true;
+            }
+        } catch (RuntimeException e) {
+            BartMqttSender.sendResponse(client, receivedTopic, HttpResponseStatus.BAD_REQUEST, e.getMessage());
+            e.printStackTrace();
         }
         return false;
     }
@@ -91,17 +111,20 @@ public class HandleManageMessage implements Serializable {
                 DeviceModel device = createDeviceFromMessage(deviceMessage);
                 if (device == null)
                     throw new WrongMessageTopicException();
+                device.setActive(true);
 
                 if (services.homes().addDeviceToHome(device, home.getID())) {
                     DeviceData response = new DeviceData(deviceMessage.getMsgID(), device);
                     client.publish(receivedTopic, response.toJson());
                     return true;
                 }
-            }
+            } else
+                throw new WrongMessageTopicException();
         } catch (DeviceConflictException e) {
             BartMqttSender.sendResponse(client, receivedTopic, HttpResponseStatus.CONFLICT, e.getMessage());
-        } catch (WrongMessageTopicException wm) {
-            BartMqttSender.sendResponse(client, receivedTopic, HttpResponseStatus.BAD_REQUEST, wm.getMessage());
+        } catch (RuntimeException e) {
+            BartMqttSender.sendResponse(client, receivedTopic, HttpResponseStatus.BAD_REQUEST, e.getMessage());
+            e.printStackTrace();
         }
         return false;
     }
@@ -116,7 +139,7 @@ public class HandleManageMessage implements Serializable {
             }
         } catch (WrongMessageTopicException wm) {
             BartMqttSender.sendResponse(client, receivedTopic, HttpResponseStatus.BAD_REQUEST, wm.getMessage());
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             BartMqttSender.sendResponse(client, receivedTopic, HttpResponseStatus.BAD_REQUEST, e.getMessage());
             e.printStackTrace();
         }
@@ -134,7 +157,7 @@ public class HandleManageMessage implements Serializable {
             }
         } catch (WrongMessageTopicException wm) {
             BartMqttSender.sendResponse(client, receivedTopic, HttpResponseStatus.BAD_REQUEST, wm.getMessage());
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             BartMqttSender.sendResponse(client, receivedTopic, HttpResponseStatus.BAD_REQUEST);
         }
         return false;
@@ -148,28 +171,26 @@ public class HandleManageMessage implements Serializable {
             }
         } catch (WrongMessageTopicException wm) {
             BartMqttSender.sendResponse(client, receivedTopic, HttpResponseStatus.BAD_REQUEST, wm.getMessage());
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             BartMqttSender.sendResponse(client, receivedTopic, HttpResponseStatus.BAD_REQUEST);
         }
         return false;
-
     }
 
-
     //TODO
-    private CapabilityModel getTypedInstance(String name, CapabilityType type) {
+    private CapabilityModel getTypedInstance(String name, CapabilityType type, Integer pin) {
         if (name != null && type != null) {
             switch (type) {
                 case NONE:
                     break;
                 case TEMPERATURE:
-                    return new TemperatureCapModel(name);
+                    return new TemperatureCapModel(name, pin);
                 case HUMIDITY:
-                    return new HumidityCapModel(name);
+                    return new HumidityCapModel(name, pin);
                 case HEATER:
-                    return new HeaterCapModel(name);
+                    return new HeaterCapModel(name, pin);
                 case LIGHT:
-                    return new LightCapModel(name);
+                    return new LightCapModel(name, pin);
                 case RELAY:
                     break;
                 case SOCKET:
@@ -201,13 +222,11 @@ public class HandleManageMessage implements Serializable {
         try {
             Set<CapabilityModel> capabilities = CapabilityData.toModel(message.getCapabilities())
                     .stream()
-                    .map(f -> getTypedInstance(f.getName(), f.getType()))
+                    .map(f -> getTypedInstance(f.getName(), f.getType(), f.getPin()))
                     .collect(Collectors.toSet());
 
-
             if (services != null && services.capabilities() != null) {
-                DeviceModel device = services.devices().create(new DeviceModel(message.getName(),capabilities));
-                return device;
+                return services.devices().create(new DeviceModel(message.getName(), capabilities));
             }
         } catch (Exception e) {
             e.printStackTrace();

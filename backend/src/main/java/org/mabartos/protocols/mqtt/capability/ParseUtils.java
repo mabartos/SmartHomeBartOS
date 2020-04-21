@@ -3,8 +3,8 @@ package org.mabartos.protocols.mqtt.capability;
 import org.mabartos.api.protocol.BartMqttClient;
 import org.mabartos.api.service.AppServices;
 import org.mabartos.persistence.model.CapabilityModel;
-import org.mabartos.protocols.mqtt.data.BartMqttSender;
-import org.mabartos.protocols.mqtt.data.ConvertableToModel;
+import org.mabartos.protocols.mqtt.data.general.BartMqttSender;
+import org.mabartos.protocols.mqtt.data.general.ConvertableToModel;
 import org.mabartos.protocols.mqtt.topics.CapabilityTopic;
 
 public class ParseUtils {
@@ -19,10 +19,7 @@ public class ParseUtils {
         if (data != null && model != null) {
             Model result = (Model) data.editModel(model);
             Model updated = (Model) services.capabilities().updateByID(capabilityTopic.getCapabilityID(), result);
-            if (updated != null) {
-                BartMqttSender.sendResponse(client, 200, message);
-                return;
-            }
+            if(updated!=null) return;
         }
         BartMqttSender.sendResponse(client, 400, message);
     }

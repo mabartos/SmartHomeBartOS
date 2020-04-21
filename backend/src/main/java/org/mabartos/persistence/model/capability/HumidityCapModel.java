@@ -19,8 +19,8 @@ public class HumidityCapModel extends CapabilityModel implements HasValue<Byte> 
         super();
     }
 
-    public HumidityCapModel(String name) {
-        super(name, CapabilityType.HUMIDITY);
+    public HumidityCapModel(String name, Integer pin) {
+        super(name, CapabilityType.HUMIDITY, pin);
     }
 
     @Override

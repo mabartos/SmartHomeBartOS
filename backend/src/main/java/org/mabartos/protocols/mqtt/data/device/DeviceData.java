@@ -1,9 +1,11 @@
-package org.mabartos.protocols.mqtt.data;
+package org.mabartos.protocols.mqtt.data.device;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import org.mabartos.persistence.model.DeviceModel;
+import org.mabartos.protocols.mqtt.data.capability.CapabilityData;
+import org.mabartos.protocols.mqtt.data.general.MqttSerializable;
 import org.mabartos.protocols.mqtt.utils.MqttSerializeUtils;
 
 import java.util.Set;
@@ -32,8 +34,8 @@ public class DeviceData implements MqttSerializable {
         this.name = name;
     }
 
-    public DeviceData(Long idMessage, DeviceModel device) {
-        this.msgID = idMessage;
+    public DeviceData(Long msgID, DeviceModel device) {
+        this.msgID = msgID;
         this.id = device.getID();
         this.name = device.getName();
         this.capabilities = CapabilityData.fromModel(device.getCapabilities());

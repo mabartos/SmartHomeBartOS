@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import org.mabartos.protocols.mqtt.data.MqttSerializable;
+import org.mabartos.protocols.mqtt.data.general.MqttSerializable;
 import org.mabartos.protocols.mqtt.exceptions.WrongMessageTopicException;
 
 public class MqttSerializeUtils implements MqttSerializable {
