@@ -1,6 +1,7 @@
 package org.mabartos.protocols.mqtt.data.device;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import org.mabartos.persistence.model.DeviceModel;
@@ -10,8 +11,9 @@ import org.mabartos.protocols.mqtt.utils.MqttSerializeUtils;
 
 import java.util.Set;
 
-@JsonPropertyOrder({"msgID", "id", "name"})
-public class DeviceData implements MqttSerializable {
+@JsonPropertyOrder({"msgID", "resp", "id", "name"})
+@JsonIgnoreProperties({"response"})
+public class DeviceData implements ResponseData, MqttSerializable {
 
     @JsonProperty("msgID")
     private Long msgID;
@@ -21,6 +23,9 @@ public class DeviceData implements MqttSerializable {
 
     @JsonProperty("name")
     private String name;
+
+    @JsonProperty("resp")
+    private boolean isResponse;
 
     @JsonProperty("capabilities")
     private Set<CapabilityData> capabilities;
@@ -35,14 +40,19 @@ public class DeviceData implements MqttSerializable {
     }
 
     public DeviceData(Long msgID, DeviceModel device) {
+        this(msgID, device, false);
+    }
+
+    public DeviceData(Long msgID, DeviceModel device, boolean isResponse) {
         this.msgID = msgID;
         this.id = device.getID();
         this.name = device.getName();
         this.capabilities = CapabilityData.fromModel(device.getCapabilities());
+        this.isResponse = isResponse;
     }
 
     @JsonCreator
-    public DeviceData(@JsonProperty("idMessage") Long idMessage,
+    public DeviceData(@JsonProperty("msgID") Long idMessage,
                       @JsonProperty("id") Long id,
                       @JsonProperty("name") String name,
                       @JsonProperty("capabilities") Set<CapabilityData> capabilities) {
@@ -90,5 +100,15 @@ public class DeviceData implements MqttSerializable {
         DeviceModel created = new DeviceModel(this.name, CapabilityData.toModel(this.capabilities));
         created.setID(this.id);
         return created;
+    }
+
+    @Override
+    public boolean isResponse() {
+        return isResponse;
+    }
+
+    @Override
+    public void setIsResponse(boolean state) {
+        this.isResponse = state;
     }
 }

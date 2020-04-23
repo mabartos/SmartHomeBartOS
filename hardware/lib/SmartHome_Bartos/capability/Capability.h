@@ -22,7 +22,7 @@ class Capability {
     string getRandomName();
 
    public:
-    Capability(const uint8_t &pin);
+    Capability(const uint8_t &pin, CapabilityType type);
     ~Capability() = default;
 
     virtual void init();
@@ -41,7 +41,7 @@ class Capability {
     void setPin(const uint8_t &pin);
 
     CapabilityType getType();
-    void setType(CapabilityType type);
+    void setType(CapabilityType &type);
 
     bool isEnabled();
 

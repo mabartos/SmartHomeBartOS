@@ -7,8 +7,10 @@ import org.mabartos.protocols.mqtt.data.general.MqttSerializable;
 import org.mabartos.protocols.mqtt.utils.MqttSerializeUtils;
 
 @JsonPropertyOrder({"roomID", "deviceID"})
-public class AddDeviceToRoomData implements MqttSerializable {
+public class AddDeviceToRoomData implements ResponseData, MqttSerializable {
 
+    @JsonProperty("resp")
+    private boolean response;
     @JsonProperty("roomID")
     private Long roomID;
     @JsonProperty("deviceID")
@@ -19,6 +21,7 @@ public class AddDeviceToRoomData implements MqttSerializable {
                                @JsonProperty("deviceID") Long deviceID) {
         this.roomID = roomID;
         this.deviceID = deviceID;
+        this.response = true;
     }
 
     public Long getRoomID() {
@@ -39,5 +42,15 @@ public class AddDeviceToRoomData implements MqttSerializable {
 
     public static AddDeviceToRoomData fromJson(String json) {
         return MqttSerializeUtils.fromJson(json, AddDeviceToRoomData.class);
+    }
+
+    @Override
+    public boolean isResponse() {
+        return this.response;
+    }
+
+    @Override
+    public void setIsResponse(boolean state) {
+        //NOP
     }
 }

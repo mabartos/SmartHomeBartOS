@@ -7,7 +7,7 @@
 class CapabilityWithState : public Capability {
    protected:
     bool _isTurnedOn;
-    CapabilityWithState(const uint8_t &pin);
+    CapabilityWithState(const uint8_t &pin, CapabilityType type);
 
    public:
     ~CapabilityWithState() = default;

@@ -34,18 +34,18 @@ public class BartMqttHandler implements Serializable {
         this.services = services;
     }
 
-    public void executeMessage(BartMqttClient client, HomeModel home, final String receivedTopic, final MqttMessage message) {
-        if (home == null || receivedTopic == null || message == null)
+    public void executeMessage(BartMqttClient client, HomeModel home, final String rawTopic, final MqttMessage message) {
+        if (home == null || rawTopic == null || message == null)
             return;
 
         this.mqttClient = client;
 
         String homeTopic = TopicUtils.getHomeTopic(home);
         try {
-            GeneralTopic resultTopic = TopicUtils.getSpecificTopic(receivedTopic);
+            GeneralTopic resultTopic = TopicUtils.getSpecificTopic(rawTopic);
 
-            if (resultTopic != null && homeTopic != null && receivedTopic.length() > homeTopic.length()) {
-                handler.init(client, home, resultTopic, message);
+            if (resultTopic != null && homeTopic != null && rawTopic.length() > homeTopic.length()) {
+                handler.init(client, home, resultTopic, message, rawTopic);
 
                 // It's the 'manage' topic
                 if (handler.handleManageTopics())
@@ -57,7 +57,7 @@ public class BartMqttHandler implements Serializable {
                 }
             }
         } catch (IndexOutOfBoundsException iobe) {
-            logger.log(Level.ERROR, "Invalid topic : " + receivedTopic);
+            logger.log(Level.ERROR, "Invalid topic : " + rawTopic);
         } catch (Exception e) {
             e.printStackTrace();
         }

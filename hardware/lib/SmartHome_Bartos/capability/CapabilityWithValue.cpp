@@ -1,6 +1,6 @@
 #include "capability/CapabilityWithValue.h"
 
-CapabilityWithValue::CapabilityWithValue(const uint8_t &pin) : Capability(pin) {
+CapabilityWithValue::CapabilityWithValue(const uint8_t &pin, CapabilityType type) : Capability(pin, type) {
 }
 
 double CapabilityWithValue::getValue() {

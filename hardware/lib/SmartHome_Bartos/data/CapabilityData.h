@@ -3,9 +3,9 @@
 
 #include <string>
 
-using namespace std;
-
 #include "ArduinoJson.h"
+
+using namespace std;
 
 class CapabilityData {
    protected:

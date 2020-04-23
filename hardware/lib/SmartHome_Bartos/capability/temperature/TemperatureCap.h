@@ -6,6 +6,7 @@
 
 #include "capability/CapabilityDeps.h"
 #include "device/Device_deps.h"
+
 class TemperatureCap : public CapabilityWithValue {
    private:
     DHT &_dht;

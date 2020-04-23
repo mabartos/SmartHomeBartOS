@@ -47,7 +47,7 @@ export default function Snackbar(props) {
             message={
                 <div>
                     {icon !== undefined ? <props.icon className={classes.icon}/> : null}
-                    <span className={messageClasses}>{message}</span>
+                    <span className={messageClasses}>{message || ""}</span>
                 </div>
             }
             action={action}

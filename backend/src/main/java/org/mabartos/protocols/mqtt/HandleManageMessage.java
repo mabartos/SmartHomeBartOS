@@ -22,6 +22,7 @@ import org.mabartos.protocols.mqtt.exceptions.DeviceConflictException;
 import org.mabartos.protocols.mqtt.exceptions.WrongMessageTopicException;
 import org.mabartos.protocols.mqtt.topics.CRUDTopic;
 import org.mabartos.protocols.mqtt.topics.GeneralTopic;
+import org.mabartos.protocols.mqtt.utils.TopicUtils;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -37,7 +38,7 @@ public class HandleManageMessage implements Serializable {
 
     private GeneralTopic topic;
     private CRUDTopic crudTopic;
-    private String receivedTopic;
+    private String rawTopic;
 
     private MqttMessage message;
     private HomeModel home;
@@ -49,12 +50,12 @@ public class HandleManageMessage implements Serializable {
         this.services = services;
     }
 
-    public void init(BartMqttClient client, HomeModel home, GeneralTopic topic, MqttMessage message) {
+    public void init(BartMqttClient client, HomeModel home, GeneralTopic topic, MqttMessage message, String rawTopic) {
         this.topic = topic;
         this.message = message;
         this.home = home;
         this.client = client;
-        this.receivedTopic = home.getMqttClient().getTopic();
+        this.rawTopic = rawTopic;
     }
 
     public boolean handleManageTopics() {
@@ -94,11 +95,11 @@ public class HandleManageMessage implements Serializable {
             device = services.devices().updateByID(device.getID(), device);
             if (device != null) {
                 ConnectResponseData response = new ConnectResponseData(connect.getMsgID(), device);
-                client.publish(receivedTopic, response.toJson());
+                client.publish(TopicUtils.getConnectTopicResp(home.getID()), response.toJson());
                 return true;
             }
         } catch (RuntimeException e) {
-            BartMqttSender.sendResponse(client, receivedTopic, HttpResponseStatus.BAD_REQUEST, e.getMessage());
+            BartMqttSender.sendResponse(client, TopicUtils.getConnectTopicResp(home.getID()), HttpResponseStatus.BAD_REQUEST, e.getMessage());
             e.printStackTrace();
         }
         return false;
@@ -107,23 +108,23 @@ public class HandleManageMessage implements Serializable {
     private boolean handleCreate() {
         try {
             AddDeviceRequestData deviceMessage = AddDeviceRequestData.fromJson(message.toString());
-            if (receivedTopic != null && deviceMessage != null) {
+            if (rawTopic != null && deviceMessage != null) {
                 DeviceModel device = createDeviceFromMessage(deviceMessage);
                 if (device == null)
                     throw new WrongMessageTopicException();
                 device.setActive(true);
 
                 if (services.homes().addDeviceToHome(device, home.getID())) {
-                    DeviceData response = new DeviceData(deviceMessage.getMsgID(), device);
-                    client.publish(receivedTopic, response.toJson());
+                    DeviceData response = new DeviceData(deviceMessage.getMsgID(), device, true);
+                    client.publish(TopicUtils.getCreateTopicResp(home.getID()), response.toJson(),0);
                     return true;
                 }
             } else
                 throw new WrongMessageTopicException();
         } catch (DeviceConflictException e) {
-            BartMqttSender.sendResponse(client, receivedTopic, HttpResponseStatus.CONFLICT, e.getMessage());
+            BartMqttSender.sendResponse(client, TopicUtils.getCreateTopicResp(home.getID()), HttpResponseStatus.CONFLICT, e.getMessage());
         } catch (RuntimeException e) {
-            BartMqttSender.sendResponse(client, receivedTopic, HttpResponseStatus.BAD_REQUEST, e.getMessage());
+            BartMqttSender.sendResponse(client, TopicUtils.getCreateTopicResp(home.getID()), HttpResponseStatus.BAD_REQUEST, e.getMessage());
             e.printStackTrace();
         }
         return false;
@@ -134,13 +135,13 @@ public class HandleManageMessage implements Serializable {
             if (isContainedInHome(crudTopic)) {
                 DeviceModel device = services.devices().findByID(crudTopic.getDeviceID());
                 services.homes().removeDeviceFromHome(device, home.getID());
-                BartMqttSender.sendResponse(client, receivedTopic, HttpResponseStatus.OK);
+                BartMqttSender.sendResponse(client, rawTopic, HttpResponseStatus.OK);
                 return true;
             }
         } catch (WrongMessageTopicException wm) {
-            BartMqttSender.sendResponse(client, receivedTopic, HttpResponseStatus.BAD_REQUEST, wm.getMessage());
+            BartMqttSender.sendResponse(client, rawTopic, HttpResponseStatus.BAD_REQUEST, wm.getMessage());
         } catch (RuntimeException e) {
-            BartMqttSender.sendResponse(client, receivedTopic, HttpResponseStatus.BAD_REQUEST, e.getMessage());
+            BartMqttSender.sendResponse(client, rawTopic, HttpResponseStatus.BAD_REQUEST, e.getMessage());
             e.printStackTrace();
         }
         return false;
@@ -152,13 +153,13 @@ public class HandleManageMessage implements Serializable {
             if (isContainedInHome(crudTopic) && deviceData != null) {
                 DeviceModel device = deviceData.toModel();
                 services.devices().updateByID(device.getID(), device);
-                BartMqttSender.sendResponse(client, receivedTopic, HttpResponseStatus.OK, "Device was updated");
+                BartMqttSender.sendResponse(client, rawTopic, HttpResponseStatus.OK, "Device was updated");
                 return true;
             }
         } catch (WrongMessageTopicException wm) {
-            BartMqttSender.sendResponse(client, receivedTopic, HttpResponseStatus.BAD_REQUEST, wm.getMessage());
+            BartMqttSender.sendResponse(client, rawTopic, HttpResponseStatus.BAD_REQUEST, wm.getMessage());
         } catch (RuntimeException e) {
-            BartMqttSender.sendResponse(client, receivedTopic, HttpResponseStatus.BAD_REQUEST);
+            BartMqttSender.sendResponse(client, rawTopic, HttpResponseStatus.BAD_REQUEST);
         }
         return false;
     }
@@ -166,13 +167,13 @@ public class HandleManageMessage implements Serializable {
     private boolean handleDelete() {
         try {
             if (isContainedInHome(crudTopic) && services.devices().deleteByID(crudTopic.getDeviceID())) {
-                BartMqttSender.sendResponse(client, receivedTopic, HttpResponseStatus.OK, "Device was deleted");
+                BartMqttSender.sendResponse(client, rawTopic, HttpResponseStatus.OK, "Device was deleted");
                 return true;
             }
         } catch (WrongMessageTopicException wm) {
-            BartMqttSender.sendResponse(client, receivedTopic, HttpResponseStatus.BAD_REQUEST, wm.getMessage());
+            BartMqttSender.sendResponse(client, rawTopic, HttpResponseStatus.BAD_REQUEST, wm.getMessage());
         } catch (RuntimeException e) {
-            BartMqttSender.sendResponse(client, receivedTopic, HttpResponseStatus.BAD_REQUEST);
+            BartMqttSender.sendResponse(client, rawTopic, HttpResponseStatus.BAD_REQUEST);
         }
         return false;
     }

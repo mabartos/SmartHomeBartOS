@@ -1,6 +1,8 @@
 package org.mabartos.services.model;
 
 import io.quarkus.runtime.StartupEvent;
+import org.mabartos.api.protocol.BartMqttClient;
+import org.mabartos.api.protocol.MqttClientManager;
 import org.mabartos.api.service.AppServices;
 import org.mabartos.api.service.RoomService;
 import org.mabartos.controller.data.RoomData;
@@ -8,6 +10,7 @@ import org.mabartos.general.RoomType;
 import org.mabartos.persistence.model.room.RoomModel;
 import org.mabartos.persistence.model.user.UserModel;
 import org.mabartos.persistence.repository.RoomRepository;
+import org.mabartos.protocols.mqtt.utils.TopicUtils;
 
 import javax.enterprise.context.Dependent;
 import javax.enterprise.event.Observes;
@@ -91,9 +94,21 @@ public class RoomServiceImpl extends CRUDServiceImpl<RoomModel, RoomRepository, 
         Query query = entityManager.createNamedQuery("setDeviceRoomToNull");
         query.setParameter("roomID", id);
         query.executeUpdate();
-        
+
+        clearRetainedMessages(id);
+
         query = entityManager.createNamedQuery("deleteRoomByID");
         query.setParameter("id", id);
         return query.executeUpdate() > 0;
+    }
+
+    @Override
+    public void clearRetainedMessages(Long id) {
+        RoomModel room = findByID(id);
+        if (room != null && room.getHome() != null) {
+            BartMqttClient client = services.mqttManager().getMqttForHome(room.getHomeID());
+            MqttClientManager.clearRetainedMessages(client, TopicUtils.getRoomTopic(room.getHomeID(), id));
+            room.getChildren().forEach(dev -> services.devices().clearRetainedMessages(dev.getID()));
+        }
     }
 }

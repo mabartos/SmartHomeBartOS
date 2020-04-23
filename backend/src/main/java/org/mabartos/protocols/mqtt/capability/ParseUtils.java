@@ -21,6 +21,6 @@ public class ParseUtils {
             Model updated = (Model) services.capabilities().updateByID(capabilityTopic.getCapabilityID(), result);
             if(updated!=null) return;
         }
-        BartMqttSender.sendResponse(client, 400, message);
+        //BartMqttSender.sendResponse(client, 400, message);
     }
 }

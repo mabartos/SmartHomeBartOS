@@ -6,8 +6,7 @@
 extern MqttClient client;
 extern Device device;
 
-LightsCap::LightsCap(const uint8_t &pin) : CapabilityWithState(pin) {
-    _type = CapabilityType::LIGHT;
+LightsCap::LightsCap(const uint8_t &pin) : CapabilityWithState(pin, CapabilityType::LIGHT) {
     setName(getRandomName());
 }
 

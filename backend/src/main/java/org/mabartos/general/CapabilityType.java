@@ -5,7 +5,7 @@ import java.util.Arrays;
 public enum CapabilityType {
     NONE("none"),
     TEMPERATURE("temp"),
-    HUMIDITY("hum"),
+    HUMIDITY("humi"),
     HEATER("heater"),
     LIGHT("light"),
     RELAY("relay"),

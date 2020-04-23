@@ -48,7 +48,7 @@ public class CapabilityModel extends PanacheEntityBase implements Serializable, 
     private DeviceModel device;
 
     @Column
-    private Integer pin;
+    private int pin;
 
     public CapabilityModel() {
     }
@@ -94,11 +94,11 @@ public class CapabilityModel extends PanacheEntityBase implements Serializable, 
         this.type = type;
     }
 
-    public Integer getPin() {
+    public int getPin() {
         return pin;
     }
 
-    public void setPin(Integer pin) {
+    public void setPin(int pin) {
         this.pin = pin;
     }
 

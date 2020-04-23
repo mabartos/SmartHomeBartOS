@@ -2,6 +2,7 @@ package org.mabartos.services.model;
 
 import io.quarkus.runtime.StartupEvent;
 import org.mabartos.api.protocol.BartMqttClient;
+import org.mabartos.api.protocol.MqttClientManager;
 import org.mabartos.api.service.AppServices;
 import org.mabartos.api.service.DeviceService;
 import org.mabartos.general.CapabilityType;
@@ -70,6 +71,7 @@ public class DeviceServiceImpl extends CRUDServiceImpl<DeviceModel, DeviceReposi
                 Query queryCaps = entityManager.createNamedQuery("deleteCapsFromDevice");
                 queryCaps.setParameter("deviceID", f.getID());
                 queryCaps.executeUpdate();
+                clearRetainedMessages(f.getID());
             });
         }
 
@@ -85,6 +87,7 @@ public class DeviceServiceImpl extends CRUDServiceImpl<DeviceModel, DeviceReposi
         if (device != null && room != null) {
             device.setRoom(null);
             room.removeChild(device);
+            clearRetainedMessages(deviceID);
             return updateByID(deviceID, device) != null;
         }
         return false;
@@ -100,6 +103,22 @@ public class DeviceServiceImpl extends CRUDServiceImpl<DeviceModel, DeviceReposi
         query.setParameter("deviceID", id);
         query.executeUpdate();
 
+        clearRetainedMessages(id);
+
         return super.deleteByID(id);
+    }
+
+    @Override
+    public void clearRetainedMessages(Long id) {
+        DeviceModel device = findByID(id);
+        if (device != null && device.getHome() != null) {
+            BartMqttClient client = services.mqttManager().getMqttForHome(device.getHomeID());
+            MqttClientManager.clearRetainedMessages(client, TopicUtils.getDeviceTopic(device.getHomeID(), id));
+            device.getCapabilities().forEach(cap -> services.capabilities().clearRetainedMessages(cap.getID()));
+
+            if (device.getRoom() != null) {
+                MqttClientManager.clearRetainedMessages(client, TopicUtils.getDeviceTopicInRoom(device.getHomeID(), device.getRoomID(), id));
+            }
+        }
     }
 }

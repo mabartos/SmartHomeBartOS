@@ -9,7 +9,7 @@ class CapabilityWithValue : public Capability {
     double _value;
     string _units;
 
-    CapabilityWithValue(const uint8_t &pin);
+    CapabilityWithValue(const uint8_t &pin, CapabilityType type);
 
    public:
     ~CapabilityWithValue() = default;

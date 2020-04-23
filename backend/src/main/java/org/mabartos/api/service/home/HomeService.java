@@ -1,5 +1,6 @@
 package org.mabartos.api.service.home;
 
+import org.mabartos.api.service.AbleSendMQTT;
 import org.mabartos.api.service.CRUDService;
 import org.mabartos.persistence.model.DeviceModel;
 import org.mabartos.persistence.model.home.HomeModel;
@@ -7,7 +8,7 @@ import org.mabartos.persistence.model.home.HomeModel;
 import java.util.Set;
 import java.util.UUID;
 
-public interface HomeService extends CRUDService<HomeModel, Long> {
+public interface HomeService extends CRUDService<HomeModel, Long>, AbleSendMQTT {
 
     HomeInvitationService invitations();
 

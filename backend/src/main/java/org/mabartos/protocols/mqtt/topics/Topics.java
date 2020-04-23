@@ -3,7 +3,13 @@ package org.mabartos.protocols.mqtt.topics;
 public enum Topics {
 
     HOME_TOPIC("homes"),
-    DEVICE_TOPIC("devices");
+    ROOM_TOPIC("rooms"),
+    DEVICE_TOPIC("devices"),
+
+    CREATE_TOPIC("create"),
+    CONNECT_TOPIC("connect"),
+
+    RESPONSE_TOPIC("resp");
 
     private String name;
 

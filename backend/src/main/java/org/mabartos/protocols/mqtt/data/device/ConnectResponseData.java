@@ -9,7 +9,7 @@ public class ConnectResponseData extends DeviceData {
     private Long roomID;
 
     public ConnectResponseData(Long msgID, DeviceModel device) {
-        super(msgID, device);
+        super(msgID, device, true);
         this.roomID = device.getRoomID();
     }
 

@@ -3,6 +3,7 @@
 
 #include <string>
 
+#include "capability/utils/CapabilityUtils.h"
 #include "mqtt/MqttClient.h"
 
 extern MqttClient client;
@@ -87,6 +88,45 @@ string Device::getDeviceTopic() {
     return "";
 }
 
+string Device::getCreateTopic() {
+    string homeTopic = getHomeTopic();
+    if (homeTopic != "") {
+        return string(homeTopic + "/create");
+    }
+    return "";
+}
+
+string Device::getConnectTopic() {
+    string homeTopic = getHomeTopic();
+    if (homeTopic != "") {
+        return string(homeTopic + "/connect");
+    }
+    return "";
+}
+
+string Device::getCreateTopicResp() {
+    string createTopic = getCreateTopic();
+    if (createTopic != "") {
+        return string(createTopic + "/resp");
+    }
+    return "";
+}
+string Device::getConnectTopicResp() {
+    string connectTopic = getConnectTopic();
+    if (connectTopic != "") {
+        return string(connectTopic + "/resp");
+    }
+    return "";
+}
+
+string Device::getCreateTopicWild() {
+    string createTopic = getCreateTopic();
+    if (createTopic != "") {
+        return string(createTopic + "/#");
+    }
+    return "";
+}
+
 /* CAPS */
 vector<shared_ptr<Capability>> Device::getCapabilities() {
     return _capabilities;
@@ -153,19 +193,21 @@ DynamicJsonDocument Device::getCreateJSON() {
         item->editCreateCapNested(obj);
     }
 
+    serializeJson(create, Serial);
     return create;
 }
 
 size_t Device::getCreateJSONSize() {
-    return JSON_ARRAY_SIZE(getCapabilities().size()) + getCapabilities().size() * (JSON_OBJECT_SIZE(2) + 80) + JSON_OBJECT_SIZE(3) + 100;
+    return JSON_ARRAY_SIZE(getCapabilities().size()) + getCapabilities().size() * (JSON_OBJECT_SIZE(3) + 100) + JSON_OBJECT_SIZE(4) + 100;
 }
 
 void Device::publishCreateMessage() {
     char buffer[1024];
-    size_t size = serializeJson(getCreateJSON(), buffer);
 
-    const char *result = (getHomeTopic() + "/create").c_str();
-    client.getMQTT().publish_P(result, buffer, size);
+    serializeJson(getCreateJSON(), buffer);
+
+    const char *result = getCreateTopic().c_str();
+    client.getMQTT().publish_P(result, buffer, false);
 }
 
 // CONNECT
@@ -189,21 +231,29 @@ size_t Device::getConnectJSONSize() {
 
 void Device::publishConnectMessage() {
     char buffer[1024];
-    size_t size = serializeJson(getConnectJSON(), buffer);
-    string topic(getHomeTopic() + "/connect/" + NumberGenerator::longToString(getID()));
+    serializeJson(getConnectJSON(), buffer);
+    string topic(getConnectTopic() + "/" + NumberGenerator::longToString(getID()));
 
-    client.getMQTT().publish_P(topic.c_str(), buffer, size);
+    client.getMQTT().publish_P(topic.c_str(), buffer, false);
 }
 
 void Device::setCapsIDFromJSON(const JsonObject &obj) {
+    setCapsIDFromJSON(obj, false);
+}
+
+void Device::setCapsIDFromJSON(const JsonObject &obj, bool shouldCreate) {
     if (obj.containsKey("capabilities")) {
+        DynamicJsonDocument doc(500);
+
         JsonArray caps = obj["capabilities"];
+
         for (JsonObject cap : caps) {
             long capID = cap["id"];
             const char *name = cap["name"];
             uint8_t pin = cap["pin"];
             const char *type = cap["type"];
-            auto p_cap = getCapByPinAndType(pin, CapabilityUtils::);
+
+            auto p_cap = getCapByPinAndType(pin, CapabilityUtils::getFromString(string(type)));
             if (p_cap != nullptr) {
                 p_cap->setID(capID);
                 p_cap->setName(name);

@@ -4,8 +4,7 @@
 
 extern Device device;
 
-HumidityCap::HumidityCap(const uint8_t &pin, DHT &dht) : CapabilityWithValue(pin), _dht(dht) {
-    _type = CapabilityType::HUMIDITY;
+HumidityCap::HumidityCap(const uint8_t &pin, DHT &dht) : CapabilityWithValue(pin, CapabilityType::HUMIDITY), _dht(dht) {
     setName(getRandomName());
 }
 
@@ -16,27 +15,21 @@ void HumidityCap::init() {
 }
 
 void HumidityCap::execute() {
-    if (executeAfterTime(3)) {
-        Serial.println("HUM");
-        Serial.println(_ID);
-        Serial.println(device.getRoomID());
+    if (!executeAfterTime(3) || _ID == -1 || device.getRoomID() == -1)
+        return;
 
-        if (_ID == -1 || device.getRoomID() == -1)
-            return;
+    HumidityData data(_ID, _name);
 
-        HumidityData data(_ID, _name);
+    float hum = _dht.readHumidity();
+    if (!isnan(hum)) {
+        _value = (int)hum;
+    } else
+        return;
 
-        float hum = _dht.readHumidity();
-        if (!isnan(hum)) {
-            _value = (int)hum;
-        } else
-            return;
+    data.setActual(_value);
 
-        data.setActual(_value);
-
-        publishValues(data);
-        Serial.println("HUM_EXEC");
-    }
+    publishValues(data);
+    Serial.println("HUM_EXEC");
 }
 
 void HumidityCap::reactToMessage(const JsonObject &obj) {

@@ -1,8 +1,9 @@
 package org.mabartos.protocols.mqtt.utils;
 
 import org.mabartos.general.CapabilityType;
-import org.mabartos.persistence.model.DeviceModel;
+import org.mabartos.persistence.model.CapabilityModel;
 import org.mabartos.persistence.model.home.HomeModel;
+import org.mabartos.protocols.mqtt.exceptions.WrongMessageTopicException;
 import org.mabartos.protocols.mqtt.topics.CRUDTopic;
 import org.mabartos.protocols.mqtt.topics.CRUDTopicType;
 import org.mabartos.protocols.mqtt.topics.CapabilityTopic;
@@ -28,16 +29,42 @@ public class TopicUtils {
         return Topics.HOME_TOPIC.getTopic() + "/" + homeID;
     }
 
+    public static String getRoomTopic(Long homeID, Long roomID) {
+        return getHomeTopic(homeID) + Topics.ROOM_TOPIC.getTopic() + "/" + roomID;
+    }
+
+    public static String getDeviceTopicInRoom(Long homeID, Long roomID, Long deviceID) {
+        return getRoomTopic(homeID, roomID) + Topics.DEVICE_TOPIC.getTopic() + "/" + deviceID;
+    }
+
     // Topic f.e. 'homes/5/devices/2'
-    public static String getDeviceTopic(HomeModel home, DeviceModel device) {
-        if(home!=null && device!=null){
-            return getDeviceTopic(home.getID(),device.getID());
+    public static String getDeviceTopic(Long homeID, Long deviceID) {
+        return getHomeTopic(homeID) + Topics.DEVICE_TOPIC + "/" + deviceID;
+    }
+
+    public static String getCapabilityTopic(CapabilityModel cap) {
+        if (cap != null && cap.getDevice() != null && cap.getDevice().getHome() != null && cap.getDevice().getRoom() != null) {
+            String roomTopic = getRoomTopic(cap.getDevice().getHomeID(), cap.getDevice().getRoomID());
+            return roomTopic + cap.getType().getTopic() + "/" + cap.getID();
         }
         return null;
     }
 
-    public static String getDeviceTopic(Long homeID, Long deviceID) {
-        return getHomeTopic(homeID)+Topics.DEVICE_TOPIC.getTopic()+"/"+deviceID;
+
+    public static String getConnectTopic(Long homeID) {
+        return getHomeTopic(homeID) + Topics.CONNECT_TOPIC.getTopic();
+    }
+
+    public static String getCreateTopic(Long homeID) {
+        return getHomeTopic(homeID) + Topics.CREATE_TOPIC.getTopic();
+    }
+
+    public static String getCreateTopicResp(Long homeID) {
+        return getHomeTopic(homeID) + Topics.CREATE_TOPIC.getTopic() + Topics.RESPONSE_TOPIC.getTopic();
+    }
+
+    public static String getConnectTopicResp(Long homeID) {
+        return getHomeTopic(homeID) + Topics.CONNECT_TOPIC.getTopic() + Topics.RESPONSE_TOPIC.getTopic();
     }
 
     /**
@@ -76,8 +103,7 @@ public class TopicUtils {
                 return new CapabilityTopic(generalTopic.group(3), generalTopic.group(1), generalTopic.group(2), generalTopic.group(4));
             }
         } catch (RuntimeException e) {
-            e.printStackTrace();
-            return null;
+            throw new WrongMessageTopicException();
         }
         return null;
     }

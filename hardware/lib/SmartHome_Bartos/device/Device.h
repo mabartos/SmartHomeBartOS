@@ -51,6 +51,13 @@ class Device {
     string getRoomTopic();
 
     string getDeviceTopic();
+    string getCreateTopic();
+    string getConnectTopic();
+
+    string getCreateTopicResp();
+    string getConnectTopicResp();
+
+    string getCreateTopicWild();
 
     bool isInitialized();
     void setInitialized(bool initialized);
@@ -59,6 +66,7 @@ class Device {
     vector<shared_ptr<Capability>> getCapabilities();
 
     void setCapsIDFromJSON(const JsonObject &obj);
+    void setCapsIDFromJSON(const JsonObject &obj, bool shouldCreate);
 
     auto getCapabilityByName(const string &name) -> shared_ptr<Capability>;
 

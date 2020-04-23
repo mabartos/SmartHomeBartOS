@@ -22,23 +22,24 @@ const char *CONFIG_FILE = "/config.json";
 
 DHT dht(D5, DHTTYPE);
 
-shared_ptr<TemperatureCap> temp = make_shared<TemperatureCap>(D5, dht);
 shared_ptr<HumidityCap> hum = make_shared<HumidityCap>(D5, dht);
+shared_ptr<TemperatureCap> temp = make_shared<TemperatureCap>(D5, dht);
 shared_ptr<LightsCap> light = make_shared<LightsCap>(D1);
 
 Device device;
 MessageForwarder forwarder;
 
 void saveConfigCallback() {
-    Serial.println("SAVE");
     wifiUtils.setShouldSaveConfig(true);
 }
 
 void forwardMessages(char *topic, byte *payload, unsigned int length) {
-    DynamicJsonDocument doc(length + length / 3);
+    DynamicJsonDocument doc(1024);
     DeserializationError err = deserializeJson(doc, payload, length);
-    if (err != DeserializationError::Ok)
+    if (err) {
+        Serial.println(err.c_str());
         return;
+    }
 
     forwarder.forwardMessage(topic, doc);
     doc.garbageCollect();
@@ -50,21 +51,6 @@ void setup() {
     wifiUtils.shouldClearStates(true);
     wifiManager.setSaveConfigCallback(saveConfigCallback);
     wifiUtils.begin();
-
-    // DEBUG
-    Serial.println("NAME");
-    Serial.println(device.getName().c_str());
-    Serial.println("ID");
-    Serial.println(device.getID());
-    Serial.println("BROKER");
-    Serial.println(wifiUtils.getBrokerURL().c_str());
-
-    Serial.println("HOME_ID");
-    Serial.println(wifiUtils.getHomeID());
-    Serial.println("ROOM_ID");
-    Serial.println(device.getRoomID());
-
-    //
 
     client.init(wifiUtils.getBrokerURL());
     device.setHomeID(wifiUtils.getHomeID());
@@ -81,11 +67,10 @@ void setup() {
 
     if (wifiUtils.shouldSaveConfig()) {
         device.publishCreateMessage();
+        wifiUtils.setShouldSaveConfig(false);
     } else {
         device.publishConnectMessage();
     }
-
-    wifiUtils.setShouldSaveConfig(false);
 }
 
 void loop() {

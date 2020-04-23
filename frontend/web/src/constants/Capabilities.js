@@ -1,7 +1,7 @@
 export const CapabilityType = {
     NONE: {name: "NONE", topic: "none"},
     TEMPERATURE: {name: "TEMPERATURE", topic: "temp"},
-    HUMIDITY: {name: "HUMIDITY", topic: "hum"},
+    HUMIDITY: {name: "HUMIDITY", topic: "humi"},
     HEATER: {name: "HEATER", topic: "heater"},
     LIGHT: {name: "LIGHT", topic: "light"},
     RELAY: {name: "RELAY", topic: "relay"},

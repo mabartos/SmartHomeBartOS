@@ -8,7 +8,7 @@
 extern Device device;
 extern MqttClient client;
 
-Capability::Capability(const uint8_t &pin) : _pin(pin) {
+Capability::Capability(const uint8_t &pin, CapabilityType type) : _pin(pin), _type(type) {
 }
 
 long Capability::getID() {
@@ -63,7 +63,7 @@ CapabilityType Capability::getType() {
     return _type;
 }
 
-void Capability::setType(CapabilityType type) {
+void Capability::setType(CapabilityType &type) {
     _type = type;
 }
 
@@ -72,22 +72,22 @@ string Capability::getTopic() {
         CapabilityUtils util(_type);
         string capID = NumberGenerator::longToString(_ID);
         string topic = device.getRoomTopic();
-        return (topic + "/" + util.getTopic() + "/" + capID);
+        string capTopic = util.getTopic();
+        string result(topic + "/" + capTopic + "/" + capID);
+        return result;
     }
     return "";
 }
 
 /* JSON */
 void Capability::editCreateCapNested(JsonObject &nested) {
-    CapabilityUtils util(_type);
     nested.clear();
     const char *name = getName().c_str();
-    const char *type = util.getName();
     const uint8_t pin = getPin();
 
     nested["name"] = name;
-    nested["type"] = type;
     nested["pin"] = pin;
+    CapabilityUtils::setTypeJSON(nested, _type);
 }
 
 bool Capability::executeAfterTime(unsigned seconds) {

@@ -1,7 +1,6 @@
 package org.mabartos.protocols.mqtt;
 
 import org.eclipse.paho.client.mqttv3.IMqttAsyncClient;
-import org.eclipse.paho.client.mqttv3.IMqttClient;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttAsyncClient;
@@ -163,6 +162,33 @@ public class DefaultBartMqttClient implements BartMqttClient, Serializable {
     public boolean publish(String topic, String message) {
         try {
             mqttClient.publish(topic, new MqttMessage(message.getBytes()));
+            return true;
+        } catch (MqttException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public boolean publish(String topic, MqttMessage message) {
+        try {
+            mqttClient.publish(topic, message);
+            return true;
+        } catch (MqttException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public boolean publish(String topic, String message, int qos) {
+        return publish(topic, message, qos, true);
+    }
+
+    @Override
+    public boolean publish(String topic, String message, int qos, boolean retained) {
+        try {
+            mqttClient.publish(topic, message.getBytes(), qos, retained);
             return true;
         } catch (MqttException e) {
             e.printStackTrace();

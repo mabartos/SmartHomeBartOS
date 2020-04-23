@@ -7,7 +7,7 @@ import org.mabartos.persistence.model.user.UserModel;
 import java.util.Set;
 import java.util.UUID;
 
-public interface RoomService extends CRUDService<RoomModel, Long> {
+public interface RoomService extends CRUDService<RoomModel, Long>,AbleSendMQTT {
 
     Set<RoomModel> findByType(RoomType type);
 
