@@ -1,6 +1,6 @@
 #include "CapabilityDataWithState.h"
 
-CapabilityDataWithState::CapabilityDataWithState(const long &id, const string &name) : CapabilityData(id, name) {
+CapabilityDataWithState::CapabilityDataWithState(const long &id) : CapabilityData(id) {
 }
 
 bool CapabilityDataWithState::isTurnedOn() {

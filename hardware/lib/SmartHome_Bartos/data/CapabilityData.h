@@ -10,19 +10,15 @@ using namespace std;
 class CapabilityData {
    protected:
     long _id;
-    string _name;
     size_t _jsonSize;
     virtual DynamicJsonDocument getJSON();
 
    public:
-    CapabilityData(const long &id, const string &name);
+    CapabilityData(const long &id);
     ~CapabilityData() = default;
 
     long getID();
     void setID(const long &id);
-
-    string getName();
-    void setName(const string &name);
 
     size_t getJsonSize();
 

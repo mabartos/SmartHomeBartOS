@@ -14,9 +14,8 @@ class WifiUtils {
     long _homeID;
     WiFiManager& _wifiManager;
 
-    DynamicJsonDocument& _configDoc;
-
     bool _shouldSaveConfig = false;
+    bool _alreadyCreated = false;
 
     void readSaved();
     void writeSaved();
@@ -27,7 +26,7 @@ class WifiUtils {
     void reset();
 
    public:
-    WifiUtils(WiFiManager& wifiManager, DynamicJsonDocument& configDoc);
+    WifiUtils(WiFiManager& wifiManager);
     ~WifiUtils() = default;
 
     void begin();
@@ -42,7 +41,7 @@ class WifiUtils {
 
     void shouldClearStates(const bool& state);
 
-    DynamicJsonDocument& getConfigDoc();
+    bool alreadyDeviceCreated();
 };
 
 #endif

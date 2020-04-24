@@ -61,11 +61,11 @@ void Device::setManageMsgID(const long &msgID) {
 
 string Device::getHomeTopic() {
     string topic = "homes/";
-    if (_homeID != -1) {
-        string homeID = NumberGenerator::longToString(_homeID);
-        return (topic + homeID);
-    }
-    return "";
+    return (_homeID != -1) ? (topic + NumberGenerator::longToString(_homeID)) : "";
+}
+
+string Device::getHomeTopicWildCard() {
+    return (getHomeTopic() != "") ? getHomeTopic() + "/#" : "";
 }
 
 string Device::getRoomTopic() {
@@ -76,55 +76,42 @@ string Device::getRoomTopic() {
     return "";
 }
 
-string Device::getHomeTopicWildCard() {
-    return (getHomeTopic() != "") ? getHomeTopic() + "/#" : nullptr;
+string Device::getRoomTopicWildCard() {
+    return (getRoomTopic() != "") ? getRoomTopic() + "/#" : "";
 }
 
 string Device::getDeviceTopic() {
-    if (_ID != -1) {
-        string deviceID = NumberGenerator::longToString(_ID);
-        return (getHomeTopic() + "/devices/" + deviceID);
-    }
-    return "";
+    return (_ID != -1) ? (getHomeTopic() + "/devices/" + NumberGenerator::longToString(_ID)) : "";
 }
 
 string Device::getCreateTopic() {
     string homeTopic = getHomeTopic();
-    if (homeTopic != "") {
-        return string(homeTopic + "/create");
-    }
-    return "";
+    return (homeTopic != "") ? string(homeTopic + "/create") : "";
 }
 
 string Device::getConnectTopic() {
     string homeTopic = getHomeTopic();
-    if (homeTopic != "") {
-        return string(homeTopic + "/connect");
-    }
-    return "";
+    return (homeTopic != "") ? string(homeTopic + "/connect") : "";
 }
 
 string Device::getCreateTopicResp() {
     string createTopic = getCreateTopic();
-    if (createTopic != "") {
-        return string(createTopic + "/resp");
-    }
-    return "";
+    return (createTopic != "") ? string(createTopic + "/resp") : "";
 }
+
 string Device::getConnectTopicResp() {
     string connectTopic = getConnectTopic();
-    if (connectTopic != "") {
-        return string(connectTopic + "/resp");
-    }
-    return "";
+    return (connectTopic != "") ? string(connectTopic + "/resp") : "";
 }
 
 string Device::getCreateTopicWild() {
     string createTopic = getCreateTopic();
-    if (createTopic != "") {
-        return string(createTopic + "/#");
-    }
-    return "";
+    return (createTopic != "") ? string(createTopic + "/#") : "";
+}
+
+string Device::getGetRoomTopic() {
+    string homeTopic = getHomeTopic();
+    return (homeTopic != "") ? string(homeTopic + "/get-room/" + NumberGenerator::longToString(getID())) : "";
 }
 
 /* CAPS */
@@ -243,7 +230,7 @@ void Device::setCapsIDFromJSON(const JsonObject &obj) {
 
 void Device::setCapsIDFromJSON(const JsonObject &obj, bool shouldCreate) {
     if (obj.containsKey("capabilities")) {
-        DynamicJsonDocument doc(500);
+        StaticJsonDocument<500> doc;
 
         JsonArray caps = obj["capabilities"];
 
@@ -260,4 +247,18 @@ void Device::setCapsIDFromJSON(const JsonObject &obj, bool shouldCreate) {
             }
         }
     }
+}
+
+void Device::publishGetRoom() {
+    char buffer[300];
+
+    StaticJsonDocument<512> doc;
+    doc["resp"] = false;
+    const long deviceID = getID();
+    doc["deviceID"] = deviceID;
+
+    serializeJson(doc, buffer);
+
+    const char *result = getGetRoomTopic().c_str();
+    client.getMQTT().publish_P(result, buffer, false);
 }

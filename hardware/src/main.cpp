@@ -8,13 +8,11 @@ using namespace std;
 #include "mqtt/MessageForwarder.h"
 #include "wifiUtils/WifiUtils.h"
 
-DynamicJsonDocument configDocument(800);
-
 WiFiClient espClient;
 PubSubClient clientPub(espClient);
 MqttClient client(clientPub);
 WiFiManager wifiManager;
-WifiUtils wifiUtils(wifiManager, configDocument);
+WifiUtils wifiUtils(wifiManager);
 
 // SENSORS
 #define DHTTYPE DHT11
@@ -48,14 +46,13 @@ void forwardMessages(char *topic, byte *payload, unsigned int length) {
 void setup() {
     Serial.begin(9600);
 
-    wifiUtils.shouldClearStates(true);
+    wifiUtils.shouldClearStates(false);
     wifiManager.setSaveConfigCallback(saveConfigCallback);
     wifiUtils.begin();
 
     client.init(wifiUtils.getBrokerURL());
     device.setHomeID(wifiUtils.getHomeID());
 
-    client.getMQTT().subscribe(device.getHomeTopicWildCard().c_str());
     client.getMQTT().setCallback(forwardMessages);
 
     // TODO automate
@@ -65,7 +62,7 @@ void setup() {
 
     device.initAllCapabilities();
 
-    if (wifiUtils.shouldSaveConfig()) {
+    if (!wifiUtils.alreadyDeviceCreated()) {
         device.publishCreateMessage();
         wifiUtils.setShouldSaveConfig(false);
     } else {

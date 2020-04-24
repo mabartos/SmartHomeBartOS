@@ -56,7 +56,7 @@ public class DeviceServiceImpl extends CRUDServiceImpl<DeviceModel, DeviceReposi
             room.addChild(device);
             BartMqttClient client = services.mqttManager().getMqttForHome(room.getHomeID());
             if (client != null) {
-                client.publish(TopicUtils.getDeviceTopic(room.getHomeID(), deviceID), new AddDeviceToRoomData(roomID, deviceID).toJson());
+                client.publish(TopicUtils.getDeviceTopic(room.getHomeID(), deviceID), new AddDeviceToRoomData(roomID, deviceID,true).toJson());
             }
             return updateByID(deviceID, device);
         }

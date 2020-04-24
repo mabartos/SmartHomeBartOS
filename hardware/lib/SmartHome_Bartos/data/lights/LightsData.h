@@ -9,7 +9,7 @@ class LightsData : public CapabilityDataWithState {
     uint8_t _minIntensity;
 
    public:
-    LightsData(const long &id, const string &name);
+    LightsData(const long &id);
     ~LightsData() = default;
 
     uint8_t getIntensity();

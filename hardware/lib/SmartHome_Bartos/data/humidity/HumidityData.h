@@ -7,7 +7,7 @@ class HumidityData : public CapabilityData {
     uint8_t _actual;
 
    public:
-    HumidityData(const long &id, const string &name);
+    HumidityData(const long &id);
     ~HumidityData() = default;
 
     uint8_t getActual();

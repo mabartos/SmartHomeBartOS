@@ -40,9 +40,28 @@ void MessageForwarder::manageCreate(const JsonObject &obj) {
             long ID = obj["id"];
             device.setID(ID);
 
-            DynamicJsonDocument doc = wifiUtils.getConfigDoc();
-            doc["deviceID"] = ID;
-            doc["uuid"] = client.getUUID().c_str();
+            //TODO
+            StaticJsonDocument<1024> doc;
+
+            if (SPIFFS.begin() && SPIFFS.exists(CONFIG_FILE)) {
+                File configFile = SPIFFS.open(CONFIG_FILE, "r");
+                if (configFile) {
+                    size_t size = configFile.size();
+
+                    std::unique_ptr<char[]> buf(new char[size]);
+                    configFile.readBytes(buf.get(), size);
+
+                    DeserializationError err = deserializeJson(doc, buf.get());
+                    if (err != DeserializationError::Ok)
+                        return;
+
+                    serializeJson(doc, Serial);
+                }
+            }
+            StaticJsonDocument<1024> newDoc = doc;
+            //DynamicJsonDocument doc = wifiUtils.getConfigDoc();
+            newDoc["deviceID"] = ID;
+            newDoc["uuid"] = client.getUUID().c_str();
 
             //TODO could be more encapsulated
             File configFile = SPIFFS.open(CONFIG_FILE, "w");
@@ -51,8 +70,9 @@ void MessageForwarder::manageCreate(const JsonObject &obj) {
                 return;
             }
 
-            serializeJson(doc, Serial);
-            if (serializeJson(doc, configFile) == 0) {
+            const char *brokerURL = client.getBrokerURL().c_str();
+            newDoc["brokerURL"] = brokerURL;
+            if (serializeJson(newDoc, configFile) == 0) {
                 return;
             }
             configFile.close();
@@ -106,6 +126,9 @@ void MessageForwarder::manageAddDeviceToRoom(const JsonObject &obj) {
             return;
 
         device.setRoomID(roomID);
+        if (device.getRoomTopicWildCard() != "") {
+            client.getMQTT().subscribe(device.getRoomTopicWildCard().c_str());
+        }
     }
 }
 

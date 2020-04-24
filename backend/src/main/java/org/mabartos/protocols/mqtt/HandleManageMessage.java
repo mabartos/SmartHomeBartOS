@@ -14,6 +14,7 @@ import org.mabartos.persistence.model.capability.TemperatureCapModel;
 import org.mabartos.persistence.model.home.HomeModel;
 import org.mabartos.protocols.mqtt.data.capability.CapabilityData;
 import org.mabartos.protocols.mqtt.data.device.AddDeviceRequestData;
+import org.mabartos.protocols.mqtt.data.device.AddDeviceToRoomData;
 import org.mabartos.protocols.mqtt.data.device.ConnectRequestData;
 import org.mabartos.protocols.mqtt.data.device.ConnectResponseData;
 import org.mabartos.protocols.mqtt.data.device.DeviceData;
@@ -73,6 +74,8 @@ public class HandleManageMessage implements Serializable {
                     return handleUpdate();
                 case DELETE:
                     return handleDelete();
+                case GET_ROOM:
+                    return handleGetRoom();
                 default:
                     return false;
             }
@@ -158,6 +161,22 @@ public class HandleManageMessage implements Serializable {
             }
         } catch (WrongMessageTopicException wm) {
             BartMqttSender.sendResponse(client, rawTopic, HttpResponseStatus.BAD_REQUEST, wm.getMessage());
+        } catch (RuntimeException e) {
+            BartMqttSender.sendResponse(client, rawTopic, HttpResponseStatus.BAD_REQUEST);
+        }
+        return false;
+    }
+
+    private boolean handleGetRoom() {
+        try {
+            AddDeviceToRoomData data = AddDeviceToRoomData.fromJson(message.toString());
+            if (isContainedInHome(crudTopic) && data != null && !data.isResponse()) {
+                DeviceModel device = services.devices().findByID(data.getDeviceID());
+                if (device != null && device.getRoom() != null) {
+                    client.publish(TopicUtils.getDeviceTopic(home.getID(), device.getID()), new AddDeviceToRoomData(device.getRoomID(), device.getID(), true).toJson());
+                    return true;
+                }
+            }
         } catch (RuntimeException e) {
             BartMqttSender.sendResponse(client, rawTopic, HttpResponseStatus.BAD_REQUEST);
         }

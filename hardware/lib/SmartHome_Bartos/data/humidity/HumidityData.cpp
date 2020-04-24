@@ -1,6 +1,6 @@
 #include "HumidityData.h"
 
-HumidityData::HumidityData(const long &id, const string &name) : CapabilityData(id, name) {
+HumidityData::HumidityData(const long &id) : CapabilityData(id) {
 }
 
 uint8_t HumidityData::getActual() {

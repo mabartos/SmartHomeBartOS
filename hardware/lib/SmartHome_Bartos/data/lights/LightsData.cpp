@@ -1,6 +1,6 @@
 #include "LightsData.h"
 
-LightsData::LightsData(const long &id, const string &name) : CapabilityDataWithState(id, name) {
+LightsData::LightsData(const long &id) : CapabilityDataWithState(id) {
 }
 
 uint8_t LightsData::getIntensity() {

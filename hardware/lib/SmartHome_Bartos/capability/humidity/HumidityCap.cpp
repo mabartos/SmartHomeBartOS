@@ -18,7 +18,7 @@ void HumidityCap::execute() {
     if (!executeAfterTime(3) || _ID == -1 || device.getRoomID() == -1)
         return;
 
-    HumidityData data(_ID, _name);
+    HumidityData data(_ID);
 
     float hum = _dht.readHumidity();
     if (!isnan(hum)) {

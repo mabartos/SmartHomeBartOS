@@ -49,6 +49,7 @@ class Device {
     string getHomeTopicWildCard();
 
     string getRoomTopic();
+    string getRoomTopicWildCard();
 
     string getDeviceTopic();
     string getCreateTopic();
@@ -58,6 +59,8 @@ class Device {
     string getConnectTopicResp();
 
     string getCreateTopicWild();
+
+    string getGetRoomTopic();
 
     bool isInitialized();
     void setInitialized(bool initialized);
@@ -90,6 +93,8 @@ class Device {
     DynamicJsonDocument getConnectJSON();
     void publishConnectMessage();
     size_t getConnectJSONSize();
+
+    void publishGetRoom();
 };
 
 #endif  // DEVICE_H

@@ -24,7 +24,7 @@ char UUID[UUID_SIZE];
 char name[NAME_SIZE];
 bool readActionProvided = false;
 
-WifiUtils::WifiUtils(WiFiManager &wifiManager, DynamicJsonDocument &configDoc) : _wifiManager(wifiManager), _configDoc(configDoc) {
+WifiUtils::WifiUtils(WiFiManager &wifiManager) : _wifiManager(wifiManager) {
 }
 
 void WifiUtils::begin() {
@@ -44,37 +44,40 @@ void WifiUtils::readSaved() {
             std::unique_ptr<char[]> buf(new char[size]);
             configFile.readBytes(buf.get(), size);
 
-            DeserializationError err = deserializeJson(_configDoc, buf.get());
+            StaticJsonDocument<1024> configDoc;
+
+            DeserializationError err = deserializeJson(configDoc, buf.get());
             if (err != DeserializationError::Ok)
                 return;
 
-            serializeJson(_configDoc, Serial);
-            const JsonObject object = _configDoc.as<JsonObject>();
+            serializeJson(configDoc, Serial);
+            const JsonObject object = configDoc.as<JsonObject>();
 
             vector<string> keys{"brokerURL",
                                 "homeID",
                                 "uuid",
                                 "name"};
             if (MessageForwarder::containKeys(object, keys)) {
-                strcpy(brokerURL, _configDoc["brokerURL"]);
-                strcpy(homeID, _configDoc["homeID"]);
-                strcpy(UUID, _configDoc["uuid"]);
-                strcpy(name, _configDoc["name"]);
+                strcpy(brokerURL, configDoc["brokerURL"]);
+                strcpy(homeID, configDoc["homeID"]);
+                strcpy(UUID, configDoc["uuid"]);
+                strcpy(name, configDoc["name"]);
 
                 _homeID = strtol(homeID, nullptr, 10);
 
-                if (_configDoc.containsKey("roomID")) {
-                    long roomID = _configDoc["roomID"];
+                if (configDoc.containsKey("roomID")) {
+                    long roomID = configDoc["roomID"];
                     device.setRoomID(roomID);
                 }
 
                 device.setName(string(name));
                 client.setUUID(string(UUID));
+                _alreadyCreated = true;
                 readActionProvided = true;
             }
 
-            if (_configDoc.containsKey("deviceID")) {
-                long devID = _configDoc["deviceID"];
+            if (configDoc.containsKey("deviceID")) {
+                long devID = configDoc["deviceID"];
                 device.setID(devID);
             }
 
@@ -85,18 +88,17 @@ void WifiUtils::readSaved() {
 
 void WifiUtils::writeSaved() {
     if (_shouldSaveConfig) {
-        //DynamicJsonDocument doc(BROKER_URL_SIZE + ID_SIZE + UUID_SIZE + 300);
-
-        _configDoc["brokerURL"] = brokerURL;
-        _configDoc["homeID"] = homeID;
-        _configDoc["name"] = device.getName().c_str();
+        StaticJsonDocument<1024> configDoc;
+        configDoc["brokerURL"] = brokerURL;
+        configDoc["homeID"] = homeID;
+        configDoc["name"] = device.getName().c_str();
 
         // SAVE UUID
         byte uuidNumber[UUID_SIZE];
         ESP8266TrueRandom.uuid(uuidNumber);
         String uuidStr = ESP8266TrueRandom.uuidToString(uuidNumber);
         const char *uuid = uuidStr.c_str();
-        _configDoc["uuid"] = uuid;
+        configDoc["uuid"] = uuid;
         strcpy(UUID, uuid);
         client.setUUID(string(uuid));
 
@@ -106,8 +108,7 @@ void WifiUtils::writeSaved() {
             return;
         }
 
-        serializeJson(_configDoc, Serial);
-        if (serializeJson(_configDoc, configFile) == 0) {
+        if (serializeJson(configDoc, configFile) == 0) {
             reset();
             return;
         }
@@ -176,6 +177,6 @@ void WifiUtils::shouldClearStates(const bool &state) {
     }
 }
 
-DynamicJsonDocument &WifiUtils::getConfigDoc() {
-    return _configDoc;
+bool WifiUtils::alreadyDeviceCreated() {
+    return _alreadyCreated;
 }

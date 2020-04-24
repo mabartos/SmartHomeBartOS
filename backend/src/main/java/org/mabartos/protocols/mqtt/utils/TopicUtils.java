@@ -39,7 +39,7 @@ public class TopicUtils {
 
     // Topic f.e. 'homes/5/devices/2'
     public static String getDeviceTopic(Long homeID, Long deviceID) {
-        return getHomeTopic(homeID) + Topics.DEVICE_TOPIC + "/" + deviceID;
+        return getHomeTopic(homeID) + Topics.DEVICE_TOPIC.getTopic() + "/" + deviceID;
     }
 
     public static String getCapabilityTopic(CapabilityModel cap) {

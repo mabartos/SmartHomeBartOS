@@ -1,6 +1,6 @@
 #include "TemperatureData.h"
 
-TemperatureData::TemperatureData(const long &id, const string &name) : CapabilityData(id, name) {
+TemperatureData::TemperatureData(const long &id) : CapabilityData(id) {
 }
 
 double TemperatureData::getActualTemp() {

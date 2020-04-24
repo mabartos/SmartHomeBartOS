@@ -23,7 +23,7 @@ void MqttClient::setUUID(string UUID) {
 
 bool MqttClient::reconnect() {
     if (_mqttClient.connect(getUUID().c_str())) {
-        _mqttClient.subscribe(device.getCreateTopic().c_str());
+        _mqttClient.subscribe(device.getConnectTopicResp().c_str());
         _mqttClient.subscribe(device.getCreateTopicResp().c_str());
     }
     return _mqttClient.connected();

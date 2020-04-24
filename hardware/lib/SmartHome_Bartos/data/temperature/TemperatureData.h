@@ -7,7 +7,7 @@ class TemperatureData : public CapabilityData {
     double _actual;
 
    public:
-    TemperatureData(const long &id, const string &name);
+    TemperatureData(const long &id);
     ~TemperatureData() = default;
 
     double getActualTemp();

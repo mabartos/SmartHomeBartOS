@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import org.mabartos.protocols.mqtt.data.general.MqttSerializable;
 import org.mabartos.protocols.mqtt.utils.MqttSerializeUtils;
 
-@JsonPropertyOrder({"roomID", "deviceID"})
+@JsonPropertyOrder({"resp", "roomID", "deviceID"})
 public class AddDeviceToRoomData implements ResponseData, MqttSerializable {
 
     @JsonProperty("resp")
@@ -18,10 +18,17 @@ public class AddDeviceToRoomData implements ResponseData, MqttSerializable {
 
     @JsonCreator
     public AddDeviceToRoomData(@JsonProperty("roomID") Long roomID,
-                               @JsonProperty("deviceID") Long deviceID) {
+                               @JsonProperty("deviceID") Long deviceID,
+                               @JsonProperty("resp") boolean response) {
+        this(deviceID, response);
         this.roomID = roomID;
+    }
+
+    @JsonCreator
+    public AddDeviceToRoomData(@JsonProperty("deviceID") Long deviceID,
+                               @JsonProperty("resp") boolean response) {
         this.deviceID = deviceID;
-        this.response = true;
+        this.response = response;
     }
 
     public Long getRoomID() {
@@ -51,6 +58,6 @@ public class AddDeviceToRoomData implements ResponseData, MqttSerializable {
 
     @Override
     public void setIsResponse(boolean state) {
-        //NOP
+        this.response = state;
     }
 }

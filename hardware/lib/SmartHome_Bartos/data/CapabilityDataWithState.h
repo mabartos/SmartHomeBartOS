@@ -10,7 +10,7 @@ class CapabilityDataWithState : public CapabilityData {
     DynamicJsonDocument getJSON() override;
 
    public:
-    CapabilityDataWithState(const long &id, const string &name);
+    CapabilityDataWithState(const long &id);
     ~CapabilityDataWithState() = default;
 
     bool isTurnedOn();

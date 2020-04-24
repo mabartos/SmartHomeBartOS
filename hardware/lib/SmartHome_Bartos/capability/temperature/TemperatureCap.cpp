@@ -17,22 +17,24 @@ void TemperatureCap::init() {
 }
 
 void TemperatureCap::execute() {
-    if (!executeAfterTime(3) || _ID == -1 || device.getRoomID() == -1)
-        return;
+    if (executeAfterTime(3)) {
+        if (_ID == -1 || device.getRoomID() == -1)
+            return;
 
-    TemperatureData data(_ID, _name);
-    float temp = _dht.readTemperature();
+        TemperatureData data(_ID);
+        float temp = _dht.readTemperature();
 
-    if (!isnan(temp)) {
-        _value = (int)temp;
-    } else
-        return;
+        if (!isnan(temp)) {
+            _value = (int)temp;
+        } else
+            return;
 
-    data.setActualTemp(_value);
+        data.setActualTemp(_value);
 
-    publishValues(data);
+        publishValues(data);
 
-    Serial.println("TEMP_EXEC-2");
+        Serial.println("TEMP_EXEC-2");
+    }
 }
 
 void TemperatureCap::reactToMessage(const JsonObject &obj) {
