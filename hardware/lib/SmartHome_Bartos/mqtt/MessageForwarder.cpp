@@ -84,6 +84,7 @@ void MessageForwarder::manageCreate(const JsonObject &obj) {
             client.getMQTT().unsubscribe(device.getCreateTopicWild().c_str());
 
             device.setInitialized(true);
+            client.reconnect();
         }
     }
 }

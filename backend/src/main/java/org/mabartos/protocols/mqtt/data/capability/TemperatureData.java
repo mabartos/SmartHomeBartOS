@@ -7,21 +7,21 @@ import org.mabartos.persistence.model.CapabilityModel;
 import org.mabartos.persistence.model.capability.TemperatureCapModel;
 import org.mabartos.protocols.mqtt.utils.MqttSerializeUtils;
 
-public class TemperatureData extends CapabilityData {
-
-    @JsonProperty("actual")
-    private Double actualTemperature;
+public class TemperatureData extends CapabilityDataWithValue<Double> {
 
     @JsonCreator
-    public TemperatureData(@JsonProperty("type") CapabilityType type,
-                           @JsonProperty("pin") Integer pin,
-                           @JsonProperty("actual") Double actualTemperature) {
-        super(type, pin);
-        this.actualTemperature = actualTemperature;
+    public TemperatureData(@JsonProperty("actual") Double actualTemperature) {
+        super(actualTemperature);
     }
 
-    public Double getActualTemperature() {
-        return actualTemperature;
+    @Override
+    public Double getValue() {
+        return actual;
+    }
+
+    @Override
+    public void setValue(Double value) {
+        this.actual = value;
     }
 
     public static TemperatureData fromJson(String json) {
@@ -34,7 +34,6 @@ public class TemperatureData extends CapabilityData {
             super.editModel(model);
             TemperatureCapModel temp = (TemperatureCapModel) model;
             temp.setType(CapabilityType.TEMPERATURE);
-            temp.setValue(actualTemperature);
             return temp;
         }
         return null;

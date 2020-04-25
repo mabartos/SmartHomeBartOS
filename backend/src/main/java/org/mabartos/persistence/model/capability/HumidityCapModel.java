@@ -7,7 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
-public class HumidityCapModel extends CapabilityModel implements HasValue<Byte> {
+public class HumidityCapModel extends CapabilityModel implements HasValueAndUnits<Byte> {
 
     @Column
     private Byte value;

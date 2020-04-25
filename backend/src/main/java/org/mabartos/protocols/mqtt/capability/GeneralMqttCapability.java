@@ -4,9 +4,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.mabartos.api.protocol.BartMqttClient;
 import org.mabartos.api.service.AppServices;
 import org.mabartos.persistence.model.CapabilityModel;
-import org.mabartos.protocols.mqtt.data.general.BartMqttSender;
 import org.mabartos.protocols.mqtt.data.capability.CapabilityData;
-import org.mabartos.protocols.mqtt.exceptions.WrongMessageTopicException;
 import org.mabartos.protocols.mqtt.topics.CapabilityTopic;
 
 import java.util.logging.Logger;
@@ -32,15 +30,6 @@ public abstract class GeneralMqttCapability<Data extends CapabilityData> {
     }
 
     public void parseMessage() {
-        ParseUtils.parse(services, client, capabilityTopic, data);
-    }
-
-    protected Data verifyData(Data data) {
-        try {
-            return data;
-        } catch (WrongMessageTopicException e) {
-            BartMqttSender.sendResponse(client, 400, "Wrong message");
-        }
-        return null;
+        ParseUtils.parse(services, capabilityTopic, data);
     }
 }

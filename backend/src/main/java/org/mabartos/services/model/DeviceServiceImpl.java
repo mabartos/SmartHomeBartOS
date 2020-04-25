@@ -114,7 +114,11 @@ public class DeviceServiceImpl extends CRUDServiceImpl<DeviceModel, DeviceReposi
         if (device != null && device.getHome() != null) {
             BartMqttClient client = services.mqttManager().getMqttForHome(device.getHomeID());
             MqttClientManager.clearRetainedMessages(client, TopicUtils.getDeviceTopic(device.getHomeID(), id));
-            device.getCapabilities().forEach(cap -> services.capabilities().clearRetainedMessages(cap.getID()));
+
+            device.getCapabilities().forEach(cap -> {
+                services.capabilities().clearRetainedMessages(cap.getID());
+                MqttClientManager.clearRetainedMessages(client, TopicUtils.getCapabilityTopic(cap));
+            });
 
             if (device.getRoom() != null) {
                 MqttClientManager.clearRetainedMessages(client, TopicUtils.getDeviceTopicInRoom(device.getHomeID(), device.getRoomID(), id));

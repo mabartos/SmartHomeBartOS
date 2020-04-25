@@ -8,6 +8,7 @@ public enum CRUDTopicType {
     REMOVE_FROM_HOME("remove-from-home"),
     UPDATE("update"),
     DELETE("delete"),
+    LOGOUT("logout"),
     GET_ROOM("get-room");
 
     private String name;

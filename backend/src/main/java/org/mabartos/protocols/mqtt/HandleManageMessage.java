@@ -12,7 +12,7 @@ import org.mabartos.persistence.model.capability.HumidityCapModel;
 import org.mabartos.persistence.model.capability.LightCapModel;
 import org.mabartos.persistence.model.capability.TemperatureCapModel;
 import org.mabartos.persistence.model.home.HomeModel;
-import org.mabartos.protocols.mqtt.data.capability.CapabilityData;
+import org.mabartos.protocols.mqtt.data.capability.manage.CapabilityWholeData;
 import org.mabartos.protocols.mqtt.data.device.AddDeviceRequestData;
 import org.mabartos.protocols.mqtt.data.device.AddDeviceToRoomData;
 import org.mabartos.protocols.mqtt.data.device.ConnectRequestData;
@@ -74,6 +74,8 @@ public class HandleManageMessage implements Serializable {
                     return handleUpdate();
                 case DELETE:
                     return handleDelete();
+                case LOGOUT:
+                    return handleLogout();
                 case GET_ROOM:
                     return handleGetRoom();
                 default:
@@ -85,7 +87,6 @@ public class HandleManageMessage implements Serializable {
 
     private boolean handleConnect() {
         try {
-            System.out.println("CONNECT");
             ConnectRequestData connect = ConnectRequestData.fromJson(message.toString());
             if (connect == null)
                 throw new WrongMessageTopicException();
@@ -119,7 +120,7 @@ public class HandleManageMessage implements Serializable {
 
                 if (services.homes().addDeviceToHome(device, home.getID())) {
                     DeviceData response = new DeviceData(deviceMessage.getMsgID(), device, true);
-                    client.publish(TopicUtils.getCreateTopicResp(home.getID()), response.toJson(),0);
+                    client.publish(TopicUtils.getCreateTopicResp(home.getID()), response.toJson(),0,false);
                     return true;
                 }
             } else
@@ -197,6 +198,20 @@ public class HandleManageMessage implements Serializable {
         return false;
     }
 
+    private boolean handleLogout() {
+        try {
+            DeviceModel device = services.devices().findByID(crudTopic.getDeviceID());
+            if (device == null)
+                throw new WrongMessageTopicException();
+
+            device.setActive(false);
+            return services.devices().updateByID(device.getID(), device) != null;
+        } catch (RuntimeException e) {
+            BartMqttSender.sendResponse(client, rawTopic, HttpResponseStatus.BAD_REQUEST, e.getMessage());
+        }
+        return false;
+    }
+
     //TODO
     private CapabilityModel getTypedInstance(String name, CapabilityType type, Integer pin) {
         if (name != null && type != null) {
@@ -240,7 +255,7 @@ public class HandleManageMessage implements Serializable {
 
     private DeviceModel createDeviceFromMessage(AddDeviceRequestData message) {
         try {
-            Set<CapabilityModel> capabilities = CapabilityData.toModel(message.getCapabilities())
+            Set<CapabilityModel> capabilities = CapabilityWholeData.toModel(message.getCapabilities())
                     .stream()
                     .map(f -> getTypedInstance(f.getName(), f.getType(), f.getPin()))
                     .collect(Collectors.toSet());

@@ -18,13 +18,10 @@ public class LightsData extends CapabilityDataWithState {
     protected Byte minIntensity;
 
     @JsonCreator
-    public LightsData(@JsonProperty("id") Long id,
-                      @JsonProperty("type") CapabilityType type,
-                      @JsonProperty("pin") Integer pin,
-                      @JsonProperty("isTurnedOn") boolean state,
+    public LightsData(@JsonProperty("isTurnedOn") boolean state,
                       @JsonProperty("intensity") Byte intensity,
                       @JsonProperty("minIntensity") Byte minIntensity) {
-        super(id, type, pin, state);
+        super(state);
         this.intensity = intensity;
         this.minIntensity = minIntensity;
     }
@@ -41,7 +38,7 @@ public class LightsData extends CapabilityDataWithState {
         this.intensity = intensity;
     }
 
-    public void minIntensity(Byte minIntensity) {
+    public void setMinIntensity(Byte minIntensity) {
         this.minIntensity = minIntensity;
     }
 
@@ -50,7 +47,6 @@ public class LightsData extends CapabilityDataWithState {
         if (model instanceof LightCapModel) {
             super.editModel(model);
             LightCapModel result = (LightCapModel) model;
-            result.setState(this.isTurnedOn());
             result.setType(CapabilityType.LIGHT);
             result.setIntensity(this.getIntensity());
             result.setMinIntensity(this.getMinIntensity());

@@ -60,8 +60,10 @@ export default function LightsCapCard(props) {
         const handleChangeState = (event) => {
             const isChecked = event.target.checked;
             setIsTurnedOn(isChecked);
-            let result = data;
+            let result = {};
             result.isTurnedOn = isChecked;
+            result.intensity=intensity;
+            result.minIntensity=minIntensity;
             mqtt.send(topic, result);
         };
 

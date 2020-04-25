@@ -29,6 +29,8 @@ public class MqttSerializeUtils implements MqttSerializable {
 
     public static <T> T fromJson(String json, Class<T> type) {
         try {
+            if (json == null || json.isEmpty())
+                return null;
             ObjectMapper mapper = new ObjectMapper();
             mapper.enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING);
             mapper.enable(DeserializationFeature.READ_ENUMS_USING_TO_STRING);

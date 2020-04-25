@@ -1,8 +1,10 @@
 package org.mabartos.protocols.mqtt.data.device;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import org.mabartos.persistence.model.DeviceModel;
 
+@JsonPropertyOrder({"msgID", "resp", "id", "name","roomID"})
 public class ConnectResponseData extends DeviceData {
 
     @JsonProperty("roomID")

@@ -59,6 +59,7 @@ class Device {
     string getConnectTopicResp();
 
     string getCreateTopicWild();
+    string getLogoutTopic();
 
     string getGetRoomTopic();
 

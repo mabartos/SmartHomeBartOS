@@ -109,6 +109,11 @@ string Device::getCreateTopicWild() {
     return (createTopic != "") ? string(createTopic + "/#") : "";
 }
 
+string Device::getLogoutTopic() {
+    string homeTopic = getHomeTopic();
+    return (homeTopic != "") ? string(homeTopic + "/logout/" + NumberGenerator::longToString(getID())) : "";
+}
+
 string Device::getGetRoomTopic() {
     string homeTopic = getHomeTopic();
     return (homeTopic != "") ? string(homeTopic + "/get-room/" + NumberGenerator::longToString(getID())) : "";

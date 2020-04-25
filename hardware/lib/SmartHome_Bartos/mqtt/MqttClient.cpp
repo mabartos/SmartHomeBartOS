@@ -22,7 +22,7 @@ void MqttClient::setUUID(string UUID) {
 }
 
 bool MqttClient::reconnect() {
-    if (_mqttClient.connect(getUUID().c_str())) {
+    if (_mqttClient.connect(getUUID().c_str(), device.getLogoutTopic().c_str(), 1, false, "")) {
         _mqttClient.subscribe(device.getConnectTopicResp().c_str());
         _mqttClient.subscribe(device.getCreateTopicResp().c_str());
     }
@@ -36,6 +36,7 @@ void MqttClient::checkAvailability() {
             _lastReconnectAttempt = now;
             if (reconnect()) {
                 _lastReconnectAttempt = 0;
+                device.publishConnectMessage();
             }
         }
     } else {

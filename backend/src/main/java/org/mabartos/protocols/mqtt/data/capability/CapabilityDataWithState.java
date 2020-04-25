@@ -2,19 +2,18 @@ package org.mabartos.protocols.mqtt.data.capability;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.mabartos.general.CapabilityType;
+import org.mabartos.persistence.model.CapabilityModel;
+import org.mabartos.persistence.model.capability.HasState;
+import org.mabartos.persistence.model.capability.HasValue;
 
-public abstract class CapabilityDataWithState extends CapabilityData {
+public abstract class CapabilityDataWithState extends CapabilityData implements HasState {
 
     @JsonProperty("isTurnedOn")
     protected boolean isTurnedOn;
 
     @JsonCreator
-    public CapabilityDataWithState(@JsonProperty("id") Long id,
-                                   @JsonProperty("type") CapabilityType type,
-                                   @JsonProperty("pin") Integer pin,
-                                   @JsonProperty("isTurnedOn") boolean isTurnedOn) {
-        super(id, type, pin);
+    public CapabilityDataWithState(@JsonProperty("isTurnedOn") boolean isTurnedOn) {
+        super();
         this.isTurnedOn = isTurnedOn;
     }
 
@@ -24,5 +23,17 @@ public abstract class CapabilityDataWithState extends CapabilityData {
 
     public void setState(boolean isTurnedOn) {
         this.isTurnedOn = isTurnedOn;
+    }
+
+    public void changeState() {
+        this.isTurnedOn = !this.isTurnedOn;
+    }
+
+    @Override
+    public CapabilityModel editModel(CapabilityModel model) {
+        if (model instanceof HasValue) {
+            ((HasState) model).setState(isTurnedOn());
+        }
+        return model;
     }
 }

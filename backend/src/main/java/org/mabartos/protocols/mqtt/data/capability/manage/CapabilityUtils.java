@@ -1,4 +1,4 @@
-package org.mabartos.protocols.mqtt.data.capability;
+package org.mabartos.protocols.mqtt.data.capability.manage;
 
 import org.mabartos.general.CapabilityType;
 

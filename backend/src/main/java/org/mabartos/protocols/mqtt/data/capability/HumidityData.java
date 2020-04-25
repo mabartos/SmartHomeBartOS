@@ -6,20 +6,20 @@ import org.mabartos.persistence.model.CapabilityModel;
 import org.mabartos.persistence.model.capability.HumidityCapModel;
 import org.mabartos.protocols.mqtt.utils.MqttSerializeUtils;
 
-public class HumidityData extends CapabilityData {
+public class HumidityData extends CapabilityDataWithValue<Byte> {
 
-    @JsonProperty("actual")
-    private Byte actual;
-
-    public HumidityData(@JsonProperty("type") CapabilityType type,
-                        @JsonProperty("pin") Integer pin,
-                        @JsonProperty("actual") Byte actual) {
-        super(type, pin);
-        this.actual = actual;
+    public HumidityData(@JsonProperty("actual") Byte actual) {
+        super(actual);
     }
 
-    public Byte getActual() {
+    @Override
+    public Byte getValue() {
         return actual;
+    }
+
+    @Override
+    public void setValue(Byte value) {
+        this.actual = value;
     }
 
     public static HumidityData fromJson(String json) {
@@ -32,7 +32,6 @@ public class HumidityData extends CapabilityData {
             super.editModel(model);
             HumidityCapModel hum = (HumidityCapModel) model;
             hum.setType(CapabilityType.HUMIDITY);
-            hum.setValue(getActual());
             return hum;
         }
         return null;

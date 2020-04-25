@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import org.mabartos.persistence.model.DeviceModel;
-import org.mabartos.protocols.mqtt.data.capability.CapabilityData;
+import org.mabartos.protocols.mqtt.data.capability.manage.CapabilityWholeData;
 import org.mabartos.protocols.mqtt.data.general.MqttSerializable;
 import org.mabartos.protocols.mqtt.utils.MqttSerializeUtils;
 
@@ -28,7 +28,7 @@ public class DeviceData implements ResponseData, MqttSerializable {
     private boolean isResponse;
 
     @JsonProperty("capabilities")
-    private Set<CapabilityData> capabilities;
+    private Set<CapabilityWholeData> capabilities;
 
     @JsonCreator
     public DeviceData(@JsonProperty("msgID") Long msgID,
@@ -47,7 +47,7 @@ public class DeviceData implements ResponseData, MqttSerializable {
         this.msgID = msgID;
         this.id = device.getID();
         this.name = device.getName();
-        this.capabilities = CapabilityData.fromModel(device.getCapabilities());
+        this.capabilities = CapabilityWholeData.fromModel(device.getCapabilities());
         this.isResponse = isResponse;
     }
 
@@ -55,7 +55,7 @@ public class DeviceData implements ResponseData, MqttSerializable {
     public DeviceData(@JsonProperty("msgID") Long idMessage,
                       @JsonProperty("id") Long id,
                       @JsonProperty("name") String name,
-                      @JsonProperty("capabilities") Set<CapabilityData> capabilities) {
+                      @JsonProperty("capabilities") Set<CapabilityWholeData> capabilities) {
         this(idMessage, id, name);
         this.capabilities = capabilities;
     }
@@ -84,11 +84,11 @@ public class DeviceData implements ResponseData, MqttSerializable {
         this.name = name;
     }
 
-    public Set<CapabilityData> getCapabilities() {
+    public Set<CapabilityWholeData> getCapabilities() {
         return capabilities;
     }
 
-    public void setCapabilities(Set<CapabilityData> capabilities) {
+    public void setCapabilities(Set<CapabilityWholeData> capabilities) {
         this.capabilities = capabilities;
     }
 
@@ -97,7 +97,7 @@ public class DeviceData implements ResponseData, MqttSerializable {
     }
 
     public DeviceModel toModel() {
-        DeviceModel created = new DeviceModel(this.name, CapabilityData.toModel(this.capabilities));
+        DeviceModel created = new DeviceModel(this.name, CapabilityWholeData.toModel(this.capabilities));
         created.setID(this.id);
         return created;
     }

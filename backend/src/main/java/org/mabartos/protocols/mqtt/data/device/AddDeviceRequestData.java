@@ -3,7 +3,7 @@ package org.mabartos.protocols.mqtt.data.device;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import org.mabartos.protocols.mqtt.data.capability.CapabilityData;
+import org.mabartos.protocols.mqtt.data.capability.manage.CapabilityWholeData;
 import org.mabartos.protocols.mqtt.data.general.MqttSerializable;
 import org.mabartos.protocols.mqtt.utils.MqttSerializeUtils;
 
@@ -18,14 +18,14 @@ public class AddDeviceRequestData implements MqttSerializable {
     private String name;
 
     @JsonProperty("capabilities")
-    @JsonDeserialize(as = Set.class, contentAs = CapabilityData.class)
-    private Set<CapabilityData> capabilities;
+    @JsonDeserialize(as = Set.class, contentAs = CapabilityWholeData.class)
+    private Set<CapabilityWholeData> capabilities;
 
     @JsonCreator
     public AddDeviceRequestData(
             @JsonProperty("msgID") Long msgID,
             @JsonProperty("name") String name,
-            @JsonProperty("capabilities") Set<CapabilityData> capabilities) {
+            @JsonProperty("capabilities") Set<CapabilityWholeData> capabilities) {
         this.msgID = msgID;
         this.name = name;
         this.capabilities = capabilities;
@@ -47,11 +47,11 @@ public class AddDeviceRequestData implements MqttSerializable {
         this.name = name;
     }
 
-    public Set<CapabilityData> getCapabilities() {
+    public Set<CapabilityWholeData> getCapabilities() {
         return capabilities;
     }
 
-    public void setCapabilities(Set<CapabilityData> capabilities) {
+    public void setCapabilities(Set<CapabilityWholeData> capabilities) {
         this.capabilities = capabilities;
     }
 
