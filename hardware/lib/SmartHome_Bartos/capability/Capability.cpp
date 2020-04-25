@@ -24,14 +24,6 @@ string Capability::getRandomName() {
     return topic + "_" + NumberGenerator::generateLongToString(10, 99);
 }
 
-string Capability::getName() {
-    return _name;
-}
-
-void Capability::setName(const string &name) {
-    _name = name;
-}
-
 //VIRTUAL
 void Capability::init() {}
 
@@ -82,10 +74,7 @@ string Capability::getTopic() {
 /* JSON */
 void Capability::editCreateCapNested(JsonObject &nested) {
     nested.clear();
-    const char *name = getName().c_str();
     const uint8_t pin = getPin();
-
-    nested["name"] = name;
     nested["pin"] = pin;
     CapabilityUtils::setTypeJSON(nested, _type);
 }

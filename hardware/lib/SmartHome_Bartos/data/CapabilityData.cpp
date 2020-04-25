@@ -19,7 +19,6 @@ size_t CapabilityData::getJsonSize() {
 
 DynamicJsonDocument CapabilityData::getJSON() {
     DynamicJsonDocument doc(400);
-    doc["id"] = getID();
     return doc;
 }
 

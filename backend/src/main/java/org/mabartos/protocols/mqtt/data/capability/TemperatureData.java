@@ -13,11 +13,10 @@ public class TemperatureData extends CapabilityData {
     private Double actualTemperature;
 
     @JsonCreator
-    public TemperatureData(@JsonProperty("name") String name,
-                           @JsonProperty("type") CapabilityType type,
+    public TemperatureData(@JsonProperty("type") CapabilityType type,
                            @JsonProperty("pin") Integer pin,
                            @JsonProperty("actual") Double actualTemperature) {
-        super(name, type, pin);
+        super(type, pin);
         this.actualTemperature = actualTemperature;
     }
 

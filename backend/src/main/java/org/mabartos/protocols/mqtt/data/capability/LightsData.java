@@ -19,13 +19,12 @@ public class LightsData extends CapabilityDataWithState {
 
     @JsonCreator
     public LightsData(@JsonProperty("id") Long id,
-                      @JsonProperty("name") String name,
                       @JsonProperty("type") CapabilityType type,
                       @JsonProperty("pin") Integer pin,
                       @JsonProperty("isTurnedOn") boolean state,
                       @JsonProperty("intensity") Byte intensity,
                       @JsonProperty("minIntensity") Byte minIntensity) {
-        super(id, name, type, pin, state);
+        super(id, type, pin, state);
         this.intensity = intensity;
         this.minIntensity = minIntensity;
     }

@@ -11,11 +11,10 @@ public class HumidityData extends CapabilityData {
     @JsonProperty("actual")
     private Byte actual;
 
-    public HumidityData(@JsonProperty("name") String name,
-                        @JsonProperty("type") CapabilityType type,
+    public HumidityData(@JsonProperty("type") CapabilityType type,
                         @JsonProperty("pin") Integer pin,
                         @JsonProperty("actual") Byte actual) {
-        super(name, type, pin);
+        super(type, pin);
         this.actual = actual;
     }
 

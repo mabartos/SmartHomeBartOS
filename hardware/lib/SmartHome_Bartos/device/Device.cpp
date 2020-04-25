@@ -119,15 +119,6 @@ vector<shared_ptr<Capability>> Device::getCapabilities() {
     return _capabilities;
 }
 
-auto Device::getCapabilityByName(const string &name) -> shared_ptr<Capability> {
-    for (auto &item : getCapabilities()) {
-        if (item->getName() == name) {
-            return item;
-        }
-    }
-    return nullptr;
-}
-
 auto Device::getCapByPinAndType(const uint8_t &pin, const CapabilityType &type) -> shared_ptr<Capability> {
     for (auto &item : getCapabilities()) {
         if (item->getPin() == pin && item->getType() == type) {
@@ -236,14 +227,12 @@ void Device::setCapsIDFromJSON(const JsonObject &obj, bool shouldCreate) {
 
         for (JsonObject cap : caps) {
             long capID = cap["id"];
-            const char *name = cap["name"];
             uint8_t pin = cap["pin"];
             const char *type = cap["type"];
 
             auto p_cap = getCapByPinAndType(pin, CapabilityUtils::getFromString(string(type)));
             if (p_cap != nullptr) {
                 p_cap->setID(capID);
-                p_cap->setName(name);
             }
         }
     }

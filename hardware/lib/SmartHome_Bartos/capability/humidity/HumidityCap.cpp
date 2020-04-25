@@ -4,9 +4,7 @@
 
 extern Device device;
 
-HumidityCap::HumidityCap(const uint8_t &pin, DHT &dht) : CapabilityWithValue(pin, CapabilityType::HUMIDITY), _dht(dht) {
-    setName(getRandomName());
-}
+HumidityCap::HumidityCap(const uint8_t &pin, DHT &dht) : CapabilityWithValue(pin, CapabilityType::HUMIDITY), _dht(dht) {}
 
 //TODO
 void HumidityCap::init() {

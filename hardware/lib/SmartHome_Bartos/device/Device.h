@@ -71,8 +71,6 @@ class Device {
     void setCapsIDFromJSON(const JsonObject &obj);
     void setCapsIDFromJSON(const JsonObject &obj, bool shouldCreate);
 
-    auto getCapabilityByName(const string &name) -> shared_ptr<Capability>;
-
     auto getCapByPinAndType(const uint8_t &pin, const CapabilityType &type) -> shared_ptr<Capability>;
 
     void addCapability(shared_ptr<Capability> cap);

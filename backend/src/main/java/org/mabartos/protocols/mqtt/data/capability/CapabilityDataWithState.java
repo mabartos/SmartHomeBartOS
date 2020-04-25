@@ -11,11 +11,10 @@ public abstract class CapabilityDataWithState extends CapabilityData {
 
     @JsonCreator
     public CapabilityDataWithState(@JsonProperty("id") Long id,
-                                   @JsonProperty("name") String name,
                                    @JsonProperty("type") CapabilityType type,
                                    @JsonProperty("pin") Integer pin,
                                    @JsonProperty("isTurnedOn") boolean isTurnedOn) {
-        super(id, name, type, pin);
+        super(id, type, pin);
         this.isTurnedOn = isTurnedOn;
     }
 

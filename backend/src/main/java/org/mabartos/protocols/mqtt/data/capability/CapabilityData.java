@@ -13,14 +13,11 @@ import org.mabartos.protocols.mqtt.utils.MqttSerializeUtils;
 import java.util.HashSet;
 import java.util.Set;
 
-@JsonPropertyOrder({"id", "name", "pin", "type"})
+@JsonPropertyOrder({"id", "pin", "type"})
 public class CapabilityData implements MqttSerializable, ConvertableToModel {
 
     @JsonProperty("id")
     protected Long id;
-
-    @JsonProperty("name")
-    protected String name;
 
     @JsonProperty("type")
     protected CapabilityType type;
@@ -29,16 +26,14 @@ public class CapabilityData implements MqttSerializable, ConvertableToModel {
     protected Integer pin;
 
     @JsonCreator
-    public CapabilityData(@JsonProperty("name") String name,
-                          @JsonProperty("type") CapabilityType type,
+    public CapabilityData(@JsonProperty("type") CapabilityType type,
                           @JsonProperty("pin") Integer pin) {
-        this.name = name;
         this.type = type;
         this.pin = pin;
     }
 
-    public CapabilityData(Long id, String name, CapabilityType type, Integer pin) {
-        this(name, type, pin);
+    public CapabilityData(Long id, CapabilityType type, Integer pin) {
+        this(type, pin);
         this.id = id;
     }
 
@@ -48,14 +43,6 @@ public class CapabilityData implements MqttSerializable, ConvertableToModel {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public CapabilityType getType() {
@@ -84,7 +71,7 @@ public class CapabilityData implements MqttSerializable, ConvertableToModel {
     public static Set<CapabilityModel> toModel(Set<CapabilityData> jsonCapabilities) {
         if (jsonCapabilities != null) {
             Set<CapabilityModel> result = new HashSet<>();
-            jsonCapabilities.forEach(cap -> result.add(new CapabilityModel(cap.getName(), cap.getType(), cap.getPin())));
+            jsonCapabilities.forEach(cap -> result.add(new CapabilityModel(CapabilityUtils.getRandomNameForCap(cap.getType()), cap.getType(), cap.getPin())));
             return result;
         }
         return null;
@@ -93,7 +80,7 @@ public class CapabilityData implements MqttSerializable, ConvertableToModel {
     public static Set<CapabilityData> fromModel(Set<CapabilityModel> capabilities) {
         if (capabilities != null) {
             Set<CapabilityData> result = new HashSet<>();
-            capabilities.forEach(cap -> result.add(new CapabilityData(cap.getID(), cap.getName(), cap.getType(), cap.getPin())));
+            capabilities.forEach(cap -> result.add(new CapabilityData(cap.getID(), cap.getType(), cap.getPin())));
             return result;
         }
         return null;
@@ -105,7 +92,6 @@ public class CapabilityData implements MqttSerializable, ConvertableToModel {
 
     @Override
     public CapabilityModel editModel(CapabilityModel model) {
-        model.setName(this.getName());
         model.setType(this.getType());
         model.setPin(this.getPin());
         return model;

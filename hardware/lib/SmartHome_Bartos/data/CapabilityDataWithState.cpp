@@ -11,7 +11,7 @@ void CapabilityDataWithState::setState(const bool &isTurnedOn) {
 }
 
 DynamicJsonDocument CapabilityDataWithState::getJSON() {
-    DynamicJsonDocument doc = CapabilityData::getJSON();
+    StaticJsonDocument<500> doc;
     doc["isTurnedOn"] = isTurnedOn();
     return doc;
 }

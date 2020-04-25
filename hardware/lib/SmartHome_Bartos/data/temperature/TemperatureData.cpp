@@ -12,7 +12,7 @@ void TemperatureData::setActualTemp(const double &actual) {
 }
 
 DynamicJsonDocument TemperatureData::toJSON() {
-    DynamicJsonDocument doc = getJSON();
+    StaticJsonDocument<300> doc;
     doc["actual"] = getActualTemp();
     return doc;
 }

@@ -8,7 +8,6 @@ extern MqttClient client;
 extern Device device;
 
 TemperatureCap::TemperatureCap(const uint8_t &pin, DHT &dht) : CapabilityWithValue(pin, CapabilityType::TEMPERATURE), _dht(dht) {
-    setName(getRandomName());
 }
 
 void TemperatureCap::init() {

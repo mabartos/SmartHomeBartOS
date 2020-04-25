@@ -22,7 +22,7 @@ void LightsData::setMinIntensity(const uint8_t &minIntensity) {
 }
 
 DynamicJsonDocument LightsData::toJSON() {
-    DynamicJsonDocument doc = getJSON();
+    StaticJsonDocument<300> doc;
     doc["intensity"] = getIntensity();
     doc["minIntensity"] = getMinIntensity();
 
