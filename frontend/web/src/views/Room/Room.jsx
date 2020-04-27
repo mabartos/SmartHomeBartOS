@@ -51,12 +51,11 @@ export default function Room() {
 
     return useObserver(() => {
         const {isAuthenticated} = authStore;
-        const {error, actionInvoked, loading, capabilities} = deviceStore;
-        console.log([...capabilities]);
+        const {error, actionInvoked, loading, capabilities, devices} = deviceStore;
 
         const getCapabilities = [...capabilities].map(([key,value], index) => (
-                <DeviceDataCard key={index} device={value} data={data} homeID={homeID} roomID={roomID}
-                                notification={`Device '${value.name}'`}
+                <DeviceDataCard key={index} capability={value} data={data} homeID={homeID} roomID={roomID}
+                                devices={devices} notification={`Device '${value.name}'`}
                                 color={CardIcon.getColorID(value.deviceID)}
                                 mqtt={mqtt}
                 />

@@ -83,6 +83,10 @@ public class DeviceModel extends PanacheEntityBase implements Serializable, Iden
         return this.name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public Long getID() {
         return this.id;

@@ -25,6 +25,12 @@ class Device {
 
     vector<shared_ptr<Capability>> _capabilities;
 
+    DynamicJsonDocument getCreateJSON();
+    size_t getCreateJSONSize();
+
+    DynamicJsonDocument getConnectJSON();
+    size_t getConnectJSONSize();
+
    public:
     Device();
     ~Device() = default;
@@ -50,8 +56,11 @@ class Device {
 
     string getRoomTopic();
     string getRoomTopicWildCard();
+    string getGetRoomTopic();
 
     string getDeviceTopic();
+
+    //Manage topics
     string getCreateTopic();
     string getConnectTopic();
 
@@ -61,7 +70,8 @@ class Device {
     string getCreateTopicWild();
     string getLogoutTopic();
 
-    string getGetRoomTopic();
+    string getEraseAllTopic();
+    string getEraseTopicWild();
 
     bool isInitialized();
     void setInitialized(bool initialized);
@@ -83,17 +93,13 @@ class Device {
     void executeAllCapabilities();
 
     /* JSON */
-    // CREATE
-    DynamicJsonDocument getCreateJSON();
     void publishCreateMessage();
-    size_t getCreateJSONSize();
 
-    // CONNECT
-    DynamicJsonDocument getConnectJSON();
     void publishConnectMessage();
-    size_t getConnectJSONSize();
 
     void publishGetRoom();
+
+    void eraseAll();
 };
 
 #endif  // DEVICE_H

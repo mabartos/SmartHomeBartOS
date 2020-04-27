@@ -9,7 +9,6 @@ import org.mabartos.general.UserRole;
 import org.mabartos.persistence.model.DeviceModel;
 
 import javax.transaction.Transactional;
-import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -38,8 +37,8 @@ public class DeviceResourceProvider implements DeviceResource {
 
     @PATCH
     @HasRoleInHome(minRole = UserRole.HOME_ADMIN, orIsOwner = true)
-    public DeviceModel updateDevice(@Valid DeviceModel device) {
-        return session.services().devices().updateByID(session.getActualDevice().getID(), device);
+    public DeviceModel updateDevice(String JSON) {
+        return session.services().devices().updateFromJson(session.getActualDevice().getID(), JSON);
     }
 
     @DELETE

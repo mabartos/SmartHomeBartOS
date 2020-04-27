@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useRef} from "react";
 import GridItem from "components/Grid/GridItem.js";
 import Card from "components/Card/Card.js";
 import {makeStyles} from "@material-ui/core/styles";
@@ -6,6 +6,9 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import {whiteColor} from "../../assets/jss/material-dashboard-react";
 import BartGeneralFooterCard from "./BartGeneralFooterCard";
+import {BooleanDialog} from "../BartDialogs/BooleanDialog";
+import {HomeComponent} from "../../index";
+import {UpdateCapabilityForm} from "../Forms/Edit/UpdateCapabilityForm";
 
 const useInfoStyle = makeStyles(style => ({
     container: {
@@ -33,12 +36,35 @@ const useInfoStyle = makeStyles(style => ({
 
 export default function GeneralInfoCard(props) {
     const infoClasses = useInfoStyle();
+    const refDelete = useRef(null);
+    const refEdit = useRef(null);
 
-    const onSelect = () => {
+    const {type} = props;
+
+    const handleEdit = () => {
+        refEdit.current.openForm();
+        if (props.handleEdit !== undefined) {
+            props.handleEdit();
+        }
+    };
+
+    const handleDelete = () => {
+        refDelete.current.openDialog();
+        if (props.handleDelete !== undefined) {
+            props.handleDelete();
+        }
+    };
+
+    const getEditForm = () => {
+        if (type === HomeComponent.CAPABILITY) {
+            return (<UpdateCapabilityForm ref={refEdit} type={HomeComponent.CAPABILITY} {...props}/>);
+        }
     };
 
     return (
         <GridItem xs={props.xs || 12} sm={props.sm || 6} md={props.md || 3}>
+            <BooleanDialog ref={refDelete} {...props}/>
+            {getEditForm()}
             <Card>
                 <CardHeader color={props.color || "info"} className={useInfoStyle.container}>
                     <h4 className={infoClasses.title}>{props.title || "Add Item"}</h4>
@@ -46,7 +72,8 @@ export default function GeneralInfoCard(props) {
                 <CardBody>
                     {props.children}
                 </CardBody>
-                {!props.hideFooter && <BartGeneralFooterCard {...props}/>}
+                {!props.hideFooter &&
+                <BartGeneralFooterCard handleDelete={handleDelete} handleEdit={handleEdit} {...props}/>}
             </Card>
         </GridItem>
     );

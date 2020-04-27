@@ -1,6 +1,5 @@
 import GeneralService from "../GeneralService";
 import RoomService from "./RoomService";
-import HomeService from "./HomeService";
 
 export default class DeviceService extends GeneralService {
 
@@ -62,6 +61,10 @@ export default class DeviceService extends GeneralService {
 
     updateDevice = (id, device) => {
         return this.patch(`${this.getPath()}/${id}`, device);
+    };
+
+    updateCapability = (deviceID, capID, capability) => {
+        return this.patch(`${this.getPath()}/${deviceID}${DeviceService.CAPABILITY_ENDPOINT}/${capID}`, capability);
     };
 
     deleteDevice = (id) => {

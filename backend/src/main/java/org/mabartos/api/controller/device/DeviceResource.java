@@ -6,7 +6,6 @@ import org.mabartos.general.UserRole;
 import org.mabartos.persistence.model.DeviceModel;
 
 import javax.transaction.Transactional;
-import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -28,7 +27,7 @@ public interface DeviceResource {
 
     @PATCH
     @HasRoleInHome(minRole = UserRole.HOME_ADMIN, orIsOwner = true)
-    DeviceModel updateDevice(@Valid DeviceModel device);
+    DeviceModel updateDevice(String JSON);
 
     @DELETE
     @HasRoleInHome(minRole = UserRole.HOME_ADMIN, orIsOwner = true)

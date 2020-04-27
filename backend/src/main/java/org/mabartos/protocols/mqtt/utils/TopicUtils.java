@@ -50,6 +50,9 @@ public class TopicUtils {
         return null;
     }
 
+    /**
+     * MANAGE TOPICS
+     **/
 
     public static String getConnectTopic(Long homeID) {
         return getHomeTopic(homeID) + Topics.CONNECT_TOPIC.getTopic();
@@ -65,6 +68,10 @@ public class TopicUtils {
 
     public static String getConnectTopicResp(Long homeID) {
         return getHomeTopic(homeID) + Topics.CONNECT_TOPIC.getTopic() + Topics.RESPONSE_TOPIC.getTopic();
+    }
+
+    public static String getEraseAllDeviceHWTopic(Long homeID, Long deviceID) {
+        return getHomeTopic(homeID) + Topics.ERASE_ALL_TOPIC.getTopic() + "/" + deviceID;
     }
 
     /**

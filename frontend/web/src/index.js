@@ -79,7 +79,8 @@ export const HomeComponent = {
     HOME: "home",
     USER: "user",
     ROOM: "room",
-    DEVICE: "device"
+    DEVICE: "device",
+    CAPABILITY: "capability"
 };
 
 export const storesContext = React.createContext(stores);

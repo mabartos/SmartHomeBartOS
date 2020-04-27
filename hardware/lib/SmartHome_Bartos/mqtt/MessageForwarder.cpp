@@ -16,6 +16,9 @@ void MessageForwarder::forwardMessage(char *topic, DynamicJsonDocument &doc) {
     manageCreate(obj);
     manageConnect(obj);
     manageAddDeviceToRoom(obj);
+    manageEraseAll(obj);
+
+    // LAST - Capabilities
     manageCapabilityReact(obj);
 }
 
@@ -40,44 +43,7 @@ void MessageForwarder::manageCreate(const JsonObject &obj) {
             long ID = obj["id"];
             device.setID(ID);
 
-            //TODO
-            StaticJsonDocument<1024> doc;
-
-            if (SPIFFS.begin() && SPIFFS.exists(CONFIG_FILE)) {
-                File configFile = SPIFFS.open(CONFIG_FILE, "r");
-                if (configFile) {
-                    size_t size = configFile.size();
-
-                    std::unique_ptr<char[]> buf(new char[size]);
-                    configFile.readBytes(buf.get(), size);
-
-                    DeserializationError err = deserializeJson(doc, buf.get());
-                    if (err != DeserializationError::Ok)
-                        return;
-
-                    serializeJson(doc, Serial);
-                }
-            }
-            StaticJsonDocument<1024> newDoc = doc;
-            //DynamicJsonDocument doc = wifiUtils.getConfigDoc();
-            newDoc["deviceID"] = ID;
-            newDoc["uuid"] = client.getUUID().c_str();
-
-            //TODO could be more encapsulated
-            File configFile = SPIFFS.open(CONFIG_FILE, "w");
-            if (!configFile) {
-                Serial.println("CANNOT WRITE");
-                return;
-            }
-
-            const char *brokerURL = client.getBrokerURL().c_str();
-            newDoc["brokerURL"] = brokerURL;
-            if (serializeJson(newDoc, configFile) == 0) {
-                return;
-            }
-            configFile.close();
-
-            device.setCapsIDFromJSON(obj);
+            manageCreateSPIFS(obj, ID);
 
             client.getMQTT().subscribe(device.getDeviceTopic().c_str());
             client.getMQTT().unsubscribe(device.getCreateTopic().c_str());
@@ -87,6 +53,43 @@ void MessageForwarder::manageCreate(const JsonObject &obj) {
             client.reconnect();
         }
     }
+}
+
+void MessageForwarder::manageCreateSPIFS(const JsonObject &obj, const long &deviceID) {
+    StaticJsonDocument<1024> doc;
+
+    if (SPIFFS.begin() && SPIFFS.exists(CONFIG_FILE)) {
+        File configFile = SPIFFS.open(CONFIG_FILE, "r");
+        if (configFile) {
+            size_t size = configFile.size();
+
+            std::unique_ptr<char[]> buf(new char[size]);
+            configFile.readBytes(buf.get(), size);
+
+            DeserializationError err = deserializeJson(doc, buf.get());
+            if (err != DeserializationError::Ok)
+                return;
+        }
+    }
+
+    StaticJsonDocument<1024> newDoc = doc;
+    newDoc["deviceID"] = deviceID;
+    newDoc["uuid"] = client.getUUID().c_str();
+
+    File configFile = SPIFFS.open(CONFIG_FILE, "w");
+    if (!configFile) {
+        Serial.println("CANNOT WRITE");
+        return;
+    }
+
+    const char *brokerURL = client.getBrokerURL().c_str();
+    newDoc["brokerURL"] = brokerURL;
+    if (serializeJson(newDoc, configFile) == 0) {
+        return;
+    }
+    configFile.close();
+
+    device.setCapsIDFromJSON(obj);
 }
 
 void MessageForwarder::manageConnect(const JsonObject &obj) {
@@ -109,8 +112,23 @@ void MessageForwarder::manageConnect(const JsonObject &obj) {
             device.setRoomID(roomID);
         }
 
+        if (device.getRoomTopicWildCard() != "") {
+            client.getMQTT().subscribe(device.getRoomTopicWildCard().c_str());
+        }
         device.setCapsIDFromJSON(obj);
         device.setInitialized(true);
+
+        client.getMQTT().subscribe(device.getDeviceTopic().c_str());
+        client.getMQTT().unsubscribe(device.getConnectTopic().c_str());
+        client.getMQTT().unsubscribe(device.getConnectTopicResp().c_str());
+
+        client.reconnect();
+    }
+}
+
+void MessageForwarder::manageEraseAll(const JsonObject &obj) {
+    if (equalsTopic(device.getEraseAllTopic())) {
+        device.eraseAll();
     }
 }
 

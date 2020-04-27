@@ -11,7 +11,9 @@ class MessageForwarder {
 
     void manageAddDeviceToRoom(const JsonObject &obj);
     void manageCreate(const JsonObject &obj);
+    void manageCreateSPIFS(const JsonObject &doc, const long &deviceID);
     void manageConnect(const JsonObject &obj);
+    void manageEraseAll(const JsonObject &obj);
     void manageCapabilityReact(const JsonObject &obj);
 
     bool equalsTopic(const char *receiveTopic);

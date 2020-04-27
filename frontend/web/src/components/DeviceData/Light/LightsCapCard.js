@@ -22,15 +22,15 @@ const useStyles = makeStyles({
 export default function LightsCapCard(props) {
     const classes = useStyles();
 
-    const {device, homeID, roomID, mqtt} = props;
-    const id = device.id;
+    const {capability, homeID, roomID, mqtt} = props;
+    const id = capability.id;
     const topic = DeviceService.getFullTopic(homeID, roomID, CapabilityType.LIGHT.topic, id);
 
-    const [isTurnedOn, setIsTurnedOn] = React.useState(device.isTurnedOn);
-    const [intensity, setIntensity] = React.useState(device.intensity);
-    const [minIntensity, setMinIntensity] = React.useState(device.minIntensity);
+    const [isTurnedOn, setIsTurnedOn] = React.useState(capability.isTurnedOn);
+    const [intensity, setIntensity] = React.useState(capability.intensity);
+    const [minIntensity, setMinIntensity] = React.useState(capability.minIntensity);
 
-    const [data, setData] = React.useState(device);
+    const [data, setData] = React.useState(capability);
 
     React.useEffect(() => {
         if (props.data.topic === topic) {

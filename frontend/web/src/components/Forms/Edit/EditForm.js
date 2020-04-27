@@ -82,6 +82,11 @@ export const EditForm = forwardRef((props, ref) => {
                     return props.deviceID;
                 }
                 break;
+            case HomeComponent.CAPABILITY:
+                if (props.capID !== undefined) {
+                    return props.capID;
+                }
+                break;
         }
     };
 

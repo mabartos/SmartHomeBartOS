@@ -3,16 +3,15 @@ import DeviceService from "../../../services/homeComponent/DeviceService";
 import {CapabilityType} from "../../../constants/Capabilities";
 import React from "react";
 import GeneralService from "../../../services/GeneralService";
-import GridItem from "../../Grid/GridItem";
 import CircularProgress from "../../ProgressBar/CircularProgress";
 
 export default function HumidityCapCard(props) {
-    const {device, homeID, roomID} = props;
+    const {capability, homeID, roomID} = props;
 
-    const id = device.id;
+    const id = capability.id;
     const topic = DeviceService.getFullTopic(homeID, roomID, CapabilityType.HUMIDITY.topic, id);
 
-    const [value, setValue] = React.useState(device.value);
+    const [value, setValue] = React.useState(capability.value || 0);
     const [data, setData] = React.useState("");
 
     React.useEffect(() => {

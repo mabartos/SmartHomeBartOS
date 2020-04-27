@@ -5,7 +5,6 @@ import org.mabartos.general.UserRole;
 import org.mabartos.persistence.model.CapabilityModel;
 
 import javax.transaction.Transactional;
-import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -24,7 +23,7 @@ public interface CapabilityResource {
 
     @PATCH
     @HasRoleInHome(minRole = UserRole.HOME_ADMIN, orIsOwner = true)
-    CapabilityModel updateCapability(@Valid CapabilityModel capability);
+    CapabilityModel updateCapability(String JSON);
 
     @DELETE
     @HasRoleInHome(minRole = UserRole.HOME_ADMIN, orIsOwner = true)

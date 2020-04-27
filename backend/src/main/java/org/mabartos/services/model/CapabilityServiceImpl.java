@@ -5,6 +5,7 @@ import org.mabartos.api.protocol.BartMqttClient;
 import org.mabartos.api.protocol.MqttClientManager;
 import org.mabartos.api.service.AppServices;
 import org.mabartos.api.service.CapabilityService;
+import org.mabartos.controller.data.CapabilityData;
 import org.mabartos.persistence.model.CapabilityModel;
 import org.mabartos.persistence.repository.CapabilityRepository;
 import org.mabartos.protocols.mqtt.utils.TopicUtils;
@@ -43,4 +44,21 @@ public class CapabilityServiceImpl extends CRUDServiceImpl<CapabilityModel, Capa
         }
     }
 
+    @Override
+    public CapabilityModel updateFromJson(Long ID, String JSON) {
+        CapabilityModel cap = getRepository().findById(ID);
+        if (cap != null) {
+            CapabilityData data = CapabilityData.fromJSON(JSON);
+            cap.setName(data.getName());
+            cap.setEnabled(data.isEnabled());
+            cap.setType(data.getType());
+            cap.setPin(data.getPin());
+
+            if (!cap.getDeviceID().equals(data.getDeviceID())) {
+                cap.setDevice(services.devices().findByID(data.getDeviceID()));
+            }
+            return updateByID(ID, cap);
+        }
+        return null;
+    }
 }

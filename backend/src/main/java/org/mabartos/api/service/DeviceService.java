@@ -13,5 +13,7 @@ public interface DeviceService extends CRUDService<DeviceModel, Long>, AbleSendM
 
     int deleteAllFromHome(Long homeID);
 
+    DeviceModel updateFromJson(Long ID, String JSON);
+
     boolean removeDeviceFromRoom(Long roomID, Long deviceID);
 }

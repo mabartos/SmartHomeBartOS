@@ -174,8 +174,7 @@ public class DefaultBartMqttClient implements BartMqttClient, Serializable {
         try {
             mqttClient.publish(topic, message);
             return true;
-        } catch (MqttException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
             return false;
         }
     }

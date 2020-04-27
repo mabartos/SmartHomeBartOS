@@ -164,16 +164,13 @@ bool WifiUtils::shouldSaveConfig() {
 }
 
 void WifiUtils::reset() {
-    Serial.println("Reset device");
-    delay(3000);
-    ESP.reset();
-    delay(5000);
+    SPIFFS.format();
+    _wifiManager.resetSettings();
 }
 
 void WifiUtils::shouldClearStates(const bool &state) {
     if (state) {
-        SPIFFS.format();
-        _wifiManager.resetSettings();
+        reset();
     }
 }
 

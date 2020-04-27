@@ -23,8 +23,6 @@ class WifiUtils {
     void setWifiManager();
     void saveConfigCallback();
 
-    void reset();
-
    public:
     WifiUtils(WiFiManager& wifiManager);
     ~WifiUtils() = default;
@@ -42,6 +40,7 @@ class WifiUtils {
     void shouldClearStates(const bool& state);
 
     bool alreadyDeviceCreated();
+    void reset();
 };
 
 #endif

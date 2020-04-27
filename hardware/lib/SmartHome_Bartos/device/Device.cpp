@@ -5,8 +5,10 @@
 
 #include "capability/utils/CapabilityUtils.h"
 #include "mqtt/MqttClient.h"
+#include "wifiUtils/WifiUtils.h"
 
 extern MqttClient client;
+extern WifiUtils wifiUtils;
 
 Device::Device() {
     setName("Dev_" + NumberGenerator::generateIntToString(2000, 9999));
@@ -84,6 +86,7 @@ string Device::getDeviceTopic() {
     return (_ID != -1) ? (getHomeTopic() + "/devices/" + NumberGenerator::longToString(_ID)) : "";
 }
 
+// Manage topics
 string Device::getCreateTopic() {
     string homeTopic = getHomeTopic();
     return (homeTopic != "") ? string(homeTopic + "/create") : "";
@@ -112,6 +115,16 @@ string Device::getCreateTopicWild() {
 string Device::getLogoutTopic() {
     string homeTopic = getHomeTopic();
     return (homeTopic != "") ? string(homeTopic + "/logout/" + NumberGenerator::longToString(getID())) : "";
+}
+
+string Device::getEraseAllTopic() {
+    string homeTopic = getHomeTopic();
+    return (homeTopic != "") ? string(homeTopic + "/erase-all/" + NumberGenerator::longToString(getID())) : "";
+}
+
+string Device::getEraseTopicWild() {
+    string homeTopic = getHomeTopic();
+    return (homeTopic != "") ? string(homeTopic + "/erase-all/#") : "";
 }
 
 string Device::getGetRoomTopic() {
@@ -186,6 +199,7 @@ size_t Device::getCreateJSONSize() {
 
 void Device::publishCreateMessage() {
     char buffer[1024];
+    client.getMQTT().subscribe(getCreateTopicResp().c_str());
 
     serializeJson(getCreateJSON(), buffer);
 
@@ -214,6 +228,7 @@ size_t Device::getConnectJSONSize() {
 
 void Device::publishConnectMessage() {
     char buffer[1024];
+    client.getMQTT().subscribe(getConnectTopicResp().c_str());
     serializeJson(getConnectJSON(), buffer);
     string topic(getConnectTopic() + "/" + NumberGenerator::longToString(getID()));
 
@@ -255,4 +270,13 @@ void Device::publishGetRoom() {
 
     const char *result = getGetRoomTopic().c_str();
     client.getMQTT().publish_P(result, buffer, false);
+}
+
+void Device::eraseAll() {
+    Serial.println("Reset device");
+    client.getMQTT().disconnect();
+    wifiUtils.reset();
+    delay(2000);
+    ESP.restart();
+    delay(3000);
 }

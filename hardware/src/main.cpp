@@ -55,7 +55,6 @@ void setup() {
 
     client.getMQTT().setCallback(forwardMessages);
 
-    // TODO automate
     device.addCapability(temp);
     device.addCapability(hum);
     device.addCapability(light);

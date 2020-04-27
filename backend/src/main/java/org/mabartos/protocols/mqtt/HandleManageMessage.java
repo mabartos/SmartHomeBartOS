@@ -207,7 +207,7 @@ public class HandleManageMessage implements Serializable {
             device.setActive(false);
             return services.devices().updateByID(device.getID(), device) != null;
         } catch (RuntimeException e) {
-            BartMqttSender.sendResponse(client, rawTopic, HttpResponseStatus.BAD_REQUEST, e.getMessage());
+            e.printStackTrace();
         }
         return false;
     }

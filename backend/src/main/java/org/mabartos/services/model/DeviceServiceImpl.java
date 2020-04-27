@@ -5,6 +5,7 @@ import org.mabartos.api.protocol.BartMqttClient;
 import org.mabartos.api.protocol.MqttClientManager;
 import org.mabartos.api.service.AppServices;
 import org.mabartos.api.service.DeviceService;
+import org.mabartos.controller.data.DeviceData;
 import org.mabartos.general.CapabilityType;
 import org.mabartos.persistence.model.DeviceModel;
 import org.mabartos.persistence.model.home.HomeModel;
@@ -54,10 +55,7 @@ public class DeviceServiceImpl extends CRUDServiceImpl<DeviceModel, DeviceReposi
         if (device != null && room != null) {
             device.setRoom(room);
             room.addChild(device);
-            BartMqttClient client = services.mqttManager().getMqttForHome(room.getHomeID());
-            if (client != null) {
-                client.publish(TopicUtils.getDeviceTopic(room.getHomeID(), deviceID), new AddDeviceToRoomData(roomID, deviceID,true).toJson());
-            }
+            sendDeviceInRoomMessage(roomID, deviceID);
             return updateByID(deviceID, device);
         }
         return null;
@@ -71,6 +69,7 @@ public class DeviceServiceImpl extends CRUDServiceImpl<DeviceModel, DeviceReposi
                 Query queryCaps = entityManager.createNamedQuery("deleteCapsFromDevice");
                 queryCaps.setParameter("deviceID", f.getID());
                 queryCaps.executeUpdate();
+                sendEraseAllInDeviceHW(f.getID());
                 clearRetainedMessages(f.getID());
             });
         }
@@ -81,13 +80,35 @@ public class DeviceServiceImpl extends CRUDServiceImpl<DeviceModel, DeviceReposi
     }
 
     @Override
+    public DeviceModel updateFromJson(Long ID, String JSON) {
+        DeviceModel device = getRepository().findById(ID);
+        if (device != null) {
+            DeviceData data = DeviceData.fromJson(JSON);
+            device.setName(data.getName());
+            device.setActive(data.isActive());
+
+            if (!device.getHomeID().equals(data.getHomeID())) {
+                device.setHome(services.homes().findByID(data.getHomeID()));
+            }
+            if (!device.getRoomID().equals(data.getRoomID())) {
+                device.setRoom(services.rooms().findByID(data.getRoomID()));
+            }
+
+            return updateByID(ID, device);
+        }
+        return null;
+    }
+
+
+    @Override
     public boolean removeDeviceFromRoom(Long roomID, Long deviceID) {
         DeviceModel device = findByID(deviceID);
         RoomModel room = services.rooms().findByID(roomID);
         if (device != null && room != null) {
             device.setRoom(null);
-            room.removeChild(device);
             clearRetainedMessages(deviceID);
+            room.removeChild(device);
+            sendDeviceInRoomMessage(roomID, (long) -1);
             return updateByID(deviceID, device) != null;
         }
         return false;
@@ -103,6 +124,7 @@ public class DeviceServiceImpl extends CRUDServiceImpl<DeviceModel, DeviceReposi
         query.setParameter("deviceID", id);
         query.executeUpdate();
 
+        sendEraseAllInDeviceHW(id);
         clearRetainedMessages(id);
 
         return super.deleteByID(id);
@@ -113,6 +135,8 @@ public class DeviceServiceImpl extends CRUDServiceImpl<DeviceModel, DeviceReposi
         DeviceModel device = findByID(id);
         if (device != null && device.getHome() != null) {
             BartMqttClient client = services.mqttManager().getMqttForHome(device.getHomeID());
+            if (client == null)
+                return;
             MqttClientManager.clearRetainedMessages(client, TopicUtils.getDeviceTopic(device.getHomeID(), id));
 
             device.getCapabilities().forEach(cap -> {
@@ -122,6 +146,26 @@ public class DeviceServiceImpl extends CRUDServiceImpl<DeviceModel, DeviceReposi
 
             if (device.getRoom() != null) {
                 MqttClientManager.clearRetainedMessages(client, TopicUtils.getDeviceTopicInRoom(device.getHomeID(), device.getRoomID(), id));
+            }
+        }
+    }
+
+    private void sendDeviceInRoomMessage(Long roomID, Long deviceID) {
+        DeviceModel device = findByID(deviceID);
+        if (device != null && device.getHome() != null && roomID != null) {
+            BartMqttClient client = services.mqttManager().getMqttForHome(device.getHomeID());
+            if (client != null) {
+                client.publish(TopicUtils.getDeviceTopic(device.getHomeID(), deviceID), new AddDeviceToRoomData(roomID, deviceID, true).toJson(), 1, false);
+            }
+        }
+    }
+
+    private void sendEraseAllInDeviceHW(Long deviceID) {
+        DeviceModel device = findByID(deviceID);
+        if (device != null && device.getHome() != null) {
+            BartMqttClient client = services.mqttManager().getMqttForHome(device.getHomeID());
+            if (client != null) {
+                client.publish(TopicUtils.getEraseAllDeviceHWTopic(device.getHomeID(), deviceID), "{}", 1, false);
             }
         }
     }

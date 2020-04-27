@@ -1,6 +1,7 @@
 import {useObserver} from "mobx-react-lite";
 import useStores from "../../hooks/useStores";
 import React from "react";
+import {toJS} from "mobx";
 
 export default function Protected(props) {
     const {role, children, homeID} = props;
@@ -13,10 +14,11 @@ export default function Protected(props) {
 
     return useObserver(() => {
         const {rolesInHome} = homeStore;
-        
+        let myRole = toJS(rolesInHome);
+
         return (
             <>
-                {rolesInHome && rolesInHome.get(homeID) === role.role && children}
+                {rolesInHome && myRole[homeID] === role.role && children}
             </>
         )
     });

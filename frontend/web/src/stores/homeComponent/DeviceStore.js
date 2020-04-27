@@ -171,6 +171,16 @@ export class DeviceStore extends GeneralStore {
             .finally(this.stopLoading);
     };
 
+    updateCapability = (deviceID, capID, capability) => {
+        this.startLoading();
+        this._deviceService
+            .updateCapability(deviceID, capID, capability)
+            .then(this.setCapability)
+            .then(this.setActionInvoked("Capability is successfully updated."))
+            .catch(this.setError)
+            .finally(this.stopLoading);
+    };
+
     deleteDevice = (id) => {
         this.startLoading();
         this._deviceService

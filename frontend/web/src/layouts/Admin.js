@@ -86,8 +86,6 @@ export default function Admin({...rest}) {
     };
 
     const resizeFunction = () => {
-        console.log("WIDT");
-        console.log(window.innerWidth);
         if (window.innerWidth >= 1400) {
             setMobileOpen(false);
         }

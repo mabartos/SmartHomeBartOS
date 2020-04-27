@@ -8,6 +8,7 @@ public enum Topics {
 
     CREATE_TOPIC("create"),
     CONNECT_TOPIC("connect"),
+    ERASE_ALL_TOPIC("erase-all"),
 
     RESPONSE_TOPIC("resp");
 

@@ -21,7 +21,7 @@ export const BooleanDialog = forwardRef((props, ref) => {
 
     const [open, setOpen] = React.useState(false);
 
-    const {userStore, homeStore, roomStore, productStore, deviceStore} = useStores();
+    const {userStore, homeStore, roomStore, deviceStore} = useStores();
 
     const closeDialog = () => {
         setOpen(false);
@@ -60,7 +60,8 @@ export const BooleanDialog = forwardRef((props, ref) => {
                 break;
             case HomeComponent.DEVICE:
                 if (deviceID !== undefined) {
-                    return deviceID;
+                    deviceStore.deleteDevice(deviceID);
+                    return;
                 }
                 break;
         }
