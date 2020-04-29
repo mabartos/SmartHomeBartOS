@@ -10,6 +10,9 @@ import GridContainer from "../../components/Grid/GridContainer";
 import ErrorNotification from "../../components/Notifications/ErrorNotification";
 import SuccessNotification from "../../components/Notifications/SuccessNotification";
 import {toJS} from "mobx";
+import Sortable from "../../components/Sortable/Sortable";
+import RoomCard from "../../components/BartCard/BartHomeComponent/RoomCard";
+import NoItemsAvailable from "../../components/BartCard/NoItemsAvailable";
 
 export default function Room() {
     const {authStore, deviceStore, homeStore} = useStores();
@@ -21,6 +24,8 @@ export default function Room() {
     React.useEffect(() => {
         let home = toJS(homeStore.homes);
         let brokerURL = home[homeID].brokerURL;
+        if (!brokerURL)
+            return;
         const mqttClient = new MqttService(brokerURL, `homes/${homeID}/rooms/${roomID}/#`);
         mqttClient.client.onMessageArrived = (message) => {
             setData(message);
@@ -53,7 +58,7 @@ export default function Room() {
         const {isAuthenticated} = authStore;
         const {error, actionInvoked, loading, capabilities, devices} = deviceStore;
 
-        const getCapabilities = [...capabilities].map(([key,value], index) => (
+        const getCapabilities = [...capabilities].map(([key, value], index) => (
                 <DeviceDataCard key={index} capability={value} data={data} homeID={homeID} roomID={roomID}
                                 devices={devices} notification={`Device '${value.name}'`}
                                 color={CardIcon.getColorID(value.deviceID)}
@@ -61,6 +66,9 @@ export default function Room() {
                 />
             )
         );
+
+        const printAllCaps = (capabilities.size === 0) ?
+            <NoItemsAvailable message={"No Devices found"}/> : getCapabilities;
 
         if (isAuthenticated) {
             return (
@@ -74,7 +82,7 @@ export default function Room() {
                     Message: {data.payloadString}
                     ERR:{}
                     <GridContainer>
-                        {getCapabilities}
+                        {printAllCaps}
                     </GridContainer>
                 </div>
             )

@@ -7,14 +7,11 @@ import java.security.Principal;
 import java.util.UUID;
 
 public interface AuthService {
-
-    void checkNewUser();
-
-    Principal getAuthUser();
-
     UserModel getUserInfo();
 
     UUID getID();
+
+    Principal getBasicPrincipal();
 
     DefaultJWTCallerPrincipal getAdvancedPrincipal();
 }

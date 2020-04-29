@@ -108,6 +108,14 @@ export default class AuthStore extends GeneralStore {
         }
     };
 
+    edit = () => {
+        if (this._keycloak) {
+            this.startLoading();
+            this._keycloak.accountManagement();
+            this.stopLoading();
+        }
+    };
+
     getUserInfo = () => {
         return this._authService.getUserInfo();
     };

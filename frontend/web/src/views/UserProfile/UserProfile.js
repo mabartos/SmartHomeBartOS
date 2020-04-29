@@ -46,8 +46,8 @@ export default function UserProfile() {
     return useObserver(() => {
         const {user, isAuthenticated} = authStore;
 
-        const onSelect = () => {
-            authStore.test();
+        const handleEdit = () => {
+            authStore.edit();
         };
 
         const showUserProperty = () => {
@@ -77,12 +77,7 @@ export default function UserProfile() {
 
                                     <p>{authStore.getToken() || "Undefined token"}</p>
 
-                                    {/* <p className={classes.description}>
-                                    Don{"'"}t be scared of the truth because we need to restart the
-                                    human foundation in truth And I love you like Kanye loves Kanye
-                                    I love Rick Owens’ bed design but the back is...
-                                </p>*/}
-                                    <Button color="primary" round>
+                                    <Button color="primary" round onClick={handleEdit}>
                                         EDIT
                                     </Button>
                                 </CardBody>

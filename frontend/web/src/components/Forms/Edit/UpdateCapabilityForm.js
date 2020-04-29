@@ -61,7 +61,7 @@ export const UpdateCapabilityForm = forwardRef((props, ref) => {
 
     return (
         <EditForm ref={ref} type={HomeComponent.CAPABILITY} {...props} handleUpdate={handleUpdate}
-                  areValidValues={areValidValues} clearStates={clearStates}>
+                  areValidValues={areValidValues}>
             <GridItem xs={12} sm={12} md={9}>
                 <TextField label="Device name" defaultValue={device.name || ""}
                            onChange={changeDeviceName} error={errorDeviceName} margin={"dense"}/>

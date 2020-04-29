@@ -59,12 +59,14 @@ export default function DeviceDataCard(props) {
             }
         };
 
+        console.log(capability.active);
+
         return (
             <GeneralInfoCard color={color} title={capability.name} {...props} deleteLabel={"Delete device"}
                              type={HomeComponent.CAPABILITY} message={`Device '${capability.name || ""}'`}
                              notification={`Device '${device.name || ""}'`}
                              nextLabel={"Remove device from room"} handleNext={removeDeviceFromRoom} homeID={homeID}
-                             device={device}>
+                             device={device} showActivity active={capability.active}>
                 {determineDevice()}
             </GeneralInfoCard>
         )

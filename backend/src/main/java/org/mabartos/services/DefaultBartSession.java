@@ -5,11 +5,11 @@ import org.mabartos.api.protocol.MqttClientManager;
 import org.mabartos.api.service.AppServices;
 import org.mabartos.api.service.CapabilityService;
 import org.mabartos.api.service.DeviceService;
-import org.mabartos.api.service.home.HomeService;
 import org.mabartos.api.service.RoomService;
-import org.mabartos.api.service.user.UserService;
 import org.mabartos.api.service.auth.AuthService;
 import org.mabartos.api.service.home.HomeInvitationService;
+import org.mabartos.api.service.home.HomeService;
+import org.mabartos.api.service.user.UserService;
 import org.mabartos.persistence.model.CapabilityModel;
 import org.mabartos.persistence.model.DeviceModel;
 import org.mabartos.persistence.model.home.HomeInvitationModel;
@@ -55,11 +55,6 @@ public class DefaultBartSession implements BartSession {
 
     @Inject
     public DefaultBartSession() {
-    }
-
-    @Override
-    public void initEnvironment() {
-        authService.checkNewUser();
     }
 
     @Override

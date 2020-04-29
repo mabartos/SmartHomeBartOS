@@ -36,7 +36,6 @@ const useStyles = makeStyles(loginStyle);
 
 export default function LoginPage() {
     const classes = useStyles();
-    const history = useHistory();
 
     const {authStore} = useStores();
 

@@ -7,12 +7,9 @@ import {makeStyles} from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import Hidden from "@material-ui/core/Hidden";
 import List from "@material-ui/core/List";
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-// core components
-import AdminNavbarLinks from "components/Navbars/AdminNavbarLinks.js";
-
 import styles from "assets/jss/material-dashboard-react/components/sidebarStyle.js";
 import SidebarItem from "./SidebarItem";
+import SidebarProfile from "./SidebarProfile";
 
 const useStyles = makeStyles(styles);
 
@@ -23,6 +20,10 @@ export default function Sidebar(props) {
     function activeRoute(routeName) {
         return window.location.href.indexOf(routeName) > -1 ? true : false;
     }
+
+    const handleLogout = () => {
+        console.log("logout");
+    };
 
     const {color, logo, image, logoText, routes} = props;
     const links = () => {
@@ -40,7 +41,7 @@ export default function Sidebar(props) {
             </List>
         );
     };
-    var brand = (
+    let brand = (
         <div className={classes.logo}>
             <div
                 className={classNames(classes.logoLink, {
@@ -74,9 +75,7 @@ export default function Sidebar(props) {
                 >
                     {brand}
                     <div className={classes.sidebarWrapper}>
-                        <AdminNavbarLinks/>
                         {links()}
-
                     </div>
                     {image !== undefined ? (
                         <div
@@ -105,6 +104,7 @@ export default function Sidebar(props) {
                             style={{backgroundImage: "url(" + image + ")"}}
                         />
                     ) : null}
+                    <SidebarProfile handleLogout={handleLogout}/>
                 </Drawer>
             </Hidden>
         </>

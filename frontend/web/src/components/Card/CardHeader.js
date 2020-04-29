@@ -10,10 +10,33 @@ import styles from "assets/jss/material-dashboard-react/components/cardHeaderSty
 // @material-ui/icons
 
 const useStyles = makeStyles(styles);
+const activityStatusStyles = makeStyles(style => ({
+    container: {
+        height: "15px",
+        width: "15px",
+        zIndex: "10",
+        position: "absolute",
+        left: "0px",
+        top: "0px",
+        borderRadius: "calc(.25rem - 1px)",
+        boxShadow: "0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19)",
+    },
+    active: {
+        backgroundColor: "rgba(50,205,50,0.9)",
+    },
+    inActive: {
+        backgroundColor: "rgba(220,20,60,0.9)",
+    },
+    disabled: {
+        backgroundColor: "rgba(90,90,90,0.8)",
+    }
+}));
 
 export default function CardHeader(props) {
     const classes = useStyles();
-    const {className, children, color, plain, stats, icon, ...rest} = props;
+    const statusStyle = activityStatusStyles();
+
+    const {className, children, color, plain, stats, icon, showActivity, active, disabled, ...rest} = props;
     const cardHeaderClasses = classNames({
         [classes.cardHeader]: true,
         [classes[color + "CardHeader"]]: color,
@@ -22,10 +45,21 @@ export default function CardHeader(props) {
         [classes.cardHeaderIcon]: icon,
         [className]: className !== undefined
     });
+
+    const activityClasses = classNames({
+        [statusStyle.container]: showActivity,
+        [statusStyle.active]: active,
+        [statusStyle.inActive]: !active,
+        [statusStyle.disabled]: disabled
+    });
+
     return (
-        <div className={cardHeaderClasses} {...rest}>
-            {children}
-        </div>
+        <>
+            <div className={cardHeaderClasses} {...rest}>
+                <div className={activityClasses}/>
+                {children}
+            </div>
+        </>
     );
 }
 

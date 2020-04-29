@@ -28,47 +28,12 @@ public class AuthServiceImpl implements AuthService {
     JsonString id;
 
     @Inject
-    @Claim(standard = Claims.email)
-    JsonString email;
-
-    @Inject
     public AuthServiceImpl() {
     }
 
     @Override
-    public void checkNewUser() {
-        if (ableToCreateNewUser(getUserInfo())) {
-            UserModel createUser = new UserModel();
-            createUser.setID(UUID.fromString(id.getString()));
-            createUser.setUsername(securityIdentity.getPrincipal().getName());
-            createUser.setEmail(email.getString());
-            userService.create(createUser);
-        }
-    }
-
-    private boolean ableToCreateNewUser(UserModel user) {
-        return (securityIdentity != null && id != null && email != null && !isUserExists());
-    }
-
-    private boolean isUserExists() {
-        return (getAuthUser() != null && userService.findByID(UUID.fromString(id.getString())) != null);
-    }
-
-    @Override
-    public Principal getAuthUser() {
-        if (securityIdentity != null) {
-            return securityIdentity.getPrincipal();
-        }
-        return null;
-    }
-
-    @Override
     public UserModel getUserInfo() {
-        String username = getPrincipalName();
-        if (username != null) {
-            return userService.findByUsername(username);
-        }
-        return null;
+        return userService.findByID(getID());
     }
 
     @Override
@@ -77,16 +42,17 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public DefaultJWTCallerPrincipal getAdvancedPrincipal() {
-        if (securityIdentity != null && securityIdentity.getPrincipal() instanceof DefaultJWTCallerPrincipal) {
-            return (DefaultJWTCallerPrincipal) securityIdentity.getPrincipal();
+    public Principal getBasicPrincipal() {
+        if (securityIdentity != null && securityIdentity.getPrincipal() != null) {
+            return securityIdentity.getPrincipal();
         }
         return null;
     }
 
-    private String getPrincipalName() {
-        if (securityIdentity != null && securityIdentity.getPrincipal() != null) {
-            return securityIdentity.getPrincipal().getName();
+    @Override
+    public DefaultJWTCallerPrincipal getAdvancedPrincipal() {
+        if (securityIdentity != null && securityIdentity.getPrincipal() instanceof DefaultJWTCallerPrincipal) {
+            return (DefaultJWTCallerPrincipal) securityIdentity.getPrincipal();
         }
         return null;
     }

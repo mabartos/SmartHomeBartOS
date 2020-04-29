@@ -6,9 +6,7 @@ import org.mabartos.api.controller.home.HomesResource;
 import org.mabartos.api.model.BartSession;
 import org.mabartos.authz.annotations.HasRoleInHome;
 import org.mabartos.controller.utils.ControllerUtil;
-import org.mabartos.general.CapabilityType;
 import org.mabartos.general.UserRole;
-import org.mabartos.persistence.model.CapabilityModel;
 import org.mabartos.persistence.model.DeviceModel;
 import org.mabartos.persistence.model.capability.LightCapModel;
 import org.mabartos.persistence.model.capability.TemperatureCapModel;
@@ -49,9 +47,7 @@ public class HomesResourceProvider implements HomesResource {
     @Inject
     public HomesResourceProvider(BartSession session) {
         this.session = session;
-        this.session.initEnvironment();
     }
-
 
     //TODO test init
     @GET
@@ -74,8 +70,8 @@ public class HomesResourceProvider implements HomesResource {
         device.setHome(home);
         device = session.services().devices().create(device);
 
-        LightCapModel cap1 = new LightCapModel("cap1",10);
-        TemperatureCapModel cap2 = new TemperatureCapModel("temp1",9);
+        LightCapModel cap1 = new LightCapModel("cap1", 10);
+        TemperatureCapModel cap2 = new TemperatureCapModel("temp1", 9);
         cap1.setDevice(device);
         cap2.setDevice(device);
         device.addCapability(cap1);
@@ -85,9 +81,10 @@ public class HomesResourceProvider implements HomesResource {
         return home;
     }
 
+    //TODO test
     @GET
     @Path("/devTest")
-    public Set<DeviceModel> getDevs(){
+    public Set<DeviceModel> getDevs() {
         return session.services().devices().getAll();
     }
 

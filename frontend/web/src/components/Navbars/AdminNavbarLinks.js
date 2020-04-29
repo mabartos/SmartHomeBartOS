@@ -126,36 +126,12 @@ export default function AdminNavbarLinks() {
                             <Paper>
                                 <ClickAwayListener onClickAway={handleCloseNotification}>
                                     <MenuList role="menu">
-                                        <MenuItem
+                                        {/*<MenuItem
                                             onClick={handleCloseNotification}
                                             className={classes.dropdownItem}
                                         >
-                                            Mike John responded to your email
-                                        </MenuItem>
-                                        <MenuItem
-                                            onClick={handleCloseNotification}
-                                            className={classes.dropdownItem}
-                                        >
-                                            You have 5 new tasks
-                                        </MenuItem>
-                                        <MenuItem
-                                            onClick={handleCloseNotification}
-                                            className={classes.dropdownItem}
-                                        >
-                                            You{"'"}re now friend with Andrew
-                                        </MenuItem>
-                                        <MenuItem
-                                            onClick={handleCloseNotification}
-                                            className={classes.dropdownItem}
-                                        >
-                                            Another Notification
-                                        </MenuItem>
-                                        <MenuItem
-                                            onClick={handleCloseNotification}
-                                            className={classes.dropdownItem}
-                                        >
-                                            Another One
-                                        </MenuItem>
+                                            Notification
+                                        </MenuItem>*/}
                                     </MenuList>
                                 </ClickAwayListener>
                             </Paper>
@@ -206,12 +182,6 @@ export default function AdminNavbarLinks() {
                                             className={classes.dropdownItem}
                                         >
                                             Profile
-                                        </MenuItem>
-                                        <MenuItem
-                                            onClick={handleCloseProfile}
-                                            className={classes.dropdownItem}
-                                        >
-                                            Settings
                                         </MenuItem>
                                         <Divider light/>
                                         <MenuItem

@@ -18,6 +18,7 @@
 // @material-ui/icons
 import Dashboard from "@material-ui/icons/Dashboard";
 import Person from "@material-ui/icons/Person";
+import HomeIcon from '@material-ui/icons/Home';
 // core components/views for Admin layout
 import DashboardPage from "views/Dashboard/Dashboard.js";
 import UserProfile from "views/UserProfile/UserProfile.js";
@@ -53,7 +54,7 @@ const dashboardRoutes = [
     {
         path: "/homes",
         name: "Homes",
-        icon: Person,
+        icon: HomeIcon,
         component: Homes,
         layout: "/admin"
     },

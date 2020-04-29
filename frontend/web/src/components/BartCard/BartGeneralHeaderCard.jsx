@@ -46,8 +46,12 @@ export default function BartGeneralHeaderCard(props) {
         }
     };
 
+    const shouldBeStats = () => {
+        return (props.stats !== undefined) ? props.stats : true;
+    };
+
     return (
-        <CardHeader stats icon>
+        <CardHeader stats={shouldBeStats()} icon>
             <CardIcon color={color || "info"}>
                 <Store/>
             </CardIcon>

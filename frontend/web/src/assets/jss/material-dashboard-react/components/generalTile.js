@@ -4,7 +4,8 @@ import {blackColor} from "../../material-dashboard-react";
 
 const generalTileStyles = {
     container:{
-      minHeight:300
+        minHeight: 300,
+        minWidth: "200px"
     },
     successText: {
         color: successColor[0]

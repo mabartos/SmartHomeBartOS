@@ -30,7 +30,7 @@ public class UserInvitationProvider implements UserInvitationResource {
     @Inject
     public UserInvitationProvider(BartSession session) {
         this.session = session;
-        this.session.initEnvironment();
+
     }
 
     @GET

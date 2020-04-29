@@ -15,8 +15,6 @@ import java.util.UUID;
 
 public interface BartSession extends Serializable {
 
-    void initEnvironment();
-
     UserModel getActualUser();
 
     BartSession setActualUser(UUID id);

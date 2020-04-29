@@ -31,8 +31,6 @@ export default function TemperatureCapCard(props) {
     return useObserver(() => {
         return (
             <div>
-                {capability.active && <p>ACTIVE</p>}
-                {!capability.active && <p>INACTIVE</p>}
                 <CircularProgress value={value} units={units} minValue={-20} maxValue={50}/>
             </div>
         )

@@ -29,7 +29,7 @@ public class RoomsResourceProvider implements RoomsResource {
 
     public RoomsResourceProvider(BartSession session) {
         this.session = session;
-        this.session.initEnvironment();
+
     }
 
     @GET

@@ -32,7 +32,7 @@ public class UsersResourceProvider implements UsersResource {
     @Inject
     public UsersResourceProvider(BartSession session) {
         this.session = session;
-        this.session.initEnvironment();
+
     }
 
     @GET

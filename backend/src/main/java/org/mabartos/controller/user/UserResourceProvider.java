@@ -27,7 +27,7 @@ public class UserResourceProvider implements UserResource {
 
     public UserResourceProvider(BartSession session) {
         this.session = session;
-        this.session.initEnvironment();
+
     }
 
     @GET

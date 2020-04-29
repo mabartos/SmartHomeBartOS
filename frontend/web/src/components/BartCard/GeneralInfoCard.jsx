@@ -16,6 +16,10 @@ const useInfoStyle = makeStyles(style => ({
         align: "center",
         textAlign: "center",
     },
+    general:{
+      minWidth:"200px",
+      minHeight:"200px",
+    },
     title: {
         textAlign: "center",
         color: whiteColor,
@@ -65,16 +69,18 @@ export default function GeneralInfoCard(props) {
         <GridItem xs={props.xs || 12} sm={props.sm || 6} md={props.md || 3}>
             <BooleanDialog ref={refDelete} {...props}/>
             {getEditForm()}
-            <Card>
-                <CardHeader color={props.color || "info"} className={useInfoStyle.container}>
-                    <h4 className={infoClasses.title}>{props.title || "Add Item"}</h4>
-                </CardHeader>
-                <CardBody>
-                    {props.children}
-                </CardBody>
-                {!props.hideFooter &&
-                <BartGeneralFooterCard handleDelete={handleDelete} handleEdit={handleEdit} {...props}/>}
-            </Card>
+            <div className={infoClasses.general}>
+                <Card>
+                    <CardHeader color={props.color || "info"} className={infoClasses.container} {...props}>
+                        <h4 className={infoClasses.title}>{props.title || "Add Item"}</h4>
+                    </CardHeader>
+                    <CardBody>
+                        {props.children}
+                    </CardBody>
+                    {!props.hideFooter &&
+                    <BartGeneralFooterCard handleDelete={handleDelete} handleEdit={handleEdit} {...props}/>}
+                </Card>
+            </div>
         </GridItem>
     );
 }

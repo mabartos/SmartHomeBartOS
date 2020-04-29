@@ -28,7 +28,7 @@ public class DevicesResourceProvider implements DevicesResource {
 
     public DevicesResourceProvider(BartSession session) {
         this.session = session;
-        this.session.initEnvironment();
+
     }
 
     @GET
