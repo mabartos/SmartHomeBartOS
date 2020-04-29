@@ -78,6 +78,7 @@ class Device {
 
     /* CAPS */
     vector<shared_ptr<Capability>> getCapabilities();
+    void setCapabilities(vector<shared_ptr<Capability>> &caps);
 
     void setCapsIDFromJSON(const JsonObject &obj);
     void setCapsIDFromJSON(const JsonObject &obj, bool shouldCreate);

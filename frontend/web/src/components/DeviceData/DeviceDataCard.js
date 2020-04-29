@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {useObserver} from "mobx-react-lite";
 import GeneralInfoCard from "../BartCard/GeneralInfoCard";
 import PropTypes from "prop-types";
@@ -9,10 +9,25 @@ import LightsCapCard from "./Light/LightsCapCard";
 import HumidityCapCard from "./Humidity/HumidityCapCard";
 import {HomeComponent} from "../../index";
 import {toJS} from "mobx";
+import {makeStyles} from "@material-ui/core";
+
+const useStyle = makeStyles(style => ({
+    container: {
+        position: "relative",
+        alignItems: "center",
+        justifyContent: "center",
+        width: "100%",
+        textAlign: "center",
+        marginBottom: "-20px !important"
+    }
+}));
 
 export default function DeviceDataCard(props) {
     const {deviceStore} = useStores();
     const {color, capability, homeID} = props;
+    const classes = useStyle();
+
+    const [cardWidth, setCardWidth] = useState(200);
 
     React.useEffect(() => {
         deviceStore.getDeviceByID(capability.deviceID);
@@ -27,6 +42,10 @@ export default function DeviceDataCard(props) {
 
         let tmpDevices = toJS(devices);
         let device = tmpDevices[capability.deviceID];
+
+        const handleDeleteDevice = () => {
+            deviceStore.deleteDevice(device.id);
+        };
 
         const determineDevice = () => {
             switch (capability.type) {
@@ -59,15 +78,16 @@ export default function DeviceDataCard(props) {
             }
         };
 
-        console.log(capability.active);
-
         return (
             <GeneralInfoCard color={color} title={capability.name} {...props} deleteLabel={"Delete device"}
                              type={HomeComponent.CAPABILITY} message={`Device '${capability.name || ""}'`}
-                             notification={`Device '${device.name || ""}'`}
+                             notification={`Device '${device.name || ""}'`} handleDelete={handleDeleteDevice}
                              nextLabel={"Remove device from room"} handleNext={removeDeviceFromRoom} homeID={homeID}
                              device={device} showActivity active={capability.active}>
-                {determineDevice()}
+
+                <div className={classes.container}>
+                    {determineDevice()}
+                </div>
             </GeneralInfoCard>
         )
     });

@@ -5,13 +5,10 @@ import {CapabilityType} from "../../../constants/Capabilities";
 import GeneralService from "../../../services/GeneralService";
 import GridItem from "../../Grid/GridItem";
 import Slider from "@material-ui/core/Slider";
-import {FormControlLabel, Typography} from "@material-ui/core";
+import {Typography} from "@material-ui/core";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import GridContainer from "../../Grid/GridContainer";
-import Switch from "@material-ui/core/Switch";
-import FormControl from "@material-ui/core/FormControl";
-import FormGroup from "@material-ui/core/FormGroup";
-import FormLabel from "@material-ui/core/FormLabel";
+import BartStateButton from "../BartStateButton";
 
 const useStyles = makeStyles({
     root: {
@@ -57,56 +54,60 @@ export default function LightsCapCard(props) {
 
     return useObserver(() => {
 
-        const handleChangeState = (event) => {
-            const isChecked = event.target.checked;
-            setIsTurnedOn(isChecked);
+        const handleChangeState = (state) => {
+            const isTurnedOn = state;
+            setIsTurnedOn(isTurnedOn);
             let result = {};
-            result.isTurnedOn = isChecked;
-            result.intensity=intensity;
-            result.minIntensity=minIntensity;
+            result.isTurnedOn = isTurnedOn;
+            result.intensity = intensity;
+            result.minIntensity = minIntensity;
             mqtt.send(topic, result);
         };
 
         return (
-            <GridItem xs={12} sm={12} md={12}>
-                <br/>
-                {intensity}
-                <br/>
-                {minIntensity}
-                <br/>
-                {id}
-                <br/>
-                <Typography id="discrete-slider">
-                    Intensity
-                </Typography>
-                <GridContainer>
-                    <GridItem xs={12} sm={6} md={3}>
-                        <div className={classes.root}>
-                            <Slider
-                                orientation="vertical"
-                                defaultValue={intensity}
-                                onChange={handleChangeIntensity}
-                                aria-labelledby="discrete-slider"
-                                valueLabelDisplay="auto"
-                                step={10}
-                                marks
-                                min={0}
-                                max={100}
-                            />
-                        </div>
-                    </GridItem>
-                    <GridItem xs={12} sm={6} md={3}>
-                        <FormControl component={"fieldset"}>
+            <>
+                <BartStateButton isTurnedOn={isTurnedOn} onChange={handleChangeState}/>
+                <GridItem xs={12} sm={12} md={12}>
+                    <br/>
+                    {intensity}
+                    <br/>
+                    {minIntensity}
+                    <br/>
+                    {id}
+                    <br/>
+                    <Typography id="discrete-slider">
+                        Intensity
+                    </Typography>
+
+                    <GridContainer>
+                        <GridItem xs={12} sm={6} md={3}>
+                            <div className={classes.root}>
+                                <Slider
+                                    orientation="vertical"
+                                    defaultValue={intensity}
+                                    onChange={handleChangeIntensity}
+                                    aria-labelledby="discrete-slider"
+                                    valueLabelDisplay="auto"
+                                    step={10}
+                                    marks
+                                    min={0}
+                                    max={100}
+                                />
+                            </div>
+                        </GridItem>
+                        <GridItem xs={12} sm={6} md={3}>
+                            {/*<FormControl component={"fieldset"}>
                             <FormGroup>
                                 <FormLabel>Settings</FormLabel>
                                 <FormControlLabel control={<Switch name={"state"} onChange={handleChangeState}/>}
                                                   label={isTurnedOn}/>
                             </FormGroup>
-                        </FormControl>
-                    </GridItem>
-                </GridContainer>
+                        </FormControl>*/}
+                        </GridItem>
+                    </GridContainer>
 
-            </GridItem>
+                </GridItem>
+            </>
         )
     });
 }

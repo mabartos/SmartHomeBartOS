@@ -10,7 +10,7 @@ import CardAvatar from "components/Card/CardAvatar.js";
 import CardBody from "components/Card/CardBody.js";
 import {SemipolarLoading} from "react-loadingg";
 
-import avatar from "assets/img/faces/marc.jpg";
+import avatar from "../../assets/img/avatar.jpeg";
 import useStores from "../../hooks/useStores";
 import {useObserver} from "mobx-react-lite";
 

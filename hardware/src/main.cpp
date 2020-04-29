@@ -1,9 +1,7 @@
 using namespace std;
 
 #include "GeneralDeps.h"
-#include "capability/humidity/HumidityCap.h"
-#include "capability/lights/LightsCap.h"
-#include "capability/temperature/TemperatureCap.h"
+#include "capabilities.h"
 #include "credentials.h"
 #include "mqtt/MessageForwarder.h"
 #include "wifiUtils/WifiUtils.h"
@@ -14,15 +12,7 @@ MqttClient client(clientPub);
 WiFiManager wifiManager;
 WifiUtils wifiUtils(wifiManager);
 
-// SENSORS
-#define DHTTYPE DHT11
 const char *CONFIG_FILE = "/config.json";
-
-DHT dht(D5, DHTTYPE);
-
-shared_ptr<HumidityCap> hum = make_shared<HumidityCap>(D5, dht);
-shared_ptr<TemperatureCap> temp = make_shared<TemperatureCap>(D5, dht);
-shared_ptr<LightsCap> light = make_shared<LightsCap>(D1);
 
 Device device;
 MessageForwarder forwarder;
@@ -55,9 +45,7 @@ void setup() {
 
     client.getMQTT().setCallback(forwardMessages);
 
-    device.addCapability(temp);
-    device.addCapability(hum);
-    device.addCapability(light);
+    device.setCapabilities(createdCaps);
 
     device.initAllCapabilities();
 

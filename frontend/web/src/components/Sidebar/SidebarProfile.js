@@ -6,7 +6,7 @@ import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import Grid from "@material-ui/core/Grid";
 import React from "react";
 import {makeStyles} from "@material-ui/core/styles";
-import avatar from "assets/img/faces/marc.jpg";
+import avatar from "../../assets/img/avatar.jpeg";
 import useStores from "../../hooks/useStores";
 import {useHistory} from "react-router-dom";
 

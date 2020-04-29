@@ -21,10 +21,6 @@ export default function Sidebar(props) {
         return window.location.href.indexOf(routeName) > -1 ? true : false;
     }
 
-    const handleLogout = () => {
-        console.log("logout");
-    };
-
     const {color, logo, image, logoText, routes} = props;
     const links = () => {
         let myProps, myKeys;
@@ -104,7 +100,7 @@ export default function Sidebar(props) {
                             style={{backgroundImage: "url(" + image + ")"}}
                         />
                     ) : null}
-                    <SidebarProfile handleLogout={handleLogout}/>
+                    <SidebarProfile/>
                 </Drawer>
             </Hidden>
         </>
