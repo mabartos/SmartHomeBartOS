@@ -1,7 +1,8 @@
-package org.mabartos.persistence.model.capability;
+package org.mabartos.persistence.model.capability.humidity;
 
 import org.mabartos.general.CapabilityType;
 import org.mabartos.persistence.model.CapabilityModel;
+import org.mabartos.persistence.model.capability.HasValueAndUnits;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

@@ -1,9 +1,10 @@
-package org.mabartos.protocols.mqtt.data.capability;
+package org.mabartos.protocols.mqtt.data.capability.humidity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.mabartos.general.CapabilityType;
 import org.mabartos.persistence.model.CapabilityModel;
-import org.mabartos.persistence.model.capability.HumidityCapModel;
+import org.mabartos.persistence.model.capability.humidity.HumidityCapModel;
+import org.mabartos.protocols.mqtt.data.capability.CapabilityDataWithValue;
 import org.mabartos.protocols.mqtt.utils.MqttSerializeUtils;
 
 public class HumidityData extends CapabilityDataWithValue<Byte> {

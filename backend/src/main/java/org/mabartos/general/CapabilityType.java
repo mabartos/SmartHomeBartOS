@@ -9,6 +9,7 @@ public enum CapabilityType {
     HEATER("heater"),
     LIGHT("light"),
     RELAY("relay"),
+    EXTERN_BTN("extern-btn"),
     SOCKET("socket"),
     PIR("pir"),
     GAS_SENSOR("gas"),

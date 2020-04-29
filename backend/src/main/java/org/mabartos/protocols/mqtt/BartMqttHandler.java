@@ -5,9 +5,11 @@ import org.jboss.logmanager.Level;
 import org.mabartos.api.protocol.BartMqttClient;
 import org.mabartos.api.service.AppServices;
 import org.mabartos.persistence.model.home.HomeModel;
-import org.mabartos.protocols.mqtt.capability.HumidityCapability;
-import org.mabartos.protocols.mqtt.capability.LightCapability;
-import org.mabartos.protocols.mqtt.capability.TemperatureCapability;
+import org.mabartos.protocols.mqtt.capability.extern.ExternBtnCapability;
+import org.mabartos.protocols.mqtt.capability.humidity.HumidityCapability;
+import org.mabartos.protocols.mqtt.capability.light.LightCapability;
+import org.mabartos.protocols.mqtt.capability.relay.RelayCapability;
+import org.mabartos.protocols.mqtt.capability.temperature.TemperatureCapability;
 import org.mabartos.protocols.mqtt.data.general.BartMqttSender;
 import org.mabartos.protocols.mqtt.exceptions.WrongMessageTopicException;
 import org.mabartos.protocols.mqtt.topics.CapabilityTopic;
@@ -76,10 +78,14 @@ public class BartMqttHandler implements Serializable {
                     break;
                 case HEATER:
                     break;
+                case EXTERN_BTN:
+                    new ExternBtnCapability(services, mqttClient, capabilityTopic, message).parseMessage();
+                    break;
                 case LIGHT:
                     new LightCapability(services, mqttClient, capabilityTopic, message).parseMessage();
                     break;
                 case RELAY:
+                    new RelayCapability(services, mqttClient, capabilityTopic, message).parseMessage();
                     break;
                 case SOCKET:
                     break;

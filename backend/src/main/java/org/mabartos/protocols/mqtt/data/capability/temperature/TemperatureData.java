@@ -1,10 +1,11 @@
-package org.mabartos.protocols.mqtt.data.capability;
+package org.mabartos.protocols.mqtt.data.capability.temperature;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.mabartos.general.CapabilityType;
 import org.mabartos.persistence.model.CapabilityModel;
-import org.mabartos.persistence.model.capability.TemperatureCapModel;
+import org.mabartos.persistence.model.capability.temperature.TemperatureCapModel;
+import org.mabartos.protocols.mqtt.data.capability.CapabilityDataWithValue;
 import org.mabartos.protocols.mqtt.utils.MqttSerializeUtils;
 
 public class TemperatureData extends CapabilityDataWithValue<Double> {

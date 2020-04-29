@@ -1,11 +1,12 @@
-package org.mabartos.protocols.mqtt.data.capability;
+package org.mabartos.protocols.mqtt.data.capability.light;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.mabartos.general.CapabilityType;
 import org.mabartos.persistence.model.CapabilityModel;
-import org.mabartos.persistence.model.capability.LightCapModel;
+import org.mabartos.persistence.model.capability.light.LightCapModel;
+import org.mabartos.protocols.mqtt.data.capability.CapabilityDataWithState;
 import org.mabartos.protocols.mqtt.utils.MqttSerializeUtils;
 
 @JsonIgnoreProperties(ignoreUnknown = true)

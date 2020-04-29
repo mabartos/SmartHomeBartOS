@@ -77,10 +77,7 @@ export default function Room() {
                     {actionInvoked && <SuccessNotification message={actionInvoked}/>}
                     {loading && <SemipolarLoading/>}
 
-                    Home ID={homeID}
-                    Room ID={roomID}
-                    Message: {data.payloadString}
-                    ERR:{}
+
                     <GridContainer>
                         {printAllCaps}
                     </GridContainer>

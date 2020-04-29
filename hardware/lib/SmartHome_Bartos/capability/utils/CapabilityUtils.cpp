@@ -31,6 +31,9 @@ const char* CapabilityUtils::getTopic(CapabilityType type) {
         case CapabilityType::HEATER:
             result = "heater";
             break;
+        case CapabilityType::EXTERN_BTN:
+            result = "extern-btn";
+            break;
         case CapabilityType::LIGHT:
             result = "light";
             break;
@@ -72,6 +75,9 @@ const char* CapabilityUtils::getName(CapabilityType type) {
             break;
         case CapabilityType::HEATER:
             result = "HEATER";
+            break;
+        case CapabilityType::EXTERN_BTN:
+            result = "EXTERN_BTN";
             break;
         case CapabilityType::LIGHT:
             result = "LIGHT";

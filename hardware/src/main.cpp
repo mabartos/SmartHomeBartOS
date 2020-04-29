@@ -36,7 +36,7 @@ void forwardMessages(char *topic, byte *payload, unsigned int length) {
 void setup() {
     Serial.begin(9600);
 
-    wifiUtils.shouldClearStates(true);
+    wifiUtils.shouldClearStates(false);
     wifiManager.setSaveConfigCallback(saveConfigCallback);
     wifiUtils.begin();
 

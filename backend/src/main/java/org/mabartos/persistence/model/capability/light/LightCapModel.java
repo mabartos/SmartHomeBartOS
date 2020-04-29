@@ -1,8 +1,9 @@
-package org.mabartos.persistence.model.capability;
+package org.mabartos.persistence.model.capability.light;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.mabartos.general.CapabilityType;
 import org.mabartos.persistence.model.CapabilityModel;
+import org.mabartos.persistence.model.capability.HasState;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

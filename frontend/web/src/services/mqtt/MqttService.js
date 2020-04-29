@@ -1,5 +1,5 @@
 import Paho from "paho-mqtt";
-import {BROKER_URL_REGEX} from "../../index";
+import { BROKER_URL_REGEX } from "../../index";
 import * as React from "react";
 import GeneralService from "../GeneralService";
 
@@ -22,7 +22,7 @@ export function MqttService(brokerURL, topic) {
         client.onConnectionLost = onConnectionLost;
         client.onMessageArrived = onMessageArrived;
 
-        client.connect({onSuccess: onConnect});
+        client.connect({ onSuccess: onConnect });
     };
 
     function onConnect() {
@@ -49,12 +49,18 @@ export function MqttService(brokerURL, topic) {
     };
 
     this.send = (topic, data) => {
-        if (typeof (data) === "object") {
+        this.sendWithParams(topic, data, 1, false);
+    };
+
+    this.sendWithParams = (topic, data, qos, retained) => {
+        if (typeof(data) === "object") {
             data = GeneralService.getStringFromObject(data);
             if (!data) return;
         }
         let message = new Paho.Message(data);
         message.destinationName = topic;
+        message.qos = qos;
+        message.retained = retained;
         client.send(message);
     };
 

@@ -31,29 +31,31 @@ const useStyle = makeStyles(style => ({
 
 export default function BartStateButton(props) {
     const classes = useStyle();
+    const {disabled} = props;
 
     const [isTurnedOn, setIsTurnedOn] = React.useState(props.isTurnedOn || false);
 
     const handleChange = () => {
+        let state = !isTurnedOn;
         setIsTurnedOn(!isTurnedOn);
         if (props.onChange !== undefined) {
-            props.onChange(isTurnedOn);
+            props.onChange(state);
         }
     };
 
     let buttonClasses = classNames({
         [classes.button]: true,
         [classes.active]: isTurnedOn,
-        [classes.inActive]: !isTurnedOn
     });
 
     const getButton = () => {
         return (isTurnedOn) ?
-            (<Button variant="contained" color="primary" block className={buttonClasses} onClick={handleChange}>
+            (<Button variant="contained" color="primary" disabled={disabled} block className={buttonClasses}
+                     onClick={handleChange}>
                     ON
                 </Button>
             ) :
-            <Button variant="outlined" color="secondary" block className={buttonClasses}
+            <Button variant="outlined" color="secondary" block disabled={disabled} className={buttonClasses}
                     onClick={handleChange}>
                 OFF
             </Button>;

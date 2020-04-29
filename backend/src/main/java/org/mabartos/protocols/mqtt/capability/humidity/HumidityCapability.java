@@ -1,9 +1,10 @@
-package org.mabartos.protocols.mqtt.capability;
+package org.mabartos.protocols.mqtt.capability.humidity;
 
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.mabartos.api.protocol.BartMqttClient;
 import org.mabartos.api.service.AppServices;
-import org.mabartos.protocols.mqtt.data.capability.HumidityData;
+import org.mabartos.protocols.mqtt.capability.GeneralMqttCapability;
+import org.mabartos.protocols.mqtt.data.capability.humidity.HumidityData;
 import org.mabartos.protocols.mqtt.topics.CapabilityTopic;
 
 public class HumidityCapability extends GeneralMqttCapability<HumidityData> {
