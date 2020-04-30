@@ -27,7 +27,6 @@ void HumidityCap::execute() {
     data.setActual(_value);
 
     publishValues(data);
-    Serial.println("HUM_EXEC");
 }
 
 void HumidityCap::reactToMessage(const JsonObject &obj) {

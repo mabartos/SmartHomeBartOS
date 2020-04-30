@@ -8,6 +8,7 @@ import org.mabartos.persistence.model.home.HomeModel;
 import org.mabartos.protocols.mqtt.capability.extern.ExternBtnCapability;
 import org.mabartos.protocols.mqtt.capability.humidity.HumidityCapability;
 import org.mabartos.protocols.mqtt.capability.light.LightCapability;
+import org.mabartos.protocols.mqtt.capability.pir.PIRCapability;
 import org.mabartos.protocols.mqtt.capability.relay.RelayCapability;
 import org.mabartos.protocols.mqtt.capability.temperature.TemperatureCapability;
 import org.mabartos.protocols.mqtt.data.general.BartMqttSender;
@@ -90,7 +91,7 @@ public class BartMqttHandler implements Serializable {
                 case SOCKET:
                     break;
                 case PIR:
-                    break;
+                    new PIRCapability(services, mqttClient, capabilityTopic, message).parseMessage();
                 case GAS_SENSOR:
                     break;
                 case STATISTICS:

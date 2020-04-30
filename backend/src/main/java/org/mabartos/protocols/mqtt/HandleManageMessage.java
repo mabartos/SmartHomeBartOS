@@ -7,9 +7,12 @@ import org.mabartos.api.service.AppServices;
 import org.mabartos.general.CapabilityType;
 import org.mabartos.persistence.model.CapabilityModel;
 import org.mabartos.persistence.model.DeviceModel;
+import org.mabartos.persistence.model.capability.extern.ExternBtnCapModel;
 import org.mabartos.persistence.model.capability.heater.HeaterCapModel;
 import org.mabartos.persistence.model.capability.humidity.HumidityCapModel;
 import org.mabartos.persistence.model.capability.light.LightCapModel;
+import org.mabartos.persistence.model.capability.pir.PIRCapModel;
+import org.mabartos.persistence.model.capability.relay.RelayCapModel;
 import org.mabartos.persistence.model.capability.temperature.TemperatureCapModel;
 import org.mabartos.persistence.model.home.HomeModel;
 import org.mabartos.protocols.mqtt.data.capability.manage.CapabilityWholeData;
@@ -227,11 +230,13 @@ public class HandleManageMessage implements Serializable {
                 case LIGHT:
                     return new LightCapModel(name, pin);
                 case RELAY:
-                    break;
+                    return new RelayCapModel(name, pin);
                 case SOCKET:
                     break;
+                case EXTERN_BTN:
+                    return new ExternBtnCapModel(name, pin);
                 case PIR:
-                    break;
+                    return new PIRCapModel(name, pin);
                 case GAS_SENSOR:
                     break;
                 case STATISTICS:

@@ -1,7 +1,8 @@
 #ifndef RELAY_CAP_H
 #define RELAY_CAP_H
 
-#include "capability/CapabilityWithState.h"
+#include "capability/CapabilityDeps.h"
+#include "device/Device_deps.h"
 
 class RelayCap : public CapabilityWithState {
    public:

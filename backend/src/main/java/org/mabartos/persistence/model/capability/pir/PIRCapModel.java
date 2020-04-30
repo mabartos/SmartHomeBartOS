@@ -1,4 +1,4 @@
-package org.mabartos.persistence.model.capability.relay;
+package org.mabartos.persistence.model.capability.pir;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.mabartos.general.CapabilityType;
@@ -9,22 +9,22 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
-public class RelayCapModel extends CapabilityModel implements HasState {
+public class PIRCapModel extends CapabilityModel implements HasState {
 
     @Column
     private boolean isTurnedOn = false;
 
-    public RelayCapModel() {
+    public PIRCapModel() {
     }
 
-    public RelayCapModel(String name, Integer pin) {
-        super(name, CapabilityType.RELAY, pin);
+    public PIRCapModel(String name, Integer pin) {
+        super(name, CapabilityType.PIR, pin);
     }
 
     @Override
     @JsonProperty("isTurnedOn")
     public boolean isTurnedOn() {
-        return isTurnedOn;
+        return this.isTurnedOn;
     }
 
     @Override

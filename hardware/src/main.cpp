@@ -1,8 +1,8 @@
 using namespace std;
+#include <SPI.h>
 
 #include "GeneralDeps.h"
 #include "capabilities.h"
-#include "credentials.h"
 #include "mqtt/MessageForwarder.h"
 #include "wifiUtils/WifiUtils.h"
 
@@ -36,7 +36,7 @@ void forwardMessages(char *topic, byte *payload, unsigned int length) {
 void setup() {
     Serial.begin(9600);
 
-    wifiUtils.shouldClearStates(false);
+    wifiUtils.shouldClearStates(shouldClearState);
     wifiManager.setSaveConfigCallback(saveConfigCallback);
     wifiUtils.begin();
 

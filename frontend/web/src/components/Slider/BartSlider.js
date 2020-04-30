@@ -35,16 +35,17 @@ const CustomSlider = withStyles({
 
 export default function BartSlider(props) {
     const {value, onChange, min, max, step, disabled} = props;
+    const MIN = 10;
 
     return (
-        <CustomSlider aria-label="pretto slider" defaultValue={value}
+        <CustomSlider aria-label="pretto slider" defaultValue={value || MIN}
                       onChange={onChange}
                       aria-labelledby="discrete-slider"
                       valueLabelDisplay="auto"
                       step={step || 10}
                       marks
                       disabled={disabled}
-                      min={min || 10}
+                      min={min || MIN}
                       max={max || 100}/>
     )
 }

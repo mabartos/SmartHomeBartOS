@@ -10,6 +10,8 @@ import HumidityCapCard from "./Humidity/HumidityCapCard";
 import {HomeComponent} from "../../index";
 import {toJS} from "mobx";
 import {makeStyles} from "@material-ui/core";
+import RelayCapCard from "./Relay/RelayCapCard";
+import PIRCapCard from "./PIR/PIRCapCard";
 
 const useStyle = makeStyles(style => ({
     container: {
@@ -60,11 +62,11 @@ export default function DeviceDataCard(props) {
                 case CapabilityType.LIGHT.name:
                     return (<LightsCapCard device={devices} {...props}/>);
                 case CapabilityType.RELAY.name:
-                    break;
+                    return (<RelayCapCard device={devices} {...props}/>);
                 case CapabilityType.SOCKET.name:
                     break;
                 case CapabilityType.PIR.name:
-                    break;
+                    return (<PIRCapCard device={devices} {...props}/>);
                 case CapabilityType.GAS_SENSOR.name:
                     break;
                 case CapabilityType.STATISTICS.name:
@@ -81,7 +83,8 @@ export default function DeviceDataCard(props) {
         return (
             <GeneralInfoCard color={color} title={capability.name} {...props} deleteLabel={"Delete device"}
                              type={HomeComponent.CAPABILITY} message={`Device '${capability.name || ""}'`}
-                             notification={`Device '${device.name || ""}'`} handleDelete={handleDeleteDevice}
+                             notification={`Device '${(device && device.name) || ""}'`}
+                             handleDelete={handleDeleteDevice}
                              nextLabel={"Remove device from room"} handleNext={removeDeviceFromRoom} homeID={homeID}
                              device={device} showActivity active={capability.active}>
 

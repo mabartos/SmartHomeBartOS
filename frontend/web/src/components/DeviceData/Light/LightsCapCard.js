@@ -81,7 +81,7 @@ export default function LightsCapCard(props) {
             result.isTurnedOn = isTurnedOn;
             result.intensity = intensity;
             result.minIntensity = minIntensity;
-            mqtt.send(topic, result);
+            mqtt.sendWithParams(topic, result,1,true);
         };
 
         return (
