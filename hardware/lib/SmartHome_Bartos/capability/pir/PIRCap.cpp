@@ -24,9 +24,6 @@ void PIRCap::execute() {
         data.setState(newTurnedOn);
         publishValues(data);
         _isTurnedOn = newTurnedOn;
-        //TODO
-
-        digitalWrite(D1, newTurnedOn);
 
         if (_isFirstValue)
             _isFirstValue = false;

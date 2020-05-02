@@ -35,7 +35,12 @@ void Capability::publishValues(CapabilityData &data) {
     if (getTopic() == "")
         return;
     char buffer[600];
-    size_t size = serializeJson(data.toJSON(), buffer);
+
+    DynamicJsonDocument doc = data.toJSON();
+    size_t size = serializeJson(doc, buffer);
+    doc.shrinkToFit();
+    doc.garbageCollect();
+
     client.getMQTT().publish(getTopic().c_str(), buffer, size);
 }
 

@@ -57,7 +57,7 @@ export class DeviceStore extends GeneralStore {
 
     addCapabilitiesForDevice=(deviceID)=>{
         this._deviceService
-            .getCapabilities(deviceID)
+            .getCapabilitiesForDevice(deviceID)
             .then(this.addAllCapabilities)
             .catch(this.setError)
     };
@@ -122,10 +122,10 @@ export class DeviceStore extends GeneralStore {
 
     };
 
-    getCapabilities = (id) => {
+    getCapabilitiesForDevice = (id) => {
         this.startLoading();
         this._deviceService
-            .getCapabilities(id)
+            .getCapabilitiesForDevice(id)
             .then(caps => this.setCapabilities(id, caps))
             .catch(this.setError)
             .finally(this.stopLoading);

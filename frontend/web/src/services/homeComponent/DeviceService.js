@@ -41,7 +41,7 @@ export default class DeviceService extends GeneralService {
         return this.fetch(`${this.getPath()}/${id}`);
     };
 
-    getCapabilities = (id) => {
+    getCapabilitiesForDevice = (id) => {
         return this.fetch(`${this.getPath()}/${id}${DeviceService.CAPABILITY_ENDPOINT}`)
     };
 

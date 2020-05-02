@@ -71,11 +71,11 @@ public class DefaultBartMqttClient implements BartMqttClient, Serializable {
                 @Override
                 public void deliveryComplete(IMqttDeliveryToken token) {
                     setBrokerActive(true);
-                    services.getVertx().eventBus().publish("test", "COMPLETED " + home.getName());
                 }
             });
             IMqttToken token = mqttClient.connect(setConnectOptions());
             token.waitForCompletion();
+
             mqttClient.subscribe(TopicUtils.getHomeTopic(home) + "/#", STD_QOS);
 
             checkAndSetState(true);
@@ -85,7 +85,6 @@ public class DefaultBartMqttClient implements BartMqttClient, Serializable {
             checkAndSetState(false);
         } catch (Exception e) {
             e.printStackTrace();
-
         }
     }
 

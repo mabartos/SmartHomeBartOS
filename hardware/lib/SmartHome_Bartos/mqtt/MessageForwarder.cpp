@@ -20,6 +20,8 @@ void MessageForwarder::forwardMessage(char *topic, DynamicJsonDocument &doc) {
 
     // LAST - Capabilities
     manageCapabilityReact(obj);
+    doc.shrinkToFit();
+    doc.garbageCollect();
 }
 
 bool MessageForwarder::equalsTopic(const char *receiveTopic) {
@@ -44,37 +46,45 @@ void MessageForwarder::manageCreate(const JsonObject &obj) {
             device.setID(ID);
 
             manageCreateSPIFS(obj, ID);
+            Serial.println("HEERE1");
 
             client.getMQTT().subscribe(device.getDeviceTopic().c_str());
             client.getMQTT().unsubscribe(device.getCreateTopic().c_str());
             client.getMQTT().unsubscribe(device.getCreateTopicWild().c_str());
 
+            Serial.println("HEERE2");
+
             device.setInitialized(true);
 
             device.setID(ID);
             client.reconnect();
+            Serial.println("HEERE3");
         }
     }
 }
 
 void MessageForwarder::manageCreateSPIFS(const JsonObject &obj, const long &deviceID) {
-    StaticJsonDocument<1024> doc;
+    DynamicJsonDocument doc(1520);
 
     if (SPIFFS.begin() && SPIFFS.exists(CONFIG_FILE)) {
         File configFile = SPIFFS.open(CONFIG_FILE, "r");
         if (configFile) {
             size_t size = configFile.size();
 
-            std::unique_ptr<char[]> buf(new char[size]);
+            std::unique_ptr<char[]> buf(new char[size + 100]);
             configFile.readBytes(buf.get(), size);
 
             DeserializationError err = deserializeJson(doc, buf.get());
-            if (err != DeserializationError::Ok)
+            if (err != DeserializationError::Ok) {
                 return;
+            }
+
+            configFile.close();
         }
     }
 
-    StaticJsonDocument<1024> newDoc = doc;
+    DynamicJsonDocument newDoc(2048);
+    newDoc = doc;
     newDoc["deviceID"] = deviceID;
     newDoc["uuid"] = client.getUUID().c_str();
 
@@ -87,11 +97,18 @@ void MessageForwarder::manageCreateSPIFS(const JsonObject &obj, const long &devi
     const char *brokerURL = client.getBrokerURL().c_str();
     newDoc["brokerURL"] = brokerURL;
     if (serializeJson(newDoc, configFile) == 0) {
+        Serial.println("ERROR");
         return;
     }
     configFile.close();
 
     device.setCapsIDFromJSON(obj);
+
+    doc.shrinkToFit();
+    newDoc.shrinkToFit();
+
+    doc.garbageCollect();
+    newDoc.garbageCollect();
 }
 
 void MessageForwarder::manageConnect(const JsonObject &obj) {

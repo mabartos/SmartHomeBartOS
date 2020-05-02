@@ -9,6 +9,7 @@ import BartGeneralFooterCard from "./BartGeneralFooterCard";
 import {BooleanDialog} from "../BartDialogs/BooleanDialog";
 import {HomeComponent} from "../../index";
 import {UpdateCapabilityForm} from "../Forms/Edit/UpdateCapabilityForm";
+import useStores from "../../hooks/useStores";
 
 const useInfoStyle = makeStyles(style => ({
     container: {
@@ -42,10 +43,14 @@ export default function GeneralInfoCard(props) {
     const infoClasses = useInfoStyle();
     const refDelete = useRef(null);
     const refEdit = useRef(null);
+    const {deviceStore} = useStores();
 
-    const {type} = props;
+    const {type, device} = props;
 
     const handleEdit = () => {
+        if (type === HomeComponent.CAPABILITY && device) {
+            deviceStore.getDevice(device.id);
+        }
         refEdit.current.openForm();
         if (props.handleEdit !== undefined) {
             props.handleEdit();

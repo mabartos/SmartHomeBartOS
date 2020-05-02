@@ -198,11 +198,11 @@ DynamicJsonDocument Device::getCreateJSON() {
 }
 
 size_t Device::getCreateJSONSize() {
-    return JSON_ARRAY_SIZE(getCapabilities().size()) + getCapabilities().size() * (JSON_OBJECT_SIZE(3) + 100) + JSON_OBJECT_SIZE(4) + 100;
+    return JSON_ARRAY_SIZE(getCapabilities().size()) + getCapabilities().size() * (JSON_OBJECT_SIZE(3) + 100) + JSON_OBJECT_SIZE(4) + 500;
 }
 
 void Device::publishCreateMessage() {
-    char buffer[1024];
+    char buffer[2048];
     client.getMQTT().subscribe(getCreateTopicResp().c_str());
 
     serializeJson(getCreateJSON(), buffer);
@@ -231,7 +231,7 @@ size_t Device::getConnectJSONSize() {
 }
 
 void Device::publishConnectMessage() {
-    char buffer[1024];
+    char buffer[2048];
     client.getMQTT().subscribe(getConnectTopicResp().c_str());
     serializeJson(getConnectJSON(), buffer);
     string topic(getConnectTopic() + "/" + NumberGenerator::longToString(getID()));
@@ -245,7 +245,7 @@ void Device::setCapsIDFromJSON(const JsonObject &obj) {
 
 void Device::setCapsIDFromJSON(const JsonObject &obj, bool shouldCreate) {
     if (obj.containsKey("capabilities")) {
-        StaticJsonDocument<500> doc;
+        StaticJsonDocument<1024> doc;
 
         JsonArray caps = obj["capabilities"];
 
@@ -259,6 +259,7 @@ void Device::setCapsIDFromJSON(const JsonObject &obj, bool shouldCreate) {
                 p_cap->setID(capID);
             }
         }
+        doc.garbageCollect();
     }
 }
 

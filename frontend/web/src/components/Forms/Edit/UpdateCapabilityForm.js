@@ -1,23 +1,21 @@
 import React, {forwardRef} from "react";
-import {useParams} from "react-router-dom";
 import {HomeComponent} from "../../../index";
 import GridItem from "../../Grid/GridItem";
 import {EditForm} from "./EditForm";
 import TextField from "@material-ui/core/TextField";
 import useStores from "../../../hooks/useStores";
 
-
 export const UpdateCapabilityForm = forwardRef((props, ref) => {
     const {device, capability} = props;
     const {deviceStore} = useStores();
+
+    const [defaultDeviceName, setDefaultDeviceName] = React.useState(device.name || "");
 
     const [deviceName, setDeviceName] = React.useState(device.name || "");
     const [capName, setCapName] = React.useState(capability.name || "");
 
     const [errorDeviceName, setErrorDevice] = React.useState(false);
     const [errorCapName, setErrorCap] = React.useState(false);
-
-    const {homeID} = useParams();
 
     React.useEffect(() => {
         return () => {
@@ -27,13 +25,16 @@ export const UpdateCapabilityForm = forwardRef((props, ref) => {
 
     const handleUpdate = () => {
         if (areValidValues()) {
-            if (device.name !== deviceName) {
+            console.log(deviceName);
+            console.log(defaultDeviceName);
+            if (defaultDeviceName !== deviceName) {
+                setDefaultDeviceName(deviceName);
                 device.name = deviceName;
                 deviceStore.updateDevice(device.id, device);
             }
             if (capability.name !== capName) {
                 capability.name = capName;
-                deviceStore.updateCapability(device.id,capability.id,capability);
+                deviceStore.updateCapability(device.id, capability.id, capability);
             }
         }
     };
@@ -57,6 +58,7 @@ export const UpdateCapabilityForm = forwardRef((props, ref) => {
     const clearStates = () => {
         setDeviceName("");
         setCapName("");
+        setDefaultDeviceName("");
     };
 
     return (

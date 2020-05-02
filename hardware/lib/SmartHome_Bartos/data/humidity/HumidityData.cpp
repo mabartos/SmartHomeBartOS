@@ -14,7 +14,7 @@ void HumidityData::setActual(const uint8_t &actual) {
 }
 
 DynamicJsonDocument HumidityData::toJSON() {
-    StaticJsonDocument<300> doc;
+    DynamicJsonDocument doc(300);
     doc["actual"] = getActual();
     return doc;
 }
