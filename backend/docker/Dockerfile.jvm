@@ -24,8 +24,8 @@ RUN adduser -G root --no-create-org.mabartos.home --disabled-password 1001 \
   && chmod -R "g+rwX" /deployments \
   && chown -R 1001:root /deployments
 
-COPY target/lib/* /deployments/lib/
-COPY target/*-runner.jar /deployments/app.jar
+COPY ../dist/target/lib/* /deployments/lib/
+COPY ../dist/target/*-runner.jar /deployments/app.jar
 EXPOSE 8080
 
 # run with org.mabartos.user 1001

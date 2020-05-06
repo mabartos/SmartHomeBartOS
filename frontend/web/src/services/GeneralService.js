@@ -22,7 +22,11 @@ export default class GeneralService {
         this._urlServer = urlServer
     }
 
-    fetch = (path, settings) => {
+    fetchExternal = (path, settings) => {
+        return this.fetch(path, settings, true);
+    };
+
+    fetch = (path, settings, external) => {
         return new Promise((resolve, reject) => {
             const headers = {
                 "Accept": "application/json",
@@ -33,7 +37,9 @@ export default class GeneralService {
                 headers["Authorization"] = `Bearer ${token}`;
             }
 
-            fetch(`${this._urlServer}${path}`, {...settings, headers})
+            const resultPath = external ? `${this._urlServer}${path}` : `${this._urlServer}/api${path}`;
+
+            fetch(resultPath, {...settings, headers})
                 .then(response => {
                     switch (response.status) {
                         case 200:

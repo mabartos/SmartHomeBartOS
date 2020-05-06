@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
-         xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.mabartos</groupId>
@@ -163,8 +162,6 @@
       <version>1.4.1.Final</version>
     </dependency>
   </dependencies>
-
-
   <build>
     <plugins>
       <plugin>
@@ -186,7 +183,7 @@
           </execution>
         </executions>
       </plugin>
-      <plugin>
+     <!-- <plugin>
         <groupId>com.github.eirslett</groupId>
         <artifactId>frontend-maven-plugin</artifactId>
         <version>1.9.1</version>
@@ -200,7 +197,7 @@
             <configuration>
               <nodeVersion>${node.version}</nodeVersion>
               <yarnVersion>${yarn.version}</yarnVersion>
-              <workingDirectory>${frontendDir}</workingDirectory>
+              <workingDirectory>${frontend.dir}</workingDirectory>
             </configuration>
           </execution>
         </executions>
@@ -218,15 +215,14 @@
             </goals>
             <configuration>
               <executable>${yarn.executable}</executable>
-              <workingDirectory>${frontendDir}</workingDirectory>
+              <workingDirectory>${frontend.dir}</workingDirectory>
               <arguments>
                 <argument>install</argument>
-                <argument>--prod</argument>
-                <argument>--pure-lockfile</argument>
+                <argument>&#45;&#45;prod</argument>
+                <argument>&#45;&#45;pure-lockfile</argument>
               </arguments>
             </configuration>
           </execution>
-
           <execution>
             <id>yarn build</id>
             <phase>generate-resources</phase>
@@ -235,7 +231,7 @@
             </goals>
             <configuration>
               <executable>${yarn.executable}</executable>
-              <workingDirectory>${frontendDir}</workingDirectory>
+              <workingDirectory>${frontend.dir}</workingDirectory>
               <arguments>
                 <argument>build</argument>
               </arguments>
@@ -243,7 +239,6 @@
           </execution>
         </executions>
       </plugin>
-
       <plugin>
         <artifactId>maven-resources-plugin</artifactId>
         <version>3.1.0</version>
@@ -258,14 +253,14 @@
               <outputDirectory>${project.build.outputDirectory}/META-INF/resources</outputDirectory>
               <resources>
                 <resource>
-                  <directory>${frontendDir}/build</directory>
+                  <directory>${frontend.dir}/build</directory>
                   <filtering>false</filtering>
                 </resource>
               </resources>
             </configuration>
           </execution>
         </executions>
-      </plugin>
+      </plugin>-->
     </plugins>
   </build>
 </project>

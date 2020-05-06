@@ -138,13 +138,13 @@
   supervisor.title.p={doc. Ing.},   %titul před jménem (nepovinné) / title before the name (optional)
   supervisor.title.a={Ph.D.},    %titul za jménem (nepovinné) / title after the name (optional)
   % Klíčová slova / keywords
-  \todo Heere
   keywords.cs={chytrá domácnost, Internet věcí, Java, React.JS, C++, Quarkus, Javascript}, % klíčová slova v českém či slovenském jazyce / keywords in czech or slovak language
   keywords.en={Smart home, IoT, Java, React.JS, C++, Quarkus, Javascript}, % klíčová slova v anglickém jazyce / keywords in english
   %keywords.en={Here, individual keywords separated by commas will be written in English.},
   % Abstrakt / Abstract
-  abstract.cs={V dnešní době se velice rychle rozrůstá svět chytrých zařízení v domácnostech, které mezi sebou komunikují a usnadňují život lidem. Avšak velkým problémem pořízení takových zařízení do běžných domácností je vysoká cena  a kompatibilita zařízení pouze od jednoho výrobce. Cílém této bakalářské práce je vytvořit komplexní levné řešení, které dokáže komunikovat se zařízeními od různých výrobců. }, % abstrakt v českém či slovenském jazyce / abstract in czech or slovak language
-  abstract.en={Do tohoto odstavce bude zapsán výtah (abstrakt) práce v anglickém jazyce.}, % abstrakt v anglickém jazyce / abstract in english
+%change Abstract
+  abstract.cs={V dnešní době se velice rychle rozrůstá svět chytrých zařízení v domácnostech, které mezi sebou komunikují a usnadňují lidem život. Avšak velkým problémem pořízení takových zařízení do běžných domácností je vysoká cena  a kompatibilita zařízení pouze od jednoho výrobce. Cílém této bakalářské práce je vytvořit komplexní levné řešení, které dokáže komunikovat se zařízeními od různých výrobců. Toto řešení je implementováno pomocí nejmodernějších technologií a nástrojů.}, % abstrakt v českém či slovenském jazyce / abstract in czech or slovak language
+  abstract.en={Nowadays, the world of smart devices in households, is growing up very fast, where the devices communicate with each other and make people's lives easier. However, a major problem of acquisition the devices to common households, is high price and compatibility of the devices from one vendor. The goal of this bachelor thesis is to create a comprehensive low-cost solution that can communicate with devices from various vendors. This solution is implemented by the latest technologies and tools.}, % abstrakt v anglickém jazyce / abstract in english
   %abstract.en={An abstract of the work in English will be written in this paragraph.},
   % Prohlášení (u anglicky psané práce anglicky, u slovensky psané práce slovensky) / Declaration (for thesis in english should be in english)
   declaration={Prohlašuji, že jsem tuto bakalářskou práci vypracoval samostatně pod vedením pana X...
@@ -185,62 +185,62 @@ Uvedl jsem všechny literární prameny, publikace a další zdroje, ze kterých
 \setlist[checklist]{label=$\square$}
 
 \begin{document}
-  % Vysazeni titulnich stran / Typesetting of the title pages
-  % ----------------------------------------------
-  \maketitle
-  % Obsah
-  % ----------------------------------------------
+% Vysazeni titulnich stran / Typesetting of the title pages
+% ----------------------------------------------
+\maketitle
+% Obsah
+% ----------------------------------------------
+\setlength{\parskip}{0pt}
+
+{\hypersetup{hidelinks}\tableofcontents}
+
+% Seznam obrazku a tabulek (pokud prace obsahuje velke mnozstvi obrazku, tak se to hodi)
+% List of figures and list of tables (if the thesis contains a lot of pictures, it is good)
+\ifczech
+  \renewcommand\listfigurename{Seznam obrázků}
+\fi
+\ifslovak
+  \renewcommand\listfigurename{Zoznam obrázkov}
+\fi
+% {\hypersetup{hidelinks}\listoffigures}
+
+\ifczech
+  \renewcommand\listtablename{Seznam tabulek}
+\fi
+\ifslovak
+  \renewcommand\listtablename{Zoznam tabuliek}
+\fi
+% {\hypersetup{hidelinks}\listoftables}
+
+\ifODSAZ
+  \setlength{\parskip}{0.5\bigskipamount}
+\else
   \setlength{\parskip}{0pt}
+\fi
 
-  {\hypersetup{hidelinks}\tableofcontents}
-  
-  % Seznam obrazku a tabulek (pokud prace obsahuje velke mnozstvi obrazku, tak se to hodi)
-  % List of figures and list of tables (if the thesis contains a lot of pictures, it is good)
-  \ifczech
-    \renewcommand\listfigurename{Seznam obrázků}
-  \fi
-  \ifslovak
-    \renewcommand\listfigurename{Zoznam obrázkov}
-  \fi
-  % {\hypersetup{hidelinks}\listoffigures}
-  
-  \ifczech
-    \renewcommand\listtablename{Seznam tabulek}
-  \fi
-  \ifslovak
-    \renewcommand\listtablename{Zoznam tabuliek}
-  \fi
-  % {\hypersetup{hidelinks}\listoftables}
+% vynechani stranky v oboustrannem rezimu
+% Skip the page in the two-sided mode
+\iftwoside
+  \cleardoublepage
+\fi
 
-  \ifODSAZ
-    \setlength{\parskip}{0.5\bigskipamount}
-  \else
-    \setlength{\parskip}{0pt}
-  \fi
+% Text prace / Thesis text
+% ----------------------------------------------
+\ifenglish
+  \input{xbarto96-01-kapitoly-chapters-en}
+\else
+  \input{xbarto96-01-kapitoly-chapters}
+\fi
 
-  % vynechani stranky v oboustrannem rezimu
-  % Skip the page in the two-sided mode
-  \iftwoside
-    \cleardoublepage
-  \fi
-
-  % Text prace / Thesis text
-  % ----------------------------------------------
-  \ifenglish
-    \input{xbarto96-01-kapitoly-chapters-en}
-  \else
-    \input{xbarto96-01-kapitoly-chapters}
-  \fi
-  
-  % Kompilace po částech (viz výše, nutno odkomentovat)
-  % Compilation piecewise (see above, it is necessary to uncomment it)
-  %\subfile{projekt-01-uvod-introduction}
-  % ...
-  %\subfile{chapters/projekt-05-conclusion}
+% Kompilace po částech (viz výše, nutno odkomentovat)
+% Compilation piecewise (see above, it is necessary to uncomment it)
+%\subfile{projekt-01-uvod-introduction}
+% ...
+%\subfile{chapters/projekt-05-conclusion}
 
 
-  % Pouzita literatura / Bibliography
-  % ----------------------------------------------
+% Pouzita literatura / Bibliography
+% ----------------------------------------------
 \ifslovak
   \makeatletter
   \def\@openbib@code{\addcontentsline{toc}{chapter}{Literatúra}}
@@ -252,27 +252,27 @@ Uvedl jsem všechny literární prameny, publikace a další zdroje, ze kterých
     \def\@openbib@code{\addcontentsline{toc}{chapter}{Literatura}}
     \makeatother
     \bibliographystyle{bib-styles/Pysny/czplain}
-  \else 
+  \else
     \makeatletter
     \def\@openbib@code{\addcontentsline{toc}{chapter}{Bibliography}}
     \makeatother
     \bibliographystyle{bib-styles/Pysny/enplain}
-  %  \bibliographystyle{alpha}
+    %  \bibliographystyle{alpha}
   \fi
 \fi
-  \begin{flushleft}
+\begin{flushleft}
   \bibliography{xbarto96-20-literatura-bibliography}
-  \end{flushleft}
+\end{flushleft}
 
-  % vynechani stranky v oboustrannem rezimu
-  % Skip the page in the two-sided mode
-  \iftwoside
-    \cleardoublepage
-  \fi
+% vynechani stranky v oboustrannem rezimu
+% Skip the page in the two-sided mode
+\iftwoside
+  \cleardoublepage
+\fi
 
-  % Prilohy / Appendices
-  % ---------------------------------------------
-  \appendix
+% Prilohy / Appendices
+% ---------------------------------------------
+\appendix
 \ifczech
   \renewcommand{\appendixpagename}{Přílohy}
   \renewcommand{\appendixtocname}{Přílohy}
@@ -290,44 +290,44 @@ Uvedl jsem všechny literární prameny, publikace a další zdroje, ze kterých
 %\iftwoside
 %  \cleardoublepage
 %\fi
-  
+
 \ifslovak
-%  \section*{Zoznam príloh}
-%  \addcontentsline{toc}{section}{Zoznam príloh}
+  %  \section*{Zoznam príloh}
+  %  \addcontentsline{toc}{section}{Zoznam príloh}
 \else
   \ifczech
-%    \section*{Seznam příloh}
-%    \addcontentsline{toc}{section}{Seznam příloh}
+    %    \section*{Seznam příloh}
+    %    \addcontentsline{toc}{section}{Seznam příloh}
   \else
-%    \section*{List of Appendices}
-%    \addcontentsline{toc}{section}{List of Appendices}
+    %    \section*{List of Appendices}
+    %    \addcontentsline{toc}{section}{List of Appendices}
   \fi
 \fi
-  \startcontents[chapters]
-  \setlength{\parskip}{0pt} 
-  % seznam příloh / list of appendices
-  % \printcontents[chapters]{l}{0}{\setcounter{tocdepth}{2}}
-  
-  \ifODSAZ
-    \setlength{\parskip}{0.5\bigskipamount}
-  \else
-    \setlength{\parskip}{0pt}
-  \fi
-  
-  % vynechani stranky v oboustrannem rezimu
-  \iftwoside
-    \cleardoublepage
-  \fi
-  
-  % Přílohy / Appendices
-  \ifenglish
-    \input{xbarto96-30-prilohy-appendices-en}
-  \else
-    \input{xbarto96-30-prilohy-appendices}
-  \fi
-  
-  % Kompilace po částech (viz výše, nutno odkomentovat)
-  % Compilation piecewise (see above, it is necessary to uncomment it)
-  %\subfile{xbarto96-30-prilohy-appendices}
-  
+\startcontents[chapters]
+\setlength{\parskip}{0pt}
+% seznam příloh / list of appendices
+% \printcontents[chapters]{l}{0}{\setcounter{tocdepth}{2}}
+
+\ifODSAZ
+  \setlength{\parskip}{0.5\bigskipamount}
+\else
+  \setlength{\parskip}{0pt}
+\fi
+
+% vynechani stranky v oboustrannem rezimu
+\iftwoside
+  \cleardoublepage
+\fi
+
+% Přílohy / Appendices
+\ifenglish
+  \input{xbarto96-30-prilohy-appendices-en}
+\else
+  \input{xbarto96-30-prilohy-appendices}
+\fi
+
+% Kompilace po částech (viz výše, nutno odkomentovat)
+% Compilation piecewise (see above, it is necessary to uncomment it)
+%\subfile{xbarto96-30-prilohy-appendices}
+
 \end{document}

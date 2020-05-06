@@ -18,7 +18,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import {createBrowserHistory} from "history";
-import {Redirect, Route, Router, Switch} from "react-router-dom";
+import {BrowserRouter, HashRouter, Redirect, Route, Router, Switch} from "react-router-dom";
 // core components
 import Admin from "layouts/Admin.js";
 
@@ -36,6 +36,8 @@ import AuthStore from "./stores/auth/AuthStore";
 import {DeviceStore} from "./stores/homeComponent/DeviceStore";
 
 //export const history = createBrowserHistory();
+
+const origin = window.location.origin;
 
 export const backendURL = "http://127.0.0.1:8888";
 export const keycloakURL = "http://127.0.0.1:8180/auth/realms/SmartHome";
@@ -87,12 +89,12 @@ export const storesContext = React.createContext(stores);
 export const servicesContext = React.createContext(services);
 
 ReactDOM.render(
-    <Router history={createBrowserHistory()}>
+    <BrowserRouter  history={createBrowserHistory()}>
         <Switch>
             <Route path="/admin" component={Admin}/>
             <Route path="/auth/login" component={LoginPage}/>
             <Redirect from="/" to="/admin"/>
         </Switch>
-    </Router>,
+    </BrowserRouter>,
     document.getElementById("root")
 );

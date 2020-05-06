@@ -16,6 +16,7 @@ export default class AuthStore extends GeneralStore {
     constructor(authService) {
         super(authService);
         this._authService = this._service;
+        this._authenticated=false;
     }
 
     setUser = (user) => {
@@ -61,7 +62,7 @@ export default class AuthStore extends GeneralStore {
     };
 
     initKeycloak = () => {
-        if (!this.isAuthenticated) {
+        if (!this._authenticated) {
             this.reconnectKeycloak();
         }
     };
@@ -70,7 +71,7 @@ export default class AuthStore extends GeneralStore {
         let keycloak = Keycloak(KeycloakConfig);
         this._keycloak = keycloak;
 
-        const auth = keycloak.init({onLoad: 'login-required'}).then(authenticated => {
+        const auth = keycloak.init({onLoad: 'login-required',checkLoginIframe:false}).then(authenticated => {
             localStorage.setItem("keycloak-token", keycloak.token);
             localStorage.setItem("keycloak-refresh-token", keycloak.refreshToken);
             this.getUserInfo().then(this.setUser).catch();
@@ -92,7 +93,7 @@ export default class AuthStore extends GeneralStore {
 
         auth.then(authenticated => {
             this._authenticated = authenticated;
-        });
+        }).catch();
 
         this.setToken(localStorage.getItem("keycloak-token"));
         this.setRefreshToken(localStorage.getItem("keycloak-refresh-token"));

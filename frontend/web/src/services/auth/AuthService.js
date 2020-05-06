@@ -30,6 +30,6 @@ export default class AuthService extends GeneralService {
     }
 
     getUserInfo = () => {
-        return this.fetch("/protocol/openid-connect/userinfo");
+        return this.fetchExternal("/protocol/openid-connect/userinfo");
     };
 };
