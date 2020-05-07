@@ -18,7 +18,7 @@ Podle mého názoru se chytré domácnosti dostanou do popředí, na trhu v obla
 Ovšem nastává problém, kdy tato zařízení jsou velice drahá a výrobce, většinou, podporuje pouze svá zařízení a je téměř nemožné sestavit chytrou domácnost z různých komponentů od různých výrobců.
 
 Cílem této práce je vytvořit kompletní řešení chytré domácnosti, které bude levné a připojená různá zařízení budou mezi sebou komunikovat bez ohledu na výrobce.
-Dále hlavním rysem tohoto projektu je poskytnutní přístupnosti k domácnosti. Tento systém je navržen tak, aby mohl být nasazen v cloudu a být přístupný pro tisíce uživatelů zároveň. Vyžaduje se určitá robustnost systému a hlavně i bezpečnost.
+Dále hlavním rysem tohoto projektu je poskytnutní přístupnosti k domácnosti. Tento systém je navržen tak, aby mohl být nasazen v cloudu a být přístupný pro tisíce uživatelů zároveň. Vyžaduje se určitá robustnost systému a hlavně bezpečnost.
 Někteří uživatelé však cloudové služby nepodporují a bezpečnost je u nich na prvním místě. Pro tento případ je systém navržen tak, aby mohl běžet na samostatném mini počítači pouze v rámci domácnosti. Dalším cílem práce je poskytnout uživateli
 intuitivní rozhraní pro snadné zprovoznění chytré domácnosti a následné správě domácnosti.
 
@@ -33,100 +33,104 @@ Komunikaci mezi zařízeními je pomocí protokolu \emph{MQTT}, komunikace s už
 
 \bigskip
 
-\section{IoT - Internet of Things (Internet věcí)}
+\section{IoT - Internet věcí (Internet of Things)}
 \label{terminy:iot}
 
 V informatice se jedná o označení pro síť fyzických zařízení, vozidel, domácích spotřebičů a dalších zařízení, která jsou vybavena elektronikou,
 softwarem, senzory, pohyblivými částmi a síťovou konektivitou, která umožňuje těmto zařízením se propojit a vyměňovat si data.
 Každé z těchto zařízení je jasně identifikovatelné díky implementovanému výpočetnímu systému,
-ale přesto je schopno pracovat samostatně v existující infrastruktuře internetu.~\cite{iotWikipedia}
-\newline
+ale přesto je schopno pracovat samostatně v existující infrastruktuře internetu.~\cite{wiki:iot}
 
 Jak vyplývá z definice \emph{IoT}, zařízení v domácnosti jsou propojena (např. přes switch, nebo router) a navzájem komunikují. Po síti se posílají data z různých senzorů a různá zařízení na tato data reagují jinak.
 Data mohou být vyhodnocována přímo daným zařízením, nebo systémem, který je pro zařízení dostupné. Tento systém může být ve formě distribuované sítě, kde data mohou být vyhodnocována a zasílána i na druhý konec světa.
 V \emph{IoT} velmi často vystupuje \emph{umělá inteligence} (dále jako AI - artificial intelligence), která může předávat data různým zařízením a vyhodnocovat pomocí neuronových sítí.
-\newline
 
 \emph{IoT} je využíváno i v prostředí různých výrobních procesů, či linek. V továrnách kde velké stroje plní svoji práci, mohou také mezi sebou komunikovat a rozdělení práce mezi dané stroje může být tímto přístupem velice efektivní.
 Stroje rozloží výrobní proces tak efektivně, že všechny stroje jsou zatížené tak, jaké požadavky jsou zavedené na daný proces. Amortizace těchto strojů se sníží a proto i náklady na výrobu jsou nižší. Stroje mohou mezi sebou komunikovat dokonce
 i mimo lokální továrny a vyměňovat si data např. o počtu materiálu, který je přítomen na skladě a opět efektivně přerozdělovat material do více skladů a továren.
 
-\begin{figure}
+\newpage
+
+\section{Vestavěný systém (Embedded system)}
+\label{terminy:vestaveny}
+
+Vestavěný systém, neboli \emph{Embedded system} je hardwarový systém, který je tzv. \emph{microprocessor-based}(založený na mikroprocesoru).
+Obsahuje software, který je navržen k vykonávání určité specifické činnosti, buď jako nezávislý systém, nebo jako část většího celku.
+Nejvýznamnější komponent vestavěného systému je integrovaný obvod, který je navržen pro operace, které jsou závislé na reálném čase(dále jako \emph{real-time} systém).~\cite{embedded:info}
+
+K vestvěnému systému lze připojit mnoho vstupních/výstupních periferních zařízení, které spolupracují s mikrokontrolérem obsaženým ve vestavěném systému.
+Na obrázku níže je vyznačeno jednoduché schéma, které pojednává o asociaci mezi vestavěným systémem, vstupních/výstupních zařízení a dalších náležitostí.
+
+Nejdůležitější částí je připojení vstupních zařízení, mezi které může patřit např. klávesnice, tlačítka a různé senzory. Vestavěný systém pomocí mikrokontroléru vyhodnotí získaná data
+a přivede na výstup patřičnou hodnotu, odpovídající programovému zpracování dat podle obsaženého softwaru (také označovaný jako \emph{firmware}). Mezi výstupní zařízení můžeme zahrnout např. různá relé, tranzistory, audio a video výstupy a mnoho dalších.
+
+\begin{figure}[hbt]
   \centering
-  \includegraphics[width=.8 \linewidth]{obrazky-figures/iot.jpeg}
+  \includegraphics[width=.6 \linewidth]{obrazky-figures/embedded_system.png}
   \caption{
-    Koncept IoT v domácnosti
+    Koncept vestavěného systému
   }
+  \label{figure:embedded}
 \end{figure}
 
 \newpage
-
-\section{Vestavěný systém}
-\label{terminy:vestaveny}
-
-Vestavěný systém je jednoúčelový počítač, který slouží většinou k jednomu účelu.
-
-\section{MCU - mikrokontrolér}
+\section{MCU - mikrokontrolér (Microcontroller unit)}
 \label{terminy:mcu}
 
-Mikrokontrolér, nebo také jednočipový počítač je integrovaný obvod
+Mikrokontrolér, nebo také jednočipový počítač je integrovaný obvod.
+Mikrokontroléry jsou velice spolehlivé, kompaktní a proto hojně využívány k řízení různých elektronických systému, obykle pomocí mikroprocesoru, paměti a různých periferních zařízení.
+Tato malá zařízení jsou optimalizována pro vestavěné systémy popsané výše, které potřebují zpracovat interakci s digitálními, analogovými, nebo elektromechanickými komponenty.
+
+Název pro mikrokontrolér byl velice vhodně zaveden, protože opravdu zdůrazňuje charakteristiku typu daného zařízení. Mikrokontroléry jsou malá zařízení, která dokáží velké věci.
+Mikrokontroléry hrají důležitou roli v technologické budoucnosti. Získavají si velikou oblibu nejen u různých SW\footnote{\textbf{SW} - software}/HW\footnote{\textbf{HW} - hardware} expertů, ale i studentů a spousty hobby nadšenců.~\cite{mcu:info}
+Díky mikroprocesorům lze jednoduše propojit softwarový nástroj, či aplikaci s hardware komponenty.
+
+Blížící se budoucnost přinese spoustu nových možností v oblasti miktrokontrolérů
+a počet zařízení obsahující mikrokontrolér může v blízké době přesáhnout i několika desítek miliard kusů. Výkon u těchto zařízení bude vyšší a velikost menší, což je občas velice důležitý faktor na poli chytrých domácností.
+V chytré domácnosti jsou zařízení sestavena s pomocí mikrokontroléru, který se stará o danou specifickou funkci. V této bakalářské práci jsou především použity mikrokontroléry s čipem ESP-8266 od firmy \emph{Espressif Systems}
+a minipočítač \emph{Raspberry Pi}. Obrázek níže obsahuje odpovídající architekturu skoro každého mikrokontroléru.
+Mezi hlavní prvky patří analogově-digitální převodník, čítače, časovače, modul řídící PWM\footnote{\textbf{PWM} - pulse-witdth modulation (pulsně šířková modulace). }
+
+\begin{figure}[hbt]
+  \centering
+  \includegraphics[width=.6 \linewidth]{obrazky-figures/mcu.jpeg}
+  \caption{
+    Koncept mikrokontroléru
+  }
+  \label{figure:mcu}
+\end{figure}
+
+\section{Moduly obsahující čip ESP8266}
+\label{terminy:esp8266}
+
+\emph{ESP8266} je levný WiFi mikročip, který s přidáním několika komponentů je schopen plnohodnotně plnit úlohu mikrokontroléru. Tento mikročip je velice oblíbený v oblasti chytrých zařízení díky své stabilititě, výkonosti, velikosti, ceně a mnoho dalšího.
+Na trhu existuje spousty modulů, které obsahují právě zmíněný mikročip a plní tak úlohu mikrokontroléru. Mezi nejoblíbenější moduly, které obsahují tento mikročip jsou \emph{ESP-01}, který obsahyje pouze 2 GPIO piny, poté větší \emph{Wemos D1 mini} a \emph{NodeMCU}.
+Tento projekt chytré domácnost je sestaven hlavně z těchto modulů díky svým přednostem a využití. Pro maximálně 2 jednotlivé vstupní/výstupní periferie připojené k modulu je využit modul \emph{ESP-01}. Pro komplexní využítí a připojení více periferií je použit modul \emph{Wemos D1 mini}.
 
 
-V byznysu se vžil slovesný útvar \uv{elevator pitch} -- představení ve výtahu. Ne náhodou jeho struktura připomíná právě doporučovanou strukturu abstraktu. Opravdu, autor odborného textu má do abstraktu napsat právě to, co by říkal o své práci, kdyby na to měl nejvýše dvě minuty a nemohl použít žádných slajdů, obrázků, textu. O čem by tedy měl mluvit?
+\begin{figure}[hbt]
+  \centering
 
-\paragraph{První část -- Jaký se řeší problém? Jaké je téma? Jaký je cíl textu?}
-\begin{itemize}
-  \item{Tato práce řeší.}
-  \item{Cílem této práce je.}
-  \item{Zaměřil jsem se na.}
-\end{itemize}
-Nepatří sem úvodní pohádky charakteristické pro špatný odborný sloh: \uv{Naše poslední pětiletka staví před nás nové a smělé cíle}, \uv{S rozvojem výpočetní techniky a zejména zobrazovacích zařízení je stále důležitější \ldots} Ty nepatří do dobrého textu nikam, ale do~abstraktu tím méně. Pokud dokážete vyjádřit účel svého textu v jedné větě o pár slovech, udělejte to a nepřidávejte nic navíc. Stručnější zde vždy znamená lepší.
+  \begin{subfigure}[hbt]{.5\linewidth}
+    \centering
+    \includegraphics[width=.5 \linewidth]{obrazky-figures/esp-01.png}
+    \caption{ESP-01 modul}
+    \label{figure:esp01}
+  \end{subfigure}
 
-\paragraph{Druhá část -- Jak je problém vyřešen? Cíl naplněn?}
-\begin{itemize}
-  \item{Zvolený problém jsem vyřešil pomocí toho a toho.}
-  \item{V řešení bylo použito metody té, postupu toho a analýzy oné.}
-  \item{Práce představuje algoritmus takový, který.}
-  \item{Data jsem zpracovával pomocí těch a těchto nástrojů a provedl vyhodnocení takové.}
-  \item{Podstatou našeho algoritmu je.}
-\end{itemize}
+  \hfill
 
-Pokud je podstatou sepisovaného odborného textu nová metodologie (= \uv{jak něco dělat}), patří přesně sem její popis. Pokud se představované řešení skládá ze tří částí, pravděpodobně v této části abstraktu budou tři věty, z nichž každá se bude věnovat jedné části řešení. Dobrý abstrakt v této části bude upřímný a přesný -- nebude si schovávat \uv{odhalování svých tajemství} až do textu. Vágní formulace podstaty řešení v abstraktu obvykle znamená, že autoři buď neumí psát a nebo vlastně nemají o čem -- ani jedno není zrovna výzva ke stažení a čtení mnoha stran textu.
+  \begin{subfigure}[hbt]{.5\linewidth}
+    \centering
+    \includegraphics[width=.5 \linewidth]{obrazky-figures/wemos.png}
+    \caption{Wemos D1 mini modul}
+    \label{figure:wemos}
+  \end{subfigure}
 
-\paragraph{Třetí část -- Jaké jsou konkrétní výsledky? Jak dobře je problém vyřešen?}
-\begin{itemize}
-  \item{Podařilo se dosáhnout úspěšnosti 87,3\,\%.}
-  \item{V práci jsme vytvořili systém, který.}
-  \item{Vytvořené řešení poskytuje ty a ty možnosti.}
-  \item{Provedeným výzkumem jsme zjistili, že.}
-\end{itemize}
+\end{figure}
 
-Není špatným zvykem uvést v této části konkrétní číslo -- \uv{existující metodu XY jsme zrychlili pětkrát}. Pokud přínos práce není možné shrnout do dvou nebo tří vět, někde je něco velmi špatně a celý text pravděpodobně nestojí za psaní.
-
-\paragraph{Čtvrtá část -- Takže co? Čím je to užitečné vědě a čtenáři?}
-\begin{itemize}
-  \item{Přínosem této práce je.}
-  \item{Hlavním zjištěním je.}
-  \item{Hlavním výsledkem je.}
-  \item{Na základě zjištěných údajů je možné.}
-  \item{Výsledky této práce umožňují.}
-\end{itemize}
-
-Při psaní vědeckých článků já sám obvykle bojuji s podobností části třetí a čtvrté. Vskutku, obě hovoří o tom, co jsou výsledky a přínosy textu. Účelem třetí části je jmenovitě a konkrétně jmenovat dosažené výsledky, úkolem části čtvrté je interpretovat jejich význam. Asi ničemu nevadí, když tato dvě sdělení do jisté míry splynou a část třetí a čtvrtá nejen že nemají každá vlastní odstavec, ale prolínají se dokonce ve společných větách.
-
-\paragraph{Nultá část -- O co jde? Kde jsme?}
-\begin{itemize}
-  \item{Práce je řešena v kontextu tom a tom.}
-  \item{Nauka ta a ta se zabývá studiem toho a toho.}
-  \item{Stavíme na těchto a oněch nedávných pokrocích v naší oblasti.}
-\end{itemize}
-
-Někdy je nutné na sám začátek abstraktu vložit kratičké uvedení kontextu, ve kterém se~celá záležitost vlastně odehrává. Může to být přínosné~u vskutku obskurního a esoterického oboru, který leží stranou hlavního proudu. Obvykle tato část ovšem nebývá nutná a~věty v~ní obsažené bývají prototypy ohavné, rádobyodborné vaty. Je dobrou praxí zapomenout, že se tato část v abstraktu může vyskytovat. Když někdo, kdo je odborníkem v~oboru práce, přece po přečtení abstraktu zavrtí hlavou: \uv{Vůbec nevím, o čem tady můžete psát,} pouze tehdy je vhodné vložit nějaké věty s uvedením kontextu.
-
-\subsection*{Inovace není Ignorance}
-
-Popisuji v tomto textu jakýsi obecný model obecné diplomky. Ještě ke všemu se na začátku zaklínám, že to je můj názor a vkus a jsem zvědavý na názory a vkusy alternativní (což jsem!). Každý diplomant (Mgr. i Bc.) přitom cítí, že jeho diplomka je speciální a výjimečná. Tudíž se nebude držet nějakého schématu, které slouží pro běžné a průměrné diplomky -- tj. pro ty ostatní. Setkávám se s dobrými důvody, proč se od výše naznačeného schématu odchýlit a každoročně některým studentům odchýlení od schématu sám doporučuji. Vskutku, každá diplomka je jedinečná a zvláštní. Kdyby ne, nemusely by se psát, stačilo by je kopírovat. Ovšem vždycky před tím, než vybočíte ze standardního a kanonického způsobu organizování odborného textu, dejte si tu práci ho poznat, pochopit a zvládnout. Způsob vědecké práce, strukturování odborného textu, nebo třeba citování pramenů, může vypadat rigidně a neohrabaně, je to ale zatím ten nejlepší způsob, který jsme jako lidstvo dokázali vymyslet. Pokud ho ovládnete, pochopíte jeho výhody a nevýhody a inovujete ho, je to v pořádku a jste vítáni. Pokud se jím odmítnete zabývat, pravděpodobně neprovedete hodnotnou inovaci, ale vytvoříte \uv{paskvil}.
-
+\section{Minipočítač Raspberry Pi}
+\label{terminy:raspberry}
 
 \chapter{Návrh řešení}
 \label{navrh}
@@ -1176,7 +1180,7 @@ Správně:
   \item{LVCSR -- large-vocabulary continuous speech recognition (rozpoznávač spojité řeči s~velkým slovníkem)}
 \end{enumerate}
 
-\bf Nevynechávejte text mezi sekcí a podsekcí: \rm Mezi názvem kapitoly a podkapitoly by neměl chybět text. Toto místo přímo volá po 1-2 odstavcích, kde vysvětlíte, o čem ta kapitola je a co se v ní čtenář dozví.
+\bf Nevynechávejte text mezi sekcí a podsekcí: \rm Mezi názvem kapitoly a podkapitoly by neměl chybět text. Toto místo přímo volá po 1-2 odstavcích, kde vysvětlíte, o ��em ta kapitola je a co se v ní čtenář dozví.
 
 \bf Ručně dělané skicy a obrázky: \rm Obzvláště pro pracovní verzi práce je jednodušší rychle něco namalovat, vyfotit a pak psát dál. Většinou je ta skica schématu napoprvé špatně a tak zbytečně ztrácíte čas předěláváním. Do finálního textu bych byl s \uv{ruční prací} opatrný. Pro některé oponenty/přísedící to může být falešný indikátor, že jste nestíhali, a~tak jste to odbyli rukou za 5 minut.
 
