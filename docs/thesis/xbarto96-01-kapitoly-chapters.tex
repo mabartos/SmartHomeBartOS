@@ -103,34 +103,91 @@ Mezi hlavní prvky patří analogově-digitální převodník, čítače, časov
 \section{Moduly obsahující čip ESP8266}
 \label{terminy:esp8266}
 
-\emph{ESP8266} je levný WiFi mikročip, který s přidáním několika komponentů je schopen plnohodnotně plnit úlohu mikrokontroléru. Tento mikročip je velice oblíbený v oblasti chytrých zařízení díky své stabilititě, výkonosti, velikosti, ceně a mnoho dalšího.
-Na trhu existuje spousty modulů, které obsahují právě zmíněný mikročip a plní tak úlohu mikrokontroléru. Mezi nejoblíbenější moduly, které obsahují tento mikročip jsou \emph{ESP-01}, který obsahyje pouze 2 GPIO piny, poté větší \emph{Wemos D1 mini} a \emph{NodeMCU}.
-Tento projekt chytré domácnost je sestaven hlavně z těchto modulů díky svým přednostem a využití. Pro maximálně 2 jednotlivé vstupní/výstupní periferie připojené k modulu je využit modul \emph{ESP-01}. Pro komplexní využítí a připojení více periferií je použit modul \emph{Wemos D1 mini}.
-
+\emph{ESP8266} je levný WiFi mikročip, který s přidáním několika komponentů je schopen plnohodnotně plnit úlohu mikrokontroléru. Tento mikročip je velice oblíbený v oblasti chytrých zařízení díky své stabilititě, výkonosti, velikosti, ceně a mnoho dalšího.~\cite{wiki:esp}
+Na trhu existuje spousty modulů, které obsahují právě zmíněný mikročip a plní tak úlohu mikrokontroléru. Mezi nejoblíbenější moduly, které obsahují tento mikročip jsou \emph{ESP-01}, který obsahyje pouze 2 GPIO\footnote{\textbf{GPIO} - univerzální vstupní/výstupní pin (General-purpose input/output)} piny, poté větší \emph{Wemos D1 mini} a \emph{NodeMCU}.
+Tento projekt chytré domácnost je sestaven hlavně z těchto modulů díky svým přednostem a využití. Pro maximálně 2 jednotlivé I/O\footnote{\textbf{I/O} - vstup/výstup (\textbf{I}nput/\textbf{O}utput)} periferie připojené k modulu je využit modul \emph{ESP-01}. Pro komplexní využítí a připojení více periferií je použit modul \emph{Wemos D1 mini}.
 
 \begin{figure}[hbt]
   \centering
-
-  \begin{subfigure}[hbt]{.5\linewidth}
-    \centering
-    \includegraphics[width=.5 \linewidth]{obrazky-figures/esp-01.png}
-    \caption{ESP-01 modul}
-    \label{figure:esp01}
-  \end{subfigure}
-
-  \hfill
-
-  \begin{subfigure}[hbt]{.5\linewidth}
-    \centering
-    \includegraphics[width=.5 \linewidth]{obrazky-figures/wemos.png}
-    \caption{Wemos D1 mini modul}
-    \label{figure:wemos}
-  \end{subfigure}
-
+  \includegraphics[width=.2 \linewidth]{obrazky-figures/esp_standalone.png}
+  \caption{Samostatný ESP8266 čip}
+  \label{figure:esp8266}
 \end{figure}
 
 \section{Minipočítač Raspberry Pi}
 \label{terminy:raspberry}
+
+\emph{Raspberry Pi} je v informatice označení pro jednodeskový počítač, který je se svým výkonem srovnatelný se slabším stolním počítačem. Obsahuje video a audio výstupy,
+ethernetový port, USB porty a výstup na dedikovaný monitor určený přímo pro \emph{Raspberry Pi}. Tento malý počítač, rozměry podobný kreditní kartě, je využit v této bakalářské práci na nasazení služeb, kdy uživatel nechce využívat cloudové služby.
+Modelů \emph{Raspberry Pi} je na trhu více, kde se liší svým výkonem, velikostí, nebo kompatibilitou s různými rozhraními. Za účelem nasazení služeb v chytré domácnosti lze využít i menšího sourozence z rodiny počítačů \emph{Raspberry Pi} a to přesně \emph{Raspberry Pi W},
+kde vytvořené, nebo poskytnuté služby jsou optimalizované pro běh na zařízeních s menším výpočetním výkonem a operační pamětí.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=.5 \linewidth]{obrazky-figures/raspberry.png}
+  \caption{Raspberry Pi 4}
+\end{figure}
+
+\newpage
+
+\section{MQTT protokol}
+\label{mqtt}
+
+\emph{MQTT} neboli \emph{Message Queuing Telemetry Transport} protokol je jeden z nejvýznamnějších komunikačních protokolů IoT zařízení a systémů.
+\emph{MQTT} patří do kategorie aplikačních protokolů, kde jeho hlavní předností je malá velikost datové hlavičky a možnost komunikovat v sítích s omezenou propustnosí.
+Patří do skupiny \emph{Publish-Subscribe}(dále Pub-Sub) protokolů. Hlavním principem \emph{Pub-Sub} protokolů je výměna zpráv mezi dvěma typy účastníků. První z nich je tzv. odebíratel(dále \emph{subscriber}),
+který se přihlašuje k odběru zpráv s daným temátem(dále \emph{topic}).
+Subscriber může přijímat několik zpráv s různými tématy a v průběhu se od odběru i odhlašovat. Druhým typem je tzv. vydavatel(dále \emph{publisher}), který posílá zprávy do určitého
+topicu.~\cite{mqtt:info}
+
+\subsection{MQTT Broker}
+\emph{MQTT Broker} je služba (nebo-li software, který běži v cloudu, či lokálním PC), která se stará o rozesílání a spravování zpráv, které různá zařízení posílají. MQTT Broker je prostředník mezi účastníky typu \emph{subscriber} a \emph{publisher}.
+Každé zařízení, které chce využívat MQTT protokol a komunikovat s ostatními zařízeními, musí definovat URL brokeru, přes který budou tyto zprávy procházet.
+Jak již bylo řečeno, MQTT je Pub/Sub protokol, proto když přijde, od účastníka typu publisher, zpráva ke specifickému topicu, musí se podívat, kdo všechno je přihlášen k odběru daného topicu a rozeslat všem účastníkům, typu subscriber, tuto zprávu.
+Každé zařízení může jak přijímat, tak i odesílat zprávy k danému topicu.~\cite{wiki:mqtt_broker}
+
+\subsection{Zabezpečení}
+V \emph{IoT} je velice důležitá i bezpečnost a pomocí \emph{MQTT Brokeru} lze dosáhnout určitého bezpečnostního cíle. Je opravdu nevítané, aby se někdo cizí dostal bez autentizace k odběru vašich
+zpráv procházející přes \emph{MQTT Broker} a mohl zasílat zprávy do různých dalších zařízení připojená v domácnosti.
+Útočník tak má šanci kontrolovat celou vaši domácnost. Každý \emph{MQTT Broker} od různých výrobců disponuje různou sadou zabezpečení a vlastností.~\cite{wiki:mqtt_broker}
+
+Možné typy zabezpečení:
+\begin{itemize}
+  \item Využívání šifrovaného portu \textbf{8883} namísto nešifrovaného \textbf{1883}
+  \item Autentizace pomocí uživatelského jména a hesla
+  \item \textbf{TLS}\footnote{\textbf{TLS} - Transport layer security} připojení
+  \item \textbf{OAuth}\footnote{\textbf{OAuth} - Poskytuje autentizační a autorizační správu} správa
+\end{itemize}
+\subsection{QoS - Kvalita služeb (Quality of services)}
+Každá zpráva může specifikovat, jak bude zajištěna kvalita služeb u poslání daných zpráv.~\cite{wiki:mqtt_broker}
+\begin{itemize}
+  \item \textbf{QoS 1} - Nejvýše jednou; zpráva je zaslána pouze jednou bez potvrzení.
+  \item \textbf{QoS 2} - Alespoň jednou; zpráva stále zasílána dokud nedorazí potvrzení o přijetí.
+  \item \textbf{QoS 3} - Přesně jednou; zajištění, že přijemce dostane zprávu pouze jednou.
+\end{itemize}
+
+\newpage
+\subsection{Typy zpráv}
+\emph{MQTT} protokol využívá sadu různých typů zpráv pro vlastní běh. Na obrázku \ref{figure:mqtt_flow}lze zahlédnout posloupnost zpráv.~\cite{wiki:mqtt_broker}
+Mezi základní typy zpráv u protokolu MQTT patří:
+\begin{itemize}
+  \item \textbf{CONNECT} - slouží pro ustanovení připojení.
+  \item \textbf{CONNACK} - (\emph{Connection acknowledge}) typ zprávy je odezva z brokeru klientu, který požadoval o připojení a vytvoří se spojení mezi uzly.
+  \item \textbf{SUBSCRIBE} - neboli odběr; klient pošle tuto zprávu brokeru na určitý topic, u kterého chce přijímat dané zprávy
+  \item \textbf{UNSUBSCRIBE} - slouží k odhlášení klienta od odebírání zpráv z určitého topicu
+  \item \textbf{PUBLISH} - slouží na publikování zpráv na různý topic (např. zasílání dat ze senzorů)
+  \item \textbf{DISCONNECT} - slouží k odhlášení klienta z celého systému
+\end{itemize}
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=.7 \linewidth]{obrazky-figures/mqtt_flow.png}
+  \caption{Posloupnost MQTT zpráv}
+  \label{figure:mqtt_flow}
+\end{figure}
+
+
+
 
 \chapter{Návrh řešení}
 \label{navrh}
@@ -731,7 +788,7 @@ Závěrečná kapitola -- Závěr obsahuje zhodnocení dosažených výsledků s
 
 Závěr práce by měl obsahovat shrnující fakta o práci a čtenáři dát (i bez čtení jiných částí práce) informaci o tom, co bylo předmětem práce a jak se práce vydařila. Závěr by měl obsahovat i osobní dojmy z práce a nejlépe i shrnutí možností dalšího pokračování práce. Délka závěru by neměla přesáhnout jednu stranu textu. Do závěru se nehodí odkazy do~textu práce či literatury.
 
-V závěru ať nepřicházejí žádné nové poznatky, neobjeví se tam nové číslo nebo nový graf.
+V z��věru ať nepřicházejí žádné nové poznatky, neobjeví se tam nové číslo nebo nový graf.
 
 \subsection*{Rady pro Závěr od prof. Zemčíka}
 
@@ -791,7 +848,7 @@ Závěr by měl mít rozsah 1 stránka a obsahuje:
 
 \section{Přílohy}
 
-Do p��íloh umístíme ty části práce, které mají výrazně popisný charakter (například příručka pro použití vytvořeného systému, fragmenty zdrojového textu, detailní schémata a detailní popisy řešených částí projektu a podobně) \cite{fitWeb}. Všechny přílohy musí být očíslovány, přičemž se využívá samostatný styl číslování (písmena A--Z). Je-li příloh více, jejich seznam se uvádí na konci práce za seznamem použité literatury.
+Do p��íloh umístíme ty části práce, které mají výrazně popisný charakter (například příručka pro použití vytvořeného systému, fragmenty zdrojového textu, detailní sch��mata a detailní popisy řešených částí projektu a podobně) \cite{fitWeb}. Všechny přílohy musí být očíslovány, přičemž se využívá samostatný styl číslování (písmena A--Z). Je-li příloh více, jejich seznam se uvádí na konci práce za seznamem použité literatury.
 
 I když počet stránek příloh není omezen, je nutné dodržet stručnost a účelnost a přihlédnout k významu přílohy pro hodnocení práce a pro případné navazující práce v budoucnu. Zbytečně velký objem příloh bez řádného odůvodnění může být negativně hodnocen přinejmenším z důvodů ekologických a ekonomických. Více viz \cite{fitWeb}.
 
@@ -861,7 +918,7 @@ Tato pravidla jsou převzata ze stránek fakulty \cite{citace}.
   \item{\bf Odkaz na bibliografickou citaci \rm je odvolání se v textu na bibliografickou citaci uvedenou na jiném místě práce.}
 \end{itemize}
 
-\section{Přebírání cizích textů}
+\section{Přebírání cizích text��}
 
 Při přebírání cizího textu je nutné přebíraný text řádně odlišit od vlastního textu. V opačném případě autor vydává cizí text za svůj vlastní, což je u závěrečných prací těžko tolerovatelný prohřešek. Přebíraný text lze do vlastní práce začlenit dvěma způsoby:
 
@@ -987,7 +1044,7 @@ Následující je převzato z normy ČSN ISO 690 a zkráceno. Jednotlivé část
         \begin{itemize}
           \item Pokud má citovaný dokument mezinárndní standardní číslo (ISBN, ISSN, \ldots) případně DOI, které ho jednoznačně identifikuje, musí být uvedeno.
         \end{itemize}
-  \item \textbf{Dostupnost, přístup nebo umístění informací}
+  \item \textbf{Dostupnost, přístup nebo umístěn�� informací}
         \begin{itemize}
           \item U elektronických zdrojů by mělo být vždy uvedeno, kde je uvedený zdroj dostupný. Uvádíme jako \uv{Dostupné z:} následované URI nebo URL.
         \end{itemize}
@@ -1016,7 +1073,7 @@ Požadovaný rozsah písemné části práce bez příloh dle směrnice FIT \cit
     Diplomová práce           & 50               & 80--100        & 120             \\ \hline
   \end{tabular}
 \end{table}
-Přibližný rozsah ve vysázených stránkách bude asi 1/2 rozsahu v normovaných stránkách. Pojem {\it normovaná stránka} se vztahuje k~posuzování objemu práce, nikoliv k~počtu vytištěných listů. Z historického hlediska jde o~počet stránek rukopisu, který se psal psacím strojem na speciální předtištěné formuláře při dodržení průměrné délky řádku 60 znaků a~při 30 řádcích na stránku rukopisu. Vzhledem k~zápisu korekturních značek se používalo řádkování 2 (ob jeden řádek). Tyto údaje (počet znaků na řádek, počet řádků a~proklad mezi nimi) se nijak nevztahují ke konečnému vytištěnému výsledku. Používají se pouze pro posouzení rozsahu. \textbf{Jednou normovanou stránkou se tedy rozumí $\mathbf{60\cdot 30 = 1800}$ znaků včetně mezer.} Obrázky zařazené do textu se započítávají do rozsahu písemné práce odhadem jako množství textu, které by ve výsledném dokumentu potisklo stejně velkou plochu.
+Přibližný rozsah ve vysázených stránkách bude asi 1/2 rozsahu v normovaných stránkách. Pojem {\it normovaná stránka} se vztahuje k~posuzování objemu práce, nikoliv k~počtu vytištěných listů. Z historického hlediska jde o~počet stránek rukopisu, který se psal psacím strojem na speciální předtištěné formulá��e při dodržení průměrné délky řádku 60 znaků a~při 30 řádcích na stránku rukopisu. Vzhledem k~zápisu korekturních značek se používalo řádkování 2 (ob jeden řádek). Tyto údaje (počet znaků na řádek, počet řádků a~proklad mezi nimi) se nijak nevztahují ke konečnému vytištěnému výsledku. Používají se pouze pro posouzení rozsahu. \textbf{Jednou normovanou stránkou se tedy rozumí $\mathbf{60\cdot 30 = 1800}$ znaků včetně mezer.} Obrázky zařazené do textu se započítávají do rozsahu písemné práce odhadem jako množství textu, které by ve výsledném dokumentu potisklo stejně velkou plochu.
 
 Orientační rozsah práce lze při použití systému \LaTeX{} odhadnout sečtením velikostí zdrojových souborů práce a podělením konstantou cca 2000 (normálně bychom dělili konstantou 1800, ale ve zdrojových souborech jsou i~vyznačovací příkazy, které se do rozsahu nepočítají). Pro přesnější odhad lze pak vyextrahovat holý text z~PDF (např. metodou cut-and-paste nebo {\it Save as Text}) a~jeho velikost podělit konstantou 1800. Využít lze i program Detex\footnote{\url{https://www.ctan.org/pkg/detex}} (v operačním systému Linux je dostupný v distribučním balíčku, pro Windows jej lze nainstalovat separátně\footnote{\url{http://urchin.earth.li/~tomford/detex/}}), který ze~zdrojového textu odstraní vyznačovací příkazy a~následně lze jeho velikost rovněž podělit konstantou 1800. \bf Program Detex pro určení počtu normostran v jádru práce využívá i \texttt{Makefile} v této šabloně \rm -- volá se příkazem \verb|make normostrany|.
 
@@ -1025,7 +1082,7 @@ V Microsoft Word lze orientační počet normovaných stran zjistit pomocí funk
 
 Originální text věnující se úkolu, jehož řešení tvoří jádro kvalifikační práce, musí představovat alespoň třetinu celkového rozsahu písemné zprávy. Pouhý kompilát dostupných zdrojů je nepřijatelný.
 
-Předmětem hodnocení oponenta kvalifikační práce je především text písemné zprávy a výsledný produkt. Neúměrně velký počet stran písemné zprávy svědčí o nekvalitním zpracování tématu a oponenta zbytečně zatěžuje. U prací, u nichž rozsah písemné zprávy odpovídá objemu vykonaných prací, se samozřejmě připouští větší rozsah vysvětlujícího textu. Vysvětlení podstaty řešeného problému a použitých přístupů k řešení však nemusí narůstat lineárně s objemem prací. Při kvalitní struktuře a ucelenosti textu písemné zprávy může být rozsah textu relativně malý. Detailní popisy významných částí projektu, které mají dokumentační (nikoliv vysvětlující) charakter, mohou být uvedeny v rámci příloh, na~které se z hlavního textu odkazujeme.
+Předmětem hodnocení oponenta kvalifikační práce je především text písemné zprávy a výsledný produkt. Ne��měrně velký počet stran písemné zprávy svědčí o nekvalitním zpracování tématu a oponenta zbytečně zatěžuje. U prací, u nichž rozsah písemné zprávy odpovídá objemu vykonaných prací, se samozřejmě připouští větší rozsah vysvětlujícího textu. Vysvětlení podstaty řešeného problému a použitých přístupů k řešení však nemusí narůstat lineárně s objemem prací. Při kvalitní struktuře a ucelenosti textu písemné zprávy může být rozsah textu relativně malý. Detailní popisy významných částí projektu, které mají dokumentační (nikoliv vysvětlující) charakter, mohou být uvedeny v rámci příloh, na~které se z hlavního textu odkazujeme.
 
 Pokud se rozsah písemné zprávy bude blížit minimálnímu požadovanému rozsahu, bude oponent zvláště pečlivě hodnotit, zda jsou jednotlivé části zprávy pro pochopení práce opravdu nezbytné. Zařazení cizích textů, které s tématem vlastní práce souvisejí pouze okrajově nebo jejichž kvalita je pochybná, s cílem dosáhnout alespoň minimálního požadovaného rozsahu (např. v časovém stresu těsně před termínem odevzdání práce), může vést k citelnému zhoršení celkového hodnocení práce.
 
@@ -1044,7 +1101,7 @@ Mezeru neděláme tam, kde se spojují číslice s~písmeny v~jedno slovo nebo v
 
 Členicí (interpunkční) znaménka tečka, čárka, středník, dvojtečka, otazník a~vykřičník, jakož i~uzavírací závorky a~uvozovky se přimykají k~předcházejícímu slovu bez mezery. Mezera se dělá až za nimi. To se ovšem netýká desetinné čárky (nebo desetinné tečky). Otevírací závorka a~přední uvozovky se přimykají k~následujícímu slovu a~mezera se vynechává před nimi -- (takto) a~\uv{takto}.
 
-Pro spojovací a~rozdělovací čárku a~pomlčku nepoužíváme stejný znak. Pro pomlčku je vyhrazen jiný znak (delší). V~systému TeX (\LaTeX{}) se spojovací čárka zapisuje jako jeden znak \uv{pomlčka} (například \uv{Brno-město}), pro sázení textu ve smyslu intervalu nebo dvojic, soupeřů a~podobně se ve zdrojovém textu používá dvojice znaků \uv{pomlčka} (například \uv{zápas Sparta -- Slavie}; \uv{cena 23--25 korun}), pro výrazné oddělení části věty, pro výrazné oddělení vložené věty, pro vyjádření nevyslovené myšlenky a~v~dalších situacích (viz Pravidla českého pravopisu) se používá nejdelší typ pomlčky, která se ve zdrojovém textu zapisuje jako trojice znaků \uv{pomlčka} (například \uv{Další pojem --- jakkoliv se může zdát nevýznamný --- bude neformálně definován v~následujícím odstavci.}). Při sazbě matematického mínus se při sazbě používá rovněž odlišný znak. V~systému TeX je ve zdrojovém textu zapsán jako normální mínus (tj. znak \uv{pomlčka}). Sazba v~matematickém prostředí, kdy se vzoreček uzavírá mezi dolary, zajistí vygenerování správného výstupu.
+Pro spojovací a~rozdělovací čárku a~pomlčku nepoužíváme stejný znak. Pro pomlčku je vyhrazen jiný znak (delší). V~systému TeX (\LaTeX{}) se spojovací čárka zapisuje jako jeden znak \uv{pomlčka} (například \uv{Brno-město}), pro sázení textu ve smyslu intervalu nebo dvojic, soupeřů a~podobně se ve zdrojovém textu používá dvojice znaků \uv{pomlčka} (například \uv{zápas Sparta -- Slavie}; \uv{cena 23--25 korun}), pro výrazné oddělení části věty, pro výrazné oddělení vložené věty, pro vyjádření nevyslovené myšlenky a~v~dalších situacích (viz Pravidla českého pravopisu) se používá nejdelší typ pomlčky, která se ve zdrojovém textu zapisuje jako trojice znaků \uv{pomlčka} (například \uv{Další pojem --- jakkoliv se může zdát nevýznamný --- bude neformálně definován v~následujícím odstavci.}). Při sazbě matematického mínus se při sazbě používá rovn��ž odlišný znak. V~systému TeX je ve zdrojovém textu zapsán jako normální mínus (tj. znak \uv{pomlčka}). Sazba v~matematickém prostředí, kdy se vzoreček uzavírá mezi dolary, zajistí vygenerování správného výstupu.
 
 Pravidla pro psaní zkratek jsou uvedena v~Pravidlech českého pravopisu \cite{Pravidla}. I~z~jiných důvodů je vhodné, abyste tuto knihu měli po ruce.
 
@@ -1210,7 +1267,7 @@ Před odevzdáním důkladně zkontrolujte checklist přiložený k této šablo
   \item \textbf{Titulní list:} Nezapomeňte nastavit správný rok (odevzdání) a ústav dle zadání.
   \item \textbf{Zadání:} Nezapomeňte na stažení elektronické verze zadání (šablona ji očekává v~souboru nazvaném \texttt{zadani.pdf}).
   \item \textbf{Prohlášení:} Nezapomeňte před odevzdáním podepsat prohlášení v obou výtiscích práce.
-  \item \textbf{Bibliografické citace:} zkontrolujte, zda v textu odkazujete všechnu citovanou literaturu.
+  \item \textbf{Bibliografické citace:} zkontrolujte, zda v textu odkazujete v��echnu citovanou literaturu.
 \end{itemize}
 
 Pak práci vytiskněte a nechte si ji vyvázat. Pokud svázanou práci otevřete na libovolné stránce, okamžitě najdete chybu. Ignorujte to, je to normální. Nic není dokonalé, prostě \uv{just ship it}\footnote{\url{http://blog.igor.szoke.cz/2011/08/zkoumejte-bezte-za-bod-odkud-neni.html}} \cite{rady}.
