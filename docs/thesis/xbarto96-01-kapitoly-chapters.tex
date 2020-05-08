@@ -205,11 +205,11 @@ O autentizaci a správu uživatelů se, pro větší bezpečnost, stará služba
 \subsection{Quarkus}
 \label{app_prostredi:quarkus}
 
-\todo{Logo to side}
 \begin{figure}[!ht]
   \centering
-  \includegraphics[width=.3 \linewidth]{obrazky-figures/quarkus_logo.png}
-  \caption{}
+  \includegraphics[width=.45 \linewidth]{obrazky-figures/quarkus_logo.png}
+  \caption{Quarkus logo}
+  \label{figure:quarkus_logo}
 \end{figure}
 
 V dnešní době, kdy žijeme v době cloudových služeb, IoT a open-source projektů přichází do popředí kontejnery(\emph{containers}), mikroslužby(\emph{microservices}), reaktivní programování, cloud-native aplikace a spousty dalšího.
@@ -236,11 +236,10 @@ V druhé polovině je k zahlédnutí nastartování celé aplikace a první odpo
 
 \subsection{Vert.x}
 \label{app_prostredi:vertx}
-%logo
 \begin{figure}[hbt]
   \centering
-  \includegraphics[width=.4 \linewidth]{obrazky-figures/vertx.png}
-  \caption{logo}
+  \includegraphics[width=.30 \linewidth]{obrazky-figures/vertx.png}
+  \caption{Vert.x logo}
 \end{figure}
 \emph{Vert.x} je sada nástrojů pro vytvoření reaktivních aplikací, kde hlavní předností je malá velikost, nízké nároky na výpočetní prostředky a rozsáhlý ekosystém.
 Samotný \emph{Quarkus} je založený na \emph{Vert.x} technologii a skoro všechny síťové featury v technologii \emph{Quarkus} závisí na technologii \emph{Vert.x}.
@@ -253,18 +252,18 @@ Tato technologie přináší mnoho zajímavých vylepšení, jako jsou neblokuj�
 \begin{figure}[hbt]
   \centering
   \includegraphics[width=.2 \linewidth]{obrazky-figures/hibernate.png}
-  \caption{logo}
+  \caption{Hibernate logo}
 \end{figure}
 
 \emph{Hibernate ORM} (dále pouze jako \emph{Hibernate}) je ORM\footnote{\textbf{ORM}- \textbf{O}bjektově \textbf{R}elační \textbf{M}apování} framework vyvíjen společností \emph{Red Hat}.
 Poskytuje možnost mapování objektově orientovaného modelu do relační databáze. Vývojář tak není zatížen vytvářením mezivrstvy, které konvertuje objekty a vytváří SQL dotazy na databázi.
 Vývojář tak může definovat tabulku databáze dvěma způsoby:
 \begin{enumerate}
-  \item Pomocí XML\footnote{\textbf{XML} - \textbf{E}xtension \textbf{M}arkup \textbf{L}anguage} mapovaní, kdy vývojář vytvoří XML soubor s definovanými atributy tabulky a jejich omezeními.
-  \item Vývojář pouze vytvoří POJO\footnote{\textbf{POJO} - \textbf{P}lain \textbf{O}ld \textbf{J}ava \textbf{O}bject}, kde definuje tabulku v relační databázi. Pomocí anotací se označí atributy třídy, které se namapují do tabulky databáze.
+  \item Pomocí XML\footnote{\textbf{XML} - \textbf{E}xtension \textbf{M}arkup \textbf{L}anguage (značkovací jazyk)} mapovaní, kdy vývojář vytvoří XML soubor s definovanými atributy tabulky a jejich omezeními.
+  \item Vývojář pouze vytvoří POJO\footnote{\textbf{POJO} - \textbf{P}lain \textbf{O}ld \textbf{J}ava \textbf{O}bject (obyčejný \emph{Java} objekt)}, kde definuje tabulku v relační databázi. Pomocí anotací se označí atributy třídy, které se namapují do tabulky databáze.
         Tímto způsobem lze vytvořit několik tabulek v databázi a lze i pomocí anotací definovat asociaci mezi tabulkami a kardinalitu asociací.
 \end{enumerate}
-\emph{Hibernate} zprostředkuje rozhraní, které lze využít pro dotazy na databázi. Vývojář může vytvořit vlastní metody, u kterých lze definovat dotaz na databázi pomocí HQL\footnote{\textbf{HQL} - \textbf{H}ibernate \textbf{Q}uery \textbf{L}anguage} jazyka,
+\emph{Hibernate} zprostředkuje rozhraní, které lze využít pro dotazy na databázi. Vývojář může vytvořit vlastní metody, u kterých lze definovat dotaz na databázi pomocí HQL\footnote{\textbf{HQL} - \textbf{H}ibernate \textbf{Q}uery \textbf{L}anguage (dotazovací jazyk podobný SQL)} jazyka,
 který je jednodušší a bližší samotným třídám (označovaným jako \emph{entity}).
 
 \subsection{OIDC}
@@ -273,7 +272,7 @@ který je jednodušší a bližší samotným třídám (označovaným jako \emp
 \begin{figure}[hbt]
   \centering
   \includegraphics[width=.35 \linewidth]{obrazky-figures/OIDC.png}
-  \caption{logo}
+  \caption{OIDC logo}
 \end{figure}
 
 \textbf{OIDC} nebo-li \emph{OpenID Connect} je autentizační protokol, založený na specifikaci \emph{OAuth 2.0}. Tento protokol využívá služba \emph{KeyCloak}, která je použita v této bakalářské práci.
@@ -286,10 +285,51 @@ Jeho účelem je poskytnou pouze jeden přihlašovací proces pro více webovýc
 
 \begin{figure}[hbt]
   \centering
-  \includegraphics[width=.35 \linewidth]{obrazky-figures/keycloak.png}
-  \caption{logo}
+  \includegraphics[width=.3 \linewidth]{obrazky-figures/keycloak2.png}
+  \caption{Keycloak logo}
 \end{figure}
 
+\textbf{KeyCloak} je open-source služba, která se stará o autentizaci a autorizaci uživatelů a další předností je \emph{Identity and Access Management}(Management přístupu a identit), kde administrátor může upravovat práva uživatelů, přidávat do skupin s určitými právy apod.
+Tato služba je podporovaná firmou \emph{Red Hat} a několik let už je v popředí popularity služeb, které se starají o bezpečnost webových aplikací. \emph{KeyCloak} disponuje rozsáhlou komunitou vývojářů, kteří jsou velice aktivní v příspívání do daného komunitního produktu.
+\emph{KeyCloak} obsahuje spousty nových vylepšení a je opravdu velice dobře škálovatelný(\emph{scalable}) a upravovatelný(\emph{customizable}).
+
+Obsahuje spousty adaptérů pro klientské aplikace, tudíž nezáleží v takové míře na programovacím jazyce.
+Využívá standardní zabezpečovací protokoly, mezi které patří \emph{OIDC}, \emph{OAuth 2.0}\footnote{\textbf{OAuth 2.0} - autorizační protokol} a \emph{SAML 2.0}\footnote{\textbf{SAML 2.0} - \textbf{S}ecurity \textbf{A}ssertion \textbf{M}arkup \textbf{L}anguage(autentizační/autorizační protokol)}.
+
+Lze dokonce využít i asociované autentizační a autorizační služby třetích stran pro udělení přístupu uživateli, registraci a mnoho dalšího. Lze získat přístup i od tzv. \emph{Social providers}(poskytovatelů sociálních sítí) jako jsou např. \emph{Facebook}, \emph{Google}, \emph{Twitter} apod.
+Tento produkt využívám ve své práci pro autentizační služby a správu uživatelů. \emph{KeyCloak} poměrně dobře znám, protože jsem jedním z aktivních přispěvovatelů do produktu.
+
+\newpage
+Na obrázku \ref{figure:keycloak_flow} je popsán autentizační proces uživatele. V prvním kroku uživatel žádá o zdroj informací u aplikace, která je asociována s \emph{KeyCloak} aplikací (v mém případě s mojí \emph{backend} aplikací).
+Aplikace pošle na službu \emph{KeyCloak} autentizační požadavek, služba se podívá, zda už je uživatel autentizován a když ano, pošle aplikaci odpověď o úspěšném přihlášení a aplikace povolí uživateli přístup k datům.
+
+V opačném případě je uživateli poskytnut seznam poskytovatelů služeb starající se o identitu uživatelů.
+Uživatel si může podle definovaného autentizačního toku (\emph{Authentication flow}) vybrat jakým způsobem se autentizuje. Když vše proběhne v pořádku, \emph{KeyCloak} pošle odpověď aplikaci o úspěšném přihlášení a uživatel dostane přístup k datům.
+
+\begin{figure}[hbt]
+  \centering
+  \includegraphics[width=.8 \linewidth]{obrazky-figures/keycloak_flow.png}
+  \caption{Autentizační tok \emph{KeyCloak}}
+  \label{figure:keycloak_flow}
+\end{figure}
+
+\newpage
+\section{JSON}
+\label{terminy:json}
+
+\textbf{JSON} nebo-li \textbf{J}ava\textbf{S}cript \textbf{O}bject \textbf{N}otation je formát pro strukturovaná data. Formát dat se sestavuje podle dvojice atribut-hodnota a případně i pole.
+\emph{JSON} je nezávislý na programovacích jazycích a je odvozen, jak název vypovídá, z programovacícho jazyka \emph{JavaScript}. \emph{JSON} je velice rozšířený ve spustě aplikací, kde téměř všude nahrazuje \emph{XML}.
+
+Tento formát zápisu dat je použit v systému, který popisuje tato bakalářská práce, ve dvou odlišných případech. První z nich je při komunikaci s klientskou aplikací, kde se data zprostředkovávají pomocí tohoto formátu \emph{JSON}.
+V druhém případě je tento formát použit i u \emph{MQTT} zpráv posílané ze zařízení. Jedná se hlavně o zprávy, které se posílají pomocí \emph{MQTT} protokolu na správu zařízení v domácnosti.
+Na obrázku ~\ref{figure:json} je vidět ilustrační zápis dat pomocí \emph{JSON} formátu.
+
+\begin{figure}[hbt]
+  \centering
+  \includegraphics[width=.6 \linewidth]{obrazky-figures/json_example.png}
+  \caption{Ukázka \emph{JSON}}
+  \label{figure:json}
+\end{figure}
 
 
 
@@ -632,7 +672,7 @@ Není vhodné úvod dále členit na podkapitoly a není vhodné do něj uvádě
   \item{Cca 5 řádků obecný úvod do tématu pokud možno založený na obecně známých slovech nejlépe úplně bez odborných výrazů (tedy třeba \uv{počítač, video} ano, \uv{stromová struktura} ne),}
   \item{kousek textu o tom, proč je práce v dané oblasti důležitá, jaký má význam pro svět a~pro Vás, jaký má vztah ke studované oblasti, případně další důležité skutečnosti,}
   \item{kousek i o tom, co se v dané oblasti dělo v minulosti, případně \uv{v~jakém stavu je dnes}, případně jestli jsou nějaké vyhlídky do budoucna,}
-  \item{je třeba napsat i o tom, \uv{proč se tomu vlastně chcete věnovat}, tedy co Vás vedlo k~výběru tématu a co na tom vidíte perspektivního -- pokud možno pravdivě a věrohodně,}
+  \item{je třeba napsat i o tom, \uv{proč se tomu vlastně chcete věnovat}, tedy co Vás vedlo k~výběru tématu a co na tom vidíte perspektivního -- pokud možno pravdiv�� a věrohodně,}
   \item{taky je třeba napsat, co je cílem práce (vlastními slovy, ne opsat formální zadání),}
   \item{nakonec je třeba popsat strukturu práce, aby čtenář věděl, kde co hledat (například \uv{v následující kapitole je uveden\ldots, v kapitole \uv{XXX} je popsáno, v kapitole 3 je\ldots} apod.) -- nezapomeňte, že úvod má být i návodem ke čtení práce. }
 \end{itemize}
@@ -1059,7 +1099,7 @@ Při psaní technické zprávy věnujte těmto citačním principům zvláštní
 \section{Citační normy}
 
 Pravidla pro vytváření bibliografických citací a jejich uvádění v odborných publikacích upravuje norma ČSN ISO 690: Informace a dokumentace - Pravidla pro bibliografické odkazy a citace informačních zdrojů z roku 2011. Norma je dostupná v knihovně FIT. Nástroj pro generování citací podle těchto norem
-najdete na \url{http://www.citace.com/} a~stručný výtah z normy s příklady citací najdete na stejných stránkách \cite{biblio}.
+najdete na \url{http://www.citace.com/} a~stručný výtah z normy s příklady citací najdete na stejn��ch stránkách \cite{biblio}.
 
 Přestože norma připouští umístit citace do odborných publikací různým způsobem (na~konec textu, na konce jednotlivých kapitol, přímo do textu, do poznámky pod čarou, částečně do textu a částečně do poznámky pod čarou), u závěrečných prací na FIT VUT v~Brně je požadováno, aby soupis citací byl uveden na konci práce.
 
@@ -1067,7 +1107,7 @@ Odkaz na citaci bude ve tvaru pořadového čísla, pod nímž je uvedena citace
 
 \noindent \textbf{Příklad}: \textit{Protokol SMTP je definován dokumentem RFC 5321 [1].}
 
-Citace jsou seřazeny podle abecedy. Řazení jmen s písmeny s diakritikou můžeme ovlivnit prvkem \texttt{key}, jehož  hodnotu nastavíme na příjmení bez diakritiky. Pokud není vyplněn autor, citace se řadí na začátek seznamu, což není vhodné. Řazení v tomto případě můžeme taktéž ovlivnit vhodně nastaveným prvkem key.
+Citace jsou seřazeny podle abecedy. Řazení jmen s písmeny s diakritikou můžeme ovlivnit prvkem \texttt{key}, jehož  hodnotu nastavíme na příjmení bez diakritiky. Pokud není vyplněn autor, citace se řadí na začátek seznamu, což není vhodné. Řazení v tomto případ�� můžeme taktéž ovlivnit vhodně nastaveným prvkem key.
 
 \newpage
 \textbf{Příklad}:
@@ -1362,7 +1402,7 @@ Správně:
 
 \bf Nepište dlouhá souvětí: \rm Věta přes celý odstavec (na 6,5 řádku). Na třetím řádku čtenář zapomene, co četl na začátku věty. Nebojte se souvětí dělit na menší. Místo zasypání a udušení čtenáře pod hromadou slov po něm střílejte krátké věty. Dáte mu tím možnost se mezi nimi nadechnout. Nebo reprezentujte informace výčetem (\tt itemize\rm ).
 
-\bf Nedělitelné mezery: \rm Udělat takovou typografickou hrubku jako je např. ponechání \uv{s}~na~konci řádku hned v názvu BP či DP je ostuda. Existuje něco, čemu se říká nedělitelná mezera, tedy mezera, ve které se nemůže zalomit konec řádku. V \LaTeX{}u se tato mezera označuje vlnkou \textasciitilde. Též pěkně popsáno v knize {\LaTeX} pro začátečníky \cite{Rybicka}.
+\bf Nedělitelné mezery: \rm Udělat takovou typografickou hrubku jako je např. ponechán�� \uv{s}~na~konci řádku hned v názvu BP či DP je ostuda. Existuje něco, čemu se říká nedělitelná mezera, tedy mezera, ve které se nemůže zalomit konec řádku. V \LaTeX{}u se tato mezera označuje vlnkou \textasciitilde. Též pěkně popsáno v knize {\LaTeX} pro začátečníky \cite{Rybicka}.
 
 \chapter{Odevzdání práce}
 \label{odevzdani}
