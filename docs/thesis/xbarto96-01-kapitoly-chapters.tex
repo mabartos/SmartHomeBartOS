@@ -131,7 +131,7 @@ kde vytvořené, nebo poskytnuté služby jsou optimalizované pro běh na zař�
 \newpage
 
 \section{MQTT protokol}
-\label{mqtt}
+\label{terminy:mqtt}
 
 \emph{MQTT} neboli \emph{Message Queuing Telemetry Transport} protokol je jeden z nejvýznamnějších komunikačních protokolů IoT zařízení a systémů.
 \emph{MQTT} patří do kategorie aplikačních protokolů, kde jeho hlavní předností je malá velikost datové hlavičky a možnost komunikovat v sítích s omezenou propustnosí.
@@ -144,7 +144,7 @@ topicu.~\cite{mqtt:info}
 \emph{MQTT Broker} je služba (nebo-li software, který běži v cloudu, či lokálním PC), která se stará o rozesílání a spravování zpráv, které různá zařízení posílají. MQTT Broker je prostředník mezi účastníky typu \emph{subscriber} a \emph{publisher}.
 Každé zařízení, které chce využívat MQTT protokol a komunikovat s ostatními zařízeními, musí definovat URL brokeru, přes který budou tyto zprávy procházet.
 Jak již bylo řečeno, MQTT je Pub/Sub protokol, proto když přijde, od účastníka typu publisher, zpráva ke specifickému topicu, musí se podívat, kdo všechno je přihlášen k odběru daného topicu a rozeslat všem účastníkům, typu subscriber, tuto zprávu.
-Každé zařízení může jak přijímat, tak i odesílat zprávy k danému topicu.~\cite{wiki:mqtt_broker}
+Každé zařízení může jak přijímat, tak i odesílat zprávy k danému topicu.~\cite{wiki:mqtt_broker} V této bakalářské práci je využit \emph{MQTT Broker} s názvem \emph{HiveMQ}.
 
 \subsection{Zabezpečení}
 V \emph{IoT} je velice důležitá i bezpečnost a pomocí \emph{MQTT Brokeru} lze dosáhnout určitého bezpečnostního cíle. Je opravdu nevítané, aby se někdo cizí dostal bez autentizace k odběru vašich
@@ -185,6 +185,115 @@ Mezi základní typy zpráv u protokolu MQTT patří:
   \caption{Posloupnost MQTT zpráv}
   \label{figure:mqtt_flow}
 \end{figure}
+
+
+\newpage
+\section{Aplikační prostředí}
+\label{terminy:app_prostredi}
+V této kapitole jsou k dispozici informace o technologiích, nástrojích, či specifikacích, které jsou využity v této bakalářské práci pro vytvoření backend aplikace.
+Backend aplikace v případě této bakalářské práce se zabývá samotnou logikou celého systému, vykonáváním požadavků na databázi, poskytnutím výpočetních sil pro složitější operace a požadavky od zařízení v domácnosti.
+Vytváří rozhraní, ke kterému může přistupovat spousta klientských aplikací a spravovat tak celý management systému chytré domácnosti.
+
+Jedná se tak o jádro celého systému.
+Hlavním úkolem této backend aplikace je zprostředkovat služby, pro zařízení chytré domácnosti, pro připojení do systému. Ukládá důležité hodnoty ze zařízení, co se týče stavů výstupních zařízení a poslední hodnoty vstupních zařízení, aby byly stále dostupné při připojení klientské aplikace.
+Klientské aplikace vytváří požadavky na tuto backend aplikaci a získávájí tázaná data. Tato aplikace je vytvořena robustnějším způsobem, aby byla schopna obstarávat požadavky několika tisíců uživatelů.
+K dané aplikaci se váže i otázka bezpečnosti.
+
+Uživatel se musí autentizovat v daném systému, aby bylo možno identifikovat přihlášeného uživatele a s tím související autorizační práva na různé zdroje informací.
+O autentizaci a správu uživatelů se, pro větší bezpečnost, stará služba \emph{Keycloak}. Jádrem této backend aplikace je technologie \emph{Quarkus}.
+
+\subsection{Quarkus}
+\label{app_prostredi:quarkus}
+
+\todo{Logo to side}
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=.3 \linewidth]{obrazky-figures/quarkus_logo.png}
+  \caption{}
+\end{figure}
+
+V dnešní době, kdy žijeme v době cloudových služeb, IoT a open-source projektů přichází do popředí kontejnery(\emph{containers}), mikroslužby(\emph{microservices}), reaktivní programování, cloud-native aplikace a spousty dalšího.
+Díky těmto novým architekturám, nástrojům, přináší vývoj aplikací jiný rozměr a to speciálné větší produktivitu a výkonnost aplikací. Programovací jazyk \emph{Java} už je na trhu přes 20 let a stálé zůstává mezi nejpopulárnějšími programovacími jazyky na světě.
+V informačních technologiích se však technologie a architektury mění velice rychle a je téměř nemožné využívat technologie přes 20 let bez větších změn. Aplikace v kontejnerech by měly mít co nejmenší velikost, rychlý start při restartu a být škálovatelné.
+To však v případě dosavadních Java aplikací nebylo až tak možné. Framework \emph{Quarkus} by však měl vše změnit.
+
+\textbf{Quarkus} je Kubernetes\footnote{\textbf{Kubernetes} - orchestrace kontejnerů na úrovni OS} Native Java framework, který nese označení \emph{Supersonic Subatomic Java} (nadzvuková subatomární Java). Tento framework je přímo ušitý pro GraalVM\footnote{\textbf{GraalVM} - generuje nativní kód} a HotSpot(klasická JVM\footnote{\textbf{JVM} - \textbf{J}ava \textbf{V}irtual \textbf{M}achine}).
+Je složen z dostupných Java knihoven a standardů, které patří mezi ty nejlepší svého typu. Vyznačuje se termínem zvaným \emph{Container First}, kde celý framework je založený na nasazení aplikací v kontejnerech a dále v cloudových službách.~\ref{quarkus:infoDev}
+\newpage
+
+Na obrázku \ref{figure:quarkus_stats} je porovnání frameworku \emph{Quarkus} s tradičním \emph{Cloud-Native} prvkem a dále porovnání vytvoření spustitelného souboru do nativního kódu pomocí \emph{GraalVM} a klasické využítí JVM pomocí \emph{OpenJDK}\footnote{\textbf{OpenJDK} - Open \textbf{J}ava \textbf{D}evelopment \textbf{K}it}.
+Hodnoty jsou určeny pro klasickou \emph{REST}\footnote{\textbf{REST} - \textbf{RE}presentational \textbf{S}tate \textbf{T}ransfer (architektura rozhraní)} architekturu rozhraní a dále s přidanými operacemi \emph{CRUD}\footnote{\textbf{CRUD} - \textbf{C}reate, \textbf{R}ead, \textbf{U}pdate, \textbf{D}elete (Vytvořit, Číst, Aktualizovat, Smazat)}.
+První horizontální polovina obrázku se zabývá pamětí celého programu a závislostí. Oproti tradičnímu \emph{Cloud-Native} prvku je program vygenerovaný do nativního kódu až 10x menší. V \emph{Cloud-Native} aplikací je to opravdu znatelný rozdíl.
+V druhé polovině je k zahlédnutí nastartování celé aplikace a první odpověď ze serveru při požadavku. Rapidní snížení rychlosti oproti klasickému tradičnímu \emph{Cloud-Native} prvku a v tom dokáže být \emph{Quarkus} rychlejší více než 250x.~\ref{quarkus:website}
+
+%boot ttime, memory
+\begin{figure}[hbt]
+  \centering
+  \includegraphics[width=1 \linewidth]{obrazky-figures/quarkus_stats.png}
+  \caption{Porovnání frameworku Quarkus s alternativami}
+  \label{figure:quarkus_stats}
+\end{figure}
+
+\subsection{Vert.x}
+\label{app_prostredi:vertx}
+%logo
+\begin{figure}[hbt]
+  \centering
+  \includegraphics[width=.4 \linewidth]{obrazky-figures/vertx.png}
+  \caption{logo}
+\end{figure}
+\emph{Vert.x} je sada nástrojů pro vytvoření reaktivních aplikací, kde hlavní předností je malá velikost, nízké nároky na výpočetní prostředky a rozsáhlý ekosystém.
+Samotný \emph{Quarkus} je založený na \emph{Vert.x} technologii a skoro všechny síťové featury v technologii \emph{Quarkus} závisí na technologii \emph{Vert.x}.
+Tato technologie přináší mnoho zajímavých vylepšení, jako jsou neblokující požadavky na server, jednoduchá souběžnost procesů(\emph{Concurrency}), nebo například podpora několika programovacíh jazyků.~\ref{wiki:vertx}
+
+\newpage
+
+\subsection{Hibernate ORM}
+\label{app_prostredi:hibernate}
+\begin{figure}[hbt]
+  \centering
+  \includegraphics[width=.2 \linewidth]{obrazky-figures/hibernate.png}
+  \caption{logo}
+\end{figure}
+
+\emph{Hibernate ORM} (dále pouze jako \emph{Hibernate}) je ORM\footnote{\textbf{ORM}- \textbf{O}bjektově \textbf{R}elační \textbf{M}apování} framework vyvíjen společností \emph{Red Hat}.
+Poskytuje možnost mapování objektově orientovaného modelu do relační databáze. Vývojář tak není zatížen vytvářením mezivrstvy, které konvertuje objekty a vytváří SQL dotazy na databázi.
+Vývojář tak může definovat tabulku databáze dvěma způsoby:
+\begin{enumerate}
+  \item Pomocí XML\footnote{\textbf{XML} - \textbf{E}xtension \textbf{M}arkup \textbf{L}anguage} mapovaní, kdy vývojář vytvoří XML soubor s definovanými atributy tabulky a jejich omezeními.
+  \item Vývojář pouze vytvoří POJO\footnote{\textbf{POJO} - \textbf{P}lain \textbf{O}ld \textbf{J}ava \textbf{O}bject}, kde definuje tabulku v relační databázi. Pomocí anotací se označí atributy třídy, které se namapují do tabulky databáze.
+        Tímto způsobem lze vytvořit několik tabulek v databázi a lze i pomocí anotací definovat asociaci mezi tabulkami a kardinalitu asociací.
+\end{enumerate}
+\emph{Hibernate} zprostředkuje rozhraní, které lze využít pro dotazy na databázi. Vývojář může vytvořit vlastní metody, u kterých lze definovat dotaz na databázi pomocí HQL\footnote{\textbf{HQL} - \textbf{H}ibernate \textbf{Q}uery \textbf{L}anguage} jazyka,
+který je jednodušší a bližší samotným třídám (označovaným jako \emph{entity}).
+
+\subsection{OIDC}
+\label{app_prostredi:oidc}
+
+\begin{figure}[hbt]
+  \centering
+  \includegraphics[width=.35 \linewidth]{obrazky-figures/OIDC.png}
+  \caption{logo}
+\end{figure}
+
+\textbf{OIDC} nebo-li \emph{OpenID Connect} je autentizační protokol, založený na specifikaci \emph{OAuth 2.0}. Tento protokol využívá služba \emph{KeyCloak}, která je použita v této bakalářské práci.
+\emph{OIDC} protokol využívá \emph{JSON Web Tokens} (dále jako \emph{JWT}), což je formát využit pro reprezentaci ID tokenu. \emph{OIDC} je hlavně o autentizaci uživatelů.
+Jeho účelem je poskytnou pouze jeden přihlašovací proces pro více webových stránek.~\ref{terminy:oidc}
+
+\newpage
+\subsection{KeyCloak}
+\label{app_prostredi:keycloak}
+
+\begin{figure}[hbt]
+  \centering
+  \includegraphics[width=.35 \linewidth]{obrazky-figures/keycloak.png}
+  \caption{logo}
+\end{figure}
+
+
+
+
+
 
 
 
@@ -563,7 +672,7 @@ Není vhodné úvod dále členit na podkapitoly a není vhodné do něj uvádě
 \section{Shrnutí dosavadního stavu}
 \label{stav}
 
-Rozsah této části práce by měl být cca 40--50\,\% celkového rozsahu práce. Smyslem této části práce je seznámit čtenáře s~dosavadním stavem oblasti techniky, která je předmětem práce, a~seznámit ho s~aparátem použitým v~práci (matematickým, fyzikálním, elektronickým, IT apod.). Nelze předpokládat, že ve shrnutí dosavadního stavu bude popsáno úplně vše související s~prací, ale mělo by být uvedeno vše podstatné tak, aby čtenář, alespoň trochu znalý oblasti práce, byl schopen práci pochopit. Tuto část je dost často vhodné dělit na~více kapitol, zejména pokud se jedná~o \uv{mezioborové téma}. Tato část by se měla \uv{velmi intenzivně} odkazovat na literaturu. Rozsah závisí na druhu práce, pokud je práce spíše teoretická, je tato část podstatně delší než u prakticky zaměřené práce.
+Rozsah této části práce by měl být cca 40--50\,\% celkového rozsahu práce. Smyslem této části práce je seznámit čtenáře s~dosavadním stavem oblasti techniky, která je p��edmětem práce, a~seznámit ho s~aparátem použitým v~práci (matematickým, fyzikálním, elektronickým, IT apod.). Nelze předpokládat, že ve shrnutí dosavadního stavu bude popsáno úplně vše související s~prací, ale mělo by být uvedeno vše podstatné tak, aby čtenář, alespoň trochu znalý oblasti práce, byl schopen práci pochopit. Tuto část je dost často vhodné dělit na~více kapitol, zejména pokud se jedná~o \uv{mezioborové téma}. Tato část by se měla \uv{velmi intenzivně} odkazovat na literaturu. Rozsah závisí na druhu práce, pokud je práce spíše teoretická, je tato část podstatně delší než u prakticky zaměřené práce.
 
 \subsection*{Rady pro shrnutí dosavadního stavu od prof. Zemčíka}
 
@@ -942,7 +1051,7 @@ citacích dodržujte následující pravidla:
   \item{\bf Citujte všechna díla, ze kterých jste čerpali! \rm Pokud některé dílo neuvedete, vydáváte cizí práci za svou vlastní! Již od počátku práce na projektu je vhodné si zaznamenávat všechny zdroje, se kterými jste přišli do styku. Na konci práce je vyhledání všech zdrojů pracnější.}
   \item{\bf Citujte pouze díla, která jste skutečně použili! \rm Čtenář, který citovaná díla opravdu zná (nebo si je vyhledá), brzy odhalí, že pořádně nevíte, co v nich vlastně je, přestože je citujete.}
   \item{\bf Citujte pouze z primárních pramenů! \rm To znamená, citujte pouze díla, která jste měli \uv{v ruce} (nebo na obrazovce). Jinak hrozí, že citaci převezmete s chybami.}
-  \item{\bf Uvádějte citace přesně! \rm Čtenáři tím usnadníte vyhledání původního zdroje a vyhnete se podezření, že nepřesnou citací chcete identifikaci původního díla ztížit nebo zcela znemožnit, aby čtenář nemohl ověřit rozsah přebíraného textu.}
+  \item{\bf Uvádějte citace přesně! \rm Čtenáři tím usnadníte vyhledání původního zdroje a vyhnete se podezření, že nepřesnou citací chcete identifikaci původního díla ztížit nebo zcela znemožnit, aby čtenář nemohl ově��it rozsah přebíraného textu.}
 \end{itemize}
 
 Při psaní technické zprávy věnujte těmto citačním principům zvláštní pozornost, protože jejich porušení mívá z pochopitelných důvodů mnohem vážnější následky na celkové hodnocení práce než nedodržení formálních požadavků na bibliografické citace.
@@ -1032,7 +1141,7 @@ Následující je převzato z normy ČSN ISO 690 a zkráceno. Jednotlivé část
   \item \textbf{Místo vydání, vydavatel, datum vydání}
         \begin{itemize}
           \item Pokud místo není uvedeno přímo v citovaném dokumentu, ale je známé, doplňujeme ho v hranatých závorkách.
-          \item Jako vydavatel by měla být uvedena ta osoba nebo organizace, která je v citovaném dokumentu uvedena nejvýrazněji.
+          \item Jako vydavatel by měla b��t uvedena ta osoba nebo organizace, která je v citovaném dokumentu uvedena nejvýrazněji.
           \item Datum publikování by vždy mělo být uvedeno. U papírových publikací stačí rok, u elektronických informačních zdrojů je nutné uvádět i měsíc a den.
         \end{itemize}
   \item \textbf{Číslování v rámci jednotky nebo stránkování}
@@ -1101,7 +1210,7 @@ Mezeru neděláme tam, kde se spojují číslice s~písmeny v~jedno slovo nebo v
 
 Členicí (interpunkční) znaménka tečka, čárka, středník, dvojtečka, otazník a~vykřičník, jakož i~uzavírací závorky a~uvozovky se přimykají k~předcházejícímu slovu bez mezery. Mezera se dělá až za nimi. To se ovšem netýká desetinné čárky (nebo desetinné tečky). Otevírací závorka a~přední uvozovky se přimykají k~následujícímu slovu a~mezera se vynechává před nimi -- (takto) a~\uv{takto}.
 
-Pro spojovací a~rozdělovací čárku a~pomlčku nepoužíváme stejný znak. Pro pomlčku je vyhrazen jiný znak (delší). V~systému TeX (\LaTeX{}) se spojovací čárka zapisuje jako jeden znak \uv{pomlčka} (například \uv{Brno-město}), pro sázení textu ve smyslu intervalu nebo dvojic, soupeřů a~podobně se ve zdrojovém textu používá dvojice znaků \uv{pomlčka} (například \uv{zápas Sparta -- Slavie}; \uv{cena 23--25 korun}), pro výrazné oddělení části věty, pro výrazné oddělení vložené věty, pro vyjádření nevyslovené myšlenky a~v~dalších situacích (viz Pravidla českého pravopisu) se používá nejdelší typ pomlčky, která se ve zdrojovém textu zapisuje jako trojice znaků \uv{pomlčka} (například \uv{Další pojem --- jakkoliv se může zdát nevýznamný --- bude neformálně definován v~následujícím odstavci.}). Při sazbě matematického mínus se při sazbě používá rovn��ž odlišný znak. V~systému TeX je ve zdrojovém textu zapsán jako normální mínus (tj. znak \uv{pomlčka}). Sazba v~matematickém prostředí, kdy se vzoreček uzavírá mezi dolary, zajistí vygenerování správného výstupu.
+Pro spojovací a~rozdělovací čárku a~pomlčku nepoužíváme stejný znak. Pro pomlčku je vyhrazen jiný znak (delší). V~systému TeX (\LaTeX{}) se spojovací čárka zapisuje jako jeden znak \uv{pomlčka} (například \uv{Brno-město}), pro sázení textu ve smyslu intervalu nebo dvojic, soupeřů a~podobně se ve zdrojovém textu používá dvojice znaků \uv{pomlčka} (například \uv{zápas Sparta -- Slavie}; \uv{cena 23--25 korun}), pro výrazné oddělení části věty, pro výrazné oddělení vložené v��ty, pro vyjádření nevyslovené myšlenky a~v~dalších situacích (viz Pravidla českého pravopisu) se používá nejdelší typ pomlčky, která se ve zdrojovém textu zapisuje jako trojice znaků \uv{pomlčka} (například \uv{Další pojem --- jakkoliv se může zdát nevýznamný --- bude neformálně definován v~následujícím odstavci.}). Při sazbě matematického mínus se při sazbě používá rovn��ž odlišný znak. V~systému TeX je ve zdrojovém textu zapsán jako normální mínus (tj. znak \uv{pomlčka}). Sazba v~matematickém prostředí, kdy se vzoreček uzavírá mezi dolary, zajistí vygenerování správného výstupu.
 
 Pravidla pro psaní zkratek jsou uvedena v~Pravidlech českého pravopisu \cite{Pravidla}. I~z~jiných důvodů je vhodné, abyste tuto knihu měli po ruce.
 
@@ -1123,7 +1232,7 @@ V této sekci se nachází přehled drobných formátovacích zel, které se ča
         }
   \item{
         \textbf{Mezery kolem závorek} \\
-        Před levou závorkou je VŽDY mezera a to platí i pro kulatou i pro hranatou (při odkazování do literatury). Za pravou závorkou není mezera, pokud je za ní tečka, čárka, vykřičník nebo otazník. Na vnitřní straně závorek (ani třeba uvozovek) mezera není nikdy.
+        Před levou závorkou je VŽDY mezera a to platí i pro kulatou i pro hranatou (při odkazování do literatury). Za pravou závorkou není mezera, pokud je za ní tečka, čárka, vykřičník nebo otazník. Na vnitřní straně závorek (ani t��eba uvozovek) mezera není nikdy.
         }
 \end{itemize}
 
@@ -1163,7 +1272,7 @@ V této sekci se nachází přehled drobných formátovacích zel, které se ča
   \item
         {
         \textbf{Věty bez slovesa} \\
-        Každá věta ať má sloveso. V krásné literatuře se někdy pro vytvoření spádu a pro další umělecké záměry používají věty bez slovesa. Za poslední dva týdny jsem přečetl přehršel vět bez slovesa a nikdy to nesedělo, vždycky to bylo ke zlému. V diplomkách ať má každá věta své sloveso.
+        Každá věta ať má sloveso. V krásné literatuře se někdy pro vytvoření spádu a pro další umělecké záměry používají věty bez slovesa. Za poslední dva týdny jsem pře��etl přehršel vět bez slovesa a nikdy to nesedělo, vždycky to bylo ke zlému. V diplomkách ať má každá věta své sloveso.
         }
 \end{itemize}
 
@@ -1172,7 +1281,7 @@ V této sekci se nachází přehled drobných formátovacích zel, které se ča
 \subsection*{Jak popisovat plovoucí objekty (obrázky/tabulky)?}
 Obrázek, a podobně i tabulka, se skládá ze samotného obrázku a z jeho popisku (v \LaTeX u \texttt{\textbackslash caption}). Popisek u obrázku či tabulky slouží k tomu, aby výsledný objekt fungoval samostatně -- čtenář se na něj často podívá ještě před tím, než si přečetl text okolo, a je žádoucí, aby obrázku i tak dokázal nějak přiměřeně porozumět.
 
-Nebál bych se titulky obrázků mít pětiřádkové i sedmiřádkové. Někdy budou stačit jen dva řádky. Někdy -- ne příliš často -- bude titulek o třech slovech ten nejsprávnější. Pokud v některé diplomce všechny titulky mají pouze tři nebo čtyři slova, prakticky jistě bude čtenář frustrován, protože obrázky nebudou dávat samostatně smysl.
+Nebál bych se titulky obrázků mít pětiřádkové i sedmiřádkové. Někdy budou stačit jen dva řádky. Někdy -- ne příliš často -- bude titulek o třech slovech ten nejsprávnější. Pokud v některé diplomce všechny titulky mají pouze tři nebo čtyři slova, prakticky jistě bude čtenář frustrován, protože obr��zky nebudou dávat samostatně smysl.
 
 Pokud je v obrázku nějaký barevný kód (některé objekty jsou třeba červeně, některé modře a ještě jiné tlustě zeleně), vysvětlení kódu patří do titulku. Pokud se obrázek skládá z částí (třeba vpravo nahoře, vlevo nahoře a dole), pojmenování a odůvodnění částí patří do titulku.
 
@@ -1196,7 +1305,7 @@ Správně:
   \item{\uv{Do nastavení je možné vstoupit zvolením příslušné položky v nabídce.}}
 \end{itemize}
 
-Použití \bf první osoby množného čísla \rm (my/we) nemusí být úplně vždy špatně a \uv{klasická} literatura o psaní odborného textu ho dokonce někdy doporučuje jako tzv. autorský plurál:
+Použití \bf první osoby množného čísla \rm (my/we) nemusí být úplně vždy špatn�� a \uv{klasická} literatura o psaní odborného textu ho dokonce někdy doporučuje jako tzv. autorský plurál:
 \begin{itemize}
   \item{\uv{Zjistili jsme \ldots}},
   \item{\uv{Zaměřili jsme se \ldots}},
@@ -1224,7 +1333,7 @@ Nesprávné (ovšem bohužel celkem časté) je použít první osobu v popisu j
 
 \subsection*{Dalš�� chyby}
 
-\bf Necitujte irelevantní \uv{blbosti}: \rm Informace v Úvodu o tom, že připojení na Internet je dostupné už i na Mount Everest může působit dojmem, že je třeba to nějak potvrdit. Nicméně toto zbytečně nafukuje Literaturu o spoustu irelevantních zdrojů (vzhledem k~tématu Vaší práce) -- což se může obrátit proti Vám v posudku. Takže to tam nepište vůbec, nebo to alespoň necitujte.
+\bf Necitujte irelevantní \uv{blbosti}: \rm Informace v Úvodu o tom, že připojení na Internet je dostupné už i na Mount Everest může působit dojmem, že je třeba to nějak potvrdit. Nicméně toto zbytečně nafukuje Literaturu o spoustu irelevantních zdrojů (vzhledem k~t��matu Vaší práce) -- což se může obrátit proti Vám v posudku. Takže to tam nepište vůbec, nebo to alespoň necitujte.
 
 \bf Zkratky a poznámky pod čarou by měly být \uv{samonosné}. Pokud máte v~textu zkratku, tak ji při prvním použití rovnou rozepište: \rm Pokud se vám zkratka opakuje třeba o 2 kapitoly dále, tak ji opět při prvním výskytu můžete rozepsat, a nebo jen dát poznámku pod čarou. Důležité je, aby pod čarou byla vypsána i ta zkratka. Pokud se jedná o zkratku nějakého \uv{slušného} sousloví, nebojte se jej přeložit též do češtiny.
 
