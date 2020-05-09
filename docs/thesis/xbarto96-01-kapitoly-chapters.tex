@@ -24,7 +24,7 @@ intuitivní rozhraní pro snadné zprovoznění chytré domácnosti a následné
 
 V kapitole \ref{terminy} najdete vše, co je potřeba k porozumnění zbytku práce. V další kapitole \ref{navrh} je pospán návrh daného řešení, v kapitole \ref{implementace} implementace řešení, v kapitole \ref{testovani} popsáno testování a v poslední řadě v kapitole \ref{zaver} závěr práce.
 
-\chapter{Důležité termíny}
+\chapter{Důležité termíny a technologie}
 \label{terminy}
 
 V této kapitole jsou popsané důležité termíny, technologie, nástroje a další, co je nezbytné k porozumnění zbytku práce. Nejdůležitější je pochopit koncept \emph{IoT}, který je popsán v podkapitole \ref{terminy:iot}.
@@ -226,7 +226,6 @@ Hodnoty jsou určeny pro klasickou \emph{REST}\footnote{\textbf{REST} - \textbf{
 První horizontální polovina obrázku se zabývá pamětí celého programu a závislostí. Oproti tradičnímu \emph{Cloud-Native} prvku je program vygenerovaný do nativního kódu až 10x menší. V \emph{Cloud-Native} aplikací je to opravdu znatelný rozdíl.
 V druhé polovině je k zahlédnutí nastartování celé aplikace a první odpověď ze serveru při požadavku. Rapidní snížení rychlosti oproti klasickému tradičnímu \emph{Cloud-Native} prvku a v tom dokáže být \emph{Quarkus} rychlejší více než 250x.~\ref{quarkus:website}
 
-%boot ttime, memory
 \begin{figure}[hbt]
   \centering
   \includegraphics[width=1 \linewidth]{obrazky-figures/quarkus_stats.png}
@@ -295,9 +294,10 @@ Tato služba je podporovaná firmou \emph{Red Hat} a několik let už je v popř
 
 Obsahuje spousty adaptérů pro klientské aplikace, tudíž nezáleží v takové míře na programovacím jazyce.
 Využívá standardní zabezpečovací protokoly, mezi které patří \emph{OIDC}, \emph{OAuth 2.0}\footnote{\textbf{OAuth 2.0} - autorizační protokol} a \emph{SAML 2.0}\footnote{\textbf{SAML 2.0} - \textbf{S}ecurity \textbf{A}ssertion \textbf{M}arkup \textbf{L}anguage(autentizační/autorizační protokol)}.
-
 Lze dokonce využít i asociované autentizační a autorizační služby třetích stran pro udělení přístupu uživateli, registraci a mnoho dalšího. Lze získat přístup i od tzv. \emph{Social providers}(poskytovatelů sociálních sítí) jako jsou např. \emph{Facebook}, \emph{Google}, \emph{Twitter} apod.
-Tento produkt využívám ve své práci pro autentizační služby a správu uživatelů. \emph{KeyCloak} poměrně dobře znám, protože jsem jedním z aktivních přispěvovatelů do produktu.
+
+Tento produkt využívám ve své práci pro autentizační služby a správu uživatelů. Vývojář se tak nemusí starat o perzistenci uživatelů a jejich správu. O vše se stará služba \emph{KeyCloak}.
+\emph{KeyCloak} poměrně dobře znám, protože jsem jedním z aktivních přispěvovatelů do produktu.
 
 \newpage
 Na obrázku \ref{figure:keycloak_flow} je popsán autentizační proces uživatele. V prvním kroku uživatel žádá o zdroj informací u aplikace, která je asociována s \emph{KeyCloak} aplikací (v mém případě s mojí \emph{backend} aplikací).
@@ -331,46 +331,75 @@ Na obrázku ~\ref{figure:json} je vidět ilustrační zápis dat pomocí \emph{J
   \label{figure:json}
 \end{figure}
 
-
-
-
-
-
-
-
-\chapter{Návrh řešení}
+\chapter{Současný stav a návrh řešení}
 \label{navrh}
 
-V této kapitole jsou nejprve uvedeny obecné zásady pro psaní odborného textu a po nich následuje detailnější popis doporučeného postupu přípravy struktury a základní osnovy práce.
+V této kapitole je shrnut současný stav řešení chytré domácnosti od nejvýznamnějších firem, které se zabývají tímto tématem a samotný návrh řešení, který by měl danou problematiku vyřešit.
+Jak již bylo popsáno v úvodu, největším úskalím řešení chytré domácnosti je celková cena, a kompatibilita se zařízeními od různých výrobců.
 
-Před začátkem psaní textu práce je vždy vhodné zeptat se svého vedoucího, co Vám poradí a zda nemá nějakou svoji aktuální stránku s radami a pokyny. Jeho zaměření bude pravděpodobně odpovídat zaměření Vaší práce a poradí Vám tu nejvhodnější strukturu, které byste se měli držet. Dozví-li se autoři tohoto souboru o další sbírce užitečných rad, jistě sem v budoucnu budou zařazeny.
+V kapitole \ref{navrh:existujici} jsou popsány existující řešení chytré domácnosti od různých firem a v kapitole \ref{navrh:reseni} vlastní řešení problému a schopnost dosažení požadovaných cílů.
 
-Tento text se zaměřuje na obecná doporučení a obecnou strukturu práce, kterou je vždy potřeba  modifikovat a popřemýšlet o ní na základě konkrétního zadání \cite{Cernocky}.
+\section{Existující řešení}
+\label{navrh:existujici}
 
-\section{Užitečné rady pro psaní odborného textu}
+Kompletní řešení chytré domácnosti existuje v dnešní době už opravdu nepřeberné množství. Podle mého názoru se postupem let dostane do popředí ještě více \emph{IoT} zařízení a systémů kompletní chytré domácnosti.
+Už v dnešní době spousta obrovských IT firem, mezi které patří např. \emph{Samsung}, \emph{LG}, \emph{Apple} a \emph{Google}, vyvíjí takové systémy.
 
-Následující pokyny jsou dostupné též na školních webových stránkách~\cite{fitWeb}. Přehled základů typografie a tvorby dokumentů s využitím systému \LaTeX{} je uveden v~knize od~Jiřího Rybičky~\cite{Rybicka}.
+Například firma \emph{Samsung} představila na trh produkty s názvem \emph{SmartThings}, které lze využít pro sestavení chytré domácnosti.
+Hlavním prvkem, který potřebujete je tzv. \emph{Hub}, který slouží jako mozek celého systému.
+U svých zařízení většinou využívají pro komunikaci protokol zvaný \emph{Zigbee}, který se řadí do tzv.\emph{ad-hoc}\footnote{\textbf{ad-hoc} - decentralizovaná bezdrátová síť} sítí.
+Signály ze zařízení dosahují vzdálenosti 10 až 20 metrů.
+\emph{Samsung} se pyšní tím, že jejich zařízení jsou kompatibilní s více než 100 zařízeními od různých výrobců, ale jejich cena je obrovská.
 
-Hodnocenou součástí potenciálního inženýra je mimo jiné i jazyková kvalita a čistota. Naším cílem je vytvořit jasný a~srozumitelný text. Vyjadřujeme se proto přesně, píšeme dobrou češtinou či slovenštinou (případně angličtinou) a~dobrým slohem podle obecně přijatých zvyklostí. Předpokládá se dodržování pravopisných norem zvoleného jazyka práce a dodržování odborného názvosloví. Slangové výrazy jsou nepřípustné. Při pochybnostech o~překladu či přepisu cizích pojmů využijte literatury dostupné v knihovně FIT.
+Lze si to představit na jednoduchém příkladu u chytrého tlačítka od firmy \emph{Samsung}. Toto tlačítko se vyznačuje tím, že dokáže po nastavení ovládat několik světel současně, spotřebiče, apod.
+Tlačítko se v průměru prodává za nějakých 15̈́\$, což je v přepočtu něco okolo 380kč. Takové tlačítko, které dokáže sadu podobných, dokonce i stejných úkonů, lze sestrojit pro můj vlastní návrh chytré domácnosti asi za cenu okolo 30kč.
 
-Text má upravit čtenáři cestu k~rychlému pochopení problému, předvídat jeho obtíže a~předcházet jim. Dobrý sloh předpokládá bezvadnou gramatiku, správnou interpunkci a~vhodnou volbu slov. Snažíme se, aby náš text nepůsobil příliš jednotvárně používáním malého výběru slov a~tím, že některá zvlášť oblíbená slova používáme příliš často. Pokud používáme cizích slov, je samozřejmým předpokladem, že známe jejich přesný význam. Ale i~českých slov musíme používat ve správném smyslu. Např. platí jistá pravidla při používání slova {\it zřejmě}. Je {\it zřejmé} opravdu zřejmé? A~přesvědčili jsme se, zda to, co je {\it zřejmé}, opravdu platí? Pozor bychom si měli dát i~na příliš časté používání zvratného se. Například obratu {\it dokázalo se, že \ldots{}} zásadně nepoužíváme.
+Dalším příkladem může být chytrá zásuvka, kterou \emph{Samsung} prodává za cenu blízkou 35\$, což je v přepočtu asi 880kč a ve své vlastní domácnosti lze sestrojit podobný kus asi za 60kč.
+Samozřejmě lze brát v úvahu i to, že \emph{Samsung} zaručuje kvalitu a dlouhodobou spolehlivost svých zařízení, využívá odlišný protokol, ale cena, podle mého názoru, je až přehnaně vysoká.
 
-Za pečlivý výběr stojí i~symbolika, kterou používáme ke {\it značení}. Máme tím na mysli volbu zkratek a~symbolů používaných například pro vyjádření typů součástek, pro označení hlavních činností programu, pro pojmenování ovládacích kláves na klávesnici, pro pojmenování proměnných v~matematických formulích a~podobně. Výstižné a~důsledné značení může čtenáři při četbě textu velmi pomoci. Je vhodné uvést seznam značení na začátku textu. Nejen ve značení, ale i~v~odkazech a~v~celkové tiskové úpravě je důležitá důslednost.
+\newpage
 
-S tím souvisí i~pojem z~typografie nazývaný {\it vyznačování}. Zde máme na mysli způsob sazby textu pro jeho zvýraznění. Pro zvolené značení by měl být zvolen i~způsob vyznačování v~textu. Tak například klávesy mohou být umístěny do obdélníčku, identifikátory ze~zdrojového textu mohou být vypisovány {\tt písmem typu psací stroj} a~podobně.
+\section{Návrh řešení}
+\label{navrh:reseni}
 
-Uvádíme-li některá fakta, neskrýváme jejich původ a~náš vztah k~nim. Když něco tvrdíme, vždycky výslovně uvedeme, co z~toho bylo dokázáno, co bude dokázáno v~našem textu a~co přebíráme z~literatury s~uvedením odkazu na příslušný zdroj. V~tomto směru nenecháváme čtenáře nikdy na pochybách, zda jde o~myšlenku naši nebo převzatou z~literatury.
-
-Abychom mohli napsat odborný text jasně a~srozumitelně, musíme splnit několik základních předpokladů:
+Návrh vlastního řešení systému chytré domácnosti je poněkud komplikovanější záležitost, díky své rozmanitosti.
+Vývojář tak musí být obeznámen s technologiemi a principy z různých odvětví aplikačního vývoje.
+Systém chytré domácnosti by měl disponovat velikou škálou možností a být jednoduše škálovatelný.
+Pro návrh takového systému je potřeba v první řadě vytvořit analýzu požadavků.
+\newline
+\newline
+Hlavní aspekty, které by měly být splněny:
 \begin{itemize}
-  \item Musíme mít co říci,
-  \item musíme vědět, komu to chceme říci,
-  \item musíme si dokonale promyslet obsah,
-  \item musíme psát strukturovaně.
+  \item \textbf{Cena pořízení} - Kompletní systém i jednotlivé komponenty.
+  \item \textbf{Zabezpečený systém} - Na všech dostupných úrovních (server, databáze, klientská aplikace, zařízení, přenos dat).
+  \item \textbf{Intuitivnost a přístupnost} ovládacích prvků
+  \item \textbf{Jednoduchost} - Vytvoření domácnosti a inicializování/připojení zařízení i příliš \textbf{netechnicky zdatným uživatelem}.
+  \item \textbf{Sdílení domácnosti} - Schopnost sdílet domácnost s více uživateli.
+  \item \textbf{Autorizace uživatelů v domácnosti} - Každý uživatel v různých domácnostech může mít různá přístupová práva.
+  \item \textbf{Dostupnost} - Systém by měl být dostupný jak v případě pouze lokální síťě, tak i s pomocí cloudových služeb.
+  \item \textbf{Použitelnost} - Systém by měl být schopen obstarávat několik tisíc uživatelů zároveň.
 \end{itemize}
+Jak již bylo řečeno, když na návrh systému chytré domácnosti je pouze jeden vývojář, musí se orientovat v rozmanité sféře technologií, návrhových vzorů apod.
 
-\subsection*{Musíme mít co říci}
-Nejdůležitějším předpokladem dobrého odborného textu je myšlenka. Je-li myšlenka dost závažná, tak přetrvá, i když je neobratně a zmateně podaná. Chceme-li však myšlenku podat co nejvýstižněji a ušetřit tak čtenáři čas, musíme dodržet určité zásady, o kterých pojednáme dále.
+V kapitole \ref{navrh:backend} bude detailněji popsán návrh serverové (\emph{backend}) části systému, která je nejspíše nejkomplikovanější a nedůležitější ze všech odvětví této bakalářské práce.
+Dále v kapitole \ref{navrh:databaze} lze nalézt popis návrhu relační databáze a související věci.
+V kapitole \ref{navrh:frontend} je návrh klientské aplikace(\emph{frontend}), kde hlavním jádrem věci je rozložení a vzhled stránky.
+Samozřejmě je zde i popis struktury uložení stavu aplikace a operací provádených na pozadí.
+V poslední kapitole \ref{navrh:hardware}je návrh HW komponentů, a struktura programu. \todo{Specify}
+
+\subsection{Návrh serverové části}
+\label{navrh:backend}
+
+\subsection{Návrh databáze}
+\label{navrh:databaze}
+
+\subsection{Návrh klientské aplikace}
+\label{navrh:frontend}
+
+\subsection{Návrh zařízení}
+\label{navrh:hardware}
+
+
 
 \subsection*{Musíme vědět, komu to chceme říci}
 Dalším důležitým předpokladem dobrého psaní je psát pro někoho. Píšeme-li si poznámky sami pro sebe, píšeme je jinak než výzkumnou zprávu, článek, diplomovou práci, knihu nebo dopis. Podle předpokládaného čtenáře se rozhodneme pro způsob psaní, rozsah informace a~míru detailů.
@@ -657,14 +686,14 @@ Delší text -- jakým je diplomka -- je opatřen automaticky sestaveným obsahe
 
 U diplomky ať obsah uvádí pouze nadpisy první a druhé úrovně, třetí úroveň ať tam není, je moc podrobná. Čtvrtá úroveň -- byť by se v obsahu neuváděla a byť by byla použitá jen v některých kapitolách -- je obvykle špatně sama o sobě.
 
-Pokud jsou nadpisy kapitol správně sestaveny, pohledem na obsah (bez dalších informací, bez čtení abstraktu) musí člověk, který se v oboru aspoň letmo orientuje, přesně poznat, co se v práci nachází. Dokáže odhadnout, co je cílem práce. Ví, z jakých modulů se~celé řešení skládá a k čemu tyto slouží. Řekne, kolik a jakých experimentů řešitel provedl. Dokáže říct, kdo je cílovým \uv{zákazníkem} práce -- komu a k čemu je dobrá. Pokud to ze~samotného obsahu poznat není, nadpisy kapitol jsou asi špatně a buď je pisatel předělá, nebo má špatně napsanou práci. Třetí možnost není.
+Pokud jsou nadpisy kapitol správně sestaveny, pohledem na obsah (bez dalších informací, bez čtení abstraktu) musí člověk, který se v oboru aspoň letmo orientuje, přesně poznat, co se v práci nachází. Dokáže odhadnout, co je cílem práce. Ví, z jakých modulů se~celé řešení skládá a k čemu tyto slouží. Řekne, kolik a jakých experimentů řešitel provedl. Dokáže říct, kdo je cílovým \uv{zákazníkem} práce -- komu a k čemu je dobrá. Pokud to ze~samotného obsahu poznat není, nadpisy kapitol jsou asi špatně a buď je pisatel předělá, nebo má špatně napsanou práci. Třetí mo��nost není.
 
 \section{Úvod}
 \label{uvod}
 
 První kapitola práce má vždy název Úvod. Slouží k zasazení řešené problematiky do širšího kontextu a v podobě stručného obsahu jednotlivých kapitol definuje strukturu písemné práce \cite{fitWeb}.
 
-Rozsah úvodu práce by měl být cca 1-2 strany textu. Očekává se, že úvod bude čitelný i~pro \uv{náhodného kolemjdoucího}, který je gramotný, žije v~naší době a naší zemi a to je tak vše. Nemusí být odborníkem v dané technické oblasti. Přesto by měl úvodu porozumět. Je zapotřebí úvod napsat tak, aby byl samostatně čitelným literárním útvarem a pokud čtenář přečte jen úvod, měl by pochopit, o co v práci hlavně jde. Také se celkem často stává, že~lidé čtou jen ten úvod.
+Rozsah úvodu práce by měl být cca 1-2 strany textu. Očekává se, že úvod bude čitelný i~pro \uv{náhodného kolemjdoucího}, který je gramotný, žije v~naší době a naší zemi a to je tak vše. Nemus�� být odborníkem v dané technické oblasti. Přesto by měl úvodu porozumět. Je zapotřebí úvod napsat tak, aby byl samostatně čitelným literárním útvarem a pokud čtenář přečte jen úvod, měl by pochopit, o co v práci hlavně jde. Také se celkem často stává, že~lidé čtou jen ten úvod.
 
 \subsection*{Rady pro úvod od prof. Zemčíka}
 Není vhodné úvod dále členit na podkapitoly a není vhodné do něj uvádět odkazy na~literaturu -- měl by to být literární útvar dobře čitelný a \uv{stravitelný} a měl by se pěkně a~příjemně číst. Pokud se týká vnitřní struktury úvodu, je vhodné, aby byla následující:
@@ -673,7 +702,7 @@ Není vhodné úvod dále členit na podkapitoly a není vhodné do něj uvádě
   \item{kousek textu o tom, proč je práce v dané oblasti důležitá, jaký má význam pro svět a~pro Vás, jaký má vztah ke studované oblasti, případně další důležité skutečnosti,}
   \item{kousek i o tom, co se v dané oblasti dělo v minulosti, případně \uv{v~jakém stavu je dnes}, případně jestli jsou nějaké vyhlídky do budoucna,}
   \item{je třeba napsat i o tom, \uv{proč se tomu vlastně chcete věnovat}, tedy co Vás vedlo k~výběru tématu a co na tom vidíte perspektivního -- pokud možno pravdiv�� a věrohodně,}
-  \item{taky je třeba napsat, co je cílem práce (vlastními slovy, ne opsat formální zadání),}
+  \item{taky je třeba napsat, co je c��lem práce (vlastními slovy, ne opsat formální zadání),}
   \item{nakonec je třeba popsat strukturu práce, aby čtenář věděl, kde co hledat (například \uv{v následující kapitole je uveden\ldots, v kapitole \uv{XXX} je popsáno, v kapitole 3 je\ldots} apod.) -- nezapomeňte, že úvod má být i návodem ke čtení práce. }
 \end{itemize}
 
@@ -1390,7 +1419,7 @@ Správně:
 
 \bf Ručně dělané skicy a obrázky: \rm Obzvláště pro pracovní verzi práce je jednodušší rychle něco namalovat, vyfotit a pak psát dál. Většinou je ta skica schématu napoprvé špatně a tak zbytečně ztrácíte čas předěláváním. Do finálního textu bych byl s \uv{ruční prací} opatrný. Pro některé oponenty/přísedící to může být falešný indikátor, že jste nestíhali, a~tak jste to odbyli rukou za 5 minut.
 
-\bf Úvod a Závěr: \rm Překlepy, nesmyslné věty, hrubky, nespisovná slova, \ldots  To vše do diplomky nepatří. Někde hluboko v práci se ten jeden jediný překlep snad ztratí. Ale úvod a~závěr čtou úplně všichni. A mít tam chyby je ostuda. Až u obhajoby budete přesvědčovat komisi, že jste odvedli velký kus práce, jak asi bude vypadat fakt, že si po sobě neumíte přečíst jednu stranu textu?
+\bf Úvod a Závěr: \rm Překlepy, nesmyslné věty, hrubky, nespisovná slova, \ldots  To vše do diplomky nepatří. Někde hluboko v práci se ten jeden jediný překlep snad ztratí. Ale úvod a~závěr čtou úplně všichni. A mít tam chyby je ostuda. Až u obhajoby budete přesvědčovat komisi, že jste odvedli velký kus práce, jak asi bude vypadat fakt, ��e si po sobě neumíte přečíst jednu stranu textu?
 
 \bf Citujte obrázky: \rm Pokud si \uv{vypůjčíte} obrázek z nějakého zdroje, nepřiznáte se a~přijde se na to, máte za F. Citace odkazem do literatury na konci popisku obrázku je (asi) OK. Přesto má řada oponentů raději explicitní uvedení do závorky: (převzato z [xy]).
 
@@ -1424,7 +1453,7 @@ Pak práci vytiskněte a nechte si ji vyvázat. Pokud svázanou práci otevřete
 
 \section{Odevzdání listinné formy práce}
 
-Bakalářská či diplomová práce se odevzdává ve dvou výtiscích, přičemž každý z nich bude obsahovat podepsané prohlášení. Výtisk pro archivaci musí být svázán nerozebíratelným způsobem. Doporučeny jsou desky z polotvrdého papíru, tmavé (modrá, šedá), na vnitřní straně zadní desky bude vlepena obálka s CD/DVD či jiným povoleným nosičem tak, aby bylo možné jej vyjmout. Výtisk určený pro nahlédnutí před obhajobou v knihovně FIT, který bude diplomantovi po obhajobě vrácen, může být svázán i rozebíratelným způsobem (např. kroužková vazba).
+Bakalářská či diplomová práce se odevzdává ve dvou výtisc��ch, přičemž každý z nich bude obsahovat podepsané prohlášení. Výtisk pro archivaci musí být svázán nerozebíratelným způsobem. Doporučeny jsou desky z polotvrdého papíru, tmavé (modrá, šedá), na vnitřní straně zadní desky bude vlepena obálka s CD/DVD či jiným povoleným nosičem tak, aby bylo možné jej vyjmout. Výtisk určený pro nahlédnutí před obhajobou v knihovně FIT, který bude diplomantovi po obhajobě vrácen, může být svázán i rozebíratelným způsobem (např. kroužková vazba).
 
 Student kromě vytištěné písemné zprávy odevzdává následující součásti práce v elektronické podobě:
 \begin{itemize}
