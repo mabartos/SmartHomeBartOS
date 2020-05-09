@@ -421,16 +421,54 @@ kde získá daný token pro přístup ke zdrojům informací serveru. Token je z
 \subsection*{Přístupová práva}
 \label{backend:prava}
 Přístupová práva pro uživatele jsou různá. Každý uživatel může mít odlišné role v různých domácnostech, tudíž nemá specifikovanou jednu roli jako to občas bývá zvykem u serverových aplikací.
-Uživatel, který si vytvoří vlastní dům...\todo{Complete}
+Každá role má různé vlastnosti a práva přístupu k informacím, či práva k vykonání určitých operací.
+\newline
+Mezi tři základní skupiny se řadí:
+\begin{itemize}
+  \item \textbf{Administrátor}
+  \item \textbf{Klasický uživatel}
+  \item \textbf{Dítě}
+\end{itemize}
 
+Tyto typy uživatelů jsou hierarchicky rozpoložené, kde uživatel ve skupině \emph{Dítě} je na nejnižším místě s nejmenším počtem přístupových práv, poté \emph{Klasický uživatel} a nejvýše položený je \emph{Administrátor}, který má největší počet přístupových práv.
+Tyto základní skupiny jsou dále modifikovatelné. Administrátor domácnosti může vytvořit další podřazené skupiny u kterých definuje přístupová práva a může přidat uživatele do skupin.
+Uživatelé ve skupině, které administrátor domácnosti přidělí právo spravovat uživatele ve skupinách, jsou schopni spravovat uživatele ve skupinách pouze v podřazených skupinách.
 
-\todo{Use case}
-\begin{figure}
+Uživatel, který si vytvoří vlastní domácnost se automaticky stává administrátorem dané domácnosti a může ji plně spravovat, dokonce může přidávat a odebírat uživatele z domácnosti.
+Uživatel, který má minimální roli \emph{Klasický uživatel} v domácnosti je schopen si vytvořit vlastní pokoj, který může plně spravovat. Uživatel s rolí \emph{Dítě} takovou možnost nemá.
+Administrátor má také právo poslat pozvánku uživateli do domácnosti s určenou rolí v domácnosti. Uživatel může buď přijmout pozvánku a být tak zařazen do domácnosti s určitou rolí, nebo v opačném případě odmítnout a smazat pozvánku.
+\newline
+
+Na obrázcích níže lze nalézt grafické znázornění operací, které lze vykonávat s určitou základní rolí.
+Grafické znázornění je vytvořeno pomocí \emph{Use Case}\footnote{\textbf{Use Case diagram} - diagram případů užití} diagramu, který spadá do kategorie diagramu chování definovaný v \emph{UML}\footnote{\textbf{UML} - \textbf{U}nified \textbf{M}odeling \textbf{L}anguage (grafický jazyk pro vizualizaci)}.
+\emph{Use Case} diagram zachycuje pouze vnější pohled na modelovaný systém a nepoukazuje na způsob implementace daných operací.~\ref{use_case:info}
+Na obrázku \ref{figure:use_case_dite} je zachyceno rozhraní pro uživatele s rolí \emph{Dítě}, na obrázku \ref{figure:use_case_uzivatel} pro uživatele s rolí \emph{Klasický uživatel} a na posledním obrázku \ref{figure:use_case_admin} pro uživatele s rolí \emph{Administrátor}.
+
+\begin{figure}[hbt]
   \centering
-  \includegraphics[width=0.5 \linewidth]{obrazky-figures/raspberry.png}
-  \caption{Use case}
-  \label{figure:use_case}
+  \includegraphics[width=0.4 \linewidth]{obrazky-figures/raspberry.png}
+  \caption{Diagram užití pro roli \textbf{Dítě}}
+  \label{figure:use_case_dite}
 \end{figure}
+
+\begin{figure}[hbt]
+  \centering
+  \includegraphics[width=0.4 \linewidth]{obrazky-figures/raspberry.png}
+  \caption{Diagram užití pro roli \textbf{Klasický uživatel}}
+  \label{figure:use_case_uzivatel}
+\end{figure}
+
+\begin{figure}[hbt]
+  \centering
+  \includegraphics[width=0.4 \linewidth]{obrazky-figures/raspberry.png}
+  \caption{Diagram užití pro roli \textbf{Administrátor}}
+  \label{figure:use_case_admin}
+\end{figure}
+
+
+
+
+
 
 
 
@@ -448,6 +486,7 @@ Uživatel, který si vytvoří vlastní dům...\todo{Complete}
 \section{Návrh zařízení}
 \label{navrh:hardware}
 
+\todo{Use case}
 
 
 \chapter{Jednotlivé kapitoly práce}
