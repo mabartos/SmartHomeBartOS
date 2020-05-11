@@ -638,4 +638,107 @@ To ušetří mnoho instancí klientů, což je výhodou u některých \emph{MQTT
 \section{Návrh HW zařízení}
 \label{navrh:hardware}
 
-\todo{Use case}
+Je to zařízení, které je schopno reagovat na vstupy, nebo akce a schopno generovat příslušný výstup.
+Zařízení v konceptu řešení této chytré domácnosti je soubor součástek spojených v elektrickém obvodě lokalizovaných na \emph{DPS}\footnote{\textbf{DPS} - \textbf{D}eska \textbf{P}lošných \textbf{S}pojů}.
+Hlavní komponentou celého zařízení je mikrokontrolér, který se stará o všechny akce spojené s daným zařízením.
+Mikrokontrolér se dá považovat jako mozek daného zařízení(více v kapitole \ref{terminy:mcu}).
+
+Mikrokontrolér obsažený v zařízení se stará i o připojené vnější periférie, v kontextu této práce o tzv. \emph{capabilities}(schopnosti zařízení).
+\emph{Schopnosti zařízení} jsou připojené I/O periférie k \emph{MCU}(např. teploměr, vlhkoměr, tranzistory ovládající světla,...).
+HW zařízení jsou koncipovaná tak, aby byla jednoduše \emph{customizovatelná} pro zákazníkovy potřeby.
+To znamená, že \emph{schopnosti zařízení} se dají lehce připojit, odpojit, či přidat jiný modul.
+\newline
+
+V této bakalářské práci jsou braná v potaz dva typy připojených zařízení:
+\begin{itemize}
+  \item \textbf{Dedikovaná energeticky úsporná}
+  \item \textbf{Centrální pro místnost}
+\end{itemize}
+
+\subsection*{Dedikovaná energeticky úsporná}
+\label{hardware:usporna}
+První typ zařízení jsou dedikovaná energeticky úsporná zařízení, kde napájení pochází většinou z nějakého akumulátoru a musí být maximálně energeticky nenáročná.
+Tato zařízení by měla vydržet dlouhou dobu bez jakéhokoliv zásahu a nabíjení akumulátoru.
+K tomuto typu zařízení lze pouze připojit malé množství I/O periférií, neboli \emph{capabilities}.
+Tato zařízeni mají malou velikost a slouží pouze k vykonávání dedikovaných operací bez značné míry \emph{customizace} za účelem efektivního přístupu ke zdrojům.
+Mezi tyto schopnosti zařízení se řadí např. senzory, ovládání chytrých zásuvek(lze napájení získat jiným způsobem).
+
+\subsection*{Centrální pro místnost}
+\label{hardware:centralni}
+Další typ zařízení jsou tzv. \emph{Centrální pro místnost}.
+Tento typ zařízení je \emph{customizovatelný} ve velké míře a vyžaduje stabilní příjem energie, protože energetická náročnost těchto zařízení je vyšší oproti prvnímu typu a zařízení by vydržela pouze pár dní s pomocí akumulátoru.
+K tomuto typu zařízení lze připojit větší množství I/O periferií, neboli \emph{capabilities}.
+Zařízení jsou dostupná v místnostech a disponují základními schopnostmi, jako je měření teploty, vlhkosti, správa světelných aparátů atd.
+
+\newpage
+\subsection*{Komunikace a správa zařízení}
+\label{hardware:komunikace}
+
+Komunikace zařízení s ostatními zařízeními, serverem, nebo s brokerem probíhá pomocí protokolu \emph{MQTT}(více info viz \ref{terminy:mqtt}).
+Před prvním použítím zařízení se musí zařízení inicializovat a získat potřebná data ze serveru.
+Existují dva přístupy, jak se připojit k serveru a aktivovat tak dané zařízení:
+\begin{itemize}
+  \item \textbf{Inicializace zařízení} - První použití zařízení
+  \item \textbf{Připojení zařízení} - Opětovné použití zařízení
+\end{itemize}
+
+\subsubsection*{Inicializace zařízení}
+Před prvním použitím zařízení vytvoří \emph{WiFi AP}\footnote{\textbf{WiFi AP} - WiFi \textbf{A}ccess \textbf{P}oint (přístupový bod - samostatný přijímač/vysílač)}.
+Uživatel se přihlásí k danému AP pomocí hesla přiloženém k zařízení. Zařízení má jednoznačný identifikátor, tudíž by neměla nastat kolize více zařízení.
+Když je uživatel připojen, je vyžádán, aby otevřel určitou webovou stránku, která je zprostředkována zařízením - jedná se o konfigurační stránku zařízení.
+Po otevření webové stránky se uživateli zobrazí dostupné WiFi AP, uživatel vybere jeho domácí WiFi AP(připojení k routeru, který je v dané domácnosti).
+Dále uživatel zadá webovou stránku, nebo IP adresu \emph{MQTT brokeru}, která je také přístupná s dodaným softwarem, nebo zprostředkována administrátorem služeb.
+Další základní parametr, který uživatel musí zadat, je identifikační číslo domácnosti.
+
+Dále je možnost na dané stránce objevit výběr požadovaných schopností, které jsou dostupné namapované na daný port určitého mikrokontroléru.
+Každý mikrokontrolér má většinou odlišné možnosti ve schopnostech poskytnout určitou funkcionalitu na port.
+Konfigurace zařízení je tak dokončena a uložena do paměti flash daného mikrokontroléru.
+
+Zařízení poté pošle \emph{MQTT} zprávu na určené téma, kterou odchytí server. Zpráva obsahuje název zařízení a dále pole \emph{capabilities}(schopností).
+U těchto schopností zařízení je přítomný typ schopnosti a pin, na kterém daná schopnost pracuje.
+Zpráva v poslední řadě obsahuje tzv.\emph{Message ID}(identifikátor zprávy), který slouží k identifikování odpovědi ze serveru.
+
+Server zpracuje zprávu od zařízení a uloží zařízení a schopnosti do databáze.
+Server zpět zařízení pošle zprávu typu \emph{CREATE} s příslušnými identifikátory zařízení a schopností. Obsahuje také stejný identifikátor zprávy.
+Zařízení uloží do flash paměti dané identifikátory, zařízení je aktivováno a odebírá zprávy z určitého \emph{topicu}.
+
+\subsubsection*{Připojení zařízení}
+Zařízení by v tuto chvíli mělo být již inicializované. Po zapnutí si zařízení přečte uložená data z flash paměti.
+Připojí se k danému WiFi AP a pošle zprávu typu \emph{CONNECT} s příslušnými identifikátory. Server tak ověří, že zařízení má správně definovány příslušné identifikátory schopností a pošle zpět aktualizovaný seznam.
+Zařízení se tímto úkonem aktivuje.
+
+\subsubsection*{Správa zařízení v místnosti}
+Další procedurou, kterou lze vykonat u zařízení je přidání zařízení do domácnosti. Zařízení musí být vždy obsaženo v místnosti.
+Když je zařízení přidáno do místnosti pomocí klientské aplikace, server po aktualizování záznamu o zařízení v databázi pošle zprávu zařízení o přidání do místnosti.
+Zařízení tak začne posílat hodnoty ze svých schopností na dané \emph{topicy}. Také začne přijímat zprávy z daných topiců.
+V případě odebrání zařízení z místnosti, je znovu zařízení poslaná zpráva ze serveru a zařízení přestává posílat svá data ze schopností a čeká do té doby, než je zase přiřazeno do místnosti.
+\newline
+
+\subsubsection*{Smazání zařízení z domácnosti}
+Když je zařízení smazáno pomocí klientské aplikace, odebráno z domácnosti, nebo smazaná domácnost, zaříze potom vymaže vše svá uložená data a přepne se do režimu, kdy musí být znovu inicializováno.
+Uživatel tak musí znovu nastavit vše potřebné.
+
+\begin{figure}[hbt]
+  \centering
+  \includegraphics[width=0.9 \linewidth]{obrazky-figures/raspberry.png}
+  \caption{DPS schema,...}
+  \label{figure:schema}
+\end{figure}
+
+\newpage
+\chapter{Použité technologie a komponenty}
+\label{pouzite}
+V této kapitole jsou popsány technologie, služby a komponenty, které jsou využity pro implementaci návrhu řešení chytré domácnosti.
+Použití všech těchto prvků bylo pečlivě zváženo a snaha využít nejlepší dostupné technologie a techniky, podle mého názoru, byla úspěšná.
+
+\section{Serverová část}
+\label{pouzite:backend}
+
+\section{Databázová část}
+\label{pouzite:db}
+
+\section{Klientská aplikace}
+\label{pouzite:frontend}
+
+\section{Hardwarová část}
+\label{pouzite:hw}
