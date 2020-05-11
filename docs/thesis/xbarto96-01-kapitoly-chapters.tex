@@ -186,6 +186,9 @@ Mezi základní typy zpráv u protokolu MQTT patří:
   \label{figure:mqtt_flow}
 \end{figure}
 
+\subsection{\emph{MQTT} přes protokol \emph{Websocket} (\emph{MQTT over Websockets})}
+\label{mqtt:websockets}
+\todo{COMPLETE WEBSOCKETS}
 
 \newpage
 \section{Aplikační prostředí}
@@ -392,8 +395,23 @@ Dále v kapitole \ref{navrh:databaze} lze nalézt popis \textbf{návrhu relačn�
 V kapitole \ref{navrh:frontend} je \textbf{návrh klientské aplikace}(\emph{frontend}), kde hlavním jádrem věci je rozložení a vzhled stránky.
 Samozřejmě je zde i popis struktury uložení stavu aplikace a operací provádených na pozadí.
 V poslední kapitole \ref{navrh:hardware}je \textbf{návrh HW zařízení}, struktura programu.
-
 \newpage
+
+Na obrázku \ref{figure:architektura} je graficky znázorněna architektura navrhovaného systému.
+Navrhovaná architektura systému obsahuje server, \emph{MQTT} broker, autentizační/autorizační službu, databázi, klientské aplikace a HW zařízení.
+Služby, které budou nasazeny v cloudu, či v lokální síťi na minipočítači jsou vyznačeny ve žluté části obrázku.
+V zelené části obrázku jsou vyznačeny klientské aplikaci a ve fialové části samotná HW zařízení.
+Server komunikuje s \emph{MQTT brokerem} pomocí komunikačnícho protokolu \emph{MQTT}, kde server je další \emph{MQTT klient}(detailně popsáno v \ref{navrh:backend}).
+Server dále komunikuje s klientskou aplikací(v zelené části obrázku) pomocí protokolu \emph{HTTP}, která posílá požadavky na server.
+Klientská aplikace se serverem dále komunikují s příslušnou autentizační/autorizační službou.
+
+\begin{figure}[hbt]
+  \centering
+  \includegraphics[width=0.8 \linewidth]{obrazky-figures/navrh.png}
+  \caption{Základní architektura systému}
+  \label{figure:architektura}
+\end{figure}
+
 \section{Návrh serverové části}
 \label{navrh:backend}
 Z hlediska vývoje aplikací je z mého pohledu tato část práce nejkomplikovanější a zároveň nejobtížnejší.
@@ -418,6 +436,15 @@ Server je asociován s autentizační službou a při každém požadavku na ser
 a ta vyhodnotí, zda je uživatel autentizován, potažmo autorizován získat informace z daného endpointu\footnote{\textbf{Endpoint} - HTTP path (cesta požadavku definována pomocí API)}.
 Pokud uživatel není autentizován a nevlastní žádaný \emph{token}, musí poslat požadavek na autorizační službu s danými \emph{credentials}\footnote{\textbf{Credentials} - poveření v různých formách (heslo, PIN, OTP, biometrika,...)},
 kde získá daný token pro přístup ke zdrojům informací serveru. Token je zasílán v HTTP hlavičce v atributu \emph{Authorization}.
+
+O autorizaci se stará přímo server, který ověří u dané autentizační služby, zda je uživatel autentizován a zda má dostatečná práva na zisk informací z daného zdroje.
+Pokud uživatel není autentizován a není přesměrován na stránku autentizační služby, vrací se \emph{HTTP} response\footnote{\textbf{Response} - odpověď na požadavek ze serveru} kód s číslem 401, který se označuje jako \emph{Unauthorized}(neoprávněný).
+Uživatel který není autorizován k získání informací dostane odpověď ze serveru s kódem 403, který značí \emph{Forbidden}(zamítnuto).
+
+Server vyhledá uživatele v databázi a nejčastěji podle role, kterou má uživatel přidělenou pro danou domácnost, se ověří, zda má přístupová práva.
+Server musí být tudíž schopný ověřit vše už před samotným vykonáváním operací daných u příslušných \emph{REST Endpointů}.
+Dále je zavedeno autorizační pravidlo v systému, které zkoumá, zda se požadované zdroje informací týkají žádajícího uživatele.
+To platí např. u spravování místností, kde uživatel není schopen spravovat místnosti, ale v případě, že je uživatel vlastník místnosti, tyto práva mu náleží.
 
 \subsection*{Přístupová práva}
 \label{backend:prava}
@@ -466,6 +493,7 @@ Na obrázku \ref{figure:use_case_dite} je zachyceno rozhraní pro uživatele s r
   \label{figure:use_case_admin}
 \end{figure}
 
+\newpage
 \subsection*{Správa požadavků ze zařízení}
 \label{backend:mqtt}
 
@@ -487,6 +515,7 @@ Server disponuje určitým \emph{ORM} frameworkem, který mapuje objektově orie
 Návrh databáze u daného řešení chytré domácnosti je modelován pomocí \emph{ER diagramu}\footnote{\textbf{ER Diagram} Entity-Relationship diagram(entitně vztahový diagram)}, kde jsou znázorněné entity\footnote{\textbf{Entita} - věc schopná samostatné existence} modelující tabulky databáze a jejich propojení.
 Databáze je tak modelována pomocí modelovací jazyka s názvem \emph{UML}. Diagram obsahuje název entity, primární a cizí klíče, atributy entity a asociace tabulek s určitou kardinalitou.
 \newpage
+
 Mezi základní entity řešení chytré domácnosti patří:
 \begin{itemize}
   \item \textbf{\emph{User}} - základní informace o uživateli
@@ -540,7 +569,73 @@ Kardinalita vztahu mezi entitou \emph{Device} a příslušnou entitou je v pomě
 \section{Návrh klientské aplikace}
 \label{navrh:frontend}
 
-\section{Návrh zařízení}
+Klientská aplikace slouží k přímé interakci s uživatelem a navrhovaným systémem.
+Tato aplikace slouží ke správě domácností, místnostní, zařízení a všech dodatečných vlastností systému.
+Pro přístup do aplikace je nutné být autentizován.
+Zda uživatel autentizován není, je přesměrován na stránku autentizační služby, kde musí poskytnout své přihlašovací údaje, či jiným definovaným způsobem prokázat svoji identitu.
+Po úspěšném přihlášení je uživatel automaticky přesměrován zpět do klientské aplikace, kde vidí obecný přehled.
+Na této úvodní stránce vidí uživatel sebou definované oblíbené domácnosti, místnosti, zařízení, nebo dokonce jenom schopnosti zařízení(např. teplota určité místnosti, vlhkost atd.).
+Dále je zde možnost vidět různé statistiky domácnosti, kde vedle historie změn prostředí různých místností, může být i celková spotřeba domácnosti.
+
+Klientská aplikace je ve stylu tzv.\emph{Dashboardu}, který se velice hodí pro různé informační systémy a systémy starající se o správu.
+Klientských aplikací může být větší množství a nemusí být přímo svázány s aktuální.
+Aktuální aplikace je v tomto kontextu myšlena aplikace, která je vytvořena jako defaultní pro tuto bakalářskou práci(dále budeme uvažovat pouze tato konkrétní).
+Daná aplikace je vytvořena v podobě webové aplikace, která je přístupná přes internetový prohlížeč.
+Aplikace disponuje responzivním designem, tudíž je schopno v upravené formě přistupovat k aplikaci přes mobilní zařízení.
+
+Jak již bylo řečeno, klientských aplikací může být několik, protože využívají API, které definuje server a posílají požadavky na daný server.
+Žádná hlubší aplikační svázanost s touto určitou aplikací nemá vliv na chod systému.
+Klientská aplikace také komunikuje se zařízeními pomocí protokolu \emph{MQTT}, ale tento protokol je ještě zabalený v protokolu \emph{Websocket}(více info \ref{mqtt:websockets}).
+
+\begin{figure}[hbt]
+  \centering
+  \includegraphics[width=0.9 \linewidth]{obrazky-figures/mockup.png}
+  \caption{Vizuální návrh klientské aplikace}
+  \label{figure:design}
+\end{figure}
+
+\newpage
+\subsection*{Vzhled}
+\label{frontend:vzhled}
+Vizuální vzhled webové aplikace bude využívat tzv.\emph{tiles}(dlaždice), které představují různé komponenty aplikace(viz obrázek \ref{figure:design}).
+Po levé straně aplikace(v desktop responzivní verzi) je postranní menu, které obsahuje navigační tlačítka, které uživatele přesměrují do jiných částí obsahu.
+Důležitý prvek je položka s názvem \emph{Homes}, kde je po rozkliknutí uživatel přesměrován na stránku, která obsahuje všechny domácnosti, ve kterých je obsažen.
+Domácnosti jsou také ve stylu dlaždice, kde ve spodní části obsahuje informaci o roli uživatele, kterou má daný uživatel přiřazenou k domácnosti.
+V právé spodní části je, pro většinu dlaždic obsažených v aplikaci, tlačítko, které po rozkliknutí poskytne možnosti úpravy a správy dané dlaždice.
+
+Po rozkliknutí dlaždice je uživatel přesměrován do dané domácnosti a opět ve stylu dlaždic jsou dostupné místnosti obsažené v domácnosti.
+Místnosti mají zase odlišnou nabídku možností, než jak to bylo u domácností.
+Uživatel v daném prostředí má schopnost vytvořit si svojí místnost(zda má dostatečná práva).
+Po dalším rozkliknutí dlaždice místnosti je uživatel přesměrován do dané místnosti, kde již vidí připojená zařízení a jejich \emph{capabilities}(schopnosti).
+Schopnosti, mezi které se může řadit např. teplota místnosti, vlhkost, ovládání světel atd., jsou barevně odlišeny podle zařízení, do kterého patří např. schopnosti zařízení A budou mít zelenou barvu a schopnosti zařízení B žlutou, atd.
+
+U mobilních zařízení je postranní menu skryto a dlaždice jsou rozprostřeny souměrně na obrazovce podle velikosti displeje daného zařízení.
+U mobilních telefonů standardních rozměrů jsou tyto dlaždice vertikálně rozpoloženy v jednom sloupci.
+V pravé horní části obrazovky je tzv. \emph{Hamburger menu}(tlačíko), které po rozkliknutí zobrazí postranní menu definované v desktop responzivní verzi.
+
+\subsection*{Programová část}
+\label{frontend:program}
+Programová část v kontextu návrhu klientské aplikace se zabývá kompletní strukturou programu, či služeb, které probíhají na pozadí aplikace.
+Aplikace se sestává z jedné základní šablony, kde ostatní prvky, neboli komponenty, jsou dynamicky měněny.
+Tudíž při přechodu na jinou záložku v menu se nemusí vyrenderovat celá stránka, ale pouze změněné komponenty.
+Klientská aplikace si udržuje stav, kterým právě uživatel disponuje.
+Díky ukládání stavu do cache prohlížeče uživatele je zamezeno několikanásobné posílání dotazů na server a plynulejší průchod aplikací.
+Při každém požadavku na server a následném zpracování dat se změní i stav požadovaných informací uložených v cache prohlížeče.
+
+Klientská aplikace je pomocí adaptéru na daný programovací jazyk připojena k autentizační/autorizační službě se kterou inicializuje spojení a dále komunikuje.
+Po autentizaci uživatele aplikace získá informace o uživateli spravovaném autentizační službou pro další zpracování.
+Zde se uloží atributy uživatele do objektu, který se následně uloží do autentizačního stavu.
+Stav, který se stará o autentizovaného uživatele obsahuje také \emph{access token}\footnote{\textbf{Access Token} - token pro přímý přístup ke zdroji informací; krátká životnost} a \emph{refresh token}\footnote{\textbf{Refresh Token} - token pro získání nového \emph{access} tokenu; dlouhá životnost}.
+Autentizační služby nabízejí klientské adaptéry s možností autonomního revalidování, nebo-li získání nového tokenu.
+Programátor se tak nemusí starat o vypršení limitu \emph{tokenu}.
+
+Další vlastnost klientské aplikace je pracovat přímo se zařízeními i při výpadku serveru.
+V tomto případě však musí být zařízení už inicializovány na serveru a přidány do místnosti.
+Poté lze přistupovat k místnosti i bez aktivity serveru, kde se po rozkliknutí dané místnosti vytvoří instance \emph{MQTT klienta}, který dále přímo komunikuje přes \emph{MQTT broker} s danými zařízeními.
+Pro každou místnost se inicializuje jeden klient a pokud v klientské aplikaci není rozkliknuta místnost spravující daná zařízení, klient inicializován není.
+To ušetří mnoho instancí klientů, což je výhodou u některých \emph{MQTT brokerů}, které povolují pouze dané množství klientů a nezahlcuje se tak ve velkém množství síť.
+
+\section{Návrh HW zařízení}
 \label{navrh:hardware}
 
 \todo{Use case}
