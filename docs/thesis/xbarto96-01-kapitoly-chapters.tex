@@ -1,6 +1,3 @@
-% Tento soubor nahraďte vlastním souborem s obsahem práce.
-%=========================================================================
-% Autoři: Michal Bidlo, Bohuslav Křena, Jaroslav Dytrych, Petr Veigend a Adam Herout 2019
 \chapter{Úvod}
 
 V dnešní době, kdy lidé jsou zvyklí na větší pohodlí než kdysi, narůstá i počet chytrých domácností. Chytré domácnosti by měly usnadnit život lidem, okolí, i dokonce celé planetě. Když se řekne chytrá domácnost, může se někomu například vybavit jakýsi robot, který vám uklidí, či dokonce přinese nákup.
@@ -24,11 +21,13 @@ intuitivní rozhraní pro snadné zprovoznění chytré domácnosti a následné
 
 V kapitole \ref{terminy} najdete vše, co je potřeba k porozumnění zbytku práce. V další kapitole \ref{navrh} je pospán návrh daného řešení, v kapitole \ref{implementace} implementace řešení, v kapitole \ref{testovani} popsáno testování a v poslední řadě v kapitole \ref{zaver} závěr práce.
 
-\chapter{Důležité termíny a technologie}
+\chapter{Důležité termíny}
 \label{terminy}
 
-V této kapitole jsou popsané důležité termíny, technologie, nástroje a další, co je nezbytné k porozumnění zbytku práce. Nejdůležitější je pochopit koncept \emph{IoT}, který je popsán v podkapitole \ref{terminy:iot}.
-V dalších podkapitolách najdeme stručné vysvětlení pojmu \emph{MCU - neboli mikrokontrolér}(kapitola \ref{terminy:iot}), informace o různých zařízeních, která jsou obsažena v implementaci této chytré domácnosti. Specifičtěji se jedná hlavně o moduly \emph{ESP} (kapitola \ref{esp}) a mini počítač \emph{Raspberry Pi} (kapitola \ref{raspberry}).
+V této kapitole jsou popsané důležité termíny které jsou nezbytné k porozumnění zbytku práce.
+Asi nejdůležitější je pochopit koncept \emph{IoT}, který je popsán v podkapitole \ref{terminy:iot}.
+V dalších podkapitolách najdeme stručné vysvětlení pojmu \emph{MCU - neboli mikrokontrolér}(kapitola \ref{terminy:iot}), informace o různých zařízeních, která jsou obsažena v implementaci této chytré domácnosti.
+Specifičtěji se jedná hlavně o moduly \emph{ESP} (kapitola \ref{esp}) a mini počítač \emph{Raspberry Pi} (kapitola \ref{raspberry}).
 Komunikaci mezi zařízeními je pomocí protokolu \emph{MQTT}, komunikace s uživatelským rozhraním (dále jako \emph{frontend}) a serverem, kde je obsažena celá business logika (dále \emph{backend}), zajištuje protokol \emph{HTTP}.
 
 \bigskip
@@ -100,34 +99,6 @@ Mezi hlavní prvky patří analogově-digitální převodník, čítače, časov
   \label{figure:mcu}
 \end{figure}
 
-\section{Moduly obsahující čip ESP8266}
-\label{terminy:esp8266}
-
-\emph{ESP8266} je levný WiFi mikročip, který s přidáním několika komponentů je schopen plnohodnotně plnit úlohu mikrokontroléru. Tento mikročip je velice oblíbený v oblasti chytrých zařízení díky své stabilititě, výkonosti, velikosti, ceně a mnoho dalšího.~\cite{wiki:esp}
-Na trhu existuje spousty modulů, které obsahují právě zmíněný mikročip a plní tak úlohu mikrokontroléru. Mezi nejoblíbenější moduly, které obsahují tento mikročip jsou \emph{ESP-01}, který obsahyje pouze 2 GPIO\footnote{\textbf{GPIO} - univerzální vstupní/výstupní pin (General-purpose input/output)} piny, poté větší \emph{Wemos D1 mini} a \emph{NodeMCU}.
-Tento projekt chytré domácnost je sestaven hlavně z těchto modulů díky svým přednostem a využití. Pro maximálně 2 jednotlivé I/O\footnote{\textbf{I/O} - vstup/výstup (\textbf{I}nput/\textbf{O}utput)} periferie připojené k modulu je využit modul \emph{ESP-01}. Pro komplexní využítí a připojení více periferií je použit modul \emph{Wemos D1 mini}.
-
-\begin{figure}[hbt]
-  \centering
-  \includegraphics[width=.2 \linewidth]{obrazky-figures/esp_standalone.png}
-  \caption{Samostatný ESP8266 čip}
-  \label{figure:esp8266}
-\end{figure}
-
-\section{Minipočítač Raspberry Pi}
-\label{terminy:raspberry}
-
-\emph{Raspberry Pi} je v informatice označení pro jednodeskový počítač, který je se svým výkonem srovnatelný se slabším stolním počítačem. Obsahuje video a audio výstupy,
-ethernetový port, USB porty a výstup na dedikovaný monitor určený přímo pro \emph{Raspberry Pi}. Tento malý počítač, rozměry podobný kreditní kartě, je využit v této bakalářské práci na nasazení služeb, kdy uživatel nechce využívat cloudové služby.
-Modelů \emph{Raspberry Pi} je na trhu více, kde se liší svým výkonem, velikostí, nebo kompatibilitou s různými rozhraními. Za účelem nasazení služeb v chytré domácnosti lze využít i menšího sourozence z rodiny počítačů \emph{Raspberry Pi} a to přesně \emph{Raspberry Pi W},
-kde vytvořené, nebo poskytnuté služby jsou optimalizované pro běh na zařízeních s menším výpočetním výkonem a operační pamětí.
-
-\begin{figure}[ht]
-  \centering
-  \includegraphics[width=.5 \linewidth]{obrazky-figures/raspberry.png}
-  \caption{Raspberry Pi 4}
-\end{figure}
-
 \newpage
 
 \section{MQTT protokol}
@@ -140,16 +111,17 @@ který se přihlašuje k odběru zpráv s daným temátem(dále \emph{topic}).
 Subscriber může přijímat několik zpráv s různými tématy a v průběhu se od odběru i odhlašovat. Druhým typem je tzv. vydavatel(dále \emph{publisher}), který posílá zprávy do určitého
 topicu.~\cite{mqtt:info}
 
-\subsection{MQTT Broker}
+\subsection*{MQTT Broker}
 \emph{MQTT Broker} je služba (nebo-li software, který běži v cloudu, či lokálním PC), která se stará o rozesílání a spravování zpráv, které různá zařízení posílají. MQTT Broker je prostředník mezi účastníky typu \emph{subscriber} a \emph{publisher}.
 Každé zařízení, které chce využívat MQTT protokol a komunikovat s ostatními zařízeními, musí definovat URL brokeru, přes který budou tyto zprávy procházet.
 Jak již bylo řečeno, MQTT je Pub/Sub protokol, proto když přijde, od účastníka typu publisher, zpráva ke specifickému topicu, musí se podívat, kdo všechno je přihlášen k odběru daného topicu a rozeslat všem účastníkům, typu subscriber, tuto zprávu.
 Každé zařízení může jak přijímat, tak i odesílat zprávy k danému topicu.~\cite{wiki:mqtt_broker} V této bakalářské práci je využit \emph{MQTT Broker} s názvem \emph{HiveMQ}.
 
-\subsection{Zabezpečení}
+\subsection*{Zabezpečení}
 V \emph{IoT} je velice důležitá i bezpečnost a pomocí \emph{MQTT Brokeru} lze dosáhnout určitého bezpečnostního cíle. Je opravdu nevítané, aby se někdo cizí dostal bez autentizace k odběru vašich
 zpráv procházející přes \emph{MQTT Broker} a mohl zasílat zprávy do různých dalších zařízení připojená v domácnosti.
 Útočník tak má šanci kontrolovat celou vaši domácnost. Každý \emph{MQTT Broker} od různých výrobců disponuje různou sadou zabezpečení a vlastností.~\cite{wiki:mqtt_broker}
+\newline
 
 Možné typy zabezpečení:
 \begin{itemize}
@@ -158,16 +130,9 @@ Možné typy zabezpečení:
   \item \textbf{TLS}\footnote{\textbf{TLS} - Transport layer security} připojení
   \item \textbf{OAuth}\footnote{\textbf{OAuth} - Poskytuje autentizační a autorizační správu} správa
 \end{itemize}
-\subsection{QoS - Kvalita služeb (Quality of services)}
-Každá zpráva může specifikovat, jak bude zajištěna kvalita služeb u poslání daných zpráv.~\cite{wiki:mqtt_broker}
-\begin{itemize}
-  \item \textbf{QoS 1} - Nejvýše jednou; zpráva je zaslána pouze jednou bez potvrzení.
-  \item \textbf{QoS 2} - Alespoň jednou; zpráva stále zasílána dokud nedorazí potvrzení o přijetí.
-  \item \textbf{QoS 3} - Přesně jednou; zajištění, že přijemce dostane zprávu pouze jednou.
-\end{itemize}
 
 \newpage
-\subsection{Typy zpráv}
+\subsection*{Typy zpráv}
 \emph{MQTT} protokol využívá sadu různých typů zpráv pro vlastní běh. Na obrázku \ref{figure:mqtt_flow}lze zahlédnout posloupnost zpráv.~\cite{wiki:mqtt_broker}
 Mezi základní typy zpráv u protokolu MQTT patří:
 \begin{itemize}
@@ -186,89 +151,35 @@ Mezi základní typy zpráv u protokolu MQTT patří:
   \label{figure:mqtt_flow}
 \end{figure}
 
-\subsection{\emph{MQTT} přes protokol \emph{Websocket} (\emph{MQTT over Websockets})}
+\newpage
+\subsection*{QoS - Kvalita služeb (Quality of services)}
+Každá zpráva může specifikovat, jak bude zajištěna kvalita služeb u poslání daných zpráv.~\cite{wiki:mqtt_broker}
+\begin{itemize}
+  \item \textbf{QoS 1} - Nejvýše jednou; zpráva je zaslána pouze jednou bez potvrzení.
+  \item \textbf{QoS 2} - Alespoň jednou; zpráva stále zasílána dokud nedorazí potvrzení o přijetí.
+  \item \textbf{QoS 3} - Přesně jednou; zajištění, že přijemce dostane zprávu pouze jednou.
+\end{itemize}
+
+\subsection*{MQTT over WebSockets (\emph{MQTT} pomocí protokolu \emph{WebSocket})}
 \label{mqtt:websockets}
-\todo{COMPLETE WEBSOCKETS}
+\emph{MQTT} přes protokol \emph{WebSocket} je technika, kdy se zabalí komunikační protokol \emph{MQTT} do tzv.\emph{WebSocket frame}(WebSocketový rámec).
+Tato technika přenosu je hlavně přínosná pro webové aplikace, tudíž pro vše, co běží v prohlížeči.
+Udává se, že s touto technikou může být jakýkoliv prohlížec na různých zařízeních plnohodnotný \emph{MQTT klient}.\ref{mqtt:hivemq}
 
-\newpage
-\section{Aplikační prostředí}
-\label{terminy:app_prostredi}
-V této kapitole jsou k dispozici informace o technologiích, nástrojích, či specifikacích, které jsou využity v této bakalářské práci pro vytvoření backend aplikace.
-Backend aplikace v případě této bakalářské práce se zabývá samotnou logikou celého systému, vykonáváním požadavků na databázi, poskytnutím výpočetních sil pro složitější operace a požadavky od zařízení v domácnosti.
-Vytváří rozhraní, ke kterému může přistupovat spousta klientských aplikací a spravovat tak celý management systému chytré domácnosti.
+Protokol \emph{WebSocket} je v prostředí webových aplikací velmi dlouhou dobu, poskytuje \emph{full-duplex}\footnote{\textbf{Full-duplex} - obousměrný provoz} komunikaci a umožňuje hladký chod \emph{real-time} aplikací.
+Pro inicializaci spojení využívá protokol \emph{HTTP}.
+Tato technika tak poskytuje optimální způsob komunikace přes \emph{MQTT} protokol u zařízení a prohlížeče.
 
-Jedná se tak o jádro celého systému.
-Hlavním úkolem této backend aplikace je zprostředkovat služby, pro zařízení chytré domácnosti, pro připojení do systému. Ukládá důležité hodnoty ze zařízení, co se týče stavů výstupních zařízení a poslední hodnoty vstupních zařízení, aby byly stále dostupné při připojení klientské aplikace.
-Klientské aplikace vytváří požadavky na tuto backend aplikaci a získávájí tázaná data. Tato aplikace je vytvořena robustnějším způsobem, aby byla schopna obstarávat požadavky několika tisíců uživatelů.
-K dané aplikaci se váže i otázka bezpečnosti.
-
-Uživatel se musí autentizovat v daném systému, aby bylo možno identifikovat přihlášeného uživatele a s tím související autorizační práva na různé zdroje informací.
-O autentizaci a správu uživatelů se, pro větší bezpečnost, stará služba \emph{Keycloak}. Jádrem této backend aplikace je technologie \emph{Quarkus}.
-
-\subsection{Quarkus}
-\label{app_prostredi:quarkus}
-
-\begin{figure}[!ht]
+\begin{figure}[ht]
   \centering
-  \includegraphics[width=.45 \linewidth]{obrazky-figures/quarkus_logo.png}
-  \caption{Quarkus logo}
-  \label{figure:quarkus_logo}
+  \includegraphics[width=1 \linewidth]{obrazky-figures/mqtt_websocket.png}
+  \caption{MQTT over WebSockets}
+  \label{figure:mqtt_websockets}
 \end{figure}
-
-V dnešní době, kdy žijeme v době cloudových služeb, IoT a open-source projektů přichází do popředí kontejnery(\emph{containers}), mikroslužby(\emph{microservices}), reaktivní programování, cloud-native aplikace a spousty dalšího.
-Díky těmto novým architekturám, nástrojům, přináší vývoj aplikací jiný rozměr a to speciálné větší produktivitu a výkonnost aplikací. Programovací jazyk \emph{Java} už je na trhu přes 20 let a stálé zůstává mezi nejpopulárnějšími programovacími jazyky na světě.
-V informačních technologiích se však technologie a architektury mění velice rychle a je téměř nemožné využívat technologie přes 20 let bez větších změn. Aplikace v kontejnerech by měly mít co nejmenší velikost, rychlý start při restartu a být škálovatelné.
-To však v případě dosavadních Java aplikací nebylo až tak možné. Framework \emph{Quarkus} by však měl vše změnit.
-
-\textbf{Quarkus} je Kubernetes\footnote{\textbf{Kubernetes} - orchestrace kontejnerů na úrovni OS} Native Java framework, který nese označení \emph{Supersonic Subatomic Java} (nadzvuková subatomární Java). Tento framework je přímo ušitý pro GraalVM\footnote{\textbf{GraalVM} - generuje nativní kód} a HotSpot(klasická JVM\footnote{\textbf{JVM} - \textbf{J}ava \textbf{V}irtual \textbf{M}achine}).
-Je složen z dostupných Java knihoven a standardů, které patří mezi ty nejlepší svého typu. Vyznačuje se termínem zvaným \emph{Container First}, kde celý framework je založený na nasazení aplikací v kontejnerech a dále v cloudových službách.~\ref{quarkus:infoDev}
-\newpage
-
-Na obrázku \ref{figure:quarkus_stats} je porovnání frameworku \emph{Quarkus} s tradičním \emph{Cloud-Native} prvkem a dále porovnání vytvoření spustitelného souboru do nativního kódu pomocí \emph{GraalVM} a klasické využítí JVM pomocí \emph{OpenJDK}\footnote{\textbf{OpenJDK} - Open \textbf{J}ava \textbf{D}evelopment \textbf{K}it}.
-Hodnoty jsou určeny pro klasickou \emph{REST}\footnote{\textbf{REST} - \textbf{RE}presentational \textbf{S}tate \textbf{T}ransfer (architektura rozhraní)} architekturu rozhraní a dále s přidanými operacemi \emph{CRUD}\footnote{\textbf{CRUD} - \textbf{C}reate, \textbf{R}ead, \textbf{U}pdate, \textbf{D}elete (Vytvořit, Číst, Aktualizovat, Smazat)}.
-První horizontální polovina obrázku se zabývá pamětí celého programu a závislostí. Oproti tradičnímu \emph{Cloud-Native} prvku je program vygenerovaný do nativního kódu až 10x menší. V \emph{Cloud-Native} aplikací je to opravdu znatelný rozdíl.
-V druhé polovině je k zahlédnutí nastartování celé aplikace a první odpověď ze serveru při požadavku. Rapidní snížení rychlosti oproti klasickému tradičnímu \emph{Cloud-Native} prvku a v tom dokáže být \emph{Quarkus} rychlejší více než 250x.~\ref{quarkus:website}
-
-\begin{figure}[hbt]
-  \centering
-  \includegraphics[width=1 \linewidth]{obrazky-figures/quarkus_stats.png}
-  \caption{Porovnání frameworku Quarkus s alternativami}
-  \label{figure:quarkus_stats}
-\end{figure}
-
-\subsection{Vert.x}
-\label{app_prostredi:vertx}
-\begin{figure}[hbt]
-  \centering
-  \includegraphics[width=.30 \linewidth]{obrazky-figures/vertx.png}
-  \caption{Vert.x logo}
-\end{figure}
-\emph{Vert.x} je sada nástrojů pro vytvoření reaktivních aplikací, kde hlavní předností je malá velikost, nízké nároky na výpočetní prostředky a rozsáhlý ekosystém.
-Samotný \emph{Quarkus} je založený na \emph{Vert.x} technologii a skoro všechny síťové featury v technologii \emph{Quarkus} závisí na technologii \emph{Vert.x}.
-Tato technologie přináší mnoho zajímavých vylepšení, jako jsou neblokující požadavky na server, jednoduchá souběžnost procesů(\emph{Concurrency}), nebo například podpora několika programovacíh jazyků.~\ref{wiki:vertx}
 
 \newpage
 
-\subsection{Hibernate ORM}
-\label{app_prostredi:hibernate}
-\begin{figure}[hbt]
-  \centering
-  \includegraphics[width=.2 \linewidth]{obrazky-figures/hibernate.png}
-  \caption{Hibernate logo}
-\end{figure}
-
-\emph{Hibernate ORM} (dále pouze jako \emph{Hibernate}) je ORM\footnote{\textbf{ORM}- \textbf{O}bjektově \textbf{R}elační \textbf{M}apování} framework vyvíjen společností \emph{Red Hat}.
-Poskytuje možnost mapování objektově orientovaného modelu do relační databáze. Vývojář tak není zatížen vytvářením mezivrstvy, které konvertuje objekty a vytváří SQL dotazy na databázi.
-Vývojář tak může definovat tabulku databáze dvěma způsoby:
-\begin{enumerate}
-  \item Pomocí XML\footnote{\textbf{XML} - \textbf{E}xtension \textbf{M}arkup \textbf{L}anguage (značkovací jazyk)} mapovaní, kdy vývojář vytvoří XML soubor s definovanými atributy tabulky a jejich omezeními.
-  \item Vývojář pouze vytvoří POJO\footnote{\textbf{POJO} - \textbf{P}lain \textbf{O}ld \textbf{J}ava \textbf{O}bject (obyčejný \emph{Java} objekt)}, kde definuje tabulku v relační databázi. Pomocí anotací se označí atributy třídy, které se namapují do tabulky databáze.
-        Tímto způsobem lze vytvořit několik tabulek v databázi a lze i pomocí anotací definovat asociaci mezi tabulkami a kardinalitu asociací.
-\end{enumerate}
-\emph{Hibernate} zprostředkuje rozhraní, které lze využít pro dotazy na databázi. Vývojář může vytvořit vlastní metody, u kterých lze definovat dotaz na databázi pomocí HQL\footnote{\textbf{HQL} - \textbf{H}ibernate \textbf{Q}uery \textbf{L}anguage (dotazovací jazyk podobný SQL)} jazyka,
-který je jednodušší a bližší samotným třídám (označovaným jako \emph{entity}).
-
-\subsection{OIDC}
+\section{OIDC}
 \label{app_prostredi:oidc}
 
 \begin{figure}[hbt]
@@ -281,42 +192,6 @@ který je jednodušší a bližší samotným třídám (označovaným jako \emp
 \emph{OIDC} protokol využívá \emph{JSON Web Tokens} (dále jako \emph{JWT}), což je formát využit pro reprezentaci ID tokenu. \emph{OIDC} je hlavně o autentizaci uživatelů.
 Jeho účelem je poskytnou pouze jeden přihlašovací proces pro více webových stránek.~\ref{terminy:oidc}
 
-\newpage
-\subsection{KeyCloak}
-\label{app_prostredi:keycloak}
-
-\begin{figure}[hbt]
-  \centering
-  \includegraphics[width=.3 \linewidth]{obrazky-figures/keycloak2.png}
-  \caption{Keycloak logo}
-\end{figure}
-
-\textbf{KeyCloak} je open-source služba, která se stará o autentizaci a autorizaci uživatelů a další předností je \emph{Identity and Access Management}(Management přístupu a identit), kde administrátor může upravovat práva uživatelů, přidávat do skupin s určitými právy apod.
-Tato služba je podporovaná firmou \emph{Red Hat} a několik let už je v popředí popularity služeb, které se starají o bezpečnost webových aplikací. \emph{KeyCloak} disponuje rozsáhlou komunitou vývojářů, kteří jsou velice aktivní v příspívání do daného komunitního produktu.
-\emph{KeyCloak} obsahuje spousty nových vylepšení a je opravdu velice dobře škálovatelný(\emph{scalable}) a upravovatelný(\emph{customizable}).
-
-Obsahuje spousty adaptérů pro klientské aplikace, tudíž nezáleží v takové míře na programovacím jazyce.
-Využívá standardní zabezpečovací protokoly, mezi které patří \emph{OIDC}, \emph{OAuth 2.0}\footnote{\textbf{OAuth 2.0} - autorizační protokol} a \emph{SAML 2.0}\footnote{\textbf{SAML 2.0} - \textbf{S}ecurity \textbf{A}ssertion \textbf{M}arkup \textbf{L}anguage(autentizační/autorizační protokol)}.
-Lze dokonce využít i asociované autentizační a autorizační služby třetích stran pro udělení přístupu uživateli, registraci a mnoho dalšího. Lze získat přístup i od tzv. \emph{Social providers}(poskytovatelů sociálních sítí) jako jsou např. \emph{Facebook}, \emph{Google}, \emph{Twitter} apod.
-
-Tento produkt využívám ve své práci pro autentizační služby a správu uživatelů. Vývojář se tak nemusí starat o perzistenci uživatelů a jejich správu. O vše se stará služba \emph{KeyCloak}.
-\emph{KeyCloak} poměrně dobře znám, protože jsem jedním z aktivních přispěvovatelů do produktu.
-
-\newpage
-Na obrázku \ref{figure:keycloak_flow} je popsán autentizační proces uživatele. V prvním kroku uživatel žádá o zdroj informací u aplikace, která je asociována s \emph{KeyCloak} aplikací (v mém případě s mojí \emph{backend} aplikací).
-Aplikace pošle na službu \emph{KeyCloak} autentizační požadavek, služba se podívá, zda už je uživatel autentizován a když ano, pošle aplikaci odpověď o úspěšném přihlášení a aplikace povolí uživateli přístup k datům.
-
-V opačném případě je uživateli poskytnut seznam poskytovatelů služeb starající se o identitu uživatelů.
-Uživatel si může podle definovaného autentizačního toku (\emph{Authentication flow}) vybrat jakým způsobem se autentizuje. Když vše proběhne v pořádku, \emph{KeyCloak} pošle odpověď aplikaci o úspěšném přihlášení a uživatel dostane přístup k datům.
-
-\begin{figure}[hbt]
-  \centering
-  \includegraphics[width=.8 \linewidth]{obrazky-figures/keycloak_flow.png}
-  \caption{Autentizační tok \emph{KeyCloak}}
-  \label{figure:keycloak_flow}
-\end{figure}
-
-\newpage
 \section{JSON}
 \label{terminy:json}
 
@@ -329,14 +204,41 @@ Na obrázku ~\ref{figure:json} je vidět ilustrační zápis dat pomocí \emph{J
 
 \begin{figure}[hbt]
   \centering
-  \includegraphics[width=.6 \linewidth]{obrazky-figures/json_example.png}
+  \includegraphics[width=.45 \linewidth]{obrazky-figures/json_example.png}
   \caption{Ukázka \emph{JSON}}
   \label{figure:json}
 \end{figure}
 
-\section{RESTful služba}
+\newpage
+\section{\emph{RESTful} aplikace}
 \label{terminy:restful}
-\todo{COMPLETE}
+\textbf{\emph{REST}} je akronym\footnote{\textbf{Akronym} - nehláskovaná zkratka} pro \emph{\textbf{RE}presentational \textbf{S}tate \textbf{T}ransfer},
+které značí architekturu rozhraní pro distribuované \emph{hypermédia} systémy a byl poprvé prezentován Royem Fieldingem v jeho disertační práci roku 2000.
+\newline
+\newline
+Jestliže jakékoliv rozhraní chce být považováno za \emph{RESTful}, musí splnit určité podmínky:
+\begin{itemize}
+  \item \textbf{Klient-server} - Oddělení uživatelského rozhraní ze serverové části.
+        Zlepšení přenositelnosti, škálovatelnosti díky zjednodušení serverových komponentů.
+  \item \textbf{Bezstavovost} - Každý požadavek od klienta na server musí obsahovat všechny nezbytné informace k porozumnění požadavku.
+        \emph{Session state}(stav sezení) se celý ukládá pouze u klienta.
+  \item \textbf{Cacheable} (schopný být uložen v mezipaměti) - Požaduje aby data v odpovědi ze serveru byla implicitně, nebo explicitně označena jako \emph{cacheable}, nebo \emph{non-cacheable}.
+        Jestliže je odpověď \emph{cacheable}, mezipaměť u klientské aplikace má právo být znovupoužita později jako odpověď na ekvivalentní požadavek.
+  \item \textbf{Jednotné rozhraní} - Použitím principu obecného softwarového inženýrství na rozhraní komponent se celková architektura systému zjednoduší a zlepší se viditelnost interakcí.
+  \item \textbf{Vrstvený systém} - Vrstvený systém umožňuje, aby se architektura skládala z hierarchických vrstev způsobem omezení chování komponenty tak, že každá komponenta nemůže „vidět“ za nejbližší vrstvu se kterou interagují.
+\end{itemize}
+
+Klíčovou abstrakcí informace v \emph{REST} architektruře je tzv.\emph{resource} (zdroj informací).
+Každá informace, která může být pojmenovaná smí být také považována za zdroj.
+\emph{REST} využívá identifikátory zdrojů informací aby dokázala identifikovat určitý obsah v interakci mezi komponentami.\ref{restful:info}
+Na obrázku \ref{figure:restful} je popsán tok zpracování požadavků.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=.63 \linewidth]{obrazky-figures/restful.jpg}
+  \caption{MQTT over WebSockets}
+  \label{figure:restful}
+\end{figure}
 
 \chapter{Současný stav a návrh řešení}
 \label{navrh}
@@ -418,11 +320,23 @@ Z hlediska vývoje aplikací je z mého pohledu tato část práce nejkomplikova
 Vývojář musí mít dobrý přehled o technologiích, návrhových vzorech, které lze vhodně aplikovat na danou aplikaci.
 Struktura programu této části by měla být napsána přehledně a stylem takovým, aby bylo možno jednoduše rozšiřovat.
 Požadavky na aplikaci se mohou velice rychle měnit a vývojář musí dokázat bez většího úsilí implementovat tyto změny.
+
 Serverová část(dále jako \emph{Server}) aplikace se stará o požadavky, které klientská aplikace, potažmo zařízení, posílá na daný server.
+Dále se také zabývá samotnou logikou celého systému, vykonáváním požadavků na databázi, poskytnutím výpočetních sil pro složitější operace a požadavky od zařízení v domácnosti.
+Vytváří rozhraní, ke kterému může přistupovat spousta klientských aplikací a spravovat tak celý management systému chytré domácnosti.
+
+Jedná se tak o jádro celého systému.
+Hlavním úkolem této backend aplikace je zprostředkovat služby, pro zařízení chytré domácnosti, pro připojení do systému.
+Ukládá důležité hodnoty ze zařízení, co se týče stavů výstupních zařízení a poslední hodnoty vstupních zařízení, aby byly stále dostupné při připojení klientské aplikace.
+Klientské aplikace vytváří požadavky na tuto backend aplikaci a získávájí tázaná data.
+Tato aplikace je vytvořena robustnějším způsobem, aby byla schopna obstarávat požadavky několika tisíců uživatelů.
+K dané aplikaci se váže i otázka bezpečnosti.
+
+Uživatel se musí autentizovat v daném systému, aby bylo možno identifikovat přihlášeného uživatele a s tím související autorizační práva na různé zdroje informací.
 
 Mezi velikou škálou programovacích jazyků, které jsou vhodné na vývoj serverových aplikací, jsem si vybral programovací jazyk \emph{Java},
 který se v popularitě těchto technologií drží na předních místech. Programovací jazyk \emph{Java} je objektově orientovaný jazyk, který se velkým způsobem zasadil do vývoje enterprise aplikací.
-Jazyk \emph{Java} disponuje rozshálým ekosystémem a existuje spoustu výborných frameworků. Pro účely vývoje serverové aplikace byl využit \emph{Java} framework zvaný \emph{Quarkus}(detailní popis \ref{app_prostredi:quarkus}).
+Jazyk \emph{Java} disponuje rozshálým ekosystémem a existuje spoustu výborných frameworků.
 
 Rozhodl jsem se, že serverová část bude sestrojena jako \emph{RESTful}(podrobněji \ref{terminy:restful}) webová služba komunikující nad protokolem \emph{HTTP},
 kde u serveru nebude žádné uživatelské rozhraní, ale pouze programové, známe jako API\footnote{\textbf{API} - \textbf{A}pplication \textbf{P}rogramming \textbf{I}nterface (rozhraní pro programování aplikací)}.
@@ -506,6 +420,7 @@ Lze tak efektivně řídit provoz elektricky náročných zařízení. Dále je 
 Pomocí protokolu \emph{MQTT} jsou spravovány i požadavky, týkající se \emph{CRUD} operací daného zařízení. Tyto operace pomocí \emph{MQTT} jsou pouze přístupné zařízením a ne klientským aplikacím.
 Zařízení je tak schopno zaslat požadavek na server, který spojí dané zařízení s domácností, či připojení již existujícího zařízení a následně aktivovat dané zařízení pro přístup z klientských aplikací.
 
+\newpage
 \section{Návrh databáze}
 \label{navrh:databaze}
 
@@ -514,7 +429,6 @@ Server disponuje určitým \emph{ORM} frameworkem, který mapuje objektově orie
 
 Návrh databáze u daného řešení chytré domácnosti je modelován pomocí \emph{ER diagramu}\footnote{\textbf{ER Diagram} Entity-Relationship diagram(entitně vztahový diagram)}, kde jsou znázorněné entity\footnote{\textbf{Entita} - věc schopná samostatné existence} modelující tabulky databáze a jejich propojení.
 Databáze je tak modelována pomocí modelovací jazyka s názvem \emph{UML}. Diagram obsahuje název entity, primární a cizí klíče, atributy entity a asociace tabulek s určitou kardinalitou.
-\newpage
 
 Mezi základní entity řešení chytré domácnosti patří:
 \begin{itemize}
@@ -728,17 +642,266 @@ Uživatel tak musí znovu nastavit vše potřebné.
 \newpage
 \chapter{Použité technologie a komponenty}
 \label{pouzite}
+
 V této kapitole jsou popsány technologie, služby a komponenty, které jsou využity pro implementaci návrhu řešení chytré domácnosti.
 Použití všech těchto prvků bylo pečlivě zváženo a snaha využít nejlepší dostupné technologie a techniky, podle mého názoru, byla úspěšná.
 
+V podkapitole \ref{pouzite:backend} jsou technologie, které byly využity na implementaci \textbf{serverové části}, v podkapitole \ref{pouzite:db} týkající se \textbf{databáze},
+v podkapitole \ref{pouzite:frontend} vše použité k implementaci \textbf{klientské webové aplikace} a v poslední podkapitole \ref{pouzite:hw} technologie a komponenty použité pro implementaci \textbf{hardwarové části} projektu.
+
 \section{Serverová část}
 \label{pouzite:backend}
+Jak již bylo řečeno v návrhu serverové části řešení chytré domácnosti, implementace serverové části je asi nejkomplikovanější z celého vývoje řešení(pro více info viz \ref{navrh:backend}).
+Pro účely vývoje serverové aplikace byl využit \emph{Java} framework zvaný \emph{Quarkus}(detailní popis \ref{app_prostredi:quarkus}).
+Pro síťové služby spojené se serverovou částí byla využita sada nástroju s označením \emph{Vert.x}.
+
+\subsection*{Quarkus}
+\label{pouzite:quarkus}
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=.45 \linewidth]{obrazky-figures/quarkus_logo.png}
+  \caption{Quarkus logo}
+  \label{figure:quarkus_logo}
+\end{figure}
+
+V dnešní době, kdy žijeme v době cloudových služeb, IoT a open-source projektů přichází do popředí kontejnery(\emph{containers}), mikroslužby(\emph{microservices}), reaktivní programování, cloud-native aplikace a spousty dalšího.
+Díky těmto novým architekturám, nástrojům, přináší vývoj aplikací jiný rozměr a to speciálné větší produktivitu a výkonnost aplikací. Programovací jazyk \emph{Java} už je na trhu přes 20 let a stálé zůstává mezi nejpopulárnějšími programovacími jazyky na světě.
+V informačních technologiích se však technologie a architektury mění velice rychle a je téměř nemožné využívat technologie přes 20 let bez větších změn. Aplikace v kontejnerech by měly mít co nejmenší velikost, rychlý start při restartu a být škálovatelné.
+To však v případě dosavadních Java aplikací nebylo až tak možné. Framework \emph{Quarkus} by však měl vše změnit.
+
+\textbf{Quarkus} je Kubernetes\footnote{\textbf{Kubernetes} - orchestrace kontejnerů na úrovni OS} Native Java framework, který nese označení \emph{Supersonic Subatomic Java} (nadzvuková subatomární Java). Tento framework je přímo ušitý pro GraalVM\footnote{\textbf{GraalVM} - generuje nativní kód} a HotSpot(klasická JVM\footnote{\textbf{JVM} - \textbf{J}ava \textbf{V}irtual \textbf{M}achine}).
+Je složen z dostupných Java knihoven a standardů, které patří mezi ty nejlepší svého typu. Vyznačuje se termínem zvaným \emph{Container First}, kde celý framework je založený na nasazení aplikací v kontejnerech a dále v cloudových službách.~\ref{quarkus:infoDev}
+
+Na obrázku \ref{figure:quarkus_stats} je porovnání frameworku \emph{Quarkus} s tradičním \emph{Cloud-Native} prvkem a dále porovnání vytvoření spustitelného souboru do nativního kódu pomocí \emph{GraalVM} a klasické využítí JVM pomocí \emph{OpenJDK}\footnote{\textbf{OpenJDK} - Open \textbf{J}ava \textbf{D}evelopment \textbf{K}it}.
+Hodnoty jsou určeny pro klasickou \emph{REST}\footnote{\textbf{REST} - \textbf{RE}presentational \textbf{S}tate \textbf{T}ransfer (architektura rozhraní)} architekturu rozhraní a dále s přidanými operacemi \emph{CRUD}\footnote{\textbf{CRUD} - \textbf{C}reate, \textbf{R}ead, \textbf{U}pdate, \textbf{D}elete (Vytvořit, Číst, Aktualizovat, Smazat)}.
+První horizontální polovina obrázku se zabývá pamětí celého programu a závislostí. Oproti tradičnímu \emph{Cloud-Native} prvku je program vygenerovaný do nativního kódu až 10x menší. V \emph{Cloud-Native} aplikací je to opravdu znatelný rozdíl.
+V druhé polovině je k zahlédnutí nastartování celé aplikace a první odpověď ze serveru při požadavku. Rapidní snížení rychlosti oproti klasickému tradičnímu \emph{Cloud-Native} prvku a v tom dokáže být \emph{Quarkus} rychlejší více než 250x.~\ref{quarkus:website}
+
+\begin{figure}[hbt]
+  \centering
+  \includegraphics[width=1 \linewidth]{obrazky-figures/quarkus_stats.png}
+  \caption{Porovnání frameworku Quarkus s alternativami}
+  \label{figure:quarkus_stats}
+\end{figure}
+
+\subsection*{Vert.x}
+\label{pouzite:vertx}
+\begin{figure}[hbt]
+  \centering
+  \includegraphics[width=.30 \linewidth]{obrazky-figures/vertx.png}
+  \caption{Vert.x logo}
+\end{figure}
+
+\emph{Vert.x} je sada nástrojů pro vytvoření reaktivních aplikací, kde hlavní předností je malá velikost, nízké nároky na výpočetní prostředky a rozsáhlý ekosystém.
+Samotný \emph{Quarkus} je založený na \emph{Vert.x} technologii a skoro všechny síťové featury v technologii \emph{Quarkus} závisí na technologii \emph{Vert.x}.
+Tato technologie přináší mnoho zajímavých vylepšení, jako jsou neblokující požadavky na server, jednoduchá souběžnost procesů(\emph{Concurrency}), nebo například podpora několika programovacíh jazyků.~\ref{wiki:vertx}
 
 \section{Databázová část}
 \label{pouzite:db}
 
+\subsection*{Hibernate ORM}
+\label{app_prostredi:hibernate}
+\begin{figure}[hbt]
+  \centering
+  \includegraphics[width=.2 \linewidth]{obrazky-figures/hibernate.png}
+  \caption{Hibernate logo}
+\end{figure}
+
+\emph{Hibernate ORM} (dále pouze jako \emph{Hibernate}) je ORM\footnote{\textbf{ORM}- \textbf{O}bjektově \textbf{R}elační \textbf{M}apování} framework vyvíjen společností \emph{Red Hat}.
+Poskytuje možnost mapování objektově orientovaného modelu do relační databáze. Vývojář tak není zatížen vytvářením mezivrstvy, které konvertuje objekty a vytváří SQL dotazy na databázi.
+Vývojář tak může definovat tabulku databáze dvěma způsoby:
+\begin{enumerate}
+  \item Pomocí XML\footnote{\textbf{XML} - \textbf{E}xtension \textbf{M}arkup \textbf{L}anguage (značkovací jazyk)} mapovaní, kdy vývojář vytvoří XML soubor s definovanými atributy tabulky a jejich omezeními.
+  \item Vývojář pouze vytvoří POJO\footnote{\textbf{POJO} - \textbf{P}lain \textbf{O}ld \textbf{J}ava \textbf{O}bject (obyčejný \emph{Java} objekt)}, kde definuje tabulku v relační databázi. Pomocí anotací se označí atributy třídy, které se namapují do tabulky databáze.
+        Tímto způsobem lze vytvořit několik tabulek v databázi a lze i pomocí anotací definovat asociaci mezi tabulkami a kardinalitu asociací.
+\end{enumerate}
+\emph{Hibernate} zprostředkuje rozhraní, které lze využít pro dotazy na databázi. Vývojář může vytvořit vlastní metody, u kterých lze definovat dotaz na databázi pomocí HQL\footnote{\textbf{HQL} - \textbf{H}ibernate \textbf{Q}uery \textbf{L}anguage (dotazovací jazyk podobný SQL)} jazyka,
+který je jednodušší a bližší samotným třídám (označovaným jako \emph{entity}).
+
+\subsection*{PostgreSQL}
+\label{pouzite:postgresql}
+\begin{figure}[hbt]
+  \centering
+  \includegraphics[width=.2 \linewidth]{obrazky-figures/postgresql-logo.png}
+  \caption{PostgreSQL logo}
+\end{figure}
+
+PostgreSQL je objektově-relační, nejpokročilejší open-source databázový systém.
+PostgreSQL byl vyvinut na Kalifornské univerzitě v Berkeley.
+Systém je vydáván pod MIT licencí, tudíž ho lze svobodně distribuovat a měnit.
+Byl hlavně navržen pro UNIXové systémy, ale později byl navržen tak, aby byl přenositelný na více platforem(např. Max OS X, Solaris a Windows).
+Vyžaduje pouze minimální úsilí na jeho údržbu díky jeho stabilitě.\ref{postgres:tutorial}
+Má za sebou více než dvacet let aktivního vývoje a má vynikající pověst pro svou spolehlivost a bezpečnost.
+Výkonnostně nezaostává za srovnatelnými komerčními systémy a v častokrát je i předčí.\ref{postgres:wiki}
+PostgreSQL byl vybrán pro účely implementace řešení této chytré domácnosti pro zmiňovanou stabilitu, spolehlivost a vysoký výkon.
+
+\newpage
 \section{Klientská aplikace}
 \label{pouzite:frontend}
 
+\subsection*{React}
+\label{frontend:react}
+
+\begin{figure}[hbt]
+  \centering
+  \includegraphics[width=.3 \linewidth]{obrazky-figures/react.png}
+  \caption{React logo}
+\end{figure}
+
+\emph{React} je JavaScript knihovna pro vytváření uživatelských rozhraní.
+Tato knihovna je udržována společností Facebook a komunitou developerů a společností.
+React může být využit jako základ pro tvorbu single-page nebo mobilních aplikací, protože je optimální pro práci s rychle se měnícími daty.
+React se pouze zabývá renderováním dat do \emph{DOM}\footnote{\textbf{DOM} - \textbf{D}ocument \textbf{O}bject \textbf{M}odel (objektový model dokumentu)}.
+V aplikaci je dále použita další klíčová komponenta a to je \emph{React Router}, který se stará o routování(směrování) v aplikaci.
+Dále je s aplikací propojena i knihovna pro \emph{state management}\footnote{\textbf{State management} - (management stavu)} a to konkrétně \emph{Mob.x}.\ref{react:info}
+
+\subsection*{MobX}
+\label{frontend:mobx}
+\begin{figure}[hbt]
+  \centering
+  \includegraphics[width=.1 \linewidth]{obrazky-figures/mobx.png}
+  \caption{MobX logo}
+\end{figure}
+
+\emph{MobX} je knihovna, která tvoří \emph{state management} jednoduchý a škálovatelný pomocí \emph{TFRP}\footnote{\textbf{TFRP} - \textbf{T}ransparent \textbf{F}unctional \textbf{R}eactive \textbf{P}rogramming (transparentní použití funkcionálního reaktivního programování)}.
+Knihovny \emph{React} a \emph{MobX} jsou velmi mocná kombinace, protože:
+\begin{itemize}
+  \item React renderuje stav aplikace takovým způsobem, že poskytuje mechanismus na překlad do stromů \emph{renderable}(schopných být renderovány) komponentů.
+  \item MobX poskytuje mechanismus uložení a aktualizování stavu aplikace, který poté \emph{React} použije.
+\end{itemize}
+
+Jak \emph{React} tak i \emph{MobX} poskytují optimální a jedinečná řešení běžných problémů ve vývoji aplikací.
+\emph{React} poskytuje mechanismus, který optimálně renderuje uživatelské rozhraní použitím virtuálního \emph{DOM}, který redukuje počet nákladných \emph{DOM} mutací.
+\emph{MobX} poskytuje mechanismus, který optimálně synchronizuje stav aplikace s \emph{React} komponenty pomocí
+\emph{RVDSG}\footnote{\textbf{RVDSG} - \textbf{R}eactive \textbf{V}irtual \textbf{D}ependency \textbf{S}tate \textbf{G}raph (Reaktivní virtuální závislostní stavový graf)}, který je pouze aktualizovan v případě, kdy je striktně potřeba.\ref{mobx:info}
+
+\newpage
 \section{Hardwarová část}
 \label{pouzite:hw}
+V této podkapitole jsou obsaženy moduly, které jsou využity v daném řešení chytré domácnosti.
+Konkrétní zařízení, která jsou v kontextu této práce jsou sestaveny pomocí různých modulů obsahující mikročip \emph{ESP8266}(více v podkapitole \emph{Moduly obsahující čip ESP8266}).
+Pro nasazení služeb mimo cloud v lokální síti je použit výkonný mini počítač s označením \emph{Raspberry Pi 4B}(pro obecné info viz podkapitolu \emph{Minipočítač Raspberry Pi}).
+
+\subsection*{Moduly obsahující čip ESP8266}
+\label{terminy:esp8266}
+
+\emph{ESP8266} je levný WiFi mikročip, který s přidáním několika komponentů je schopen plnohodnotně plnit úlohu mikrokontroléru.
+Tento mikročip je velice oblíbený v oblasti chytrých zařízení díky své stabilititě, výkonosti, velikosti, ceně a mnoho dalšího.~\cite{wiki:esp}
+Na trhu existuje spousty modulů, které obsahují právě zmíněný mikročip a plní tak úlohu mikrokontroléru.
+
+Mezi nejoblíbenější moduly, které obsahují tento mikročip jsou \emph{ESP-01}, který obsahyje pouze 2 GPIO\footnote{\textbf{GPIO} - univerzální vstupní/výstupní pin (General-purpose input/output)} piny, poté větší \emph{Wemos D1 mini} a \emph{NodeMCU}.
+Tento projekt chytré domácnost je sestaven hlavně z těchto modulů díky svým přednostem a využití.
+Pro maximálně 2 jednotlivé I/O\footnote{\textbf{I/O} - vstup/výstup (\textbf{I}nput/\textbf{O}utput)} periferie připojené k modulu je využit modul \emph{ESP-01}.
+Pro komplexní využítí a připojení více periferií je použit modul \emph{Wemos D1 mini}.
+
+\begin{figure}[hbt]
+  \centering
+  \includegraphics[width=.2 \linewidth]{obrazky-figures/esp_standalone.png}
+  \caption{Samostatný ESP8266 čip}
+  \label{figure:esp8266}
+\end{figure}
+
+\subsection*{Minipočítač Raspberry Pi}
+\label{terminy:raspberry}
+
+\emph{Raspberry Pi} je v informatice označení pro jednodeskový počítač, který je se svým výkonem srovnatelný se slabším stolním počítačem.
+Obsahuje video a audio výstupy,
+ethernetový port, USB porty a výstup na dedikovaný monitor určený přímo pro \emph{Raspberry Pi}.
+Tento malý počítač, rozměry podobný kreditní kartě, je využit v této bakalářské práci na nasazení služeb, kdy uživatel nechce využívat cloudové služby.
+
+Modelů \emph{Raspberry Pi} je na trhu více, kde se liší svým výkonem, velikostí, nebo kompatibilitou s různými rozhraními.
+Za účelem nasazení služeb v chytré domácnosti lze využít i menšího sourozence z rodiny počítačů \emph{Raspberry Pi} a to přesně \emph{Raspberry Pi W},
+kde vytvořené, nebo poskytnuté služby jsou optimalizované pro běh na zařízeních s menším výpočetním výkonem a operační pamětí.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=.5 \linewidth]{obrazky-figures/raspberry.png}
+  \caption{Raspberry Pi 4}
+\end{figure}
+
+\newpage
+\section{Autentizační/autorizační služba}
+\label{pouzite:auth}
+Pro účely autentizace uživatelů v klientské aplikaci a u serveru je využita open-source služba s názvem \emph{KeyCloak}.
+Tento produkt využívám ve své práci pro autentizační služby a správu uživatelů.
+Vývojář se tak nemusí starat o perzistenci uživatelů a jejich správu.
+O vše se stará služba \emph{KeyCloak}.
+\emph{KeyCloak} poměrně dobře znám, protože jsem jedním z aktivních přispěvovatelů do produktu.
+
+\subsection*{KeyCloak}
+\label{terminy:keycloak}
+
+\begin{figure}[hbt]
+  \centering
+  \includegraphics[width=.25 \linewidth]{obrazky-figures/keycloak2.png}
+  \caption{Keycloak logo}
+\end{figure}
+
+\textbf{KeyCloak} je open-source služba, která se stará o autentizaci a autorizaci uživatelů a další předností je \emph{Identity and Access Management}(Management přístupu a identit), kde administrátor může upravovat práva uživatelů, přidávat do skupin s určitými právy apod.
+Tato služba je podporovaná firmou \emph{Red Hat} a několik let už je v popředí popularity služeb, které se starají o bezpečnost webových aplikací. \emph{KeyCloak} disponuje rozsáhlou komunitou vývojářů, kteří jsou velice aktivní v příspívání do daného komunitního produktu.
+\emph{KeyCloak} obsahuje spousty nových vylepšení a je opravdu velice dobře škálovatelný(\emph{scalable}) a upravovatelný(\emph{customizable}).
+
+Obsahuje spousty adaptérů pro klientské aplikace, tudíž nezáleží v takové míře na programovacím jazyce.
+Využívá standardní zabezpečovací protokoly, mezi které patří \emph{OIDC}, \emph{OAuth 2.0}\footnote{\textbf{OAuth 2.0} - autorizační protokol} a \emph{SAML 2.0}\footnote{\textbf{SAML 2.0} - \textbf{S}ecurity \textbf{A}ssertion \textbf{M}arkup \textbf{L}anguage(autentizační/autorizační protokol)}.
+Lze dokonce využít i asociované autentizační a autorizační služby třetích stran pro udělení přístupu uživateli, registraci a mnoho dalšího. Lze získat přístup i od tzv. \emph{Social providers}(poskytovatelů sociálních sítí) jako jsou např. \emph{Facebook}, \emph{Google}, \emph{Twitter} apod.
+
+Na obrázku \ref{figure:keycloak_flow} je popsán autentizační proces uživatele. V prvním kroku uživatel žádá o zdroj informací u aplikace, která je asociována s \emph{KeyCloak} aplikací (v mém případě s mojí \emph{backend} aplikací).
+Aplikace pošle na službu \emph{KeyCloak} autentizační požadavek, služba se podívá, zda už je uživatel autentizován a když ano, pošle aplikaci odpověď o úspěšném přihlášení a aplikace povolí uživateli přístup k datům.
+
+V opačném případě je uživateli poskytnut seznam poskytovatelů služeb starající se o identitu uživatelů.
+Uživatel si může podle definovaného autentizačního toku (\emph{Authentication flow}) vybrat jakým způsobem se autentizuje. Když vše proběhne v pořádku, \emph{KeyCloak} pošle odpověď aplikaci o úspěšném přihlášení a uživatel dostane přístup k datům.
+
+\begin{figure}[hbt]
+  \centering
+  \includegraphics[width=.8 \linewidth]{obrazky-figures/keycloak_flow.png}
+  \caption{Autentizační tok \emph{KeyCloak}}
+  \label{figure:keycloak_flow}
+\end{figure}
+
+\section{Komunikace pomocí \emph{MQTT} protokolu}
+\label{pouzite:mqtt}
+
+V této sekci lze nalézt knihovny a technologie určené pro bezproblémovou komunikaci pomocí \emph{MQTT} protokolu.
+Nejdůležitější komponentou komunikace přes \emph{MQTT} protokol je \emph{MQTT Broker}(více info viz. \ref{terminy:mqtt}).
+Instance pro poskytnutí brokeru byla využita služba \emph{HiveMQ}.
+
+Každá část této aplikace(serverová část, klientská část, zařízení,...) komunikující přes daný protokol, musí disponovat knihovnou, která poskytuje rozhraní a implementaci standardních operací nad protokolem(\emph{MQTT klient}).
+Pro serverovou část a pro klientskou část to byla zvolena knihovna \emph{Eclipse Paho}. Zvolená knihovna poskytuje knihovnu pro několik programovích jazyků a je velice rozšířená a oblíbená.
+Pro HW zařízení byla zvolena knihovna \emph{PubSub} od autora se jménem \emph{Nick O'Leary} díky své jednoduchosti, spolehlivosti a výkonnosti.
+
+\newpage
+\subsection*{HiveMQ}
+\label{pouzite:hivemq}
+
+\emph{HiveMQ} je \emph{MQTT broker} komunikační platforma navržená pro rychlý, efektivní, spolehlivý pohyb dat DO a Z připojených \emph{IoT} zařízení.
+Používá protokol MQTT pro okamžité obousměrné toky dat mezi zařízením a podnikovými systémy.
+\emph{HiveMQ} je stvořen tak, aby dokázal čelit technickým výzvám, které organizace vyžadují u vytváření nové \emph{IoT} aplikace.
+\newline
+Prvky, které jsou nejdůležitější a \emph{HiveMQ} je řeší:
+\begin{itemize}
+  \item Vytvoření spolehlivé a škálovatelné \emph{IoT} aplikace.
+  \item Rychlé dodání dat pro splnění očekávání koncových uživatelů.
+  \item Nižší provozní náklady díky efektivnímu využití hardwarových, síťových a cloudových zdrojů.\ref{hivemq:info}
+\end{itemize}
+
+\begin{figure}[hbt]
+  \centering
+  \includegraphics[width=1 \linewidth]{obrazky-figures/hivemq_arch.png}
+  \caption{Enterprise architektura MQTT}
+  \label{figure:hivemq_flow}
+\end{figure}
+
+\subsection*{\emph{Paho} knihovna}
+\label{pouzite:paho}
+\begin{figure}[hbt]
+  \centering
+  \includegraphics[width=.2 \linewidth]{obrazky-figures/paho.png}
+  \caption{Eclipse Paho logo}
+  \label{figure:paho}
+\end{figure}
+
+\emph{Paho} projekt byl vytvořen pro poskytnutí škálovatelných open-source implementací otevřených a standardních komunikačních protokolů zaměřených na nové a
+existující aplikace pro \emph{M2M}\footnote{\textbf{M2M} - Machine to Machine} a \emph{IoT} sítě.
+\emph{Paho} odráží přirozené fyzické a náklady omezující možnosti připojení zařízení.
+Cíle obsahují efektivní úroveň oddělení mezi zařízeními a aplikacemi, navrženou pro podporu rychlého růstu škálovatelného webového a podnikového middlewaru a aplikací.\ref{paho:info}
