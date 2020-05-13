@@ -527,6 +527,7 @@ U mobilních zařízení je postranní menu skryto a dlaždice jsou rozprostřen
 U mobilních telefonů standardních rozměrů jsou tyto dlaždice vertikálně rozpoloženy v jednom sloupci.
 V pravé horní části obrazovky je tzv. \emph{Hamburger menu}(tlačíko), které po rozkliknutí zobrazí postranní menu definované v desktop responzivní verzi.
 
+\newpage
 \subsection*{Programová část}
 \label{frontend:program}
 Programová část v kontextu návrhu klientské aplikace se zabývá kompletní strukturou programu, či služeb, které probíhají na pozadí aplikace.
@@ -685,6 +686,7 @@ V druhé polovině je k zahlédnutí nastartování celé aplikace a první odpo
   \label{figure:quarkus_stats}
 \end{figure}
 
+\newpage
 \subsection*{Vert.x}
 \label{pouzite:vertx}
 \begin{figure}[hbt]
@@ -843,11 +845,11 @@ Tato služba je podporovaná firmou \emph{Red Hat} a několik let už je v popř
 \emph{KeyCloak} obsahuje spousty nových vylepšení a je opravdu velice dobře škálovatelný(\emph{scalable}) a upravovatelný(\emph{customizable}).
 
 Obsahuje spousty adaptérů pro klientské aplikace, tudíž nezáleží v takové míře na programovacím jazyce.
-Využívá standardní zabezpečovací protokoly, mezi které patří \emph{OIDC}, \emph{OAuth 2.0}\footnote{\textbf{OAuth 2.0} - autorizační protokol} a \emph{SAML 2.0}\footnote{\textbf{SAML 2.0} - \textbf{S}ecurity \textbf{A}ssertion \textbf{M}arkup \textbf{L}anguage(autentizační/autorizační protokol)}.
+Vyu����ívá standardní zabezpečovací protokoly, mezi které patří \emph{OIDC}, \emph{OAuth 2.0}\footnote{\textbf{OAuth 2.0} - autorizační protokol} a \emph{SAML 2.0}\footnote{\textbf{SAML 2.0} - \textbf{S}ecurity \textbf{A}ssertion \textbf{M}arkup \textbf{L}anguage(autentizační/autorizační protokol)}.
 Lze dokonce využít i asociované autentizační a autorizační služby třetích stran pro udělení přístupu uživateli, registraci a mnoho dalšího. Lze získat přístup i od tzv. \emph{Social providers}(poskytovatelů sociálních sítí) jako jsou např. \emph{Facebook}, \emph{Google}, \emph{Twitter} apod.
 
 Na obrázku \ref{figure:keycloak_flow} je popsán autentizační proces uživatele. V prvním kroku uživatel žádá o zdroj informací u aplikace, která je asociována s \emph{KeyCloak} aplikací (v mém případě s mojí \emph{backend} aplikací).
-Aplikace pošle na službu \emph{KeyCloak} autentizační požadavek, služba se podívá, zda už je uživatel autentizován a když ano, pošle aplikaci odpověď o úspěšném přihlášení a aplikace povolí uživateli přístup k datům.
+Aplikace pošle na službu \emph{KeyCloak} autentizační požadavek, služba se podívá, zda už je uživatel autentizován a kdy�� ano, pošle aplikaci odpověď o úspěšném přihlášení a aplikace povolí uživateli přístup k datům.
 
 V opačném případě je uživateli poskytnut seznam poskytovatelů služeb starající se o identitu uživatelů.
 Uživatel si může podle definovaného autentizačního toku (\emph{Authentication flow}) vybrat jakým způsobem se autentizuje. Když vše proběhne v pořádku, \emph{KeyCloak} pošle odpověď aplikaci o úspěšném přihlášení a uživatel dostane přístup k datům.
@@ -905,3 +907,195 @@ Prvky, které jsou nejdůležitější a \emph{HiveMQ} je řeší:
 existující aplikace pro \emph{M2M}\footnote{\textbf{M2M} - Machine to Machine} a \emph{IoT} sítě.
 \emph{Paho} odráží přirozené fyzické a náklady omezující možnosti připojení zařízení.
 Cíle obsahují efektivní úroveň oddělení mezi zařízeními a aplikacemi, navrženou pro podporu rychlého růstu škálovatelného webového a podnikového middlewaru a aplikací.\ref{paho:info}
+
+\chapter{Implementace}
+\label{impl}
+V této kapitole je zahrnuto, jakým způsobem se dané řešení chytré domácnosti implementovalo.
+Návrh řešení a použité technologie již byly popsány dříve (návrh v kapitole \ref{navrh} a použité technologie v kapitole \ref{pouzite}).
+Návrh daného řešení byl směrodatný a obsahuje vše potřebné ke schopnosti implementovat dané řešení.
+V kapitole použitých technologií byly zavedeny také důvody výběru daných technologií a modulů.
+
+Řešení chytré domácnosti je téma, které obsahuje různorodé prostředí obsažené v komplexním systému.
+Jedná se o spojení serverové části, klientských aplikací, databáze a samotných hardwarových zařízení.
+Návrh daného řešení je klíčový.
+Postupem času implementace daných prvků systémy se požadavky, struktura a dokonce i architektura, měnily.
+Hlavním důvodem bylo to, že při implementaci přicházely různé problémy, které se musely řešit.
+Na způsob řešení implementačních problémů se vždy nějakým způsobem došlo a různé prvky aplikace jsou sestaveny po inspiraci z různých větší produktů.
+Tudíž, dané prvky systému by měly být architektonicky sestrojeny správným způsobem.
+
+Implementace systému zahrnuje několik různých aspektů.
+V podkapitole \ref{impl:backend} je popsána implementace serverové části aplikace, v podkapitole \ref{impl:frontend} implementace klientské aplikace.
+Dále velice důležitá část implementace je perzistence dat v systému a tudíž databáze. Zde je popsáno mapování, komunikace mezi serverem a databází (viz podkapitola \ref{impl:databaze}).
+Poslední podkapitola \ref{impl:hw} se zabývá implementací daných HW zařízení komunikujících v systému.
+
+\section{Serverová část}
+\label{impl:backend}
+V této podkapitole ja zahrnuta implementace serverové části aplikace, kde hlavním jádrem implementace je komunikace s klientskými aplikacemi a HW zařízeními.
+V části komunikace s danými prvky je nezbytné oddělit \emph{business} logiku od komunikačních prostředků.
+V aplikaci jsou zřízeny tzv. \emph{services}(služby), které udržují danou \emph{business logiku} ke které přistupují komunikační prostředky(\emph{REST controller, komunikace přes MQTT}).
+Jak již bylo popsáno dříve v návrhu, architektura serverové části aplikace dodržuje předpisy pro \emph{RESTful} aplikaci.
+Tudíž se zde počítá s bezstavostí požadavku na server.
+V podkapitolách serverové části budou zahrnuty nejdůležitější, nebo nejzajímavější implementační detaily implementace dané části.
+
+\subsection*{Architektura}
+\label{impl:backend:architektura}
+Architektura serverové části systému(dále pouze jako \emph{aplikace}) je klíčová.
+Aplikace je strukturována jako \emph{multi-module project}(projekt obsahující více modulů).
+\newline
+Tato struktura aplikace má spousty výhod:
+\begin{itemize}
+  \item \textbf{Separace logiky} - Oddělení \emph{business logiky} od dalších částí projektu. Moduly do sebe nezasahují.
+  \item \textbf{Vysoká škálovatelnost} - Projekt lze jednoduše rozšířit. Přídání dalšího modulu je jednoduché a není potřeba předělávat celou aplikaci. Platí i v opačném případě při odebrání modulu z projektu.
+  \item \textbf{Udržovatelnost} - Vysoká míra udržovatelnosti projektů a modulů. Projekt je
+  \item \textbf{Zachování \emph{API}} - \emph{API} je v rámci celé aplikace většinou ve velké míře neměnné a mění se pouze implementace daného rozhraní s rozdílnou logikou.
+\end{itemize}
+
+Jak je vidět z výhod této struktury aplikace, je velice užitečná ve vývoji rozsáhlejší aplikace.
+Dané aspekty jsou velice přínosné pro udržovatelnost a hlavně škálovatelnost aplikace, která je klíčová.
+Moduly jsou vytvořený pomocí buildovacího nástroje \emph{Maven}\footnote{\textbf{Maven} - nástroj na management projektu}.
+U většiny daných modulů se generuje samostný \emph{JAR}\footnote{\textbf{JAR} - \textbf{J}ava \textbf{AR}chive} spustitelný soubor, který je poté zkomponován s dalšími do jednoho spustitelného souboru, který představuje celou serverovou aplikaci.
+\newline
+Základní moduly této aplikace jsou:
+\begin{itemize}
+  \item \textbf{API} - Definuje rozhraní pro přiložené moduly.
+  \item \textbf{Authz} (\emph{Authorization} - Autorizace) - Stará se o vlastní autorizaci celé aplikace.
+  \item \textbf{Controller} ("Ovladač") - Řízení požadavků na server
+  \item \textbf{Dist} (\emph{Distribution} - Distribuce systému) - Stará se o kompozici modulů a vytváří tak komplexní aplikaci.
+  \item \textbf{Persistence} (Perzistence dat) - Rodičovský modul modulů starající se o perzistenci dat. Aktuálně pouze submodul \emph{JPA}.
+  \item \textbf{Protocols} (Protokoly) - Komunikace aplikace pomocí dalších protokolů (\emph{MQTT}, \emph{WebSockets}).
+  \item \textbf{Services} (Služby) - Udržuje \emph{business} logiku celé aplikace.
+\end{itemize}
+
+\subsection*{Přijímání požadavků}
+\label{impl:backend:request}
+O přijímání požadavku se stará implementace rozhraní \emph{JAX-RS}\footnote{\text{JAX-RS} - Java API for RESTful Web Services(rozhraní pro \emph{RESTful} služby)} a to přesněji \emph{RESTeasy}.
+Tento framework používá anotace na usnadnění vývoje aplikací s daným \emph{API}.
+Přijímá a odesílá základní data pouze ve formátu \emph{JSON}.
+Klient pošle požadavek na daný \emph{REST endpoint}, ke kterému je svázána nějaká operace(metoda), která se vykoná.
+Každá třída implementující rozhraní pro přístup k \emph{resources}(zdrojům) je vlastně \emph{Java Bean}\footnote{\textbf{Java Bean} - Java EE komponenta} se životností pouze po dobu vykonávání určitého požadavku (\emph{RequestScoped}), poté je destruována.
+
+V kódu níže je ukázka rozhraní, které vyobrazuje nastavení pro \emph{RESTeasy} framework.
+Dané rozhraní se nachází v modulu \emph{API} a implementace daného rozhraní v modulu \emph{Controller}.
+Jako první anotace použita na dané rozhraní je \annotation{@Path}, v které se definuje cesta k danému zdroji.
+Dále následuje anotace \annotation{@Consumes} a \annotation{@Produces}, u kterých je definovaná hodnota \emph{MediaType.APPLICATION\_JSON}.
+Znamená to, že implementace daného rozhraní komzumuje a produkuje pouze informace ve formátu \emph{JSON}.
+
+Anotace \annotation{@Transactional} značí, že požadavek na daný zdroj je brán transakčně, tudíž splňovat požadavky \emph{ACID}\footnote{\textbf{ACID} - \textbf{A}tomicity, \textbf{C}onsistency, \textbf{I}solation, \textbf{D}urability (Atomicita, Konzistence, Izolace a Trvanlivost)}.
+Poslední \emph{class annotation}(anotace třídy) s názvem \annotation{@Authenticated} značí, že uživatel musí být autentizován před vykonáním specifické operace.
+
+Anotace \annotation{@GET} a \annotation{@POST} definují typy požadavku.
+Lze použít i anotaci \annotation{@Path} na metody rozhraní, např. kdyby u metody byla přidaná anotace \annotation{@Path} s obsahem \emph{"/info"}, cesta k danému zdroji
+by musela mít podobu konkrétně \emph{"/homes/info"}.
+Anotace \annotation{@Path} pracuje i parametry.
+Uvažujme například \emph{URI} \emph{"/homes/3"}, které je možné namapovat pomocí anotace \annotation{@Path} s parametry \emph{"/homes/\{id\}"}.
+
+\begin{lstlisting}[caption={Ukázka deklarování rozhraní pro správu domácností}]
+  %%@Path%%("/homes")
+  %%@Consumes%%(MediaType.APPLICATION_JSON)
+  %%@Produces%%(MediaType.APPLICATION_JSON)
+  $$@Transactional
+  $$@Authenticated
+  public interface !!HomesResource!! {
+
+    $$@GET
+    Response !!getAll()!!;
+
+    $$@POST
+    HomeModel !!createHome!!(String !!JSON!!);
+
+    !!...!!
+  }
+\end{lstlisting}
+
+\subsection*{Předávání stavu při požadavku na server}
+\label{impl:backend:state}
+
+Jak již bylo v předchozí kapitole určeno, framework na přijímání požadavku musí určit, jaké třídě, nebo metodě, směrovat požadavek.
+To lze přidáním anotace \annotation{@Path}, v které se definuje \emph{URI}\footnote{\textbf{URI} - \textbf{U}niform \textbf{R}esource \textbf{I}dentifier (jednotný identifikátor zdroje)}, který se musí shodovat s cílem požadavku.
+Každá třída reagující na požadavky od klientů má většinou definovanou cestu zdroje, o který se stará.
+V úryvku kódu výše to bylo např. \emph{"/homes"}.
+V tomto úskalí však přichází problém.
+
+\subsubsection*{Problém}
+Systém řešení chytré domácnosti disponuje strukturou hierarchického rozpoložení zdrojů (např. \emph{homes -> rooms, rooms -> devices, devices -> capabilities,...}).
+\emph{URI} každého zdroje obsahuje identifikátor každého prvku (např. \emph{"/homes/42}) díky kterému lze mapovat určitý jedinečný prvek.
+Co když ale přijde situace, kdy potřebujeme dostat informace uložené ve schopnosti zařízení v domácnosti s identifikátorem 11, v místnosti s identifikátorem 22, zařízení s identifikátorem 33 a schopnost s identifikátorem 44.
+\newline
+Daná cesta ke zdroji vypadá konkrétně:
+\begin{itemize}
+  \item \emph{"/homes/11/rooms/22/devices/33/caps/44"}
+\end{itemize}
+
+Namapování takového zdroje pomocí anotace \annotation{@Path} by muselo vypadat takto:
+\begin{itemize}
+  \item \emph{@Path("/homes/\{homeID\}/rooms/\{roomID\}/devices/\{deviceID\}/caps/\{capID\}")}
+\end{itemize}
+
+Způsob zápisu je takřka nepoužitelný a nedovoluje škálovatelnost dané správy požadavků.
+Může přijít situace, kdy budeme nuceni připojit k cestě zdroje do zařízení další jiný zdroj.
+Poté by jsme museli vytvořit další třídu, která tento ohromný zápis zpracuje.
+Proto přichází řešení ve formě předávání stavu do různých komponent.
+
+\subsubsection*{Řešení}
+Vytvořil jsem \emph{Java Bean} komponentu s názvem \emph{BartSession}, která má životnost také omezenou na vykonávání určitého požadavku.
+Tato komponenta poskytuje uložení aktuálního stavu požadavku, distribuování \emph{services}(služeb) a informace o autentizovaném uživateli.
+Každá třída poskytující správu cílového zdroje z požadavku (dále jako \emph{resource} třída) ve svém konstruktoru zahrnuje právě tuto komponentu.
+Je tak zaručeno, že se stav dokáže předat do každé dané \emph{resource} třídy.
+
+Při daném hierarchickém rozpoložení se lze z jedné \emph{resource} třídy přesměrovat do další, z dané třídy do další a tak dále, než se dorazí do požadované třídy obstarávající zdroj informací.
+Každá \emph{resource} třída se stará pouze o své vlastní zájmy a nepotřebuje vědět o prostředí mimo ni.
+Každá \emph{resource} třída disponuje různými metodami pro správu zdrojů.
+V úryvku kódu níže je vyobrazeno přesměrování požadavku do jiné \emph{resource} třídy s poskytnutím změněného stavu.
+Kód je pouze ilustrační; obsahuje pouze základní prvky potřebné pro ilustraci řešení.
+
+\begin{lstlisting}[caption={Ukázka přesměrování požadavku}]
+  // Rodicovska trida 'HomesResourceProvider'
+  // implementujici rozhrani 'HomesResource'
+
+  %%@Path%%("/homes")
+  public class !!HomesResourceProvider!! implements !!HomesResource!! {
+    BartSession !!session!!;
+    !!...!!
+
+    %%@Path%%("/{id}")
+    public HomeResource !!forwardToSpecificHome!!(%%@PathParam%%("id") Long !!id!!){
+      return new HomeResourceProvider(!!session!!.setActualHome(!!id!!));
+    }
+  }
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Ukázka zpracování požadavku z přesměrované třídy}]
+  // Podrazena trida 'HomeResourceProvider'
+  // implementujici rozhrani 'HomeResource'
+
+  public class !!HomeResourceProvider!! implements !!HomeResource!! {
+    BartSession !!session!!;
+
+    public !!HomeResourceProvider!!(BartSession !!session!!){
+      this.!!session!! = !!session!!;
+    }
+
+    $$@GET
+    public HomeModel !!getHome()!! {
+      return !!session!!.getActualHome();
+    }
+    !!...!!
+  }
+\end{lstlisting}
+
+\section{Databázová část}
+\label{impl:databaze}
+
+
+\section{Klientská část}
+\label{impl:frontend}
+
+\section{HW část}
+\label{impl:hw}
+
+
+\chapter{Testování}
+\label{testovani}
+
+\chapter{Závěr}
+\label{zaver}
