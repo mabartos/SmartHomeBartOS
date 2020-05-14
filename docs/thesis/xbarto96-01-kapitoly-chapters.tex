@@ -849,7 +849,7 @@ Vyu����ívá standardní zabezpečovací protokoly, mezi které patří 
 Lze dokonce využít i asociované autentizační a autorizační služby třetích stran pro udělení přístupu uživateli, registraci a mnoho dalšího. Lze získat přístup i od tzv. \emph{Social providers}(poskytovatelů sociálních sítí) jako jsou např. \emph{Facebook}, \emph{Google}, \emph{Twitter} apod.
 
 Na obrázku \ref{figure:keycloak_flow} je popsán autentizační proces uživatele. V prvním kroku uživatel žádá o zdroj informací u aplikace, která je asociována s \emph{KeyCloak} aplikací (v mém případě s mojí \emph{backend} aplikací).
-Aplikace pošle na službu \emph{KeyCloak} autentizační požadavek, služba se podívá, zda už je uživatel autentizován a kdy�� ano, pošle aplikaci odpověď o úspěšném přihlášení a aplikace povolí uživateli přístup k datům.
+Aplikace pošle na službu \emph{KeyCloak} autentizační požadavek, služba se podívá, zda už je uživatel autentizován a kdy���� ano, pošle aplikaci odpověď o úspěšném přihlášení a aplikace povolí uživateli přístup k datům.
 
 V opačném případě je uživateli poskytnut seznam poskytovatelů služeb starající se o identitu uživatelů.
 Uživatel si může podle definovaného autentizačního toku (\emph{Authentication flow}) vybrat jakým způsobem se autentizuje. Když vše proběhne v pořádku, \emph{KeyCloak} pošle odpověď aplikaci o úspěšném přihlášení a uživatel dostane přístup k datům.
@@ -1083,10 +1083,97 @@ Kód je pouze ilustrační; obsahuje pouze základní prvky potřebné pro ilust
   }
 \end{lstlisting}
 
+\newpage
 \section{Databázová část}
 \label{impl:databaze}
+Tato sekce pojednává o propojení databázové části se serverem včetně způsobu mapování tabulek pomocí \emph{ORM} frameworku.
+Uživatel posílající požadavky na server, po náležitých autentizační/autorizačních operacích, dostane data přávě ze zmiňované databáze.
+Díky databázi jsou perzistentně uložená data, která slouží pro správu celé domácnosti.
+Pro implementaci databázové části systému byla využita databáze \emph{PostgreSQL}(více info viz. \ref{pouzite:postgresql}).
+Hlavní entitou databáze je samotná domácnost, kde je vytvořena asociace mezi dalšími tabulkami.
 
+Jak již bylo řečeno v návrhu, mezi databázovou vrstvou a serverovou vrstvou jsou objekty mapovány do relační databáze.
+Ke schopnosti mapování tímto způsobem je zapotřebí \emph{ORM} framework, který jsem podle mého nejlepšího uvážení vybral konkrétně \emph{Hibernate ORM} (více info viz. \ref{app_prostredi:hibernate}).
+U \emph{Hibernate ORM} lze definovat entity pomocí anotací u \emph{POJO}, nebo pomocí \emph{XML}.
+Pro přehlednější, lépe škálovatelný přístup jsem vybral definování entit pomocí anotací.
 
+\subsection*{Základní entita}
+
+Na úryvku kódu níže je ilustrační příklad definování entity databáze u třídy mapující domácnost.
+Anotace \annotation{@Entity} slouží k určení mapování-schopné třídy do relační databáze (povinné).
+Další anotace \annotation{@Table} je nepovinná a slouží k definování parametrů spojených s tabulkou, např. definování jména tabulky.
+Tato třída implementuje rozhraní \emph{HomeModel}, která definuje rozhraní pro operace nad domácností.
+Pomocí rozhraní \emph{HomeModel} jsou entity dále, díky polymorfismu, v aplikaci mapovány pouze jako dané rozhraní kvůli udržovatelnosti \emph{API}.
+
+Každý atribut třidy, je označen anotací \annotation{@Column}, která představuje sloupec tabulky.
+U této anotace lze např. definovat název sloupce, zda může sloupec prázdný, atd.
+Každá tabulka musí mít jednoznačný identifikátor a atribut plnící roli identifikátoru je označen anotací \annotation{@Id}.
+Identifikátor může být také označen anotací \annotation{@GeneratedValue}, kdy se \emph{Hibernate} framework stará o přiřazování jednoznačných identifikátorů sám.
+
+\begin{lstlisting}[caption={Ukázka definování entity}]
+  $$@Entity
+  %%@Table%%(name = "Homes")
+  public class !!HomeEntity!! implements !!HomeModel!! {
+  
+      $$@Id
+      $$@GeneratedValue
+      %%@Column%%(name = "HOME_ID")
+      Long !!id!!;
+  
+      %%@Column%%(nullable = false)
+      String !!name!!;
+
+      !!...!!
+  }
+\end{lstlisting}
+
+\newpage
+\subsection*{Asociace mezi entitami}
+Jak to bývá zvykem u relačních databází, tak v tabulkách mohou existovat tzv.\emph{foreign keys}(cizí klíče), které ukazují na identifikátor jiné tabulky.
+Tím je vytvořena jakási asociace mezi tabulkami.
+Samožejmě zde existuje jakási \emph{kardinalita}, která určuje četnost provázanosti tabulek.
+
+Lze si to představit na příkladu z daného řešení chytré domácnosti.
+Tabulka představující domácnost je svázána s tabulkou místností ve vztahu 1:N, což znamená, že domácnost může obsahovat několik místností, ale určitá místnost může být obsažena pouze v jedné domácnosti.
+\emph{ORM} framework \emph{Hibernate} nám umožňuje dokonce i namapovat dané asociace mezi entitami.
+V úryvku kódu níže je vyobrazen ilustrační kód pro definování asociace 1:N mezi domácností a místnostmi.
+
+Entita vyznačující domácnost obsahuje množinu místností, které jsou připojeny k domácnosti.
+Anotace \annotation{@OneToMany} určuje asociaci ve vztahu 1:N (domácnost:místnosti), kde v parametrech anotace je určena \emph{targetEntity}, v které je definovaná cílová entita a
+parametr \emph{mappedBy}, který představuje název atributu v místnosi, pomocí kterého je domácnost mapována v dané místnosti.
+
+\begin{lstlisting}[caption={Ukázka asociace 1:N (domácnost:místnosti)}]
+  // Entita domacnost
+  
+  $$@Entity
+  %%@Table%%(name = "Homes")
+  public class !!HomeEntity!! implements !!HomeModel!! {
+      !!...!!
+
+      %%@OneToMany%%(targetEntity = !!RoomEntity!!.class, mappedBy = "home")
+      Set<!!RoomModel!!> !!roomsSet!! = new HashSet<>();
+  }
+\end{lstlisting}
+
+Entita vyznačující místnost obsahuje, jak již dříve bylo napsáno, pouze referenci na jednu domácnost, ve které je daná místnost umístěna.
+Anotace \annotation{@ManyToOne} určuje asociaci, inverzní vůči domácnosti, která definuje kardinalitu vztahů mezi entitami.
+Anotace \annotation{@JoinColumn} slouží na propojení sloupců tabulek.
+
+\begin{lstlisting}[caption={Ukázka asociace 1:N (domácnost:místnosti)}]
+  // Entita mistnost
+  
+  $$@Entity
+  %%@Table%%(name = "Rooms")
+  public class !!RoomEntity!! implements !!RoomModel!! {
+    !!...!!
+
+    $$@ManyToOne
+    $$@JoinColumn
+    HomeEntity !!home!!;
+  }
+\end{lstlisting}
+
+\newpage
 \section{Klientská část}
 \label{impl:frontend}
 
