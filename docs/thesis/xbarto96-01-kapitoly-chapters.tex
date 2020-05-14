@@ -849,7 +849,7 @@ Vyu����ívá standardní zabezpečovací protokoly, mezi které patří 
 Lze dokonce využít i asociované autentizační a autorizační služby třetích stran pro udělení přístupu uživateli, registraci a mnoho dalšího. Lze získat přístup i od tzv. \emph{Social providers}(poskytovatelů sociálních sítí) jako jsou např. \emph{Facebook}, \emph{Google}, \emph{Twitter} apod.
 
 Na obrázku \ref{figure:keycloak_flow} je popsán autentizační proces uživatele. V prvním kroku uživatel žádá o zdroj informací u aplikace, která je asociována s \emph{KeyCloak} aplikací (v mém případě s mojí \emph{backend} aplikací).
-Aplikace pošle na službu \emph{KeyCloak} autentizační požadavek, služba se podívá, zda už je uživatel autentizován a kdy���� ano, pošle aplikaci odpověď o úspěšném přihlášení a aplikace povolí uživateli přístup k datům.
+Aplikace pošle na službu \emph{KeyCloak} autentizační požadavek, služba se podívá, zda už je uživatel autentizován a když ano, pošle aplikaci odpověď o úspěšném přihlášení a aplikace povolí uživateli přístup k datům.
 
 V opačném případě je uživateli poskytnut seznam poskytovatelů služeb starající se o identitu uživatelů.
 Uživatel si může podle definovaného autentizačního toku (\emph{Authentication flow}) vybrat jakým způsobem se autentizuje. Když vše proběhne v pořádku, \emph{KeyCloak} pošle odpověď aplikaci o úspěšném přihlášení a uživatel dostane přístup k datům.
@@ -989,7 +989,7 @@ by musela mít podobu konkrétně \emph{"/homes/info"}.
 Anotace \annotation{@Path} pracuje i parametry.
 Uvažujme například \emph{URI} \emph{"/homes/3"}, které je možné namapovat pomocí anotace \annotation{@Path} s parametry \emph{"/homes/\{id\}"}.
 
-\begin{lstlisting}[caption={Ukázka deklarování rozhraní pro správu domácností}]
+\begin{lstlisting}[style=JavaStyle, caption={Ukázka deklarování rozhraní pro správu domácností}]
   %%@Path%%("/homes")
   %%@Consumes%%(MediaType.APPLICATION_JSON)
   %%@Produces%%(MediaType.APPLICATION_JSON)
@@ -1048,7 +1048,7 @@ Každá \emph{resource} třída disponuje různými metodami pro správu zdrojů
 V úryvku kódu níže je vyobrazeno přesměrování požadavku do jiné \emph{resource} třídy s poskytnutím změněného stavu.
 Kód je pouze ilustrační; obsahuje pouze základní prvky potřebné pro ilustraci řešení.
 
-\begin{lstlisting}[caption={Ukázka přesměrování požadavku}]
+\begin{lstlisting}[style=JavaStyle, caption={Ukázka přesměrování požadavku}]
   // Rodicovska trida 'HomesResourceProvider'
   // implementujici rozhrani 'HomesResource'
 
@@ -1064,7 +1064,7 @@ Kód je pouze ilustrační; obsahuje pouze základní prvky potřebné pro ilust
   }
 \end{lstlisting}
 
-\begin{lstlisting}[caption={Ukázka zpracování požadavku z přesměrované třídy}]
+\begin{lstlisting}[style=JavaStyle, caption={Ukázka zpracování požadavku z přesměrované třídy}]
   // Podrazena trida 'HomeResourceProvider'
   // implementujici rozhrani 'HomeResource'
 
@@ -1110,7 +1110,7 @@ U této anotace lze např. definovat název sloupce, zda může sloupec prázdn�
 Každá tabulka musí mít jednoznačný identifikátor a atribut plnící roli identifikátoru je označen anotací \annotation{@Id}.
 Identifikátor může být také označen anotací \annotation{@GeneratedValue}, kdy se \emph{Hibernate} framework stará o přiřazování jednoznačných identifikátorů sám.
 
-\begin{lstlisting}[caption={Ukázka definování entity}]
+\begin{lstlisting}[style=JavaStyle, caption={Ukázka definování entity}]
   $$@Entity
   %%@Table%%(name = "Homes")
   public class !!HomeEntity!! implements !!HomeModel!! {
@@ -1142,7 +1142,7 @@ Entita vyznačující domácnost obsahuje množinu místností, které jsou při
 Anotace \annotation{@OneToMany} určuje asociaci ve vztahu 1:N (domácnost:místnosti), kde v parametrech anotace je určena \emph{targetEntity}, v které je definovaná cílová entita a
 parametr \emph{mappedBy}, který představuje název atributu v místnosi, pomocí kterého je domácnost mapována v dané místnosti.
 
-\begin{lstlisting}[caption={Ukázka asociace 1:N (domácnost:místnosti)}]
+\begin{lstlisting}[style=JavaStyle, caption={Ukázka asociace 1:N (domácnost:místnosti)}]
   // Entita domacnost
   
   $$@Entity
@@ -1159,7 +1159,7 @@ Entita vyznačující místnost obsahuje, jak již dříve bylo napsáno, pouze 
 Anotace \annotation{@ManyToOne} určuje asociaci, inverzní vůči domácnosti, která definuje kardinalitu vztahů mezi entitami.
 Anotace \annotation{@JoinColumn} slouží na propojení sloupců tabulek.
 
-\begin{lstlisting}[caption={Ukázka asociace 1:N (domácnost:místnosti)}]
+\begin{lstlisting}[style=JavaStyle,caption={Ukázka asociace 1:N (domácnost:místnosti)}]
   // Entita mistnost
   
   $$@Entity
@@ -1176,7 +1176,75 @@ Anotace \annotation{@JoinColumn} slouží na propojení sloupců tabulek.
 \newpage
 \section{Klientská část}
 \label{impl:frontend}
+Klientská aplikace se zabývá interakcí mezi uživatelem a systémem.
+Tudíž je velmi důležitá v kontextu řešení chytré domácnosti.
+V návrhu klientské aplikace je více informací o struktuře klientské části (více info viz. \ref{navrh:frontend}).
+Klientská aplikace byla implementována v jazyce \emph{JavaScript} s využítím knihovny \emph{React}(více info viz. \ref{frontend:react}).
+Další důležitou součástí aplikace je udržovat stav aplikace o který se stará nástroj \emph{MobX}(více info viz. \ref{frontend:mobx}).
 
+Základem klientské aplikace je předpřiravená šablona ve stylu \emph{Dashboardu}, která je vydávána pod \emph{MIT} licencí, tudíž je volně šiřitelná.
+Tato šablona je vytvořena pomocí knihovny \emph{Material UI}\footnote{https://material-ui.com/}. Autorem šablony je \emph{Creative Tim}\footnote{https://www.creative-tim.com}.
+Ze šablony byla použita pouze kostra programu a některé jednoduché, dobře vypadající komponenty.
+
+Aplikace je vytvořena z komponent, které v sobě obsahují další komponenty a obsažené komponenty obsahují další komponenty atd.
+Jedná se o kompozici komponent.
+V úryvku kódu níže je příklad vytvoření komponenty pomocí knihovny \emph{React}.
+
+\begin{lstlisting}[style=JavaScriptStyle,caption={Ukázka asociace 1:N (domácnost:místnosti)}]
+  export default function !!TestComponent!!(){
+    const [state,setState] = React.useState(null);
+
+    React.useEffect(()=>{
+      setState(42);
+    }, []);
+    
+    return(
+      %%<div>%%
+        %%<p>%%This is test component%%</p>%%
+        {state && %%<p>%%Number from state is: {state}%%</p>%%}
+      %%</div>%%
+    );
+  }
+\end{lstlisting}
+
+Jak již bylo zmíněno, důležitou součástí klientské aplikace je i stav aplikace o který se stará nástroj \emph{MobX}.
+Pro aplikaci jsou vytvořeny tzv. \emph{stores}(úložiště), které slouží pro udržování stavu napříč aplikací.
+Pro tento systém byly zatím vytvořeny základní úložiště a to: \emph{AuthStore}, \emph{HomeStore}, \emph{RoomStore}, \emph{DeviceStore}, \emph{UserStore}.
+
+\newpage
+V úryvku kódu níže je příklad definování úložiště pomocí nástroje \emph{MobX}.
+Nejzajímavější část celého \emph{store} je funkce \emph{decorate}.
+Tato funkce definuje ve tříde atributy, které budou tzv. \emph{observable}(pozorovatelné) poté definuje \emph{action}(akce) metody,
+které modifikují stav a \emph{computed}(vypočteno) getter, který vrací daný objekt/objekty.
+
+\begin{lstlisting}[style=JavaScriptStyle,caption={Ukázka asociace 1:N (domácnost:místnosti)}]
+ export class !!HomeStore!!{
+  _homes = new Map();
+
+  setHomes = (homes) =>{
+    this._homes = homes;
+  }
+
+  get homes() {
+    return this._homes;
+  }
+ }
+
+ %%decorate%%(!!HomeStore!!, {
+    _homes: %%observable%%,
+    setHomes: %%action%%,
+    homes: %%computed%%
+ });
+\end{lstlisting}
+
+\begin{figure}[hbt]
+  \centering
+  \includegraphics[width=1 \linewidth]{obrazky-figures/raspberry.png}
+  \caption{Aktuální vzhled aplikace}
+  \label{figure:actual_app}
+\end{figure}
+
+\newpage
 \section{HW část}
 \label{impl:hw}
 
