@@ -27,8 +27,8 @@ vector<shared_ptr<Capability>> createdCaps{
     make_shared<HumidityCap>(D5, dht),
     make_shared<TemperatureCap>(D5, dht),
     make_shared<LightsCap>(D1),
-    make_shared<RelayCap>(D2),
-    make_shared<RelayCap>(D3),
+    make_shared<RelayCap>(D7),
+    make_shared<RelayCap>(D8),
     make_shared<PIRCap>(D6)};
 
 #endif

@@ -117,6 +117,9 @@
 \usepackage{listings}
 \usepackage{color}
 
+\usepackage{graphicx}
+\usepackage{babel,blindtext}
+
 % https://tex.stackexchange.com/a/115562 
 \definecolor{javared}{rgb}{0.6,0,0} % for strings
 \definecolor{javagreen}{rgb}{0.25,0.5,0.35} % comments
@@ -222,8 +225,16 @@ moredelim=[is][\textcolor{green}]{\#\#}{\#\#}
   %keywords.en={Here, individual keywords separated by commas will be written in English.},
   % Abstrakt / Abstract
 %change Abstract
-  abstract.cs={V dnešní době se velice rychle rozrůstá svět chytrých zařízení v domácnostech, které mezi sebou komunikují a usnadňují lidem život. Avšak velkým problémem pořízení takových zařízení do běžných domácností je vysoká cena  a kompatibilita zařízení pouze od jednoho výrobce. Cílém této bakalářské práce je vytvořit komplexní levné řešení, které dokáže komunikovat se zařízeními od různých výrobců. Toto řešení je implementováno pomocí nejmodernějších technologií a nástrojů.}, % abstrakt v českém či slovenském jazyce / abstract in czech or slovak language
-  abstract.en={Nowadays, the world of smart devices in households, is growing up very fast, where the devices communicate with each other and make people's lives easier. However, a major problem of acquisition the devices to common households, is high price and compatibility of the devices from one vendor. The goal of this bachelor thesis is to create a comprehensive low-cost solution that can communicate with devices from various vendors. This solution is implemented by the latest technologies and tools.}, % abstrakt v anglickém jazyce / abstract in english
+  abstract.cs={V dnešní době se velice rychle rozrůstá svět chytrých zařízení v domácnostech, které mezi sebou komunikují a usnadňují lidem život. 
+  Avšak velkým problémem pořízení takových zařízení do běžných domácností je vysoká cena  a kompatibilita zařízení pouze od jednoho výrobce. 
+  Cílém této bakalářské práce je vytvořit komplexní levné řešení, které dokáže komunikovat se zařízeními od různých výrobců. 
+  Toto řešení je implementováno pomocí nejmodernějších technologií a nástrojů.}, 
+  % abstrakt v českém či slovenském jazyce / abstract in czech or slovak language
+  abstract.en={Nowadays, the world of smart devices in households is growing up very fast, where the devices communicate with each other and make people's lives easier. 
+  However, a major problem of purchase the devices to common households, is high price and compatibility of the devices from one vendor. 
+  The goal of this bachelor thesis is to create a comprehensive low-cost solution that can communicate with devices from various vendors. 
+  This solution is implemented by the latest technologies and tools.},
+   % abstrakt v anglickém jazyce / abstract in english
   %abstract.en={An abstract of the work in English will be written in this paragraph.},
   % Prohlášení (u anglicky psané práce anglicky, u slovensky psané práce slovensky) / Declaration (for thesis in english should be in english)
   declaration={Prohlašuji, že jsem tuto bakalářskou práci vypracoval samostatně pod vedením pana doc. Vladimíra Janouška. Uvedl jsem všechny literární prameny, publikace a další zdroje, ze kterých jsem čerpal.},

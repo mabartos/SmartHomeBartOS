@@ -119,6 +119,9 @@ void CapabilityUtils::setTypeJSON(JsonObject& obj, CapabilityType type) {
         case CapabilityType::HUMIDITY:
             obj["type"] = "HUMIDITY";
             break;
+        case CapabilityType::EXTERN_BTN:
+            obj["type"] = "EXTERN_BTN";
+            break;
         case CapabilityType::HEATER:
             obj["type"] = "HEATER";
             break;
