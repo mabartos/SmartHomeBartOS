@@ -3,9 +3,10 @@
 #include <ArduinoJson.h>
 #include <ESP8266WebServer.h>
 #include <ESP8266WiFi.h>
-#include <FS.h>
+#include <LittleFS.h>
 
 #include "ESP8266TrueRandom.h"
+#include "FS.h"
 #include "mqtt/MessageForwarder.h"
 #include "mqtt/MqttClient.h"
 
@@ -36,11 +37,11 @@ void WifiUtils::begin() {
 }
 
 void WifiUtils::readSaved() {
-    if (SPIFFS.begin() && SPIFFS.exists(CONFIG_FILE)) {
-        File configFile = SPIFFS.open(CONFIG_FILE, "r");
+    if (LittleFS.begin() && LittleFS.exists(CONFIG_FILE)) {
+        File configFile = LittleFS.open(CONFIG_FILE, "r");
         if (configFile) {
             size_t size = configFile.size();
-
+            Serial.println("READ");
             std::unique_ptr<char[]> buf(new char[size]);
             configFile.readBytes(buf.get(), size);
 
@@ -49,6 +50,7 @@ void WifiUtils::readSaved() {
             DeserializationError err = deserializeJson(configDoc, buf.get());
             if (err != DeserializationError::Ok)
                 return;
+            Serial.println("READ2");
 
             serializeJson(configDoc, Serial);
             const JsonObject object = configDoc.as<JsonObject>();
@@ -64,6 +66,7 @@ void WifiUtils::readSaved() {
                 strcpy(name, configDoc["name"]);
 
                 _homeID = strtol(homeID, nullptr, 10);
+                Serial.println("READ3");
 
                 if (configDoc.containsKey("roomID")) {
                     long roomID = configDoc["roomID"];
@@ -74,6 +77,7 @@ void WifiUtils::readSaved() {
                 client.setUUID(string(UUID));
                 _alreadyCreated = true;
                 readActionProvided = true;
+                Serial.println("READ4");
             }
 
             if (configDoc.containsKey("deviceID")) {
@@ -102,7 +106,7 @@ void WifiUtils::writeSaved() {
         strcpy(UUID, uuid);
         client.setUUID(string(uuid));
 
-        File configFile = SPIFFS.open(CONFIG_FILE, "w");
+        File configFile = LittleFS.open(CONFIG_FILE, "w");
         if (!configFile) {
             reset();
             return;
@@ -164,7 +168,7 @@ bool WifiUtils::shouldSaveConfig() {
 }
 
 void WifiUtils::reset() {
-    SPIFFS.format();
+    LittleFS.format();
     _wifiManager.resetSettings();
 }
 

@@ -24,7 +24,7 @@ public class DefaultBartMqttClient implements BartMqttClient, Serializable {
     public static Logger logger = Logger.getLogger(DefaultBartMqttClient.class.getName());
 
     private final Integer TIMEOUT = 20;
-    private final Integer STD_QOS = 1;
+    private final Integer SUBSCRIBE_QOS = 2;
 
     private MemoryPersistence persistence;
     private String brokerURL;
@@ -77,11 +77,10 @@ public class DefaultBartMqttClient implements BartMqttClient, Serializable {
             IMqttToken token = mqttClient.connect(setConnectOptions());
             token.waitForCompletion();
 
-            mqttClient.subscribe(TopicUtils.getHomeTopic(home) + "/#", STD_QOS);
+            mqttClient.subscribe(TopicUtils.getHomeTopic(home) + "/#", SUBSCRIBE_QOS);
 
             checkAndSetState(true);
-
-            logger.info("Initialized MQTT for org.mabartos.home " + home.getName());
+            logger.info("Initialized MQTT for home " + home.getName());
         } catch (MqttException e) {
             checkAndSetState(false);
         } catch (Exception e) {

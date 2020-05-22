@@ -1,5 +1,7 @@
 #include "MessageForwarder.h"
 
+#include <LittleFS.h>
+
 #include "FS.h"
 #include "device/Device_deps.h"
 #include "mqtt/MqttClient.h"
@@ -46,19 +48,15 @@ void MessageForwarder::manageCreate(const JsonObject &obj) {
             device.setID(ID);
 
             manageCreateSPIFS(obj, ID);
-            Serial.println("HEERE1");
 
             client.getMQTT().subscribe(device.getDeviceTopic().c_str());
             client.getMQTT().unsubscribe(device.getCreateTopic().c_str());
             client.getMQTT().unsubscribe(device.getCreateTopicWild().c_str());
 
-            Serial.println("HEERE2");
-
             device.setInitialized(true);
 
             device.setID(ID);
             client.reconnect();
-            Serial.println("HEERE3");
         }
     }
 }
@@ -66,8 +64,8 @@ void MessageForwarder::manageCreate(const JsonObject &obj) {
 void MessageForwarder::manageCreateSPIFS(const JsonObject &obj, const long &deviceID) {
     DynamicJsonDocument doc(1520);
 
-    if (SPIFFS.begin() && SPIFFS.exists(CONFIG_FILE)) {
-        File configFile = SPIFFS.open(CONFIG_FILE, "r");
+    if (LittleFS.begin() && LittleFS.exists(CONFIG_FILE)) {
+        File configFile = LittleFS.open(CONFIG_FILE, "r");
         if (configFile) {
             size_t size = configFile.size();
 
@@ -88,7 +86,7 @@ void MessageForwarder::manageCreateSPIFS(const JsonObject &obj, const long &devi
     newDoc["deviceID"] = deviceID;
     newDoc["uuid"] = client.getUUID().c_str();
 
-    File configFile = SPIFFS.open(CONFIG_FILE, "w");
+    File configFile = LittleFS.open(CONFIG_FILE, "w");
     if (!configFile) {
         Serial.println("CANNOT WRITE");
         return;

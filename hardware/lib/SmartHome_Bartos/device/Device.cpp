@@ -206,9 +206,9 @@ void Device::publishCreateMessage() {
     client.getMQTT().subscribe(getCreateTopicResp().c_str());
 
     serializeJson(getCreateJSON(), buffer);
-
     const char *result = getCreateTopic().c_str();
-    client.getMQTT().publish_P(result, buffer, false);
+
+    client.getMQTT().publish(result, buffer, false);
 }
 
 // CONNECT
@@ -235,7 +235,6 @@ void Device::publishConnectMessage() {
     client.getMQTT().subscribe(getConnectTopicResp().c_str());
     serializeJson(getConnectJSON(), buffer);
     string topic(getConnectTopic() + "/" + NumberGenerator::longToString(getID()));
-
     client.getMQTT().publish_P(topic.c_str(), buffer, false);
 }
 

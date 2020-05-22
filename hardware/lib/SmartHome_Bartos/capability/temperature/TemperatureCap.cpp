@@ -31,11 +31,8 @@ void TemperatureCap::execute() {
         data.setActualTemp(_value);
 
         publishValues(data);
-
-        Serial.println("TEMP_EXEC-2");
     }
 }
 
 void TemperatureCap::reactToMessage(const JsonObject &obj) {
-    Serial.println("TEMP_REACT");
 }

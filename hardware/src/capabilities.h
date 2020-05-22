@@ -19,16 +19,16 @@ using namespace std;
 
 // SENSORS
 #define DHTTYPE DHT11
-DHT dht(D5, DHTTYPE);
+DHT dht(D7, DHTTYPE);
 
-bool shouldClearState = true;
+bool shouldClearState = false;
 
 vector<shared_ptr<Capability>> createdCaps{
-    make_shared<HumidityCap>(D5, dht),
-    make_shared<TemperatureCap>(D5, dht),
-    make_shared<LightsCap>(D1),
-    make_shared<RelayCap>(D7),
-    make_shared<RelayCap>(D8),
-    make_shared<PIRCap>(D6)};
+    make_shared<HumidityCap>(D7, dht),
+    make_shared<TemperatureCap>(D7, dht),
+    make_shared<LightsCap>(D6),
+    make_shared<LightsCap>(D5),
+    make_shared<RelayCap>(D1),
+    make_shared<RelayCap>(D2)};
 
 #endif

@@ -11,11 +11,12 @@ LightsCap::LightsCap(const uint8_t &pin) : CapabilityWithState(pin, CapabilityTy
 
 void LightsCap::init() {
     pinMode(_pin, OUTPUT);
+    digitalWrite(_pin, LOW);
 }
 
 bool LightsCap::execChangeIntensity() {
     if (_intensity >= 0 && _intensity <= 100) {
-        float resultIntensity = (PWM_RANGE / 100) * _intensity;
+        float resultIntensity = (PWM_RANGE / 100.0) * _intensity;
         analogWrite(_pin, (uint16_t)resultIntensity);
         return true;
     }
