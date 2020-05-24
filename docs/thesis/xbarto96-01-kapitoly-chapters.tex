@@ -1345,7 +1345,7 @@ Funkcionalita a daná intuitivnost \emph{UI} byla testována na členech rodiny 
 
 Prvním krokem testování bylo vytvořit uživatelský účet, pomocí kterého se dále uživatel přihlašuje do systému.
 Hned u prvního kroku se došlo k zajímavým výsledkům.
-V systému je pouze podporována angličtina a testovaní uživatelé starší 50ti let s tím měli poměrně značný problém díky své jazykové bariéře.
+V systému je zatím pouze podporována angličtina a testovaní uživatelé starší 50ti let s tím měli poměrně značný problém díky své jazykové bariéře.
 Mladší uživatele neměli téměř žádný problém, protože v systému lze pracovat se základní angličtinou.
 Zajímavým poznatkem byla u registrace uživatele volba mezi vyplněním základních přihlašovacích údajů a využitím poskytovatelů identit ze sociálních sítí.
 Většina mladých testovaných využila právě poskytnutí údajů ze sociálních sítí pro pohodlnější přístup a starší testovaní vyplňovali své údaje přímo.
@@ -1354,7 +1354,28 @@ Dalším krokem testování byla změna svých osobních a přihlašovacích úd
 Zde nenastal žádný problém a uživatelé dokončili úspěšně tuto fázi bez jakýchkoli větších problémů a ztrátě orientace v systému.
 \newpage
 Dále byli uživatele vyzvání k vytvoření svého domu a místností uvnitř.
-\todo{Heere}
+Daný úkol se jim také podařil vyřešit téměř ihned.
+Každý uživatel dostal malou kartičku na které byly poskytnuty nezbytné adresy pro chod systému, např. \emph{URL} adresa \emph{URL MQTT Brokeru}, přístupové informace pro připojení k \emph{WiFi} přístupovému bodu zařízení.
+Uživatelé rychle pochopili princip dlaždic v klientské aplikaci a správy daných dlaždic.
+Většina dlaždic obsahuje tlačítko s nastavením, kde jsou všechny dostupné operace, které lze provést s danou dlaždicí.
+
+Poté uživatel již může připojit své zařízení do domácnosti.
+Uživatel připojil napájení pro zařízení díky \emph{USB} portu do počítače, či adaptéru.
+Zařízení vytvořilo přístupový bod, na který se uživatelé připojili pomocí zmiňovaných přístupových informací.
+Dále se otevřel webový prohlížeč, který zobrazil webovou stránku s konfigurací zařízení.
+Uživatelské rozhraní je jednoduché a velice intuitivní a uživatelé neměli problém s poskytnutím informací pro zařízení.
+Vybrali ze seznamu svůj \emph{WiFi} přístupový bod a zadali heslo.
+Dále zde museli také zadat adresu \emph{MQTT Brokeru} a identifikační číslo domácnosti, které našli v klientské aplikaci také jednoduše.
+Zařízení si uchovalo informace pro pozdější připojení zařízení.
+
+Uživatelé se vrátili do klientské aplikace.
+Zde nastal problém s tím, že někteří uživatelé nevěděli, jak postupovat dále.
+V této části musí uživatel v nastavení místnosti zvolit volbu pro přidání zařízení pro místnost.
+Je nutné přidat element, který pomůže uživatelům se zorientovat v přidání zařízení.
+Poté vybrali, po malé pomoci, dané zařízení a přidali do místnosti.
+Po rozkliknutí se objevily schopnosti zařízení.
+Někteří uživatelé vyžadovali přemísťování dlaždic, které je v momentální verzi zatím nedostupné.
+
 
 \section{Kompletní systém v praxi}
 \label{testovani:praxe}
