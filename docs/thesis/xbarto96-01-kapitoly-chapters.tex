@@ -150,9 +150,9 @@ Možné typy zabezpečení:
 \emph{MQTT} protokol využívá sadu různých typů zpráv pro vlastní běh. Na obrázku \ref{figure:mqtt_flow}lze zahlédnout posloupnost zpráv.~\cite{wiki:mqtt_broker}
 Mezi základní typy zpráv u protokolu MQTT patří:
 \begin{itemize}
-  \item \textbf{CONNECT} - slouží pro ustanovení připojení.
-  \item \textbf{CONNACK} - (\emph{Connection acknowledge}) typ zprávy je odezva z brokeru klientu, který požadoval o připojení a vytvoří se spojení mezi uzly.
-  \item \textbf{SUBSCRIBE} - neboli odběr; klient pošle tuto zprávu brokeru na určitý topic, u kterého chce přijímat dané zprávy
+  \item \textbf{CONNECT} - slouží pro ustanovení připojení
+  \item \textbf{CONNACK} - (\emph{Connection acknowledge}) typ zprávy je odezva z brokeru klientu, který požadoval o připojení a vytvoří se spojení mezi uzly
+  \item \textbf{SUBSCRIBE} - neboli odběr; klient pošle tuto zprávu brokeru na určitý topic u kterého chce přijímat dané zprávy
   \item \textbf{UNSUBSCRIBE} - slouží k odhlášení klienta od odebírání zpráv z určitého topicu
   \item \textbf{PUBLISH} - slouží na publikování zpráv na různý topic (např. zasílání dat ze senzorů)
   \item \textbf{DISCONNECT} - slouží k odhlášení klienta z celého systému
@@ -166,19 +166,19 @@ Mezi základní typy zpráv u protokolu MQTT patří:
 \end{figure}
 
 \newpage
-\subsection*{QoS - Kvalita služeb (Quality of services)}
-Každá zpráva může specifikovat, jak bude zajištěna kvalita služeb u poslání daných zpráv.~\cite{wiki:mqtt_broker}
+\subsection*{QoS - Kvalita služeb (\emph{Quality of Services})}
+Každá zpráva může specifikovat, jakým způsobem bude zajištěna kvalita služeb u zasílaných zpráv.~\cite{wiki:mqtt_broker}
 \begin{itemize}
-  \item \textbf{QoS 1} - Nejvýše jednou; zpráva je zaslána pouze jednou bez potvrzení.
-  \item \textbf{QoS 2} - Alespoň jednou; zpráva stále zasílána dokud nedorazí potvrzení o přijetí.
-  \item \textbf{QoS 3} - Přesně jednou; zajištění, že přijemce dostane zprávu pouze jednou.
+  \item \textbf{\emph{QoS 1}} - Nejvýše jednou; zpráva je zaslána pouze jednou bez potvrzení.
+  \item \textbf{\emph{QoS 2}} - Alespoň jednou; zpráva stále zasílána dokud nedorazí potvrzení o přijetí.
+  \item \textbf{\emph{QoS 3}} - Přesně jednou; zajištění, že přijemce dostane zprávu pouze jednou.
 \end{itemize}
 
 \subsection*{MQTT over WebSockets (\emph{MQTT} pomocí protokolu \emph{WebSocket})}
 \label{mqtt:websockets}
 \emph{MQTT} přes protokol \emph{WebSocket} je technika, kdy se zabalí komunikační protokol \emph{MQTT} do tzv.\emph{WebSocket frame}(WebSocketový rámec).
 Tato technika přenosu je hlavně přínosná pro webové aplikace, tudíž pro vše, co běží v prohlížeči.
-Udává se, že s touto technikou může být jakýkoliv prohlížec na různých zařízeních plnohodnotný \emph{MQTT klient}.\ref{mqtt:hivemq}
+Udává se, že s touto technikou může být jakýkoliv prohlížeč na různých zařízeních plnohodnotný \emph{MQTT klient}.\ref{mqtt:hivemq}
 
 Protokol \emph{WebSocket} je v prostředí webových aplikací velmi dlouhou dobu, poskytuje \emph{full-duplex}\footnote{\textbf{Full-duplex} - obousměrný provoz} komunikaci a umožňuje hladký chod \emph{real-time} aplikací.
 Pro inicializaci spojení využívá protokol \emph{HTTP}.
@@ -203,17 +203,22 @@ Tato technika tak poskytuje optimální způsob komunikace přes \emph{MQTT} pro
 \end{figure}
 
 \textbf{OIDC} nebo-li \emph{OpenID Connect} je autentizační protokol, založený na specifikaci \emph{OAuth 2.0}. Tento protokol využívá služba \emph{KeyCloak}, která je použita v této bakalářské práci.
-\emph{OIDC} protokol využívá \emph{JSON Web Tokens} (dále jako \emph{JWT}), což je formát využit pro reprezentaci ID tokenu. \emph{OIDC} je hlavně o autentizaci uživatelů.
+\emph{OIDC} protokol využívá \emph{JSON Web Tokens} (dále jako \emph{JWT}), což je formát využit pro reprezentaci ID tokenu.
+\emph{OIDC} se hlavně zabývá autentizací uživatelů.
 Jeho účelem je poskytnou pouze jeden přihlašovací proces pro více webových stránek.~\ref{terminy:oidc}
 
 \section{JSON}
 \label{terminy:json}
 
-\textbf{JSON} nebo-li \textbf{J}ava\textbf{S}cript \textbf{O}bject \textbf{N}otation je formát pro strukturovaná data. Formát dat se sestavuje podle dvojice atribut-hodnota a případně i pole.
-\emph{JSON} je nezávislý na programovacích jazycích a je odvozen, jak název vypovídá, z programovacícho jazyka \emph{JavaScript}. \emph{JSON} je velice rozšířený ve spustě aplikací, kde téměř všude nahrazuje \emph{XML}.
+\textbf{JSON} nebo-li \textbf{J}ava\textbf{S}cript \textbf{O}bject \textbf{N}otation je formát pro strukturovaná data.
+Formát dat se sestavuje podle dvojice \emph{atribut-hodnota} a případně i pole.
+\emph{JSON} je nezávislý na programovacích jazycích a je odvozen, jak název vypovídá, z programovacího jazyka \emph{JavaScript}.
+\emph{JSON} je velice rozšířený ve spoustě aplikací, kde téměř všude nahrazuje \emph{XML} formát.
 
-Tento formát zápisu dat je použit v systému, který popisuje tato bakalářská práce, ve dvou odlišných případech. První z nich je při komunikaci s klientskou aplikací, kde se data zprostředkovávají pomocí tohoto formátu \emph{JSON}.
-V druhém případě je tento formát použit i u \emph{MQTT} zpráv posílané ze zařízení. Jedná se hlavně o zprávy, které se posílají pomocí \emph{MQTT} protokolu na správu zařízení v domácnosti.
+Tento formát zápisu dat je použit v systému, který popisuje tato bakalářská práce, ve dvou odlišných případech.
+První z nich je při komunikaci s klientskou aplikací, kde se data zprostředkovávají pomocí daného formátu \emph{JSON}.
+V druhém případě je tento formát použit i u \emph{MQTT} zpráv zasílaných ze zařízení.
+Jedná se hlavně o zprávy, které se posílají pomocí \emph{MQTT} protokolu na správu zařízení v domácnosti.
 Na obrázku ~\ref{figure:json} je vidět ilustrační zápis dat pomocí \emph{JSON} formátu.
 
 \begin{figure}[hbt]
@@ -232,24 +237,24 @@ které značí architekturu rozhraní pro distribuované \emph{hypermédia} syst
 \newline
 Jestliže jakékoliv rozhraní chce být považováno za \emph{RESTful}, musí splnit určité podmínky:
 \begin{itemize}
-  \item \textbf{Klient-server} - Oddělení uživatelského rozhraní ze serverové části.
-        Zlepšení přenositelnosti, škálovatelnosti díky zjednodušení serverových komponentů.
+  \item \textbf{Klient - Server} - Oddělení uživatelského rozhraní ze serverové části.
+        Zlepšení přenositelnosti a škálovatelnosti díky zjednodušení serverových komponentů.
   \item \textbf{Bezstavovost} - Každý požadavek od klienta na server musí obsahovat všechny nezbytné informace k porozumnění požadavku.
         \emph{Session state}(stav sezení) se celý ukládá pouze u klienta.
-  \item \textbf{Cacheable} (schopný být uložen v mezipaměti) - Požaduje aby data v odpovědi ze serveru byla implicitně, nebo explicitně označena jako \emph{cacheable}, nebo \emph{non-cacheable}.
+  \item \textbf{Cacheable} (schopný být uložen v mezipaměti) - Požaduje, aby data v odpovědi ze serveru byla implicitně, nebo explicitně označena jako \emph{cacheable}, nebo \emph{non-cacheable}.
         Jestliže je odpověď \emph{cacheable}, mezipaměť u klientské aplikace má právo být znovupoužita později jako odpověď na ekvivalentní požadavek.
-  \item \textbf{Jednotné rozhraní} - Použitím principu obecného softwarového inženýrství na rozhraní komponent se celková architektura systému zjednoduší a zlepší se viditelnost interakcí.
+  \item \textbf{Jednotné rozhraní} - Použitím principu obecného softwarového inženýrství na rozhraní komponentů se celková architektura systému zjednoduší a zlepší se viditelnost interakcí.
   \item \textbf{Vrstvený systém} - Vrstvený systém umožňuje, aby se architektura skládala z hierarchických vrstev způsobem omezení chování komponenty tak, že každá komponenta nemůže „vidět“ za nejbližší vrstvu se kterou interagují.
 \end{itemize}
 
-Klíčovou abstrakcí informace v \emph{REST} architektruře je tzv.\emph{resource} (zdroj informací).
-Každá informace, která může být pojmenovaná smí být také považována za zdroj.
-\emph{REST} využívá identifikátory zdrojů informací aby dokázala identifikovat určitý obsah v interakci mezi komponentami.\ref{restful:info}
+Klíčovou abstrakcí informace v \emph{REST} architektruře je tzv. \emph{resource} (zdroj informací).
+Každá informace, která může být pojmenována smí být také považována za zdroj.
+\emph{REST} využívá identifikátory zdrojů informací, aby dokázala identifikovat určitý obsah v interakci mezi komponentami.\ref{restful:info}
 Na obrázku \ref{figure:restful} je popsán tok zpracování požadavků.
 
 \begin{figure}[ht]
   \centering
-  \includegraphics[width=.63 \linewidth]{obrazky-figures/restful.jpg}
+  \includegraphics[width=.59 \linewidth]{obrazky-figures/restful.jpg}
   \caption{MQTT over WebSockets}
   \label{figure:restful}
 \end{figure}
@@ -258,24 +263,26 @@ Na obrázku \ref{figure:restful} je popsán tok zpracování požadavků.
 \label{navrh}
 
 V této kapitole je shrnut současný stav řešení chytré domácnosti od nejvýznamnějších firem, které se zabývají tímto tématem a samotný návrh řešení, který by měl danou problematiku vyřešit.
-Jak již bylo popsáno v úvodu, největším úskalím řešení chytré domácnosti je celková cena, a kompatibilita se zařízeními od různých výrobců.
+Jak již bylo popsáno v úvodu, největším úskalím řešení chytré domácnosti je celková cena a kompatibilita se zařízeními od různých výrobců.
 
 V kapitole \ref{navrh:existujici} jsou popsány existující řešení chytré domácnosti od různých firem a v kapitole \ref{navrh:reseni} vlastní řešení problému a schopnost dosažení požadovaných cílů.
 
 \section*{Existující řešení}
 \label{navrh:existujici}
 
-Kompletní řešení chytré domácnosti existuje v dnešní době už opravdu nepřeberné množství. Podle mého názoru se postupem let dostane do popředí ještě více \emph{IoT} zařízení a systémů kompletní chytré domácnosti.
+Kompletních řešení chytré domácnosti existuje v dnešní době už opravdu nepřeberné množství. Podle mého názoru se postupem let dostane do popředí ještě více \emph{IoT} zařízení a systémů kompletní chytré domácnosti.
 Už v dnešní době spousta obrovských IT firem, mezi které patří např. \emph{Samsung}, \emph{LG}, \emph{Apple} a \emph{Google}, vyvíjí takové systémy.
 
 Například firma \emph{Samsung} představila na trh produkty s názvem \emph{SmartThings}, které lze využít pro sestavení chytré domácnosti.
-Hlavním prvkem, který potřebujete je tzv. \emph{Hub}, který slouží jako mozek celého systému.
+Hlavním prvkem, který potřebujete, je tzv. \emph{Hub}, který slouží jako mozek celého systému.
 U svých zařízení většinou využívají pro komunikaci protokol zvaný \emph{Zigbee}, který se řadí do tzv.\emph{ad-hoc}\footnote{\textbf{ad-hoc} - decentralizovaná bezdrátová síť} sítí.
 Signály ze zařízení dosahují vzdálenosti 10 až 20 metrů.
-\emph{Samsung} se pyšní tím, že jejich zařízení jsou kompatibilní s více než 100 zařízeními od různých výrobců, ale jejich cena je obrovská.
+\emph{Samsung} se pyšní tím, že jejich zařízení jsou kompatibilní s více než 100 zařízeními od různých výrobců. Ale naneštěstí je jejich cena obrovská.
 
-Lze si to představit na jednoduchém příkladu u chytrého tlačítka od firmy \emph{Samsung}. Toto tlačítko se vyznačuje tím, že dokáže po nastavení ovládat několik světel současně, spotřebiče, apod.
-Tlačítko se v průměru prodává za nějakých 15̈́\$, což je v přepočtu něco okolo 380kč. Takové tlačítko, které dokáže sadu podobných, dokonce i stejných úkonů, lze sestrojit pro můj vlastní návrh chytré domácnosti asi za cenu okolo 30kč.
+Lze si to představit na jednoduchém příkladu u chytrého tlačítka od firmy \emph{Samsung}.
+Dané tlačítko se vyznačuje tím, že dokáže po nastavení ovládat několik světel současně, spotřebiče, apod.
+Tlačítko se v průměru prodává za nějakých 15̈́\$, což je v přepočtu něco okolo 380kč.
+Tlačítko, které dokáže sadu podobných, dokonce i stejných úkonů, lze sestrojit pro můj vlastní návrh chytré domácnosti asi za cenu okolo 30kč.
 
 Dalším příkladem může být chytrá zásuvka, kterou \emph{Samsung} prodává za cenu blízkou 35\$, což je v přepočtu asi 880kč a ve své vlastní domácnosti lze sestrojit podobný kus asi za 60kč.
 Samozřejmě lze brát v úvahu i to, že \emph{Samsung} zaručuje kvalitu a dlouhodobou spolehlivost svých zařízení, využívá odlišný protokol, ale cena, podle mého názoru, je až přehnaně vysoká.
@@ -285,7 +292,7 @@ Samozřejmě lze brát v úvahu i to, že \emph{Samsung} zaručuje kvalitu a dlo
 \section*{Obecný návrh řešení}
 \label{navrh:reseni}
 
-Návrh vlastního řešení systému chytré domácnosti je poněkud komplikovanější záležitost, díky své rozmanitosti.
+Návrh vlastního řešení systému chytré domácnosti je poněkud komplikovanější záležitost díky své rozmanitosti.
 Vývojář tak musí být obeznámen s technologiemi a principy z různých odvětví aplikačního vývoje.
 Systém chytré domácnosti by měl disponovat velikou škálou možností a být jednoduše škálovatelný.
 Pro návrh takového systému je potřeba v první řadě vytvořit analýzu požadavků.
@@ -293,7 +300,7 @@ Pro návrh takového systému je potřeba v první řadě vytvořit analýzu po�
 \newline
 Hlavní aspekty, které by měly být splněny:
 \begin{itemize}
-  \item \textbf{Cena pořízení} - Kompletní systém i jednotlivé komponenty.
+  \item \textbf{Cena pořízení} - Cena za kompletní systém i jednotlivé komponenty.
   \item \textbf{Zabezpečený systém} - Na všech dostupných úrovních (server, databáze, klientská aplikace, zařízení, přenos dat).
   \item \textbf{Intuitivnost a přístupnost} ovládacích prvků
   \item \textbf{Jednoduchost} - Vytvoření domácnosti a inicializování/připojení zařízení i příliš \textbf{netechnicky zdatným uživatelem}.
@@ -311,6 +318,7 @@ Dále v kapitole \ref{navrh:databaze} lze nalézt popis \textbf{návrhu relačn�
 V kapitole \ref{navrh:frontend} je \textbf{návrh klientské aplikace}(\emph{frontend}), kde hlavním jádrem věci je rozložení a vzhled stránky.
 Samozřejmě je zde i popis struktury uložení stavu aplikace a operací provádených na pozadí.
 V poslední kapitole \ref{navrh:hardware}je \textbf{návrh HW zařízení}, struktura programu.
+\todo{Valid}
 \newpage
 
 Na obrázku \ref{figure:architektura} je graficky znázorněna architektura navrhovaného systému.
@@ -857,7 +865,7 @@ O vše se stará služba \emph{KeyCloak}.
   \caption{Keycloak logo}
 \end{figure}
 
-\textbf{KeyCloak} je open-source služba, která se stará o autentizaci a autorizaci uživatelů a další předností je \emph{Identity and Access Management}(Management přístupu a identit), kde administrátor může upravovat práva uživatelů, přidávat do skupin s určitými právy apod.
+\textbf{KeyCloak} je open-source služba, která se stará o autentizaci a autorizaci uživatelů a další předností je \emph{Identity and Access Management}(Management přístupu a identit), kde administrátor může upravovat práva uživatel��, přidávat do skupin s určitými právy apod.
 Tato služba je podporovaná firmou \emph{Red Hat} a několik let už je v popředí popularity služeb, které se starají o bezpečnost webových aplikací. \emph{KeyCloak} disponuje rozsáhlou komunitou vývojářů, kteří jsou velice aktivní v příspívání do daného komunitního produktu.
 \emph{KeyCloak} obsahuje spousty nových vylepšení a je opravdu velice dobře škálovatelný(\emph{scalable}) a upravovatelný(\emph{customizable}).
 
@@ -1002,7 +1010,7 @@ Anotace \annotation{@Transactional} značí, že požadavek na daný zdroj je br
 Poslední \emph{class annotation}(anotace třídy) s názvem \annotation{@Authenticated} značí, že uživatel musí být autentizován před vykonáním specifické operace.
 
 Anotace \annotation{@GET} a \annotation{@POST} definují typy požadavku.
-Lze použít i anotaci \annotation{@Path} na metody rozhraní, např. kdyby u metody byla přidaná anotace \annotation{@Path} s obsahem \emph{"/info"}, cesta k danému zdroji
+Lze pou��ít i anotaci \annotation{@Path} na metody rozhraní, např. kdyby u metody byla přidaná anotace \annotation{@Path} s obsahem \emph{"/info"}, cesta k danému zdroji
 by musela mít podobu konkrétně \emph{"/homes/info"}.
 Anotace \annotation{@Path} pracuje i parametry.
 Uvažujme například \emph{URI} \emph{"/homes/3"}, které je možné namapovat pomocí anotace \annotation{@Path} s parametry \emph{"/homes/\{id\}"}.
@@ -1319,7 +1327,40 @@ Zařízení vytvoří svůj vlastní WiFi AP, na který se uživatel připojí a
 
 \chapter{Testování}
 \label{testovani}
+V této kapitole je obsah zaměřen na testování celého systému řešení chytré domácnosti.
+Důležitým faktorem daného řešení chytré domácnosti byla intuitivnost systému a to především uživatelského rozhraní.
+Uživatel by pouze s pomocí jednoduchého návodu měl být schopen zprovoznit svoji chytrou domácnost a vše správně nastavit.
 
+V kapitole \ref{testovani:UI} se testuje uživatelské rozhraní klientské aplikace a konfigurační stránky zařízení.
+Dále v kapitole \ref{testovani:praxe} je obsah směřován na využití systému v praxi, kde byl systém nasazen v mém vlastním pokoji.
+Zde se otestovalo, jak moc stabilní daný systém je, zda splnil dané požadavky a jaká byla celková cena pořízení dané chytré domácnosti.
+V poslední kapitole \ref{testovani:budouci} jsou zahrnuta vylepšení, která by mohla být do budoucna vykonána pro vytvoření lepšího řešení systému chytré domácnosti.
+
+\section{Uživatelské rozhraní}
+\label{testovani:UI}
+Uživatelské rozhraní (dále jako \emph{UI}\footnote{\textbf{UI} - \textbf{U}ser \textbf{I}nterface (uživatelské rozhraní)}), plní velmi důležitou roli v celém systému chytré domácnosti.
+Díky \emph{UI} uživatel interaguje se systémem a je schopen spravovat celý systém.
+Hlavním požadavkem \emph{UI} bylo vytvořit intuitivní klientskou webovou aplikaci a dále konfigurační webovou stránku pro zařízení.
+Funkcionalita a daná intuitivnost \emph{UI} byla testována na členech rodiny a přítelkyni, kde skoro každý spadá do různé věkové kategorie, vše v rozmezí 18-55 let.
+
+Prvním krokem testování bylo vytvořit uživatelský účet, pomocí kterého se dále uživatel přihlašuje do systému.
+Hned u prvního kroku se došlo k zajímavým výsledkům.
+V systému je pouze podporována angličtina a testovaní uživatelé starší 50ti let s tím měli poměrně značný problém díky své jazykové bariéře.
+Mladší uživatele neměli téměř žádný problém, protože v systému lze pracovat se základní angličtinou.
+Zajímavým poznatkem byla u registrace uživatele volba mezi vyplněním základních přihlašovacích údajů a využitím poskytovatelů identit ze sociálních sítí.
+Většina mladých testovaných využila právě poskytnutí údajů ze sociálních sítí pro pohodlnější přístup a starší testovaní vyplňovali své údaje přímo.
+
+Dalším krokem testování byla změna svých osobních a přihlašovacích údajů a následném odhlášení a přihlášení zpět do systému.
+Zde nenastal žádný problém a uživatelé dokončili úspěšně tuto fázi bez jakýchkoli větších problémů a ztrátě orientace v systému.
+\newpage
+Dále byli uživatele vyzvání k vytvoření svého domu a místností uvnitř.
+\todo{Heere}
+
+\section{Kompletní systém v praxi}
+\label{testovani:praxe}
+
+\section{Návrh budoucích vylepšení}
+\label{testovani:praxe}
 
 
 \chapter{Závěr}
