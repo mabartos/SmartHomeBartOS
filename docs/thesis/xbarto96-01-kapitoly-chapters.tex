@@ -865,7 +865,7 @@ O vše se stará služba \emph{KeyCloak}.
   \caption{Keycloak logo}
 \end{figure}
 
-\textbf{KeyCloak} je open-source služba, která se stará o autentizaci a autorizaci uživatelů a další předností je \emph{Identity and Access Management}(Management přístupu a identit), kde administrátor může upravovat práva uživatel��, přidávat do skupin s určitými právy apod.
+\textbf{KeyCloak} je open-source služba, která se stará o autentizaci a autorizaci uživatelů a další předností je \emph{Identity and Access Management}(Management přístupu a identit), kde administrátor může upravovat práva uživatel����, přidávat do skupin s určitými právy apod.
 Tato služba je podporovaná firmou \emph{Red Hat} a několik let už je v popředí popularity služeb, které se starají o bezpečnost webových aplikací. \emph{KeyCloak} disponuje rozsáhlou komunitou vývojářů, kteří jsou velice aktivní v příspívání do daného komunitního produktu.
 \emph{KeyCloak} obsahuje spousty nových vylepšení a je opravdu velice dobře škálovatelný(\emph{scalable}) a upravovatelný(\emph{customizable}).
 
@@ -1037,7 +1037,7 @@ Uvažujme například \emph{URI} \emph{"/homes/3"}, které je možné namapovat 
 \subsection*{Předávání stavu při požadavku na server}
 \label{impl:backend:state}
 
-Jak již bylo v předchozí kapitole určeno, framework na přijímání požadavku musí určit, jaké třídě, nebo metodě, směrovat požadavek.
+Jak již bylo v předchozí kapitole určeno, framework na přij��mán�� požadavku musí určit, jaké třídě, nebo metodě, směrovat požadavek.
 To lze přidáním anotace \annotation{@Path}, v které se definuje \emph{URI}\footnote{\textbf{URI} - \textbf{U}niform \textbf{R}esource \textbf{I}dentifier (jednotný identifikátor zdroje)}, který se musí shodovat s cílem požadavku.
 Každá třída reagující na požadavky od klientů má většinou definovanou cestu zdroje, o který se stará.
 V úryvku kódu výše to bylo např. \emph{"/homes"}.
@@ -1373,16 +1373,93 @@ Zde nastal problém s tím, že někteří uživatelé nevěděli, jak postupova
 V této části musí uživatel v nastavení místnosti zvolit volbu pro přidání zařízení pro místnost.
 Je nutné přidat element, který pomůže uživatelům se zorientovat v přidání zařízení.
 Poté vybrali, po malé pomoci, dané zařízení a přidali do místnosti.
-Po rozkliknutí se objevily schopnosti zařízení.
-Někteří uživatelé vyžadovali přemísťování dlaždic, které je v momentální verzi zatím nedostupné.
-
+Po rozkliknutí se objevily schopnosti zařízení, se kterými již pracovali úspěšně.
 
 \section{Kompletní systém v praxi}
 \label{testovani:praxe}
+Jak již bylo popsáno v implementaci řešení chytré domácnosti, snažil jsem se vytvořit i vlastní \emph{HW} zařízení osazené součástkami, plnící funkci schopností daného zařízení.
+Zařízení bylo zkonstruováno jako centrální zařízení pro místnost obsahující mikrokontrolér \emph{Wemos D1 mini}, dva unipolární tranzistory MOSFET na ovládání LED světel, teploměr, vlhkoměr a nakonec dvě relé na spínání větších proudů a zařízení na 230V (např. větrák, lampa, atd.).
+Dále je k zařízení možno připojit další 3 různá zařízení na digitální vstupy mikrokontroléru.
+Systém byl implementován v mém pokoji, který obsahuje hlavní světla a podsvětlení nábytků složená z bílých LED pásku.
+Tato světla byla propojena s daným zařízením a lze je ovládat pomocí systému.
+Pro tato osvětlení byl použit zdroj ATX ze starého počítače, který slouží pro napájení samotných světel, ale také poskytuje 5V a 3.3V pro napájení samotného zařízení, tudíž není nutnost využívat více zdrojů energie.
+
+Dále v místnosti je využit modul \emph{ESP-01}, který je součástí relé modulu a má tak dedikovanou funkci správy relé.
+Daný modul je využit pro spínání větráku v místnosti.
+V pokoji je zahrnut ještě jeden stejný modul pro spínání lampy.
+
+Zařízení v pokoji lze snadno ovládat, a existují pouze mírné nedostatky z pohledu zmiňovaného uživatelského rozhraní, kdy si uživatel zatím nemůže měnit rozpoložení schopností zařízení na obrazovce a jejich velikost.
+Pro nasazení služeb je zde využit minipočítač \emph{Raspberry Pi 4B}, který je připojen k domácí \emph{WiFi} a tudíž mohou být zařízení připojena všude v dosahu signálu \emph{WiFi} přístupového bodu.
+Daný minipočítač je velmi výkonný a pro dosavadní implementaci systému by mohl být využit slabší modul.
+Zařízení v domácnosti se ale mohou rychle rozrůst a minipočítač bude velice vhodný pro danou funkcionalitu systému.
+\newpage
+Po stránce finančních nákladů implementace systému v dané místnosti byl nejdražší minipočítač \emph{Raspberry Pi 4B}, který stál přibližně 1500kč.
+U centrálního zařízení pro místnost byl nejdražší mikrokontrolér \emph{Wemos}, který vyšel přibližně na 30kč, relé na 20kč, deska a další součástky asi na dalších 40kč.
+Celková cena pro centrální zařízení se pohybuje okolo 90kč.
+U relé modulu s mikrokontrolérem \emph{ESP-01} se cena pořízení pohybovala okolo 40kč.
+Součástky byly zaslány přímo z Číny a při koupi stejných součástek v České republice by tato cena byla minimálně 4x vyšší.
 
 \section{Návrh budoucích vylepšení}
 \label{testovani:praxe}
+Každý systém má samozřejmě určité nedostatky, které by pro lepší efektivitu mohly být vyřešeny a vylepšeny.
+Během testování se přišlo na sadu zajímavých vylepšení a dá se říct, že systém funguje podle očekávání a dané vylepšení jsou pouze minoritní.
+Tuto kapitolu jsem rozdělil na pár dalších podkapitol, které obsahují návrhy na vylepšení do budoucna.
 
+V podkapitole \ref{testovani:navrh:server} jsou vypsány mírné nedostatky u serverové části systému a vylepšení, která by mohla vést k lepší správě systému.
+Podkapitola \ref{testovani:navrh:frontend} se zabývá klientskou aplikací, skrze níž uživatel interaguje se systémem.
+V další podkapitole \ref{testovani:navrh:hw} jsou popsány nedostatky u HW zařízení a v kapitole \ref{testovani:navrh:ostatní} ostatní vylepšení pro systém.
+
+\subsection*{Serverová část}
+\label{testovani:navrh:server}
+U serverové části systému je mírným nedostatkem \emph{MQTT klient}, který se stará o správu zařízení a ukládání dat ze zařízeních do databáze.
+Daný klient obstarává každou zprávu ze zařízení pro domácnost a správa klienta je občas celkem náročná a tím pádem se jedná o větší vytížení serveru.
+Pro vylepšení dané záležitosti bych navrhoval použití některé existující streamovací služby, která se bude starat o zprávy ze zařízení a bude lepší management zpráv.
+Zatím nejlepším adeptem na danou fukncionalitu je podle mého názoru služba \emph{Apache Kafka}\footnote{https://kafka.apache.org/}.
+Daná služba pracuje velmi dobře s protokolem \emph{MQTT} a je schopna plnohodnotně nahradit i \emph{MQTT Broker} pomocí \emph{MQTT Proxy}.
+Myslím si, že daná služba má velikou budoucnost ve streamovacích službách.
+
+Dalším navrhovaným vylepšením je využití plné funkcionality služby \emph{Vert.x} zmíněné v implementaci řešení.
+Společně se službou \emph{RestEasy} se stará o přijímání požadavků od klientů.
+Vylepšení by spočívalo ve využití neblokujících operací, reaktivního programování a dalšího.
+Dané změny by zvýšili několikanásobně výkon správy požadavků uživatelů.
+
+\subsection*{Klientská aplikace}
+\label{testovani:navrh:frontend}
+U klientské aplikace také existuje pár nedostatků.
+Jde především o některé minoritní záležitosti, jako např. přidání tlačítka na přiřazení zařízení k domácnosti, změna fotografií u uživatelského účtu, domácností a místností.
+Dalším prvkem, který bych do budoucna vyřešil je seřazování dlaždic podle oblíbenosti uživatele, úprava velikosti dlaždic a funkce \emph{Drag and Drop}, která umožňuje uživateli uchopit dlaždici a umístit ji na požadované místo.
+Dalším vylepšením pro klientskou aplikaci je podpora různých notifikací.
+Uživatel by si tak mohl nadefinovat akci, která by vedla k provedení jakési akce a následnému zaslání notifikace o stavu operace.
+Potřeba budou i komponenty pro časovače, které budou reagovat na určitou časovou událost a vykonávat definované operace.
+V poslední řadě se jedná o zobrazení statistik dat ze zařízení pomocí určitých grafů apod.
+
+\subsection*{HW zařízení}
+\label{testovani:navrh:hw}
+U HW zařízení hraje velkou roli i konstrukční řešení.
+Výroba samotného zařízení v domácím prostředí má své nedostatky.
+Především jde o techniku výroby \emph{DPS}, kde v omezených podmínkách byla vytvořena pomocí toneru z tiskárny a dané nažehlovací techniky.
+Tato technika není příliš přesná a vyžaduje širší vodivé cesty, což vede na větší velikost desky.
+Testovací verze desky byla pouze jednostranná a zvětšila se zase o větší kus.
+Do budoucna bych si rád nechal vyrábět desky od dedikovaných poskytovatelů daných služeb pomocí \emph{SMD} technologie, kde součástky jsou velice malé, desky oboustranné a podpora rozsáhlejších možností návrhu.
+Deska vyrobena pomocí \emph{SMD} technologie oproti klasickému způsobu může být i 4x menší.
+
+Dále při testování zařízení se došlo k závěru, že správa zařízení pomocí protokolu \emph{MQTT} není velice vhodná.
+Zařízení totiž pro připojení k serveru posílá celkem objemná data a zadaný protokol není přímo určený k těmto záležitostem.
+Je zde využita technika identifikátoru zprávy, kde při odpovědi ze serveru se zašle stejný identifikátor.
+Tento způsob není velice vhodný a do budoucna bych rád spravoval zařízení pomocí protokolu \emph{HTTP}, kde zařízení bude posílat požadavek na server a server zašle adekvátní odpověď přímo pro zařízení.
+
+\subsection*{Ostatní}
+\label{testovani:navrh:ostatní}
+Vylepšení, které bych rád implementoval spočívá v reakci na různé akce.
+Uživatel si nadefinuje akce, které budou spouštěči různých nadefinovaných operací a vytvoří se tak plně automatizovaný, lehce customizovatelný systém.
+Uživatel tak bude mít vše plně ve svých rukou.
+
+Lze si to lehce představit na jednoduchém příkladě.
+Uživatel si nadefinuje, že po 17.hod a po otevření hlavních dveří se rozsvítí světla na chodbě s intenzitou závislou na momentální intenzitě přirozeného světla, spustí se hudba v obýváku a zapne se ohřívač vody.
+Uživatel je tak schopen přidat několik akcí, které následují po požadované akci.
 
 \chapter{Závěr}
 \label{zaver}
+Cílem této práce bylo vytvořit kompletní řešení chytré domácnosti s využitím modulů \emph{ESP} a \emph{Raspberry Pi}.
+Tento záměr byl splněn, celý systém funguje a může být nasazen do reálného prostředí domácnosti.
+Důležitým faktorem práce, podle mého uvážení, bylo maximální snížení ceny pořízení systému kompletní domácnosti a kompatibilita zařízení od různých výrobců obsažených v dané domácnosti.
