@@ -135,12 +135,12 @@ topicu.~\cite{mqtt:info}
 \emph{MQTT Broker} je prostředník mezi účastníky typu \emph{subscriber} a \emph{publisher}.
 Každé zařízení, které chce využívat MQTT protokol a komunikovat s~ostatními zařízeními, musí definovat \emph{URL}\footnote{\textbf{URL} - \textbf{U}niform \textbf{R}esource \textbf{L}ocator (jednotná adresa zdroje)} brokeru, přes který budou dané zprávy procházet.
 Jak již bylo řečeno, \emph{MQTT} je \emph{Pub-Sub} protokol, proto když přijde od účastníka typu publisher zpráva ke specifickému topicu, musí se podívat, kdo všechno je přihlášen k~odběru daného topicu a rozeslat všem účastníkům, typu subscriber, danou zprávu.
-Každé zařízení může jak přijímat, tak i odesílat zprávy k~danému topicu.~\cite{wiki:mqtt_broker}
+Každé zařízení může jak přijímat, tak i odesílat zprávy k~danému topicu.~\cite{wiki:mqtt}
 
 \subsection*{Zabezpečení}
 V~\emph{IoT} je velice důležitá i bezpečnost a pomocí \emph{MQTT Brokeru} lze dosáhnout určitého bezpečnostního cíle. Je opravdu nevítané, aby se někdo cizí dostal bez autentizace k~odběru vašich
 zpráv procházející přes \emph{MQTT Broker} a mohl zasílat zprávy do různých dalších zařízení připojená v~domácnosti.
-Útočník tak má šanci kontrolovat celou vaši domácnost. Každý \emph{MQTT Broker} od různých výrobců disponuje různou sadou zabezpečení a vlastností.~\cite{wiki:mqtt_broker}
+Útočník tak má šanci kontrolovat celou vaši domácnost. Každý \emph{MQTT Broker} od různých výrobců disponuje různou sadou zabezpečení a vlastností.~\cite{wiki:mqtt}
 \newline
 
 Možné typy zabezpečení:
@@ -153,7 +153,7 @@ Možné typy zabezpečení:
 
 \newpage
 \subsection*{Typy zpráv}
-\emph{MQTT} protokol využívá sadu různých typů zpráv pro vlastní běh. Na obrázku \ref{figure:mqtt_flow}lze zahlédnout posloupnost zpráv.~\cite{wiki:mqtt_broker}
+\emph{MQTT} protokol využívá sadu různých typů zpráv pro vlastní běh. Na obrázku \ref{figure:mqtt_flow}lze zahlédnout posloupnost zpráv.~\cite{wiki:mqtt}
 Mezi základní typy zpráv u~protokolu MQTT patří:
 \begin{itemize}
   \item \textbf{CONNECT} - slouží pro ustanovení připojení
@@ -173,7 +173,7 @@ Mezi základní typy zpráv u~protokolu MQTT patří:
 
 \newpage
 \subsection*{QoS - Kvalita služeb (\emph{Quality of Services})}
-Každá zpráva může specifikovat, jakým způsobem bude zajištěna kvalita služeb u~zasílaných zpráv.~\cite{wiki:mqtt_broker}
+Každá zpráva může specifikovat, jakým způsobem bude zajištěna kvalita služeb u~zasílaných zpráv.~\cite{wiki:mqtt}
 \begin{itemize}
   \item \textbf{\emph{QoS 1}} - Nejvýše jednou; zpráva je zaslána pouze jednou bez potvrzení.
   \item \textbf{\emph{QoS 2}} - Alespoň jednou; zpráva stále zasílána dokud nedorazí potvrzení o~přijetí.
@@ -230,7 +230,7 @@ Na obrázku ~\ref{figure:json} je vidět ilustrační zápis dat pomocí \emph{J
 \begin{figure}[hbt]
   \centering
   \includegraphics[width=.45 \linewidth]{obrazky-figures/json_example.png}
-  \caption{Ukázka \emph{JSON}}
+  \caption{Ukázka \emph{JSON}.~\cite{json:example}}
   \label{figure:json}
 \end{figure}
 
@@ -261,7 +261,7 @@ Na obrázku \ref{figure:restful} je popsán tok zpracování požadavků.
 \begin{figure}[ht]
   \centering
   \includegraphics[width=.59 \linewidth]{obrazky-figures/restful.jpg}
-  \caption{MQTT over WebSockets}
+  \caption{Architektura \emph{RESTful} webové služby.~\cite{restful:example}}
   \label{figure:restful}
 \end{figure}
 
@@ -711,7 +711,7 @@ Pro síťové služby spojené se serverovou částí byla využita sada nástro
 \begin{figure}[!ht]
   \centering
   \includegraphics[width=.45 \linewidth]{obrazky-figures/quarkus_logo.png}
-  \caption{Quarkus logo}
+  \caption{Quarkus logo.~\cite{quarkus:website}}
   \label{figure:quarkus_logo}
 \end{figure}
 
@@ -738,7 +738,7 @@ Je zřejmé rapidní zvýšení rychlosti oproti klasickému tradičnímu \emph{
 \begin{figure}[hbt]
   \centering
   \includegraphics[width=1 \linewidth]{obrazky-figures/quarkus_stats.png}
-  \caption{Porovnání frameworku Quarkus s~alternativami}
+  \caption{Porovnání frameworku Quarkus s~alternativami.~\cite{quarkus:website}}
   \label{figure:quarkus_stats}
 \end{figure}
 
@@ -748,7 +748,7 @@ Je zřejmé rapidní zvýšení rychlosti oproti klasickému tradičnímu \emph{
 \begin{figure}[hbt]
   \centering
   \includegraphics[width=.30 \linewidth]{obrazky-figures/vertx.png}
-  \caption{Vert.x logo}
+  \caption{Vert.x logo.~\cite{wiki:vertx}}
 \end{figure}
 
 \emph{Vert.x} je sada nástrojů pro vytvoření reaktivních aplikací, kde hlavní předností je malá velikost, nízké nároky na výpočetní prostředky a rozsáhlý ekosystém.
@@ -763,7 +763,7 @@ Tato technologie přináší mnoho zajímavých vylepšení, jako jsou neblokuj�
 \begin{figure}[hbt]
   \centering
   \includegraphics[width=.2 \linewidth]{obrazky-figures/hibernate.png}
-  \caption{Hibernate logo}
+  \caption{Hibernate logo.~\cite{hibernate:logo}}
 \end{figure}
 
 \emph{Hibernate ORM} (dále pouze jako \emph{Hibernate}) je ORM\footnote{\textbf{ORM}- \textbf{O}bjektově \textbf{R}elační \textbf{M}apování} framework vyvíjen společností \emph{Red Hat}.
@@ -783,8 +783,8 @@ který je jednodušší a bližší samotným třídám (označovaným jako \emp
 \label{pouzite:postgresql}
 \begin{figure}[hbt]
   \centering
-  \includegraphics[width=.2 \linewidth]{obrazky-figures/postgresql-logo.png}
-  \caption{\emph{PostgreSQL} logo}
+  \includegraphics[width=.2 \linewidth]{obrazky-figures/post.png}
+  \caption{\emph{PostgreSQL} logo.~\cite{postgres:tutorial}}
 \end{figure}
 
 \emph{PostgreSQL} je objektově-relační, nejpokročilejší open-source databázový systém.
@@ -807,7 +807,7 @@ PostgreSQL byl vybrán pro účely implementace řešení této chytré domácno
 \begin{figure}[hbt]
   \centering
   \includegraphics[width=.3 \linewidth]{obrazky-figures/react.png}
-  \caption{React logo}
+  \caption{React logo.~\cite{react:info}}
 \end{figure}
 
 \emph{React} je JavaScript knihovna pro vytváření uživatelských rozhraní.
@@ -822,7 +822,7 @@ Dále je s~aplikací propojena i knihovna pro \emph{state management}\footnote{\
 \begin{figure}[hbt]
   \centering
   \includegraphics[width=.1 \linewidth]{obrazky-figures/mobx.png}
-  \caption{MobX logo}
+  \caption{MobX logo.~\cite{mobx:info}}
 \end{figure}
 
 \emph{MobX} je knihovna, která tvoří \emph{state management} jednoduchý a škálovatelný pomocí \emph{TFRP}\footnote{\textbf{TFRP} - \textbf{T}ransparent \textbf{F}unctional \textbf{R}eactive \textbf{P}rogramming (transparentní použití funkcionálního reaktivního programování)}.
@@ -859,7 +859,7 @@ Pro komplexní využítí a připojení více periferií je použit modul \emph{
 \begin{figure}[hbt]
   \centering
   \includegraphics[width=.2 \linewidth]{obrazky-figures/esp_standalone.png}
-  \caption{Samostatný ESP8266 čip}
+  \caption{Samostatný ESP8266 čip.~\cite{esp8266logo}}
   \label{figure:esp8266}
 \end{figure}
 
@@ -878,7 +878,7 @@ kde vytvořené, nebo poskytnuté služby jsou optimalizované pro běh na zař�
 \begin{figure}[ht]
   \centering
   \includegraphics[width=.5 \linewidth]{obrazky-figures/raspberry.png}
-  \caption{Raspberry Pi 4}
+  \caption{Raspberry Pi 4.~\cite{raspberryLogo}}
 \end{figure}
 
 \newpage
@@ -896,7 +896,7 @@ O~vše se stará služba \emph{KeyCloak}.
 \begin{figure}[hbt]
   \centering
   \includegraphics[width=.25 \linewidth]{obrazky-figures/keycloak2.png}
-  \caption{Keycloak logo}
+  \caption{Keycloak logo.~\cite{keycloak}}
 \end{figure}
 
 \textbf{KeyCloak} je open-source služba, která se stará o~autentizaci a autorizaci uživatelů a další předností je \emph{Identity and Access Management}(Management přístupu a identit),
@@ -913,12 +913,13 @@ Na obrázku \ref{figure:keycloak_flow} je popsán autentizační proces uživate
 Aplikace pošle na službu \emph{KeyCloak} autentizační požadavek, služba se podívá, zda už je uživatel autentizován a když ano, pošle aplikaci odpověď o~úspěšném přihlášení a aplikace povolí uživateli přístup k~datům.
 
 V~opačném případě je uživateli poskytnut seznam poskytovatelů služeb starající se o~identitu uživatelů.
-Uživatel si může podle definovaného autentizačního toku (\emph{Authentication flow}) vybrat jakým způsobem se autentizuje. Když vše proběhne v~pořádku, \emph{KeyCloak} pošle odpověď aplikaci o~úspěšném přihlášení a uživatel dostane přístup k~datům.
+Uživatel si může podle definovaného autentizačního toku (\emph{Authentication flow}) vybrat jakým způsobem se autentizuje.
+Když vše proběhne v~pořádku, \emph{KeyCloak} pošle odpověď aplikaci o~úspěšném přihlášení a uživatel dostane přístup k~datům.~\cite{keycloak}
 
 \begin{figure}[hbt]
   \centering
   \includegraphics[width=.8 \linewidth]{obrazky-figures/keycloak_flow.png}
-  \caption{Autentizační tok \emph{KeyCloak}}
+  \caption{Autentizační tok \emph{KeyCloak}.~\cite{keycloak}}
   \label{figure:keycloak_flow}
 \end{figure}
 
@@ -953,7 +954,7 @@ Prvky, které jsou nejdůležitější a \emph{HiveMQ} je řeší:
 \begin{figure}[hbt]
   \centering
   \includegraphics[width=1 \linewidth]{obrazky-figures/hivemq_arch.png}
-  \caption{Enterprise architektura MQTT}
+  \caption{Enterprise architektura MQTT.~\cite{hivemq:info}}
   \label{figure:hivemq_flow}
 \end{figure}
 
@@ -962,7 +963,7 @@ Prvky, které jsou nejdůležitější a \emph{HiveMQ} je řeší:
 \begin{figure}[hbt]
   \centering
   \includegraphics[width=.2 \linewidth]{obrazky-figures/paho.png}
-  \caption{Eclipse Paho logo}
+  \caption{Eclipse Paho logo.~\cite{paho:info}}
   \label{figure:paho}
 \end{figure}
 
@@ -1347,15 +1348,15 @@ Zařízení vytvoří svůj vlastní \emph{WiFi AP}, na který se uživatel při
   \minipage{0.5\textwidth}
   \centering
   \includegraphics[width=.8\linewidth]{obrazky-figures/esp-01.png}
-  \caption{Modul \emph{ESP-01}}
+  \caption{Modul \emph{ESP-01}.~\cite{esp01}}
   \label{figure:esp01}
   \endminipage
 
   \hfill
   \minipage{0.5\textwidth}
   \centering
-  \includegraphics[width=.7\linewidth]{obrazky-figures/wemos.jpg}
-  \caption{Modul Wemos D1 mini}
+  \includegraphics[width=.7\linewidth]{obrazky-figures/wemos.png}
+  \caption{Modul Wemos D1 mini.~\cite{wemosFigure}}
   \label{figure:wemos}
   \endminipage
 \end{figure}
