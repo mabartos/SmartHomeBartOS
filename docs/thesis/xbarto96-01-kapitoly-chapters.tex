@@ -1,4 +1,4 @@
-\chapter{Uvod}
+\chapter{Úvod}
 
 V~dnešní době, kdy lidé jsou zvyklí na větší pohodlí než kdysi, narůstá i počet chytrých domácností.
 Chytré domácnosti by měly usnadnit život lidem, okolí, i dokonce celé planetě.
@@ -25,8 +25,13 @@ Dále hlavním rysem tohoto projektu je poskytnutní přístupnosti k~domácnost
 Někteří uživatelé však cloudové služby nepodporují a bezpečnost je u~nich na prvním místě. Pro tento případ je systém navržen tak, aby mohl běžet na samostatném mini počítači pouze v~rámci domácnosti. Dalším cílem práce je poskytnout uživateli
 intuitivní rozhraní pro snadné zprovoznění chytré domácnosti a následné správě domácnosti.
 
-V~kapitole \ref{terminy} najdete vše, co je potřeba k~porozumnění zbytku práce.
-V~další kapitole \ref{navrh} je popsán návrh daného řešení, v~kapitole \ref{implementace} implementace řešení, v~kapitole \ref{testovani} popsáno testování a v~poslední řadě, v~kapitole \ref{zaver}, závěr práce.
+Práce je rozdělena na několik dalších hlavních částí:
+\emph{důležité termíny} (kapitola \ref{terminy}),
+\emph{návrh řešení} (kapitola \ref{navrh}),
+\emph{použité technologie} (kapitola \ref{pouzite}),
+\emph{implementace řešení} (kapitola \ref{implementace}),
+\emph{testování} (kapitola \ref{testovani})
+a samotný \emph{závěr} (kapitola \ref{zaver}).
 
 \chapter{Důležité termíny}
 \label{terminy}
@@ -34,14 +39,15 @@ V~další kapitole \ref{navrh} je popsán návrh daného řešení, v~kapitole \
 V~této kapitole jsou popsány důležité termíny které jsou nezbytné k~porozumnění zbytku práce.
 Asi nejdůležitější je pochopit koncept \emph{IoT}, který je popsán v~podkapitole \ref{terminy:iot}.
 V~dalších podkapitolách najdeme stručné vysvětlení pojmu \emph{MCU - neboli mikrokontrolér}(kapitola \ref{terminy:iot}), informace o~různých zařízeních, která jsou obsažena v~implementaci této chytré domácnosti.
-Specifičtěji se jedná hlavně o~moduly \emph{ESP} (kapitola \ref{esp}) a mini počítač \emph{Raspberry Pi} (kapitola \ref{raspberry}).
+Specifičtěji se jedná hlavně o~moduly \emph{ESP} (kapitola \ref{terminy:esp8266}) a mini počítač \emph{Raspberry Pi} (kapitola \ref{terminy:raspberry}).
 Komunikace mezi zařízeními probíhá pomocí protokolu \emph{MQTT}, komunikace s~uživatelským rozhraním (dále jako \emph{frontend} nebo \emph{klientská aplikace}) a serverem, kde je obsažena celá business logika (dále \emph{backend}), zajištuje protokol \emph{HTTP}.
 
 \bigskip
 
-\section{IoT - Internet věcí (Internet of Things)}
+\section{IoT - Internet věcí}
 \label{terminy:iot}
 
+\emph{IoT} je zkratka pro \emph{\textbf{I}nternet \textbf{o}f \textbf{T}hings}, neboli \emph{Internet věcí}.
 V~informatice se jedná o~označení pro síť fyzických zařízení, vozidel, domácích spotřebičů a dalších zařízení, která jsou vybavena elektronikou,
 softwarem, senzory, pohyblivými částmi a síťovou konektivitou, která umožňuje těmto zařízením se navzájem propojit a vyměňovat si data.
 Každé z~těchto zařízení je jasně identifikovatelné díky implementovanému výpočetnímu systému,
@@ -61,7 +67,7 @@ Stroje mohou mezi sebou komunikovat dokonce i mimo lokální továrny a vyměňo
 
 \newpage
 
-\section{Vestavěný systém (Embedded system)}
+\section{Vestavěný systém}
 \label{terminy:vestaveny}
 
 Vestavěný systém, neboli \emph{Embedded system} je hardwarový systém, který je tzv. \emph{microprocessor-based}(založený na mikroprocesoru).
@@ -79,21 +85,21 @@ Mezi výstupní zařízení můžeme zahrnout např. různá relé, tranzistory,
   \centering
   \includegraphics[width=.6 \linewidth]{obrazky-figures/embedded_system.png}
   \caption{
-    Koncept vestavěného systému
+    Koncept vestavěného systému.~\cite{embedded:figure}
   }
   \label{figure:embedded}
 \end{figure}
 
 \newpage
-\section{MCU - mikrokontrolér (Microcontroller unit)}
+\section{MCU - mikrokontrolér}
 \label{terminy:mcu}
 
-Mikrokontrolér, nebo také jednočipový počítač, je integrovaný obvod, který obsahuje kompletní \emph{mikropočítač}.
+Mikrokontrolér (zkratka MCU\footnote{\textbf{MCU} - \textbf{M}icro\textbf{C}ontroller \textbf{U}nit}), nebo také jednočipový počítač, je integrovaný obvod, který obsahuje kompletní \emph{mikropočítač}.
 Mikrokontroléry jsou velice spolehlivé, kompaktní a proto hojně využívány k~řízení různých elektronických systému, obykle pomocí mikroprocesoru, paměti a různých periferních zařízení.
 Tato malá zařízení jsou optimalizována pro vestavěné systémy popsané výše, které potřebují zpracovat interakci s~digitálními, analogovými, nebo elektromechanickými komponentami.
 
 Název pro mikrokontrolér byl velice vhodně zaveden, protože opravdu zdůrazňuje charakteristiku typu daného zařízení. Mikrokontroléry jsou malá zařízení, která dokáží velké věci.
-Mikrokontroléry hrají důležitou roli v~technologické budoucnosti. Získavají si velikou oblibu nejen u~různých SW\footnote{\textbf{SW} - software}/HW\footnote{\textbf{HW} - hardware} expertů, ale i studentů a spousty hobby nadšenců.\cite{mcu:info}
+Mikrokontroléry hrají důležitou roli v~technologické budoucnosti. Získavají si velikou oblibu nejen u~různých SW\footnote{\textbf{SW} - software}/HW\footnote{\textbf{HW} - hardware} expertů, ale i studentů a spousty hobby nadšenců.~\cite{mcu:info}
 Díky mikroprocesorům lze jednoduše propojit SW nástroj, či aplikaci s~HW komponentami.
 
 Blížící se budoucnost přinese spoustu nových možností v~oblasti miktrokontrolérů a počet zařízení obsahující mikrokontrolér může v~blízké době přesáhnout i několika desítek miliard kusů.
@@ -106,7 +112,7 @@ Mezi hlavní prvky patří analogově-digitální převodník, čítače, časov
   \centering
   \includegraphics[width=.6 \linewidth]{obrazky-figures/mcu.jpeg}
   \caption{
-    Koncept mikrokontroléru
+    Koncept mikrokontroléru.~\cite{mcu:info}
   }
   \label{figure:mcu}
 \end{figure}
@@ -161,7 +167,7 @@ Mezi základní typy zpráv u~protokolu MQTT patří:
 \begin{figure}[ht]
   \centering
   \includegraphics[width=.7 \linewidth]{obrazky-figures/mqtt_flow.png}
-  \caption{Posloupnost MQTT zpráv}
+  \caption{Posloupnost MQTT zpráv.~\cite{wiki:mqtt}}
   \label{figure:mqtt_flow}
 \end{figure}
 
@@ -187,7 +193,7 @@ Tato technika tak poskytuje optimální způsob komunikace přes \emph{MQTT} pro
 \begin{figure}[ht]
   \centering
   \includegraphics[width=1 \linewidth]{obrazky-figures/mqtt_websocket.png}
-  \caption{MQTT over WebSockets}
+  \caption{MQTT over WebSockets.~\cite{mqtt:hivemq}}
   \label{figure:mqtt_websockets}
 \end{figure}
 
@@ -282,7 +288,7 @@ Ale naneštěstí je jejich cena obrovská.
 
 Lze si to představit na jednoduchém příkladu u~chytrého tlačítka od firmy \emph{Samsung}.
 Dané tlačítko se vyznačuje tím, že dokáže po nastavení ovládat několik světel současně, spotřebiče, apod.
-Tlačítko se v~průměru prodává za nějakých 15̈́\$, což je v~přepočtu něco okolo 380kč.
+Tlačítko se v~průměru prodává za nějakých 15\$, což je v~přepočtu něco okolo 380kč.
 Tlačítko, které dokáže sadu podobných, dokonce i stejných úkonů, lze sestrojit pro můj vlastní návrh chytré domácnosti asi za cenu okolo 30kč.
 
 Dalším příkladem může být chytrá zásuvka, kterou \emph{Samsung} prodává za cenu blízkou 35\$, což je v~přepočtu asi 880kč a ve své vlastní domácnosti lze sestrojit podobný kus asi za 60kč.
@@ -696,8 +702,8 @@ v~podkapitole \ref{pouzite:frontend} vše použité k~implementaci \textbf{klien
 \section{Serverová část}
 \label{pouzite:backend}
 Jak již bylo řečeno v~návrhu serverové části řešení chytré domácnosti, implementace serverové části je asi nejkomplikovanější z~celého vývoje řešení(pro více info viz \ref{navrh:backend}).
-Pro účely vývoje serverové aplikace byl využit \emph{Java} framework zvaný \emph{Quarkus}(detailní popis \ref{app_prostredi:quarkus}).
-Pro síťové služby spojené se serverovou částí byla využita sada nástroju s~označením \emph{Vert.x}.
+Pro účely vývoje serverové aplikace byl využit \emph{Java} framework zvaný \emph{Quarkus}(detailní popis \ref{pouzite:quarkus}).
+Pro síťové služby spojené se serverovou částí byla využita sada nástroju s~označením \emph{Vert.x}(detailní popis \ref{pouzite:vertx}).
 
 \subsection*{Quarkus}
 \label{pouzite:quarkus}
@@ -963,10 +969,10 @@ Prvky, které jsou nejdůležitější a \emph{HiveMQ} je řeší:
 \emph{Paho} projekt byl vytvořen pro poskytnutí škálovatelných open-source implementací otevřených a standardních komunikačních protokolů zaměřených na nové a
 existující aplikace pro \emph{M2M}\footnote{\textbf{M2M} - Machine to Machine} a \emph{IoT} sítě.
 \emph{Paho} odráží přirozené fyzické a náklady omezující možnosti připojení zařízení.
-Cíle obsahují efektivní úroveň oddělení mezi zařízeními a aplikacemi, navrženou pro podporu rychlého růstu škálovatelného webového a podnikového middlewaru a aplikací.\cite{paho:info}
+Cíle obsahují efektivní úroveň oddělení mezi zařízeními a aplikacemi, navrženou pro podporu rychlého růstu škálovatelného webového a podnikového middlewaru a aplikací.~\cite{paho:info}
 
 \chapter{Implementace}
-\label{impl}
+\label{implementace}
 V~této kapitole je zahrnuto, jakým způsobem se dané řešení chytré domácnosti implementovalo.
 Návrh řešení a použité technologie již byly popsány dříve (návrh v~kapitole \ref{navrh} a použité technologie v~kapitole \ref{pouzite}).
 Návrh daného řešení byl směrodatný a obsahuje vše potřebné ke schopnosti implementovat dané řešení.
@@ -1330,7 +1336,7 @@ Tento modul využívá 11 GPIO pinů, tudíž lze připojit až 11 \emph{I/O} je
 
 Program, který využívají tyto zařízení je naprogramován pomocí programovacího jazyka C++.
 Kód je předpřipraven pracovat s~velkou řadou \emph{I/O} jednotek.
-Je také velice dobře škálovatelný pro přid��vání nových kompatibilních zařízení(pro více info viz. \ref{navrh:hardware}).
+Je také velice dobře škálovatelný pro přidávání nových kompatibilních zařízení(pro více info viz. \ref{navrh:hardware}).
 Jak již bylo zmíněno v~návrhu, tak pro zařízení byla zvolena knihovna, která umožňuje zařízením komunikovat přes \emph{MQTT} protokol s~názvem \emph{PubSub}.
 Tuto knihovnu představil autor se jménem \emph{Nick O'Leary} a díky své jednoduchosti, spolehlivosti a výkonnosti jsem ji zařadil jako jádro komunikační části zařízení.
 
@@ -1377,7 +1383,7 @@ Uživatel by pouze s~pomocí jednoduchého návodu měl být schopen zprovoznit 
 V~kapitole \ref{testovani:UI} se testuje uživatelské rozhraní klientské aplikace a konfigurační stránky zařízení.
 Dále v~kapitole \ref{testovani:praxe} je obsah směřován na využití systému v~praxi, kde byl systém nasazen v~mém vlastním pokoji.
 Zde se otestovalo, jak moc stabilní daný systém je, zda splnil dané požadavky a jaká byla celková cena pořízení dané chytré domácnosti.
-V~poslední kapitole \ref{testovani:budouci} jsou zahrnuta vylepšení, která by mohla být do budoucna vykonána pro vytvoření lepšího řešení systému chytré domácnosti.
+V~poslední \\ kapitole \ref{testovani:budouci} jsou zahrnuta vylepšení, která by mohla být do budoucna vykonána pro vytvoření lepšího řešení systému chytré domácnosti.
 
 \section{Uživatelské rozhraní}
 \label{testovani:UI}
@@ -1442,7 +1448,7 @@ U~relé modulu s~mikrokontrolérem \emph{ESP-01} se cena pořízení pohybovala 
 Součástky byly zaslány přímo z~Číny a při koupi stejných součástek v~České republice by tato cena byla minimálně 4x vyšší.
 
 \section{Návrh budoucích vylepšení}
-\label{testovani:praxe}
+\label{testovani:budouci}
 Každý systém má samozřejmě určité nedostatky, které by pro lepší efektivitu mohly být vyřešeny a vylepšeny.
 Během testování se přišlo na sadu zajímavých vylepšení a dá se říct, že systém funguje podle očekávání a dané vylepšení jsou pouze minoritní.
 Tuto kapitolu jsem rozdělil na pár dalších podkapitol, které obsahují návrhy na vylepšení do budoucna.
