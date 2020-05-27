@@ -13,16 +13,18 @@ export default function SidebarItem(props) {
     const classes = useStyles();
 
     function activeRoute(routeName) {
-        return window.location.href.indexOf(routeName) > -1 ? true : false;
+        return window.location.href.indexOf(routeName) > -1;
     }
 
-    const getItem = (prop, key) => {
-        var activePro = " ";
-        var listItemClasses = classNames({
-            [" " + classes[props.color]]: activeRoute(prop.layout + prop.path)
+    const {myProp, myKey} = props;
+
+    const getItem = (itemProp, itemKey) => {
+        let activePro = " ";
+        let listItemClasses = classNames({
+            [" " + classes[props.color]]: activeRoute(itemProp.layout + itemProp.path)
         });
         const whiteFontClasses = classNames({
-            [" " + classes.whiteFont]: activeRoute(prop.layout + prop.path)
+            [" " + classes.whiteFont]: activeRoute(itemProp.layout + itemProp.path)
         });
 
         const showStringIcon = () => (
@@ -31,12 +33,12 @@ export default function SidebarItem(props) {
                     [classes.itemIconRTL]: props.rtlActive
                 })}
             >
-                {props.myIcon ? props.myIcon : prop.icon}
+                {props.myIcon ? props.myIcon : itemProp.icon}
             </Icon>
         );
 
         const showRoutesIcon = () => (
-            <prop.icon
+            <itemProp.icon
                 className={classNames(classes.itemIcon, whiteFontClasses, {
                     [classes.itemIconRTL]: props.rtlActive
                 })}
@@ -44,20 +46,20 @@ export default function SidebarItem(props) {
         );
 
         const showIcon = () => {
-            return (typeof prop.icon === "string") ? showStringIcon() : showRoutesIcon();
+            return (typeof itemProp.icon === "string") ? showStringIcon() : showRoutesIcon();
         };
 
         return (
             <NavLink
-                to={prop.layout + prop.path}
+                to={itemProp.layout + itemProp.path}
                 className={activePro + classes.item}
                 activeClassName="active"
-                key={key}
+                key={itemKey}
             >
                 <ListItem button className={classes.itemLink + listItemClasses}>
                     {showIcon()}
                     <ListItemText
-                        primary={props.name ? props.name : prop.name}
+                        primary={props.name ? props.name : itemProp.name}
                         className={classNames(classes.itemText, whiteFontClasses, {
                             [classes.itemTextRTL]: props.rtlActive
                         })}
@@ -69,7 +71,7 @@ export default function SidebarItem(props) {
     };
 
     return (
-        getItem(props.prop, props.key)
+        getItem(myProp, myKey)
     )
 
 }

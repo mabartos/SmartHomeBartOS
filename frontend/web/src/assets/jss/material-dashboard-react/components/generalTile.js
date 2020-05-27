@@ -1,5 +1,4 @@
 import {dangerColor, grayColor, hexToRgb, successColor, whiteColor} from "assets/jss/material-dashboard-react.js";
-import {blackColor} from "../../material-dashboard-react";
 //import {dangerColor} from "../../material-dashboard-react";
 
 const generalTileStyles = {

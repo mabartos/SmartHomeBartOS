@@ -1,18 +1,18 @@
 import {
-    blackColor,
-    boxShadow,
-    dangerColor,
-    defaultFont,
-    drawerWidth,
-    grayColor,
-    hexToRgb,
-    infoColor,
-    primaryBoxShadow,
-    primaryColor,
-    successColor,
-    transition,
-    warningColor,
-    whiteColor
+  blackColor,
+  boxShadow,
+  dangerColor,
+  defaultFont,
+  drawerWidth,
+  grayColor,
+  hexToRgb,
+  infoColor,
+  primaryBoxShadow,
+  primaryColor,
+  successColor,
+  transition,
+  warningColor,
+  whiteColor
 } from "assets/jss/material-dashboard-react.js";
 
 const sidebarStyle = theme => ({
@@ -77,35 +77,38 @@ const sidebarStyle = theme => ({
   },
   logoLink: {
     ...defaultFont,
-    textTransform: "uppercase",
     padding: "5px 0",
     display: "block",
-    fontSize: "18px",
-    textAlign: "left",
-    fontWeight: "400",
-    lineHeight: "30px",
-    textDecoration: "none",
-    backgroundColor: "transparent",
-    "&,&:hover": {
-      color: whiteColor
-    }
+      fontSize: "18px",
+      textAlign: "left",
+      fontWeight: "400",
+      lineHeight: "30px",
+      textDecoration: "none",
+      backgroundColor: "transparent",
+      "&,&:hover": {
+          color: whiteColor
+      }
   },
-  logoLinkRTL: {
-    textAlign: "right"
-  },
-  logoImage: {
-    width: "30px",
-    display: "inline-block",
-    maxHeight: "30px",
-    marginLeft: "10px",
-    marginRight: "15px"
-  },
+    brandTitle: {
+        marginLeft: "20px"
+    },
+    logoLinkRTL: {
+        textAlign: "right"
+    },
+    logoImage: {
+        width: "30px",
+        display: "inline-block",
+        maxHeight: "30px",
+        marginLeft: "10px",
+        marginRight: "15px"
+    },
   img: {
-    width: "35px",
-    top: "22px",
-    position: "absolute",
-    verticalAlign: "middle",
-    border: "0"
+      width: "55px",
+      position: "relative",
+      verticalAlign: "middle",
+      border: "0",
+      marginRight: "10px",
+      paddingRight: "10px",
   },
   background: {
     position: "absolute",

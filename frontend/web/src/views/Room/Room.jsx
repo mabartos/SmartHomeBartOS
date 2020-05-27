@@ -10,8 +10,6 @@ import GridContainer from "../../components/Grid/GridContainer";
 import ErrorNotification from "../../components/Notifications/ErrorNotification";
 import SuccessNotification from "../../components/Notifications/SuccessNotification";
 import {toJS} from "mobx";
-import Sortable from "../../components/Sortable/Sortable";
-import RoomCard from "../../components/BartCard/BartHomeComponent/RoomCard";
 import NoItemsAvailable from "../../components/BartCard/NoItemsAvailable";
 
 export default function Room() {
@@ -35,7 +33,7 @@ export default function Room() {
         return function cleanup() {
             mqttClient.disconnect();
         };
-    }, []);
+    }, [homeStore, homeID, roomID]);
 
     React.useEffect(() => {
         deviceStore.deleteCapabilities();
@@ -44,7 +42,7 @@ export default function Room() {
         deviceStore.getAllDevices();
 
         return () => deviceStore.deleteCapabilities();
-    }, []);
+    }, [deviceStore, homeID, roomID]);
 
     useEffect(() => {
         deviceStore.getAllDevices();

@@ -13,6 +13,7 @@ import {SemipolarLoading} from "react-loadingg";
 import avatar from "../../assets/img/avatar.jpeg";
 import useStores from "../../hooks/useStores";
 import {useObserver} from "mobx-react-lite";
+import {Typography} from "@material-ui/core";
 
 const styles = {
     cardCategoryWhite: {
@@ -54,9 +55,9 @@ export default function UserProfile() {
             if (user) {
                 return (
                     <div>
-                        <h4>{user.name || "Undefined name"}</h4>
+                        <Typography variant={"h4"}>{user.name || "Undefined name"}</Typography>
+                        <h4>Email: {user.email || "Undefined email"}</h4>
                         <h5>ID: {user.sub || "Undefined ID"}</h5>
-                        <h5>Email: {user.email || "Undefined email"}</h5>
                     </div>)
             }
         };
@@ -75,7 +76,7 @@ export default function UserProfile() {
                                 <CardBody profile>
                                     {showUserProperty()}
 
-                                    <p>{authStore.getToken() || "Undefined token"}</p>
+                                    {/* <p>{authStore.getToken() || "Undefined token"}</p>*/}
 
                                     <Button color="primary" round onClick={handleEdit}>
                                         EDIT

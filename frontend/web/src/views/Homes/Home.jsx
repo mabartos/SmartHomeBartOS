@@ -29,7 +29,7 @@ export default function Home(props) {
             roomStore.reloadAllRooms(id);
         }, 2000);
         return () => clearInterval(interval);
-    }, []);
+    }, [authStore, roomStore, id]);
 
     return useObserver(() => {
         const {isAuthenticated} = authStore;

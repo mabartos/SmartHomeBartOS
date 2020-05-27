@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import {useObserver} from "mobx-react-lite";
 import GeneralInfoCard from "../BartCard/GeneralInfoCard";
 import PropTypes from "prop-types";
@@ -29,11 +29,9 @@ export default function DeviceDataCard(props) {
     const {color, capability, homeID} = props;
     const classes = useStyle();
 
-    const [cardWidth, setCardWidth] = useState(200);
-
     React.useEffect(() => {
         deviceStore.getDeviceByID(capability.deviceID);
-    }, [deviceStore]);
+    }, [deviceStore, capability.deviceID]);
 
     const removeDeviceFromRoom = () => {
         deviceStore.removeDeviceFromRoom(capability.deviceID);

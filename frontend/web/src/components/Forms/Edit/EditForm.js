@@ -35,6 +35,8 @@ export const EditForm = forwardRef((props, ref) => {
             case 'Escape':
                 closeForm();
                 break;
+            default:
+                break;
         }
     };
 

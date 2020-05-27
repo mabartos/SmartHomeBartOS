@@ -25,7 +25,7 @@ export const InviteUserToHome = forwardRef((((props, ref) => {
     const classes = useStyles();
     const headerStyles = useHeaderStyles();
     const {userStore, authStore, homeStore} = useStores();
-    const {type, homeID, title} = props;
+    const {homeID} = props;
 
     const [open, setOpen] = React.useState(false);
     const [userName, setUserName] = React.useState("");

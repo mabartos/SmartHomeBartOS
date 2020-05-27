@@ -45,7 +45,7 @@ export default function GeneralInfoCard(props) {
     const refEdit = useRef(null);
     const {deviceStore} = useStores();
 
-    const {type, device} = props;
+    const {type, device,hidefooter} = props;
 
     const handleEdit = () => {
         if (type === HomeComponent.CAPABILITY && device) {
@@ -82,7 +82,7 @@ export default function GeneralInfoCard(props) {
                     <CardBody>
                         {props.children}
                     </CardBody>
-                    {!props.hideFooter &&
+                    {!hidefooter &&
                     <BartGeneralFooterCard handleDelete={handleDelete} handleEdit={handleEdit} {...props}/>}
                 </Card>
             </div>

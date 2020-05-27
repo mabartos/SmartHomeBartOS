@@ -1,7 +1,6 @@
 import {
     dangerCardHeader,
     grayColor,
-    roseColor,
     infoCardHeader,
     primaryCardHeader,
     roseCardHeader,

@@ -22,7 +22,7 @@ export default function HumidityCapCard(props) {
                 setValue(object.actual);
             }
         }
-    }, [props.data]);
+    }, [props.data, topic]);
 
     return useObserver(() => {
         return (

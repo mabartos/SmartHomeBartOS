@@ -38,7 +38,7 @@ export const AddHomeForm = forwardRef((props, ref) => {
             userStore.reloadInvitations();
         }, 2000);
         return () => clearInterval(interval);
-    }, []);
+    }, [userStore]);
 
     const changeName = (event) => {
         const value = event.target.value;
@@ -73,11 +73,6 @@ export const AddHomeForm = forwardRef((props, ref) => {
         closeForm();
     };
 
-    const clearForms = () => {
-        setName("");
-        setBrokerURL("");
-    };
-
     const areValidValues = () => {
         return !errorName && !errorBrokerURL && name.length !== 0;
     };
@@ -90,6 +85,8 @@ export const AddHomeForm = forwardRef((props, ref) => {
                 break;
             case 'Escape':
                 closeForm();
+                break;
+            default:
                 break;
         }
     };

@@ -7,7 +7,6 @@ import {SemipolarLoading} from "react-loadingg";
 
 export default function Notification(props) {
     const [open, setOpen] = React.useState(false);
-    const [showLoading,setShowLoading]=React.useState(props.showLoading);
 
     useEffect(() => {
         setOpen(true);
@@ -16,7 +15,7 @@ export default function Notification(props) {
                 setOpen(false);
             }, 5000)
         )
-    }, []);
+    }, [props.close]);
 
     const closeNotification = () => {
         setOpen(false);

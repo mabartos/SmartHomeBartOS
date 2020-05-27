@@ -37,7 +37,7 @@ export const AddDeviceToRoom = forwardRef(((props, ref) => {
                 clearInterval(interval);
             }
         }
-    }, [open]);
+    }, [open, homeStore, homeID]);
 
     const callbackSetChecked = (ids) => {
         setChecked(ids);
@@ -75,6 +75,8 @@ export const AddDeviceToRoom = forwardRef(((props, ref) => {
             case 'Escape':
                 setOpen(false);
                 break;
+            default:
+                break;
         }
     };
 
@@ -83,7 +85,7 @@ export const AddDeviceToRoom = forwardRef(((props, ref) => {
 
         const getUnassignedDevices = () => {
             let tmp = new Map();
-            [...devices].map(([key, value], index) => {
+            [...devices].map(([key, value]) => {
                 if (value.roomID === -1) {
                     tmp.set(key, value);
                 }

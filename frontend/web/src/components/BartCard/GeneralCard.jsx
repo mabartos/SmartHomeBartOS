@@ -6,8 +6,6 @@ import GridItem from "components/Grid/GridItem.js";
 import Card from "components/Card/Card.js";
 
 import styles from "assets/jss/material-dashboard-react/components/generalTile.js";
-import dashboardStyles from "assets/jss/material-dashboard-react/views/dashboardStyle.js";
-import dropDown from "assets/jss/material-dashboard-react/dropdownStyle.js";
 import {Clickable} from "react-clickable";
 import {BooleanDialog} from "../BartDialogs/BooleanDialog";
 import {HomeComponent} from "../../index";
@@ -18,20 +16,6 @@ import BartGeneralFooterCard from "./BartGeneralFooterCard";
 import {InviteUserToHome} from "../BartDialogs/InviteUserToHome";
 
 const useStyles = makeStyles(styles);
-const useDashboardStyle = makeStyles(dashboardStyles);
-const useDropDownStyle = makeStyles(dropDown);
-
-const iconStyles = makeStyles(iconStyle => ({
-    settings: {
-        height: "30px",
-        color: "gray",
-        align: "center",
-        flex: 1
-    },
-    popperTextWarning: {
-        color: "red"
-    },
-}));
 
 export default function GeneralCard(props) {
     const classes = useStyles();

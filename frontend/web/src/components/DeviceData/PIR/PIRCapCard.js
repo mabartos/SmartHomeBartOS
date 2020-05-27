@@ -39,7 +39,7 @@ export default function PIRCapCard(props) {
                 setIsTurnedOn(object.isTurnedOn);
             }
         }
-    }, [data]);
+    }, [data, topic]);
 
     const getState = () => {
         return (isTurnedOn) ? (

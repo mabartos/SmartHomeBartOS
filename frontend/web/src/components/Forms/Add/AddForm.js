@@ -48,6 +48,8 @@ export const AddForm = forwardRef((props, ref) => {
             case 'Escape':
                 closeForm();
                 break;
+            default:
+                break;
         }
     };
 

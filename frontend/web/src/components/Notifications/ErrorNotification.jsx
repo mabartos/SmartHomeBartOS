@@ -10,12 +10,11 @@ export default function ErrorNotification(props) {
         if (message === "Failed to fetch") {
             setMessage("Server is not available.");
         }
-
         return function cleanup() {
             setMessage("");
             setShowLoading("");
         }
-    }, [props.message, props.showLoading]);
+    }, [props.message, props.showLoading, message]);
 
     return (
         <div>

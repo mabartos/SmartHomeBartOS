@@ -26,7 +26,7 @@ export default function TemperatureCapCard(props) {
                 setValue(object.actual);
             }
         }
-    }, [props.data]);
+    }, [props.data, topic]);
 
     return useObserver(() => {
         return (

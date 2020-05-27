@@ -32,6 +32,8 @@ export default function AddCard(props) {
                 return (<AddRoomForm ref={ref} {...props}/>);
             case HomeComponent.DEVICE:
                 break;
+            default:
+                break;
         }
     };
 
@@ -40,7 +42,7 @@ export default function AddCard(props) {
     };
 
     return (
-        <GeneralInfoCard hideFooter color={props.color} title={props.title}>
+        <GeneralInfoCard hidefooter={"true"} color={props.color} title={props.title}>
             {getForm()}
             <Clickable onClick={onSelect}>
                 <div className={infoClasses.container}>

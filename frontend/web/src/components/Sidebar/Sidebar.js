@@ -10,16 +10,13 @@ import List from "@material-ui/core/List";
 import styles from "assets/jss/material-dashboard-react/components/sidebarStyle.js";
 import SidebarItem from "./SidebarItem";
 import SidebarProfile from "./SidebarProfile";
+import GridContainer from "../Grid/GridContainer";
+import BartOSTitle from "../Typography/BartOSTitle";
 
 const useStyles = makeStyles(styles);
 
 export default function Sidebar(props) {
     const classes = useStyles();
-
-    // verifies if routeName is the one active (in browser input)
-    function activeRoute(routeName) {
-        return window.location.href.indexOf(routeName) > -1 ? true : false;
-    }
 
     const {color, logo, image, logoText, routes} = props;
     const links = () => {
@@ -32,7 +29,7 @@ export default function Sidebar(props) {
         return (
             <List className={classes.list}>
                 {routes.map((prop, key) => {
-                    return (<SidebarItem prop={prop} key={key} color={color}/>)
+                    return (<SidebarItem myProp={prop} myKey={key} color={color}/>)
                 })}
             </List>
         );
@@ -40,15 +37,18 @@ export default function Sidebar(props) {
     let brand = (
         <div className={classes.logo}>
             <div
-                className={classNames(classes.logoLink, {
-                    [classes.logoLinkRTL]: props.rtlActive
-                })}
+                className={classes.logoLink}
             >
-                <div className={classes.logoImage}>
-                    <img src={logo} alt="logo" className={classes.img}/>
-                </div>
-                {logoText}
-
+                <GridContainer>
+                    <div className={classes.logoImage}>
+                        <img src={logo} alt="logo" className={classes.img}/>
+                    </div>
+                    <div className={classes.brandTitle}>
+                        {logoText}
+                        <br/>
+                        <BartOSTitle/>
+                    </div>
+                </GridContainer>
             </div>
         </div>
     );

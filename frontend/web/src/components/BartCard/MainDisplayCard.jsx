@@ -2,7 +2,6 @@ import React from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import GridItem from "components/Grid/GridItem.js";
 import defaultImage from "assets/img/sidebar-2.jpg";
-import {useHistory, useRouteMatch} from 'react-router-dom';
 
 import GeneralCard from "./GeneralCard";
 

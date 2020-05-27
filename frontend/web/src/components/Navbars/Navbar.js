@@ -14,8 +14,8 @@ import AdminNavbarLinks from "./AdminNavbarLinks.js";
 import Button from "components/CustomButtons/Button.js";
 import {useHistory} from "react-router-dom";
 
-
 import styles from "assets/jss/material-dashboard-react/components/headerStyle.js";
+import {Typography} from "@material-ui/core";
 
 const useStyles = makeStyles(styles);
 
@@ -35,13 +35,28 @@ export default function Header(props) {
     }
 
     const handleClickBrand = () => {
-        if (window.location.href.indexOf("/homes") !== -1) {
-            history.push("/admin/homes")
+        if (window.location.href.indexOf("/my-homes") !== -1) {
+            history.push("/admin/my-homes")
         }
     };
 
     const goBackInHistory = () => {
         history.goBack();
+    };
+
+    const showHomeID = () => {
+        let path = window.location.pathname;
+        let index = path.indexOf("/my-homes/");
+        if (index !== -1) {
+            path = path.substring(index);
+            let array = path.split("/");
+            if (array.length > 2) {
+                let homeID = parseInt(array[2], 10);
+                return (<Typography color={"secondary"} variant={"h5"}>
+                    Home ID: {homeID}
+                </Typography>)
+            }
+        }
     };
 
     const {color} = props;
@@ -58,6 +73,9 @@ export default function Header(props) {
                     </Button>
                     <Button color="transparent" onClick={handleClickBrand} className={classes.title}>
                         {makeBrand()}
+                    </Button>
+                    <Button color="transparent" disabled className={classes.title}>
+                        {showHomeID()}
                     </Button>
                 </div>
                 <Hidden smDown implementation="css">

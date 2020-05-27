@@ -15,7 +15,7 @@ import routes from "routes.js";
 import styles from "assets/jss/material-dashboard-react/layouts/adminStyle.js";
 
 import bgImage from "assets/img/home.jpg";
-import logo from "assets/img/reactlogo.png";
+import logo from "assets/img/logo.png";
 import useStores from "../hooks/useStores";
 import {useObserver} from "mobx-react-lite";
 import {SemipolarLoading} from "react-loadingg";
@@ -46,7 +46,7 @@ const switchRoutes = (
             }
             return null;
         })}
-        <Redirect from="/admin" to="/admin/dashboard"/>
+        <Redirect from="/admin" to="/admin/home"/>
     </Switch>
 );
 
@@ -63,21 +63,8 @@ export default function Admin({...rest}) {
     // states and functions
     const [image, setImage] = React.useState(bgImage);
     const [color, setColor] = React.useState("blue");
-    const [fixedClasses, setFixedClasses] = React.useState("dropdown show");
     const [mobileOpen, setMobileOpen] = React.useState(false);
-    const handleImageClick = image => {
-        setImage(image);
-    };
-    const handleColorClick = color => {
-        setColor(color);
-    };
-    const handleFixedClick = () => {
-        if (fixedClasses === "dropdown") {
-            setFixedClasses("dropdown show");
-        } else {
-            setFixedClasses("dropdown");
-        }
-    };
+
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
     };
@@ -103,7 +90,7 @@ export default function Admin({...rest}) {
             clearInterval(intervalHomes);
         };
 
-    }, []);
+    }, [authStore,homeStore]);
 
     // initialize and destroy the PerfectScrollbar plugin
     React.useEffect(() => {
@@ -132,7 +119,7 @@ export default function Admin({...rest}) {
                 <div className={classes.wrapper}>
                     <Sidebar
                         routes={sidebarRoutes()}
-                        logoText={"Smart Home"}
+                        logoText={"SMART HOME"}
                         logo={logo}
                         image={image}
                         handleDrawerToggle={handleDrawerToggle}

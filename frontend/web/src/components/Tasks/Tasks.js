@@ -17,14 +17,12 @@ import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
 import Close from "@material-ui/icons/Close";
 import NoItemsAvailable from "../BartCard/NoItemsAvailable";
-import useStores from "../../hooks/useStores";
 import {useObserver} from "mobx-react-lite";
 
 const useStyles = makeStyles(styles);
 
 export default function Tasks(props) {
     const classes = useStyles();
-    const {userStore} = useStores();
 
     const [checked, setChecked] = React.useState([]);
     const [active, setActive] = React.useState(false);

@@ -3,9 +3,8 @@ import {
     defaultFont,
     grayColor,
     hexToRgb,
-    primaryBoxShadow,
-    primaryColor,
     infoColor,
+    primaryBoxShadow,
     whiteColor
 } from "assets/jss/material-dashboard-react.js";
 

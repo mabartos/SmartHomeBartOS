@@ -1,5 +1,5 @@
 import Paho from "paho-mqtt";
-import { BROKER_URL_REGEX } from "../../index";
+import {BROKER_URL_REGEX} from "../../index";
 import * as React from "react";
 import GeneralService from "../GeneralService";
 

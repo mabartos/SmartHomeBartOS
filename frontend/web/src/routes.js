@@ -29,14 +29,14 @@ import Room from "./views/Room/Room";
 
 const dashboardRoutes = [
     {
-        path: "/dashboard",
-        name: "Dashboard",
+        path: "/home",
+        name: "Home",
         icon: Dashboard,
         component: DashboardPage,
         layout: "/admin"
     },
     {
-        path: "/homes/:homeID/rooms/:roomID",
+        path: "/my-homes/:homeID/rooms/:roomID",
         name: "Devices",
         icon: Person,
         component: Room,
@@ -44,7 +44,7 @@ const dashboardRoutes = [
         inSidebar: false
     },
     {
-        path: "/homes/:homeID",
+        path: "/my-homes/:homeID",
         name: "Rooms",
         icon: Person,
         component: Home,
@@ -52,8 +52,8 @@ const dashboardRoutes = [
         inSidebar: false
     },
     {
-        path: "/homes",
-        name: "Homes",
+        path: "/my-homes",
+        name: "My Homes",
         icon: HomeIcon,
         component: Homes,
         layout: "/admin"

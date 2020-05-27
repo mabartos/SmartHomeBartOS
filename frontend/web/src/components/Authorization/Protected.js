@@ -10,7 +10,7 @@ export default function Protected(props) {
     React.useEffect(() => {
         if (!homeStore.rolesInHome)
             homeStore.getAllMyRoles();
-    }, []);
+    }, [homeStore]);
 
     return useObserver(() => {
         const {rolesInHome} = homeStore;

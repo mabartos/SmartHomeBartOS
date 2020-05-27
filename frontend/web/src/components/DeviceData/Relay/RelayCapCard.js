@@ -18,7 +18,7 @@ export default function RelayCapCard(props) {
                 setIsTurnedOn(object.isTurnedOn);
             }
         }
-    }, [data]);
+    }, [data, topic]);
 
     const handleChangeState = (state) => {
         const isTurnedOn = state;

@@ -1,4 +1,4 @@
-import BackgroundImage from "../../img/signin_background.jpg";
+import BackgroundImage from "../../img/customBack.png";
 
 const loginStyle = theme => ({
     root: {

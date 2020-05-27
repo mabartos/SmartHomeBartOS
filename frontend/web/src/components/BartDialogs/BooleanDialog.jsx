@@ -64,6 +64,8 @@ export const BooleanDialog = forwardRef((props, ref) => {
                     return;
                 }
                 break;
+            default:
+                break;
         }
     };
 

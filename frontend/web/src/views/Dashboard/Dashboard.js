@@ -27,7 +27,7 @@ import CardIcon from "components/Card/CardIcon.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 import {useObserver} from "mobx-react-lite"
-
+import homeImg from "../../assets/img/indexBackground.jpg";
 
 import {bugs, server, website} from "variables/general.js";
 
@@ -37,20 +37,22 @@ import {completedTasksChart, dailySalesChart, emailsSubscriptionChart} from "var
 import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js";
 import MainDisplayCard from "../../components/BartCard/MainDisplayCard";
 import useStores from "../../hooks/useStores";
+import {Typography} from "@material-ui/core";
+import BartOSTitle from "../../components/Typography/BartOSTitle";
 
 const useStyles = makeStyles(styles);
 
 export default function Dashboard() {
     const classes = useStyles();
-    const {authStore,homeStore} = useStores();
+    const {authStore, homeStore} = useStores();
 
     React.useEffect(() => {
         authStore.initKeycloak();
         homeStore.getAllHomes();
-    }, []);
+    }, [authStore, homeStore]);
 
-    return useObserver(() => (
-        <div>
+    const Backup = () => (
+        <>
             <GridContainer>
                 <MainDisplayCard title="Home 23" active message="Hey yooou" color="success"/>
                 <GridItem xs={12} sm={6} md={3}>
@@ -247,6 +249,43 @@ export default function Dashboard() {
                     </Card>
                 </GridItem>
             </GridContainer>
-        </div>
-    ));
+        </>
+    );
+
+    const Welcome = () => {
+        const useWeStyle = makeStyles(style => ({
+            container: {
+                width: "100%",
+                height: "100%",
+                textAlign: "center",
+                justifyContent: "center",
+                marginTop: "50px"
+            },
+            logo: {
+                width: "55vh",
+                height: "55vh"
+            }
+        }));
+
+        const welStyle = useWeStyle();
+
+        return (
+            <>
+                <div className={welStyle.container}>
+                    <Typography variant={"h3"}> Welcome to Smart Home</Typography>
+                    <BartOSTitle variant={"h1"} subVariant={"h1"}/>
+                    <img className={welStyle.logo} src={homeImg} alt={"Home"}/>
+                </div>
+            </>
+        );
+    };
+
+    const showWelcome = (state) => {
+        return state ? <Welcome/> : <Backup/>;
+    };
+
+
+    return useObserver(() => {
+        return (showWelcome(true));
+    });
 }

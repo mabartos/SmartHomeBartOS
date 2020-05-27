@@ -11,6 +11,7 @@ export const getRoleName = (role) => {
         case Role.MEMBER.role:
             return Role.MEMBER.name;
         case Role.CHILD.role:
+        default:
             return Role.CHILD.name;
     }
 };

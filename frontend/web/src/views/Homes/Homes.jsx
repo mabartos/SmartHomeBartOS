@@ -15,7 +15,7 @@ export default function Homes() {
 
     useEffect(() => {
         authStore.initKeycloak();
-    }, []);
+    }, [authStore]);
 
     useEffect(() => {
         homeStore.getAllHomes();

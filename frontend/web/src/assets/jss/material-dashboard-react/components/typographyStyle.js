@@ -1,11 +1,11 @@
 import {
-    dangerColor,
-    defaultFont,
-    grayColor,
-    infoColor,
-    primaryColor,
-    successColor,
-    warningColor
+  dangerColor,
+  defaultFont,
+  grayColor,
+  infoColor,
+  primaryColor,
+  successColor,
+  warningColor
 } from "assets/jss/material-dashboard-react.js";
 
 const typographyStyle = {

@@ -59,7 +59,7 @@ export default function LightsCapCard(props) {
                 setMinIntensity(object.minIntensity);
             }
         }
-    }, [props.data]);
+    }, [props.data, topic]);
 
     let timeout;
     const handleChangeIntensity = (event, newValue) => {

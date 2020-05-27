@@ -104,7 +104,7 @@ export default class AuthStore extends GeneralStore {
             localStorage.removeItem("keycloak-token");
             localStorage.removeItem("keycloak-refresh-token");
             this.startLoading();
-            this._keycloak.logout();
+            this._keycloak.logout({redirectUri: window.location.origin});
             this.stopLoading();
         }
     };
