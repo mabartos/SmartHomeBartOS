@@ -3,9 +3,8 @@
 V~dnešní době, kdy lidé jsou zvyklí na větší pohodlí než kdysi, narůstá i počet chytrých domácností.
 Chytré domácnosti by měly usnadnit život lidem, okolí, i dokonce celé planetě.
 Když se řekne chytrá domácnost, může se někomu například vybavit jakýsi robot, který vám uklidí, či dokonce přinese nákup.
-Chytrá domácnost může být jakkoliv chytrá, dokonce se může podobat i domácnostem z~různých sci-fi filmů.
 Můžeme si uvést příklad z~každodenního života většiny z~nás.
-Večer přijdete domů s~těžkým nákupem, musíte vyndat z~kapsy klíče (se štěstím, že jsouprávě v~kapse), pracně otevřít, položit nákup, rozsvítit na chodbě, zhasnout na chodbě,
+Večer přijdete domů s~těžkým nákupem, musíte vyndat z~kapsy klíče (se štěstím, že jsou právě v~kapse), pracně otevřít, položit nákup, rozsvítit na chodbě, zhasnout na chodbě,
 rozsvítit v~kuchyni atd.
 Teď si představte, že se blížíte ke dveřím, kamera rozpozná váš obličej, otevřou se dveře, rozsvítí se světla, vozík odveze váš nákup k~lednici a Vy si nemusíte ničeho všímat.
 
@@ -13,17 +12,20 @@ Chytrá domácnost má ale i další výhody a to především při úspoře ene
 Úspora energie hraje v~dnešní době velice důležitou roli.
 Při výrobě elektrické energie se vyprodukuje mnoho skleníkových plynů, které zatěžují životní prostředí.
 Chytrá domácnost může rapidně snížit produkci těchto plynů.
-Největším odběratelem elektrické energii v~domácnostech jsou především různá topná telěsa, ať už v~podobě elektrického topení, nebo ohřívačů vody, dále různá osvětlení apod.
+Největším odběratelem elektrické energie v~domácnostech jsou především různá topná tělesa, ať už v~podobě elektrického topení, nebo ohřívačů vody, dále různá osvětlení apod.
 Tito největší odběratelé pracují většinou celý den a komplexně pro celý dům, avšak určité změny by byly velice přínosné, např. vytápění pouze obývaných prostor,
 snižování intenzity osvětlení podle okolní intenzity světla, různé akce vykonané podle aktuálního času apod.
 Podle mého názoru se chytré domácnosti dostanou do popředí, na trhu v~oblasti informačních technologiích, velice rychle.
 Je samozřejmé, že chytré domácnosti a chytré zařízení již existují.
-Ovšem nastává problém, kdy tato zařízení jsou velice drahá a výrobce, většinou, podporuje pouze svá zařízení a je téměř nemožné sestavit chytrou domácnost z~různých komponentů od různých výrobců.
+Ovšem nastává problém, kdy tato zařízení jsou velice drahá a výrobce, většinou, podporuje pouze své produkty a je téměř nemožné sestavit kompletní systém z~různých komponentů od různých výrobců.
 
-Cílem této práce je vytvořit kompletní řešení chytré domácnosti, které bude levné a připojená různá zařízení budou mezi sebou komunikovat bez ohledu na výrobce.
-Dále hlavním rysem tohoto projektu je poskytnutní přístupnosti k~domácnosti. Tento systém je navržen tak, aby mohl být nasazen v~cloudu a být přístupný pro tisíce uživatelů zároveň. Vyžaduje se určitá robustnost systému a hlavně bezpečnost.
-Někteří uživatelé však cloudové služby nepodporují a bezpečnost je u~nich na prvním místě. Pro tento případ je systém navržen tak, aby mohl běžet na samostatném mini počítači pouze v~rámci domácnosti. Dalším cílem práce je poskytnout uživateli
-intuitivní rozhraní pro snadné zprovoznění chytré domácnosti a následné správě domácnosti.
+Cílem této práce je vytvořit kompletní řešení chytré domácnosti, které bude finančně nenáročné a připojená zařízení budou mezi sebou komunikovat bez ohledu na výrobce.
+Dále hlavním rysem tohoto projektu je poskytnutí přístupnosti k~domácnosti.
+Tento systém je navržen takovým způsobem, aby mohl být nasazen v~cloudu a být přístupný pro tisíce uživatelů zároveň.
+Vyžaduje se určitá robustnost systému a hlavně bezpečnost.
+Někteří uživatelé však cloudové služby ve velké míře nepodporují a bezpečnost je u~nich na prvním místě.
+I~pro tento případ je systém navržen tak, aby mohl běžet na samostatném mini počítači pouze v~rámci domácnosti.
+Dalším cílem práce je poskytnout uživateli intuitivní rozhraní pro snadné zprovoznění chytré domácnosti a následné správě domácnosti.
 
 Práce je rozdělena na několik dalších hlavních částí:
 \emph{důležité termíny} (kapitola \ref{terminy}),
@@ -36,11 +38,11 @@ a samotný \emph{závěr} (kapitola \ref{zaver}).
 \chapter{Důležité termíny}
 \label{terminy}
 
-V~této kapitole jsou popsány důležité termíny které jsou nezbytné k~porozumnění zbytku práce.
+V~této kapitole jsou popsány důležité termíny které jsou nezbytné k~porozumění zbytku práce.
 Asi nejdůležitější je pochopit koncept \emph{IoT}, který je popsán v~podkapitole \ref{terminy:iot}.
-V~dalších podkapitolách najdeme stručné vysvětlení pojmu \emph{MCU - neboli mikrokontrolér}(kapitola \ref{terminy:iot}), informace o~různých zařízeních, která jsou obsažena v~implementaci této chytré domácnosti.
+V~dalších podkapitolách najdeme stručné vysvětlení pojmu \emph{MCU - neboli mikrokontrolér} (kapitola \ref{terminy:iot}), informace o~různých zařízeních, která jsou obsažena v~implementaci této chytré domácnosti.
 Specifičtěji se jedná hlavně o~moduly \emph{ESP} (kapitola \ref{terminy:esp8266}) a mini počítač \emph{Raspberry Pi} (kapitola \ref{terminy:raspberry}).
-Komunikace mezi zařízeními probíhá pomocí protokolu \emph{MQTT}, komunikace s~uživatelským rozhraním (dále jako \emph{frontend} nebo \emph{klientská aplikace}) a serverem, kde je obsažena celá business logika (dále \emph{backend}), zajištuje protokol \emph{HTTP}.
+Komunikace mezi zařízeními probíhá pomocí protokolu \emph{MQTT}, komunikace s~uživatelským rozhraním (dále jako \emph{frontend} nebo \emph{klientská aplikace}) a serverem, kde je obsažena celá business logika (dále \emph{backend}), zajišťuje protokol \emph{HTTP}.
 
 \bigskip
 
@@ -70,9 +72,9 @@ Stroje mohou mezi sebou komunikovat dokonce i mimo lokální továrny a vyměňo
 \section{Vestavěný systém}
 \label{terminy:vestaveny}
 
-Vestavěný systém, neboli \emph{Embedded system} je hardwarový systém, který je tzv. \emph{microprocessor-based}(založený na mikroprocesoru).
+Vestavěný systém, neboli \emph{Embedded system} je hardwarový systém, který je tzv. \emph{microprocessor-based} (založený na mikroprocesoru).
 Obsahuje software, který je navržen k~vykonávání určité specifické činnosti buď jako nezávislý systém, nebo jako část většího celku.
-Nejvýznamnější komponenta vestavěného systému je integrovaný obvod, který je navržen pro operace, které jsou závislé na reálném čase(dále jako \emph{real-time} systém).~\cite{embedded:info}
+Nejvýznamnější komponenta vestavěného systému je integrovaný obvod, který je navržen pro operace, které jsou závislé na reálném čase (dále jako \emph{real-time} systém).~\cite{embedded:info}
 
 K~vestavěnému systému lze připojit mnoho vstupních/výstupních periferních zařízení, které spolupracují s~mikrokontrolérem (více info viz. \ref{terminy:mcu}) obsaženým ve vestavěném systému.
 Na obrázku níže je vyznačeno jednoduché schéma, které pojednává o~asociaci mezi vestavěným systémem, vstupních/výstupních zařízení a dalších náležitostí.
@@ -85,7 +87,7 @@ Mezi výstupní zařízení můžeme zahrnout např. různá relé, tranzistory,
   \centering
   \includegraphics[width=.6 \linewidth]{obrazky-figures/embedded_system.png}
   \caption{
-    Koncept vestavěného systému.~\cite{embedded:figure}
+    Koncept vestavěného systému. Převzato z~\cite{embedded:figure}.
   }
   \label{figure:embedded}
 \end{figure}
@@ -95,16 +97,18 @@ Mezi výstupní zařízení můžeme zahrnout např. různá relé, tranzistory,
 \label{terminy:mcu}
 
 Mikrokontrolér (zkratka MCU\footnote{\textbf{MCU} - \textbf{M}icro\textbf{C}ontroller \textbf{U}nit}), nebo také jednočipový počítač, je integrovaný obvod, který obsahuje kompletní \emph{mikropočítač}.
-Mikrokontroléry jsou velice spolehlivé, kompaktní a proto hojně využívány k~řízení různých elektronických systému, obykle pomocí mikroprocesoru, paměti a různých periferních zařízení.
+Mikrokontroléry jsou velice spolehlivé, kompaktní a proto hojně využívány k~řízení různých elektronických systému, obvykle pomocí mikroprocesoru, paměti a různých periferních zařízení.
 Tato malá zařízení jsou optimalizována pro vestavěné systémy popsané výše, které potřebují zpracovat interakci s~digitálními, analogovými, nebo elektromechanickými komponentami.
 
 Název pro mikrokontrolér byl velice vhodně zaveden, protože opravdu zdůrazňuje charakteristiku typu daného zařízení. Mikrokontroléry jsou malá zařízení, která dokáží velké věci.
-Mikrokontroléry hrají důležitou roli v~technologické budoucnosti. Získavají si velikou oblibu nejen u~různých SW\footnote{\textbf{SW} - software}/HW\footnote{\textbf{HW} - hardware} expertů, ale i studentů a spousty hobby nadšenců.~\cite{mcu:info}
+Mikrokontroléry hrají důležitou roli v~technologické budoucnosti.
+Získávají si velikou oblibu nejen u~různých SW\footnote{\textbf{SW} - software}/HW\footnote{\textbf{HW} - hardware} expertů, ale i studentů a spousty hobby nadšenců.~\cite{mcu:info}
 Díky mikroprocesorům lze jednoduše propojit SW nástroj, či aplikaci s~HW komponentami.
 
 Blížící se budoucnost přinese spoustu nových možností v~oblasti miktrokontrolérů a počet zařízení obsahující mikrokontrolér může v~blízké době přesáhnout i několika desítek miliard kusů.
 Výkon u~těchto zařízení bude vyšší a velikost menší, což je občas velice důležitý faktor na poli chytrých domácností.
-V~chytré domácnosti jsou zařízení sestavena s~pomocí mikrokontroléru, který se stará o~danou specifickou funkci. V~této bakalářské práci jsou především použity mikrokontroléry s~čipem ESP-8266 od firmy \emph{Espressif Systems}
+V~chytré domácnosti jsou zařízení sestavena s~pomocí mikrokontroléru, který se stará o~danou specifickou funkci.
+V~této bakalářské práci jsou především použity mikrokontroléry s~čipem ESP-8266 od firmy \emph{Espressif Systems}
 a minipočítač \emph{Raspberry Pi}. Obrázek níže obsahuje odpovídající architekturu skoro každého mikrokontroléru.
 Mezi hlavní prvky patří analogově-digitální převodník, čítače, časovače, modul řídící PWM\footnote{\textbf{PWM} - \textbf{P}ulse-\textbf{W}idth \textbf{M}odulation (pulsně šířková modulace).}.
 
@@ -112,7 +116,7 @@ Mezi hlavní prvky patří analogově-digitální převodník, čítače, časov
   \centering
   \includegraphics[width=.6 \linewidth]{obrazky-figures/mcu.jpeg}
   \caption{
-    Koncept mikrokontroléru.~\cite{mcu:info}
+    Koncept mikrokontroléru. Převzato z~\cite{mcu:info}.
   }
   \label{figure:mcu}
 \end{figure}
@@ -124,23 +128,26 @@ Mezi hlavní prvky patří analogově-digitální převodník, čítače, časov
 
 \emph{MQTT} neboli \emph{Message Queuing Telemetry Transport} protokol je jeden z~nejvýznamnějších komunikačních protokolů IoT zařízení a systémů.
 \emph{MQTT} patří do kategorie aplikačních protokolů, kde jeho hlavní předností je malá velikost datové hlavičky a možnost komunikovat v~sítích s~omezenou propustností.
-Patří do skupiny \emph{Publish-Subscribe}(dále \emph{Pub-Sub}) protokolů.
-Hlavním principem \emph{Pub-Sub} protokolů je výměna zpráv mezi dvěma typy účastníků. První z~nich je tzv. odebíratel(dále \emph{subscriber}),
-který se přihlašuje k~odběru zpráv s~daným temátem(dále \emph{topic}).
-Subscriber může přijímat několik zpráv s~různými tématy a v~průběhu se od odběru i odhlašovat. Druhým typem je tzv. vydavatel(dále \emph{publisher}), který posílá zprávy do určitého
+Patří do skupiny \emph{Publish-Subscribe} (dále \emph{Pub-Sub}) protokolů.
+Hlavním principem \emph{Pub-Sub} protokolů je výměna zpráv mezi dvěma typy účastníků.
+První z~nich je tzv. odebíratel (dále \emph{subscriber}),
+který se přihlašuje k~odběru zpráv s~daným tématem (dále \emph{topic}).
+Subscriber může přijímat několik zpráv s~různými tématy a v~průběhu se od odběru i odhlašovat.
+Druhým typem je tzv. vydavatel (dále \emph{publisher}), který posílá zprávy do určitého
 topicu.~\cite{mqtt:info}
 
 \subsection*{MQTT Broker}
-\emph{MQTT Broker} je služba (nebo-li software, který běži v~cloudu, či lokálním PC), která se stará o~rozesílání a spravování zpráv, které různá zařízení posílají.
+\emph{MQTT Broker} je služba (nebo-li software, který je nasazen v~cloudu, či na lokálním PC), která se stará o~rozesílání a spravování zpráv, které různá zařízení posílají.
 \emph{MQTT Broker} je prostředník mezi účastníky typu \emph{subscriber} a \emph{publisher}.
 Každé zařízení, které chce využívat MQTT protokol a komunikovat s~ostatními zařízeními, musí definovat \emph{URL}\footnote{\textbf{URL} - \textbf{U}niform \textbf{R}esource \textbf{L}ocator (jednotná adresa zdroje)} brokeru, přes který budou dané zprávy procházet.
 Jak již bylo řečeno, \emph{MQTT} je \emph{Pub-Sub} protokol, proto když přijde od účastníka typu publisher zpráva ke specifickému topicu, musí se podívat, kdo všechno je přihlášen k~odběru daného topicu a rozeslat všem účastníkům, typu subscriber, danou zprávu.
 Každé zařízení může jak přijímat, tak i odesílat zprávy k~danému topicu.~\cite{wiki:mqtt}
 
 \subsection*{Zabezpečení}
-V~\emph{IoT} je velice důležitá i bezpečnost a pomocí \emph{MQTT Brokeru} lze dosáhnout určitého bezpečnostního cíle. Je opravdu nevítané, aby se někdo cizí dostal bez autentizace k~odběru vašich
-zpráv procházející přes \emph{MQTT Broker} a mohl zasílat zprávy do různých dalších zařízení připojená v~domácnosti.
-Útočník tak má šanci kontrolovat celou vaši domácnost. Každý \emph{MQTT Broker} od různých výrobců disponuje různou sadou zabezpečení a vlastností.~\cite{wiki:mqtt}
+V~\emph{IoT} je velice důležitá i bezpečnost a pomocí \emph{MQTT Brokeru} lze dosáhnout určitého bezpečnostního cíle.
+Je opravdu nevítané, aby se někdo cizí dostal bez autentizace k~odběru vašich zpráv procházející přes \emph{MQTT Broker} a mohl zasílat zprávy do různých dalších zařízení připojená v~domácnosti.
+Útočník tak má šanci kontrolovat celou vaši domácnost.
+Každý \emph{MQTT Broker} od různých výrobců disponuje různou sadou zabezpečení a vlastností.~\cite{wiki:mqtt}
 \newline
 
 Možné typy zabezpečení:
@@ -153,7 +160,7 @@ Možné typy zabezpečení:
 
 \newpage
 \subsection*{Typy zpráv}
-\emph{MQTT} protokol využívá sadu různých typů zpráv pro vlastní běh. Na obrázku \ref{figure:mqtt_flow}lze zahlédnout posloupnost zpráv.~\cite{wiki:mqtt}
+\emph{MQTT} protokol využívá sadu různých typů zpráv pro vlastní běh. Na obrázku \ref{figure:mqtt_flow} lze zahlédnout posloupnost zpráv.~\cite{wiki:mqtt}
 Mezi základní typy zpráv u~protokolu MQTT patří:
 \begin{itemize}
   \item \textbf{CONNECT} - slouží pro ustanovení připojení
@@ -167,7 +174,7 @@ Mezi základní typy zpráv u~protokolu MQTT patří:
 \begin{figure}[ht]
   \centering
   \includegraphics[width=.7 \linewidth]{obrazky-figures/mqtt_flow.png}
-  \caption{Posloupnost MQTT zpráv.~\cite{wiki:mqtt}}
+  \caption{Posloupnost MQTT zpráv. Převzato z~\cite{wiki:mqtt}.}
   \label{figure:mqtt_flow}
 \end{figure}
 
@@ -177,12 +184,12 @@ Každá zpráva může specifikovat, jakým způsobem bude zajištěna kvalita s
 \begin{itemize}
   \item \textbf{\emph{QoS 1}} - Nejvýše jednou; zpráva je zaslána pouze jednou bez potvrzení.
   \item \textbf{\emph{QoS 2}} - Alespoň jednou; zpráva stále zasílána dokud nedorazí potvrzení o~přijetí.
-  \item \textbf{\emph{QoS 3}} - Přesně jednou; zajištění, že přijemce dostane zprávu pouze jednou.
+  \item \textbf{\emph{QoS 3}} - Přesně jednou; zajištění, že příjemce dostane zprávu pouze jednou.
 \end{itemize}
 
 \subsection*{MQTT over WebSockets (\emph{MQTT} pomocí protokolu \emph{WebSocket})}
 \label{mqtt:websockets}
-\emph{MQTT} přes protokol \emph{WebSocket} je technika, kdy se zabalí komunikační protokol \emph{MQTT} do tzv.\emph{WebSocket frame}(WebSocketový rámec).
+\emph{MQTT} přes protokol \emph{WebSocket} je technika, kdy se zabalí komunikační protokol \emph{MQTT} do tzv.\emph{WebSocket frame} (WebSocketový rámec).
 Tato technika přenosu je hlavně přínosná pro webové aplikace, tudíž pro vše, co běží v~prohlížeči.
 Udává se, že s~touto technikou může být jakýkoliv prohlížeč na různých zařízeních plnohodnotný \emph{MQTT klient}.~\cite{mqtt:hivemq}
 
@@ -193,7 +200,7 @@ Tato technika tak poskytuje optimální způsob komunikace přes \emph{MQTT} pro
 \begin{figure}[ht]
   \centering
   \includegraphics[width=1 \linewidth]{obrazky-figures/mqtt_websocket.png}
-  \caption{MQTT over WebSockets.~\cite{mqtt:hivemq}}
+  \caption{MQTT over WebSockets. Převzato z~\cite{mqtt:hivemq}.}
   \label{figure:mqtt_websockets}
 \end{figure}
 
@@ -205,7 +212,7 @@ Tato technika tak poskytuje optimální způsob komunikace přes \emph{MQTT} pro
 \begin{figure}[hbt]
   \centering
   \includegraphics[width=.35 \linewidth]{obrazky-figures/OIDC.png}
-  \caption{OIDC logo}
+  \caption{OIDC logo. Převzato z~\cite{oidc:logo}.}
 \end{figure}
 
 \textbf{OIDC} nebo-li \emph{OpenID Connect} je autentizační protokol, založený na specifikaci \emph{OAuth 2.0}. Tento protokol využívá služba \emph{KeyCloak}, která je použita v~této bakalářské práci.
@@ -230,7 +237,7 @@ Na obrázku ~\ref{figure:json} je vidět ilustrační zápis dat pomocí \emph{J
 \begin{figure}[hbt]
   \centering
   \includegraphics[width=.45 \linewidth]{obrazky-figures/json_example.png}
-  \caption{Ukázka \emph{JSON}.~\cite{json:example}}
+  \caption{Ukázka \emph{JSON}. Převzato z~\cite{json:example}.}
   \label{figure:json}
 \end{figure}
 
@@ -245,15 +252,15 @@ Jestliže jakékoliv rozhraní chce být považováno za \emph{RESTful}, musí s
 \begin{itemize}
   \item \textbf{Klient - Server} - Oddělení uživatelského rozhraní ze serverové části.
         Zlepšení přenositelnosti a škálovatelnosti díky zjednodušení serverových komponentů.
-  \item \textbf{Bezstavovost} - Každý požadavek od klienta na server musí obsahovat všechny nezbytné informace k~porozumnění požadavku.
-        \emph{Session state}(stav sezení) se celý ukládá pouze u~klienta.
+  \item \textbf{Bezstavovost} - Každý požadavek od klienta na server musí obsahovat všechny nezbytné informace k~porozumění požadavku.
+        \emph{Session state} (stav sezení) se celý ukládá pouze u~klienta.
   \item \textbf{Cacheable} (schopný být uložen v~mezipaměti) - Požaduje, aby data v~odpovědi ze serveru byla implicitně, nebo explicitně označena jako \emph{cacheable}, nebo \emph{non-cacheable}.
         Jestliže je odpověď \emph{cacheable}, mezipaměť u~klientské aplikace má právo být znovupoužita později jako odpověď na ekvivalentní požadavek.
   \item \textbf{Jednotné rozhraní} - Použitím principu obecného softwarového inženýrství na rozhraní komponentů se celková architektura systému zjednoduší a zlepší se viditelnost interakcí.
   \item \textbf{Vrstvený systém} - Vrstvený systém umožňuje, aby se architektura skládala z~hierarchických vrstev způsobem omezení chování komponenty tak, že každá komponenta nemůže „vidět“ za nejbližší vrstvu se kterou interagují.
 \end{itemize}
 
-Klíčovou abstrakcí informace v~\emph{REST} architektruře je tzv. \emph{resource} (zdroj informací).
+Klíčovou abstrakcí informace v~\emph{REST} architektuře je tzv. \emph{resource} (zdroj informací).
 Každá informace, která může být pojmenována smí být také považována za zdroj.
 \emph{REST} využívá identifikátory zdrojů informací, aby dokázala identifikovat určitý obsah v~interakci mezi komponentami.~\cite{restful:info}
 Na obrázku \ref{figure:restful} je popsán tok zpracování požadavků.
@@ -261,7 +268,7 @@ Na obrázku \ref{figure:restful} je popsán tok zpracování požadavků.
 \begin{figure}[ht]
   \centering
   \includegraphics[width=.59 \linewidth]{obrazky-figures/restful.jpg}
-  \caption{Architektura \emph{RESTful} webové služby.~\cite{restful:example}}
+  \caption{Architektura \emph{RESTful} webové služby. Převzato z~\cite{restful:example}.}
   \label{figure:restful}
 \end{figure}
 
@@ -320,10 +327,10 @@ Hlavní aspekty, které by měly být splněny:
 Jak již bylo řečeno, když na návrh systému chytré domácnosti je pouze jeden vývojář, musí se orientovat v~rozmanité sféře technologií, návrhových vzorů apod.
 V~dnešní době jsou tyto typy vývojářů označovány jako \emph{Full Stack Developers}, kteří vyvíjí \emph{backend}, tak i \emph{frontend} část aplikace.
 
-V~kapitole \ref{navrh:backend} bude detailněji popsán \textbf{návrh serverové(\emph{backend}) části} systému, která je nejspíše nejkomplikovanější a nedůležitější ze všech odvětví této bakalářské práce.
+V~kapitole \ref{navrh:backend} bude detailněji popsán \textbf{návrh serverové (\emph{backend}) části} systému, která je nejspíše nejkomplikovanější a nedůležitější ze všech odvětví této bakalářské práce.
 Dále v~kapitole \ref{navrh:databaze} lze nalézt popis \textbf{návrhu relační databáze} a související věci.
-V~kapitole \ref{navrh:frontend} je \textbf{návrh klientské aplikace}(\emph{frontend}), kde hlavním jádrem věci je rozložení a vzhled stránky.
-Samozřejmě je zde i popis struktury uložení stavu aplikace a operací provádených na pozadí.
+V~kapitole \ref{navrh:frontend} je \textbf{návrh klientské aplikace} (\emph{frontend}), kde hlavním jádrem věci je rozložení a vzhled stránky.
+Samozřejmě je zde i popis struktury uložení stavu aplikace a operací prováděných na pozadí.
 V~poslední kapitole \ref{navrh:hardware} je \textbf{návrh HW zařízení}, struktura programu.
 \newpage
 
@@ -331,7 +338,7 @@ Na obrázku \ref{figure:architektura} je graficky znázorněna architektura navr
 Architektura obsahuje server, \emph{MQTT} broker, autentizační/autorizační službu, databázi, klientské aplikace a HW zařízení.
 Služby, které budou nasazeny v~cloudu, či v~lokální síti na minipočítači jsou vyznačeny ve žluté části obrázku.
 V~zelené části obrázku jsou vyznačeny klientské aplikaci a ve fialové části samotná \emph{HW} zařízení.
-Server komunikuje s~\emph{MQTT brokerem} pomocí komunikačnícho protokolu \emph{MQTT}, kde server je další \emph{MQTT klient}(detailně popsáno v~\ref{navrh:backend}).
+Server komunikuje s~\emph{MQTT brokerem} pomocí komunikačního protokolu \emph{MQTT}, kde server je další \emph{MQTT klient} (detailně popsáno v~\ref{navrh:backend}).
 Server dále komunikuje s~klientskou aplikací (v~zelené části obrázku) pomocí protokolu \emph{HTTP}, která posílá požadavky na server.
 Klientská aplikace se serverem dále komunikují s~příslušnou autentizační/autorizační službou.
 
@@ -344,12 +351,12 @@ Klientská aplikace se serverem dále komunikují s~příslušnou autentizační
 
 \section{Návrh serverové části}
 \label{navrh:backend}
-Z~hlediska vývoje aplikací je z~mého pohledu tato část práce nejkomplikovanější a zároveň nejobtížnejší.
+Z~hlediska vývoje aplikací je z~mého pohledu tato část práce nejkomplikovanější a zároveň nejobtížnější.
 Vývojář musí mít dobrý přehled o~technologiích, návrhových vzorech a mnoho dalšího, které lze vhodně aplikovat na danou aplikaci.
 Struktura programu této části by měla být sestrojena přehledně a takovým stylem, aby se dala jednoduše rozšiřovat.
 Požadavky na aplikaci se mohou velice rychle měnit a vývojář musí dokázat bez většího úsilí implementovat tyto změny.
 
-Serverová část(dále jako \emph{Server}) aplikace se stará o~požadavky, které klientská aplikace, potažmo zařízení, posílá na daný server.
+Serverová část (dále jako \emph{Server}) aplikace se stará o~požadavky, které klientská aplikace, potažmo zařízení, posílá na daný server.
 Dále se také zabývá samotnou logikou celého systému, vykonáváním požadavků na databázi, poskytnutím výpočetních sil pro složitější operace a požadavky od zařízení v~domácnosti.
 Vytváří rozhraní, ke kterému může přistupovat spousta klientských aplikací a spravovat tak celý management systému chytré domácnosti.
 
@@ -366,7 +373,7 @@ Mezi velikou škálou programovacích jazyků, které jsou vhodné na vývoj ser
 který se v~popularitě těchto technologií drží na předních místech. Programovací jazyk \emph{Java} je objektově orientovaný jazyk, který se velkým způsobem zasadil do vývoje enterprise aplikací.
 Jazyk \emph{Java} disponuje rozsáhlým ekosystémem a existuje spoustu výborných frameworků.
 
-Rozhodl jsem se, že serverová část bude sestrojena jako \emph{RESTful}(podrobněji viz. \ref{terminy:restful}) webová služba komunikující nad protokolem \emph{HTTP},
+Rozhodl jsem se, že serverová část bude sestrojena jako \emph{RESTful} (podrobněji viz. \ref{terminy:restful}) webová služba komunikující nad protokolem \emph{HTTP},
 kde u~serveru nebude žádné uživatelské rozhraní, ale pouze programové, známe jako API\footnote{\textbf{API} - \textbf{A}pplication \textbf{P}rogramming \textbf{I}nterface (rozhraní pro programování aplikací)}.
 Server poskytne \emph{API}, které využívají klientské aplikace, nebo další služby pro komunikaci se serverem.
 Server je bezstavový, což znamená, že si server neukládá stav o~požadavcích a každý požadavek je přijímán stejně, bez jakýchkoli priorit, či upřednostnění díky danému stavu uživatele v~systému.
@@ -376,12 +383,12 @@ Server je bezstavový, což znamená, že si server neukládá stav o~požadavc�
 Každý uživatel, který pošle požadavek na server, musí být autentizován.
 Server je asociován s~autentizační službou a při každém požadavku na server přepošle tzv. \emph{token}\footnote{\textbf{Token} - žeton pro přístup ke zdrojům informací} autentizační službě
 a ta vyhodnotí, zda je uživatel autentizován, potažmo autorizován získat informace z~daného endpointu\footnote{\textbf{Endpoint} - HTTP path (cesta požadavku definována pomocí API)}.
-Pokud uživatel není autentizován a nevlastní žádaný \emph{token}, musí poslat požadavek na autorizační službu s~danými \emph{credentials}\footnote{\textbf{Credentials} - poveření v~různých formách (heslo, PIN, OTP, biometrika,...)},
+Pokud uživatel není autentizován a nevlastní žádaný \emph{token}, musí poslat požadavek na autorizační službu s~danými \emph{credentials}\footnote{\textbf{Credentials} - pověření v~různých formách (heslo, PIN, OTP, biometrika,...)},
 kde získá daný token pro přístup ke zdrojům informací serveru. Token je zasílán v~\emph{HTTP} hlavičce v~atributu \emph{Authorization}.
 
 O~autorizaci se stará přímo server, který ověří u~dané autentizační služby, zda je uživatel autentizován a poté ověří zda má dostatečná práva na zisk informací z~daného zdroje.
-Pokud uživatel není autentizován a není přesměrován na stránku autentizační služby, vrací se \emph{HTTP} response\footnote{\textbf{Response} - odpověď na požadavek ze serveru} kód s~číslem 401, který se označuje jako \emph{Unauthorized}(neoprávněný).
-Uživatel který není autorizován k~získání informací dostane odpověď ze serveru s~kódem 403, který značí \emph{Forbidden}(zamítnuto).
+Pokud uživatel není autentizován a není přesměrován na stránku autentizační služby, vrací se \emph{HTTP} response\footnote{\textbf{Response} - odpověď na požadavek ze serveru} kód s~číslem 401, který se označuje jako \emph{Unauthorized} (neoprávněný).
+Uživatel který není autorizován k~získání informací dostane odpověď ze serveru s~kódem 403, který značí \emph{Forbidden} (zamítnuto).
 
 Server vyhledá uživatele v~databázi a nejčastěji podle role, kterou má uživatel přidělenou pro danou domácnost, se ověří, zda má přístupová práva.
 Server musí být tudíž schopný ověřit vše už před samotným vykonáváním operací daných u~příslušných \emph{REST endpointů}.
@@ -459,7 +466,7 @@ Zařízení je tak schopno zaslat požadavek na server, který spojí dané zař
 \label{navrh:databaze}
 
 Návrh databáze úzce souvisí se serverovou částí systému. Server vytváří rozhraní, pomocí kterého lze vytvářet operace nad danou databází.
-Server disponuje určitým \emph{ORM} frameworkem, který mapuje objektově orientovaný model do relační databáze a vývojař tak není nucen pracovat s~databází na nižší úrovni např. pomocí SQL jazyka.
+Server disponuje určitým \emph{ORM} frameworkem, který mapuje objektově orientovaný model do relační databáze a vývojář tak není nucen pracovat s~databází na nižší úrovni např. pomocí SQL jazyka.
 
 Návrh databáze u~daného řešení chytré domácnosti je modelován pomocí \emph{ER diagramu}\footnote{\textbf{ER Diagram} - \textbf{E}ntity-\textbf{R}elationship \textbf{D}iagram (entitně vztahový diagram)}, kde jsou znázorněné entity\footnote{\textbf{Entita} - věc schopná samostatné existence} modelující tabulky databáze a jejich propojení.
 Databáze je tak modelována pomocí modelovací jazyka s~názvem \emph{UML}.
@@ -476,15 +483,18 @@ Mezi základní entity řešení chytré domácnosti patří:
 
 \subsection*{Entita \emph{User} - uživatel}
 \label{databaze:user}
-Entita \textbf{\emph{User}}(uživatel) obsahuje dva identifikátory. První z~nich je primární klíč celé entity a druhý identifikátor typu \emph{UUID}\footnote{\textbf{UUID} - \textbf{U}niversally \textbf{U}nique \textbf{I}dentifier (Univerzální unikátní identifikátor)} slouží k~identifikaci uživatele z~\emph{JWT} tokenu.
-Tato tabulka je pouze pomocnou entitou v~udržování informací o~uživatelích. Primárním uložištěm informací je autentizační služba, která dále obsahuje i přístupová data.
-Daná entita se využívá hlavně v~případě, kdy uživatel pro každou domácnost disponuje různými rolemi. Tato entita je dále využívána v~identifikaci uživatele v~pozvánkách do domácnosti.
+Entita \textbf{\emph{User}} (uživatel) obsahuje dva identifikátory.
+První z~nich je primární klíč celé entity a druhý identifikátor typu \emph{UUID}\footnote{\textbf{UUID} - \textbf{U}niversally \textbf{U}nique \textbf{I}dentifier (Univerzální unikátní identifikátor)} slouží k~identifikaci uživatele z~\emph{JWT} tokenu.
+Tato tabulka je pouze pomocnou entitou v~udržování informací o~uživatelích.
+Primárním úložištěm informací je autentizační služba, která dále obsahuje i přístupová data.
+Daná entita se využívá hlavně v~případě, kdy uživatel pro každou domácnost disponuje různými rolemi.
+Tato entita je dále využívána v~identifikaci uživatele v~pozvánkách do domácnosti.
 
 \subsection*{Entita \emph{Home} - domácnost}
 \label{databaze:home}
 Nejdůležitějším celkem celé databáze je entita \textbf{\emph{Home}}, která obsahuje základní potřebné informace o~domácnosti.
 Jako každá tabulka databáze musí mít přiřazený primární klíč s~jednoznačným identifikátorem dané entity.
-Dále obsahuje prvek \emph{name}, který je typu \emph{String}(řetězec znaků) a je zde uložen název domácnosti.
+Dále obsahuje prvek \emph{name}, který je typu \emph{String} (řetězec znaků) a je zde uložen název domácnosti.
 Důležitým atributem entity je \emph{brokerURL}, což je URL \emph{MQTT} brokeru.
 Domácnost může mít pouze jeden \emph{MQTT Broker}, tudíž stačí uložit jeden prvek s~typem \emph{String}.
 Entita \emph{Home} dále obsahuje cizí klíč pro entitu \emph{MQTTClient}, kde kardinalita daného vztahu je 1:1 díky tomu, jak již bylo zmíněno, může být pouze jeden \emph{MQTT Broker} a \emph{MQTT Client} pro domácnost.
@@ -494,8 +504,8 @@ U~klienta se rozumí spíše klient, který spravuje a analyzuje zprávy z~komun
 \label{databaze:room}
 Entita \emph{Home} je provázána s~entitou \textbf{\emph{Room}}.
 Domácnost může obsahovat více místností, ale daná místnost může být zahrnuta pouze v~jedné domácnosti.
-Dále je provázána s~entitou \emph{Device}(zařízení), kde představuje seznam zařízení, které nejsou zatím přiřazeny do určitého pokoje a jsou proto tzv. \emph{unassigned}(nepřiřazené).
-Dále se k~entitě \emph{Home} vztahuje i entita \emph{HomeInvitation}(pozvánky do domácnosti), kde jsou ve vztahu 1:N kvůli tomu, že domácnost může obsahovat několik pozvánek, ale v~pozvánce může být zahrnuta pouze jedna domácnost.
+Dále je provázána s~entitou \emph{Device} (zařízení), kde představuje seznam zařízení, které nejsou zatím přiřazeny do určitého pokoje a jsou proto tzv. \emph{unassigned}(nepřiřazené).
+Dále se k~entitě \emph{Home} vztahuje i entita \emph{HomeInvitation} (pozvánky do domácnosti), kde jsou ve vztahu 1:N kvůli tomu, že domácnost může obsahovat několik pozvánek, ale v~pozvánce může být zahrnuta pouze jedna domácnost.
 
 Jako další provázána s~\emph{Home} entitou je entita \emph{User}, která je ve vztahu M:N.
 Tento vztah představuje asociaci, kde domácnost může obsahovat více uživatelů a uživatelé mohou být obsažení ve více domácnostech.
@@ -507,12 +517,12 @@ V~poslední řadě si uchovává množinu uživatelů, kteří tuto místnost vl
 Podstatná entita systému je \textbf{\emph{Device}}, která obsahuje opět jednoznačný identifikátor, název zařízení a status, zda je zařízení aktivní.
 Zařízení může být provázáno s~místností, nebo i s~domácností a proto tudíž obsahuje dva cizí klíče referující na \emph{Home} a \emph{Room}.
 Pokud zařízení nemá přiřazeno žádnou místnost, automaticky je vložen do množiny, kterou spravuje entita \emph{Home} a obsahuje nepřiřazená zařízení.
-Každé zařízení je lehce modifikovatelné a uživatel si může vytvořit své vlastní zařízení disponující určitými tzv.\emph{capabilities}(schopnostmi), jako je např. měření teploty, vlhkosti, ovládání světelných zařízení atd.
+Každé zařízení je lehce modifikovatelné a uživatel si může vytvořit své vlastní zařízení disponující určitými tzv.\emph{capabilities} (schopnostmi), jako je např. měření teploty, vlhkosti, ovládání světelných zařízení atd.
 
 \subsection*{Entita \emph{Capability} - schopnost zařízení}
 \label{databaze:capability}
 Entita podřazená zařízení nese název \textbf{\emph{Capability}}. Tato entita obsahuje prvky, které jsou nejblíže samotnému HW zařízení.
-Obsahuje identifikátor, název, příznak \emph{enabled}(zda je schopnost povolená), typ dané schopnosti a pin ke kterému je připojena komponenta zprostředkovávající schopnost připojena.
+Obsahuje identifikátor, název, příznak \emph{enabled} (zda je schopnost povolená), typ dané schopnosti a pin ke kterému je připojena komponenta zprostředkovávající schopnost připojena.
 Kardinalita vztahu mezi entitou \emph{Device} a příslušnou entitou je v~poměru 1:N, kde zařízení může mít několik schopností a daná jednoznačná schopnost může být přiřazena jednomu zařízení.
 
 \begin{figure}[hbt]
@@ -531,7 +541,7 @@ Tato aplikace slouží ke správě domácností, místností, zařízení a vše
 Pro přístup do aplikace je nutné být autentizován.
 Zda uživatel autentizován není, je přesměrován na stránku autentizační služby, kde musí poskytnout své přihlašovací údaje, či jiným definovaným způsobem prokázat svoji identitu.
 Po úspěšném přihlášení je uživatel automaticky přesměrován zpět do klientské aplikace, kde vidí obecný přehled.
-Na této úvodní stránce vidí uživatel sebou definované oblíbené domácnosti, místnosti, zařízení, nebo dokonce jenom schopnosti zařízení(např. teplota určité místnosti, vlhkost atd.).
+Na této úvodní stránce vidí uživatel sebou definované oblíbené domácnosti, místnosti, zařízení, nebo dokonce jenom schopnosti zařízení (např. teplota určité místnosti, vlhkost atd.).
 Dále je zde možnost vidět různé statistiky domácnosti, kde vedle historie změn prostředí různých místností může být i celková spotřeba domácnosti.
 
 Klientská aplikace je ve stylu tzv. \emph{Dashboardu}, který se velice hodí pro různé informační systémy a systémy starající se o~správu.
@@ -542,7 +552,7 @@ Aplikace disponuje responzivním designem, tudíž je schopno v~upravené formě
 
 Jak již bylo řečeno, klientských aplikací může být několik, protože využívají \emph{API}, které definuje server a posílají požadavky na daný server.
 Žádná hlubší aplikační svázanost s~touto určitou aplikací nemá vliv na chod systému.
-Klientská aplikace také komunikuje se zařízeními pomocí protokolu \emph{MQTT}, ale tento protokol je ještě zabalený v~protokolu \emph{Websocket}(více info viz. \ref{mqtt:websockets}).
+Klientská aplikace také komunikuje se zařízeními pomocí protokolu \emph{MQTT}, ale tento protokol je ještě zabalený v~protokolu \emph{Websocket} (více info viz. \ref{mqtt:websockets}).
 
 \begin{figure}[hbt]
   \centering
@@ -554,21 +564,21 @@ Klientská aplikace také komunikuje se zařízeními pomocí protokolu \emph{MQ
 \newpage
 \subsection*{Vzhled}
 \label{frontend:vzhled}
-Vizuální vzhled webové aplikace bude využívat tzv. \emph{tiles}(dlaždice), které představují různé komponenty aplikace(viz obrázek \ref{figure:design}).
+Vizuální vzhled webové aplikace bude využívat tzv. \emph{tiles} (dlaždice), které představují různé komponenty aplikace (viz obrázek \ref{figure:design}).
 Po levé straně aplikace(v desktop responzivní verzi) je postranní menu, které obsahuje navigační tlačítka, které uživatele přesměrují do jiných částí obsahu aplikace.
 Důležitý prvek je položka s~názvem \emph{My Homes}, kde je po rozkliknutí uživatel přesměrován na stránku, která obsahuje všechny domácnosti, ve kterých je daný uživatel obsažen.
 Domácnosti jsou také ve stylu dlaždic, kde ve spodní části obsahuje informaci o~roli uživatele, kterou má daný uživatel přiřazenou k~domácnosti.
-V~právé spodní části je, pro většinu dlaždic obsažených v~aplikaci, tlačítko, které po rozkliknutí poskytne možnosti úpravy a správy dané dlaždice.
+V~pravé spodní části je, pro většinu dlaždic obsažených v~aplikaci, tlačítko, které po rozkliknutí poskytne možnosti úpravy a správy dané dlaždice.
 
 Po rozkliknutí dlaždice je uživatel přesměrován do dané domácnosti a opět ve stylu dlaždic jsou dostupné místnosti obsažené v~domácnosti.
 Místnosti mají zase odlišnou nabídku možností, než jak to bylo u~domácností.
-Uživatel v~daném prostředí má schopnost vytvořit si svojí místnost(zda má dostatečná práva).
-Po dalším rozkliknutí dlaždice místnosti je uživatel přesměrován do dané místnosti, kde již vidí připojená zařízení a jejich \emph{capabilities}(schopnosti).
+Uživatel v~daném prostředí má schopnost vytvořit si svojí místnost (zda má dostatečná práva).
+Po dalším rozkliknutí dlaždice místnosti je uživatel přesměrován do dané místnosti, kde již vidí připojená zařízení a jejich \emph{capabilities} (schopnosti).
 Schopnosti, mezi které se může řadit např. teplota místnosti, vlhkost, ovládání světel atd., jsou barevně odlišeny podle zařízení, do kterého patří. (např. schopnosti zařízení A~budou mít zelenou barvu a schopnosti zařízení B žlutou, atd.)
 
 U~mobilních zařízení je postranní menu skryto a dlaždice jsou rozprostřeny souměrně na obrazovce podle velikosti displeje daného zařízení.
 U~mobilních telefonů standardních rozměrů jsou tyto dlaždice vertikálně rozpoloženy v~jednom sloupci.
-V~pravé horní části obrazovky je tzv. \emph{Hamburger menu}(tlačíko), které po rozkliknutí zobrazí postranní menu definované v~desktop responzivní verzi.
+V~pravé horní části obrazovky je tzv. \emph{Hamburger menu} (tlačítko), které po rozkliknutí zobrazí postranní menu definované v~desktop responzivní verzi.
 
 \subsection*{Programová část}
 \label{frontend:program}
@@ -598,10 +608,10 @@ To ušetří mnoho instancí klientů, což je výhodou u~některých \emph{MQTT
 Je to zařízení, které je schopno reagovat na vstupy, nebo akce a schopno generovat příslušný výstup.
 Zařízení v~konceptu řešení této chytré domácnosti je soubor součástek spojených v~elektrickém obvodě lokalizovaných na \emph{DPS}\footnote{\textbf{DPS} - \textbf{D}eska \textbf{P}lošných \textbf{S}pojů}.
 Hlavní komponentou celého zařízení je mikrokontrolér, který se stará o~všechny akce spojené s~daným zařízením.
-Mikrokontrolér se dá považovat jako mozek daného zařízení.(více v~kapitole \ref{terminy:mcu})
+Mikrokontrolér se dá považovat jako mozek daného zařízení. (více v~kapitole \ref{terminy:mcu})
 
-Mikrokontrolér obsažený v~zařízení se stará i o~připojené vnější periférie, v~kontextu této práce o~tzv. \emph{capabilities}(schopnosti zařízení).
-Schopnosti zařízení jsou připojené \emph{I/O} periférie k~\emph{MCU}.(např. teploměr, vlhkoměr, tranzistory ovládající světla,...)
+Mikrokontrolér obsažený v~zařízení se stará i o~připojené vnější periférie, v~kontextu této práce o~tzv. \emph{capabilities} (schopnosti zařízení).
+Schopnosti zařízení jsou připojené \emph{I/O} periférie k~\emph{MCU}. (např. teploměr, vlhkoměr, tranzistory ovládající světla,...)
 HW zařízení jsou koncipována tak, aby byla jednoduše \emph{customizovatelná} pro zákazníkovy potřeby.
 To znamená, že \emph{schopnosti zařízení} se dají lehce připojit, odpojit, či přidat jiný modul.
 \newline
@@ -618,7 +628,7 @@ První typ zařízení jsou dedikovaná energeticky úsporná zařízení, kde n
 Tato zařízení by měla vydržet dlouhou dobu bez jakéhokoli zásahu a nabíjení akumulátoru.
 K~tomuto typu zařízení lze pouze připojit malé množství \emph{I/O} periférií, neboli \emph{capabilities}.
 Tato zařízení mají malou velikost a slouží pouze k~vykonávání dedikovaných operací bez značné míry \emph{customizace} za účelem efektivního přístupu ke zdrojům.
-Mezi tyto schopnosti zařízení se řadí např. senzory, ovládání chytrých zásuvek(lze napájení získat jiným způsobem).
+Mezi tyto schopnosti zařízení se řadí např. senzory, ovládání chytrých zásuvek (lze napájení získat jiným způsobem).
 
 \subsection*{Centrální pro místnost}
 \label{hardware:centralni}
@@ -631,8 +641,8 @@ Zařízení jsou dostupná v~místnostech a disponují základními schopnostmi,
 \subsection*{Komunikace a správa zařízení}
 \label{hardware:komunikace}
 
-Komunikace zařízení s~ostatními zařízeními, serverem, nebo s~brokerem probíhá pomocí protokolu \emph{MQTT}(více info viz \ref{terminy:mqtt}).
-Před prvním použítím zařízení se musí zařízení inicializovat a získat potřebná data ze serveru.
+Komunikace zařízení s~ostatními zařízeními, serverem, nebo s~brokerem probíhá pomocí protokolu \emph{MQTT} (více info viz \ref{terminy:mqtt}).
+Před prvním použitím zařízení se musí zařízení inicializovat a získat potřebná data ze serveru.
 Existují dva přístupy, jak se připojit k~serveru a aktivovat tak dané zařízení:
 \begin{itemize}
   \item \textbf{Inicializace zařízení} - První použití zařízení
@@ -643,7 +653,7 @@ Existují dva přístupy, jak se připojit k~serveru a aktivovat tak dané zař�
 Před prvním použitím, zařízení vytvoří \emph{WiFi AP}\footnote{\textbf{WiFi AP} - WiFi \textbf{A}ccess \textbf{P}oint (přístupový bod - samostatný přijímač/vysílač)}.
 Uživatel se přihlásí k~danému AP pomocí hesla přiloženém k~zařízení. Zařízení má jednoznačný identifikátor, tudíž by neměla nastat kolize více zařízení.
 Když je uživatel připojen, je vyžádán, aby otevřel určitou webovou stránku, která je zprostředkována zařízením - jedná se o~konfigurační stránku zařízení.
-Po otevření webové stránky se uživateli zobrazí dostupné WiFi AP, uživatel vybere jeho domácí WiFi AP(připojení k~routeru, který je v~dané domácnosti).
+Po otevření webové stránky se uživateli zobrazí dostupné WiFi AP, uživatel vybere jeho domácí WiFi AP (připojení k~routeru, který je v~dané domácnosti).
 Dále uživatel zadá webovou stránku, nebo IP adresu \emph{MQTT brokeru}, která je také přístupná s~dodaným softwarem, nebo zprostředkována administrátorem služeb.
 Další základní parametr, který uživatel musí zadat, je identifikační číslo domácnosti.
 
@@ -651,9 +661,9 @@ Dále je možnost na dané stránce objevit výběr požadovaných schopností, 
 Každý mikrokontrolér má většinou odlišné možnosti ve schopnostech poskytnout určitou funkcionalitu na port.
 Konfigurace zařízení je tak dokončena a uložena do paměti flash daného mikrokontroléru.
 
-Zařízení poté pošle \emph{MQTT} zprávu na určené téma, kterou odchytí server. Zpráva obsahuje název zařízení a dále pole \emph{capabilities}(schopnosti).
+Zařízení poté pošle \emph{MQTT} zprávu na určené téma, kterou odchytí server. Zpráva obsahuje název zařízení a dále pole \emph{capabilities} (schopnosti).
 U~těchto schopností zařízení je přítomný typ schopnosti a pin, na kterém daná schopnost pracuje.
-Zpráva v~poslední řadě obsahuje tzv. \emph{message ID}(identifikátor zprávy), který slouží k~identifikování odpovědi ze serveru.
+Zpráva v~poslední řadě obsahuje tzv. \emph{message ID} (identifikátor zprávy), který slouží k~identifikování odpovědi ze serveru.
 
 Server zpracuje zprávu od zařízení a uloží zařízení a schopnosti do databáze.
 Server zpět pošle zprávu typu \emph{CREATE} s~příslušnými identifikátory zařízení a schopností.
@@ -701,9 +711,9 @@ v~podkapitole \ref{pouzite:frontend} vše použité k~implementaci \textbf{klien
 \newpage
 \section{Serverová část}
 \label{pouzite:backend}
-Jak již bylo řečeno v~návrhu serverové části řešení chytré domácnosti, implementace serverové části je asi nejkomplikovanější z~celého vývoje řešení(pro více info viz \ref{navrh:backend}).
-Pro účely vývoje serverové aplikace byl využit \emph{Java} framework zvaný \emph{Quarkus}(detailní popis \ref{pouzite:quarkus}).
-Pro síťové služby spojené se serverovou částí byla využita sada nástroju s~označením \emph{Vert.x}(detailní popis \ref{pouzite:vertx}).
+Jak již bylo řečeno v~návrhu serverové části řešení chytré domácnosti, implementace serverové části je asi nejkomplikovanější z~celého vývoje řešení (pro více info viz \ref{navrh:backend}).
+Pro účely vývoje serverové aplikace byl využit \emph{Java} framework zvaný \emph{Quarkus} (detailní popis \ref{pouzite:quarkus}).
+Pro síťové služby spojené se serverovou částí byla využita sada nástrojů s~označením \emph{Vert.x} (detailní popis \ref{pouzite:vertx}).
 
 \subsection*{Quarkus}
 \label{pouzite:quarkus}
@@ -711,24 +721,24 @@ Pro síťové služby spojené se serverovou částí byla využita sada nástro
 \begin{figure}[!ht]
   \centering
   \includegraphics[width=.45 \linewidth]{obrazky-figures/quarkus_logo.png}
-  \caption{Quarkus logo.~\cite{quarkus:website}}
+  \caption{Quarkus logo. Převzato z~\cite{quarkus:website}.}
   \label{figure:quarkus_logo}
 \end{figure}
 
-V~dnešní době, kdy žijeme v~době cloudových služeb, IoT a open-source projektů přichází do popředí kontejnery(\emph{containers}), mikroslužby(\emph{microservices}), reaktivní programování, cloud-native aplikace a spousty dalšího.
+V~dnešní době, kdy žijeme v~době cloudových služeb, IoT a open-source projektů přichází do popředí kontejnery (\emph{containers}), mikroslužby (\emph{microservices}), reaktivní programování, cloud-native aplikace a spousty dalšího.
 Díky těmto novým architekturám a nástrojům, přináší vývoj aplikací jiný rozměr a to speciálně větší produktivitu a výkonnost aplikací.
 Programovací jazyk \emph{Java} už je na trhu přes 20 let a stálé zůstává mezi nejpopulárnějšími programovacími jazyky na světě.
 V~informačních technologiích se však technologie a architektury mění velice rychle a je téměř nemožné využívat technologie přes 20 let bez větších změn. Aplikace v~kontejnerech by měly mít co nejmenší velikost, rychlý start při restartu a být škálovatelné.
 To však v~případě dosavadních Java aplikací nebylo až tak možné. Framework \emph{Quarkus} by však měl vše změnit.
 
 \textbf{Quarkus} je Kubernetes\footnote{\textbf{Kubernetes} - orchestrace kontejnerů na úrovni OS} Native Java framework, který nese označení \emph{Supersonic Subatomic Java} (nadzvuková subatomární Java).
-Tento framework je přímo ušitý pro GraalVM\footnote{\textbf{GraalVM} - generuje nativní kód} a HotSpot(klasická JVM\footnote{\textbf{JVM} - \textbf{J}ava \textbf{V}irtual \textbf{M}achine}).
+Tento framework je přímo ušitý pro GraalVM\footnote{\textbf{GraalVM} - generuje nativní kód} a HotSpot (klasická JVM\footnote{\textbf{JVM} - \textbf{J}ava \textbf{V}irtual \textbf{M}achine}).
 Je složen z~dostupných Java knihoven a standardů, které patří mezi ty nejlepší svého typu.
 Vyznačuje se termínem zvaným \emph{Container First}, kde celý framework je založený na nasazení aplikací v~kontejnerech a dále v~cloudových službách.~\cite{quarkus:infoDev}
 
-Na obrázku \ref{figure:quarkus_stats} je porovnání frameworku \emph{Quarkus} s~tradičním \emph{Cloud-Native} prvkem a dále porovnání vytvoření spustitelného souboru do nativního kódu pomocí \emph{GraalVM} a klasické využítí JVM pomocí \emph{OpenJDK}\footnote{\textbf{OpenJDK} - Open \textbf{J}ava \textbf{D}evelopment \textbf{K}it}.
+Na obrázku \ref{figure:quarkus_stats} je porovnání frameworku \emph{Quarkus} s~tradičním \emph{Cloud-Native} prvkem a dále porovnání vytvoření spustitelného souboru do nativního kódu pomocí \emph{GraalVM} a klasické využití JVM pomocí \emph{OpenJDK}\footnote{\textbf{OpenJDK} - Open \textbf{J}ava \textbf{D}evelopment \textbf{K}it}.
 Hodnoty jsou určeny pro klasickou \emph{REST}\footnote{\textbf{REST} - \textbf{RE}presentational \textbf{S}tate \textbf{T}ransfer (architektura rozhraní)} architekturu rozhraní a dále s~přidanými operacemi \emph{CRUD}\footnote{\textbf{CRUD} - \textbf{C}reate, \textbf{R}ead, \textbf{U}pdate, \textbf{D}elete (Vytvořit, Číst, Aktualizovat, Smazat)}.
-První horizontální polovina obrázku se zabývá využítí paměti celého programu a závislostí.
+První horizontální polovina obrázku se zabývá využití paměti celého programu a závislostí.
 Oproti tradičnímu \emph{Cloud-Native} prvku je program, vygenerovaný do nativního kódu, až 10x menší.
 U~\emph{Cloud-Native} aplikací je to opravdu znatelný rozdíl.
 V~druhé polovině je k~zahlédnutí nastartování celé aplikace a první odpověď ze serveru při požadavku.
@@ -738,7 +748,7 @@ Je zřejmé rapidní zvýšení rychlosti oproti klasickému tradičnímu \emph{
 \begin{figure}[hbt]
   \centering
   \includegraphics[width=1 \linewidth]{obrazky-figures/quarkus_stats.png}
-  \caption{Porovnání frameworku Quarkus s~alternativami.~\cite{quarkus:website}}
+  \caption{Porovnání frameworku Quarkus s~alternativami. Převzato z~\cite{quarkus:website}.}
   \label{figure:quarkus_stats}
 \end{figure}
 
@@ -748,7 +758,7 @@ Je zřejmé rapidní zvýšení rychlosti oproti klasickému tradičnímu \emph{
 \begin{figure}[hbt]
   \centering
   \includegraphics[width=.30 \linewidth]{obrazky-figures/vertx.png}
-  \caption{Vert.x logo.~\cite{wiki:vertx}}
+  \caption{Vert.x logo. Převzato z~\cite{wiki:vertx}.}
 \end{figure}
 
 \emph{Vert.x} je sada nástrojů pro vytvoření reaktivních aplikací, kde hlavní předností je malá velikost, nízké nároky na výpočetní prostředky a rozsáhlý ekosystém.
@@ -763,7 +773,7 @@ Tato technologie přináší mnoho zajímavých vylepšení, jako jsou neblokuj�
 \begin{figure}[hbt]
   \centering
   \includegraphics[width=.2 \linewidth]{obrazky-figures/hibernate.png}
-  \caption{Hibernate logo.~\cite{hibernate:logo}}
+  \caption{Hibernate logo. Převzato z~\cite{hibernate:logo}.}
 \end{figure}
 
 \emph{Hibernate ORM} (dále pouze jako \emph{Hibernate}) je ORM\footnote{\textbf{ORM}- \textbf{O}bjektově \textbf{R}elační \textbf{M}apování} framework vyvíjen společností \emph{Red Hat}.
@@ -784,7 +794,7 @@ který je jednodušší a bližší samotným třídám (označovaným jako \emp
 \begin{figure}[hbt]
   \centering
   \includegraphics[width=.2 \linewidth]{obrazky-figures/post.png}
-  \caption{\emph{PostgreSQL} logo.~\cite{postgres:tutorial}}
+  \caption{\emph{PostgreSQL} logo. Převzato z~\cite{postgres:tutorial}.}
 \end{figure}
 
 \emph{PostgreSQL} je objektově-relační, nejpokročilejší open-source databázový systém.
@@ -807,14 +817,14 @@ PostgreSQL byl vybrán pro účely implementace řešení této chytré domácno
 \begin{figure}[hbt]
   \centering
   \includegraphics[width=.3 \linewidth]{obrazky-figures/react.png}
-  \caption{React logo.~\cite{react:info}}
+  \caption{React logo. Převzato z~\cite{react:info}.}
 \end{figure}
 
 \emph{React} je JavaScript knihovna pro vytváření uživatelských rozhraní.
 Tato knihovna je udržována společností \emph{Facebook} a komunitou developerů a společností.
 React může být využit jako základ pro tvorbu single-page nebo mobilních aplikací, protože je optimální pro práci s~rychle se měnícími daty.
 React se pouze zabývá renderováním dat do \emph{DOM}\footnote{\textbf{DOM} - \textbf{D}ocument \textbf{O}bject \textbf{M}odel (objektový model dokumentu)}.
-V~aplikaci je dále použita další klíčová komponenta a to je \emph{React Router}, který se stará o~routování(směrování) v~aplikaci.
+V~aplikaci je dále použita další klíčová komponenta a to je \emph{React Router}, který se stará o~routování (směrování) v~aplikaci.
 Dále je s~aplikací propojena i knihovna pro \emph{state management}\footnote{\textbf{State management} - (management stavu)} a to konkrétně \emph{Mob.x}.~\cite{react:info}
 
 \subsection*{MobX}
@@ -822,27 +832,27 @@ Dále je s~aplikací propojena i knihovna pro \emph{state management}\footnote{\
 \begin{figure}[hbt]
   \centering
   \includegraphics[width=.1 \linewidth]{obrazky-figures/mobx.png}
-  \caption{MobX logo.~\cite{mobx:info}}
+  \caption{MobX logo. Převzato z~\cite{mobx:info}.}
 \end{figure}
 
 \emph{MobX} je knihovna, která tvoří \emph{state management} jednoduchý a škálovatelný pomocí \emph{TFRP}\footnote{\textbf{TFRP} - \textbf{T}ransparent \textbf{F}unctional \textbf{R}eactive \textbf{P}rogramming (transparentní použití funkcionálního reaktivního programování)}.
 Knihovny \emph{React} a \emph{MobX} jsou velmi mocná kombinace, protože:
 \begin{itemize}
-  \item React renderuje stav aplikace takovým způsobem, že poskytuje mechanismus na překlad do stromů \emph{renderable}(schopných být renderovány) komponentů.
+  \item React renderuje stav aplikace takovým způsobem, že poskytuje mechanismus na překlad do stromů \emph{renderable} (schopných být renderovány) komponentů.
   \item MobX poskytuje mechanismus uložení a aktualizování stavu aplikace, který poté \emph{React} použije.
 \end{itemize}
 
 Jak \emph{React} tak i \emph{MobX} poskytují optimální a jedinečná řešení běžných problémů ve vývoji aplikací.
 \emph{React} poskytuje mechanismus, který optimálně renderuje uživatelské rozhraní použitím virtuálního \emph{DOM}, který redukuje počet nákladných \emph{DOM} mutací.
 \emph{MobX} poskytuje mechanismus, který optimálně synchronizuje stav aplikace s~\emph{React} komponenty pomocí
-\emph{RVDSG}\footnote{\textbf{RVDSG} - \textbf{R}eactive \textbf{V}irtual \textbf{D}ependency \textbf{S}tate \textbf{G}raph (Reaktivní virtuální závislostní stavový graf)}, který je pouze aktualizovan v~případě, kdy je striktně potřeba.~\cite{mobx:info}
+\emph{RVDSG}\footnote{\textbf{RVDSG} - \textbf{R}eactive \textbf{V}irtual \textbf{D}ependency \textbf{S}tate \textbf{G}raph (Reaktivní virtuální závislostní stavový graf)}, který je pouze aktualizován v~případě, kdy je striktně potřeba.~\cite{mobx:info}
 
 \newpage
 \section{Hardwarová část}
 \label{pouzite:hw}
 V~této podkapitole jsou obsaženy moduly, které jsou využity v~daném řešení chytré domácnosti.
-Konkrétní zařízení, která jsou v~kontextu této práce jsou sestaveny pomocí různých modulů obsahující mikročip \emph{ESP8266}(více v~podkapitole \emph{Moduly obsahující čip ESP8266}).
-Pro nasazení služeb mimo cloud v~lokální síti je použit výkonný mini počítač s~označením \emph{Raspberry Pi 4B}(pro obecné info viz podkapitolu \emph{Minipočítač Raspberry Pi}).
+Konkrétní zařízení, která jsou v~kontextu této práce jsou sestaveny pomocí různých modulů obsahující mikročip \emph{ESP8266} (více v~podkapitole \emph{Moduly obsahující čip ESP8266}).
+Pro nasazení služeb mimo cloud v~lokální síti je použit výkonný mini počítač s~označením \emph{Raspberry Pi 4B} (pro obecné info viz podkapitolu \emph{Minipočítač Raspberry Pi}).
 
 \subsection*{Moduly obsahující čip ESP8266}
 \label{terminy:esp8266}
@@ -854,12 +864,12 @@ Na trhu existuje spousty modulů, které obsahují právě zmíněný mikročip 
 Mezi nejoblíbenější moduly, které obsahují tento mikročip jsou \emph{ESP-01}, který obsahuje pouze 2 GPIO\footnote{\textbf{GPIO} - \textbf{G}eneral \textbf{P}urpose \textbf{I}nput/\textbf{O}utput (univerzální vstupní/výstupní pin)} piny, poté větší \emph{Wemos D1 mini} a \emph{NodeMCU}.
 Tento projekt chytré domácnosti je sestaven hlavně z~těchto modulů díky svým přednostem a využití.
 Pro maximálně 2 jednotlivé I/O\footnote{\textbf{I/O} - \textbf{I}nput/\textbf{O}utput (vstup/výstup)} periferie připojené k~modulu je využit modul \emph{ESP-01}.
-Pro komplexní využítí a připojení více periferií je použit modul \emph{Wemos D1 mini}.
+Pro komplexní využití a připojení více periferií je použit modul \emph{Wemos D1 mini}.
 
 \begin{figure}[hbt]
   \centering
   \includegraphics[width=.2 \linewidth]{obrazky-figures/esp_standalone.png}
-  \caption{Samostatný ESP8266 čip.~\cite{esp8266logo}}
+  \caption{Samostatný ESP8266 čip. Převzato z~\cite{esp8266logo}.}
   \label{figure:esp8266}
 \end{figure}
 
@@ -878,7 +888,7 @@ kde vytvořené, nebo poskytnuté služby jsou optimalizované pro běh na zař�
 \begin{figure}[ht]
   \centering
   \includegraphics[width=.5 \linewidth]{obrazky-figures/raspberry.png}
-  \caption{Raspberry Pi 4.~\cite{raspberryLogo}}
+  \caption{Raspberry Pi 4. Převzato z~\cite{raspberryLogo}.}
 \end{figure}
 
 \newpage
@@ -896,18 +906,18 @@ O~vše se stará služba \emph{KeyCloak}.
 \begin{figure}[hbt]
   \centering
   \includegraphics[width=.25 \linewidth]{obrazky-figures/keycloak2.png}
-  \caption{Keycloak logo.~\cite{keycloak}}
+  \caption{Keycloak logo. Převzato z~\cite{keycloak}.}
 \end{figure}
 
-\textbf{KeyCloak} je open-source služba, která se stará o~autentizaci a autorizaci uživatelů a další předností je \emph{Identity and Access Management}(Management přístupu a identit),
+\textbf{KeyCloak} je open-source služba, která se stará o~autentizaci a autorizaci uživatelů a další předností je \emph{Identity and Access Management} (Management přístupu a identit),
 kde administrátor může upravovat práva uživatelů, přidávat do skupin s~určitými právy apod.
-Tato služba je podporována firmou \emph{Red Hat} a několik let už je v~popředí popularity služeb, které se starají o~bezpečnost webových aplikací. \emph{KeyCloak} disponuje rozsáhlou komunitou vývojářů, kteří jsou velice aktivní v~příspívání do daného komunitního produktu.
-\emph{KeyCloak} obsahuje spousty nových vylepšení a je opravdu velice dobře škálovatelný(\emph{scalable}) a upravovatelný(\emph{customizable}).
+Tato služba je podporována firmou \emph{Red Hat} a několik let už je v~popředí popularity služeb, které se starají o~bezpečnost webových aplikací. \emph{KeyCloak} disponuje rozsáhlou komunitou vývojářů, kteří jsou velice aktivní v~přispívání do daného komunitního produktu.
+\emph{KeyCloak} obsahuje spousty nových vylepšení a je opravdu velice dobře škálovatelný (\emph{scalable}) a upravovatelný(\emph{customizable}).
 
 Obsahuje spousty adaptérů pro klientské aplikace, tudíž nezáleží v~takové míře na programovacím jazyce.
 Využívá standardní zabezpečovací protokoly, mezi které patří \emph{OIDC}, \emph{OAuth 2.0}\footnote{\textbf{OAuth 2.0} - autorizační protokol} a \emph{SAML 2.0}\footnote{\textbf{SAML 2.0} - \textbf{S}ecurity \textbf{A}ssertion \textbf{M}arkup \textbf{L}anguage (autentizační/autorizační protokol)}.
 Lze dokonce využít i asociované autentizační a autorizační služby třetích stran pro udělení přístupu uživateli, registraci a mnoho dalšího.
-Lze získat přístup i od tzv. \emph{social providers}(poskytovatelů identit ze sociálních sítí) jako jsou např. \emph{Facebook}, \emph{Google}, \emph{Twitter} apod.
+Lze získat přístup i od tzv. \emph{social providers} (poskytovatelů identit ze sociálních sítí) jako jsou např. \emph{Facebook}, \emph{Google}, \emph{Twitter} apod.
 
 Na obrázku \ref{figure:keycloak_flow} je popsán autentizační proces uživatele. V~prvním kroku uživatel žádá o~zdroj informací u~aplikace, která je asociována s~\emph{KeyCloak} aplikací (v~mém případě s~mojí \emph{backend} aplikací).
 Aplikace pošle na službu \emph{KeyCloak} autentizační požadavek, služba se podívá, zda už je uživatel autentizován a když ano, pošle aplikaci odpověď o~úspěšném přihlášení a aplikace povolí uživateli přístup k~datům.
@@ -919,7 +929,7 @@ Když vše proběhne v~pořádku, \emph{KeyCloak} pošle odpověď aplikaci o~ú
 \begin{figure}[hbt]
   \centering
   \includegraphics[width=.8 \linewidth]{obrazky-figures/keycloak_flow.png}
-  \caption{Autentizační tok \emph{KeyCloak}.~\cite{keycloak}}
+  \caption{Autentizační tok \emph{KeyCloak}. Převzato z~\cite{keycloak}.}
   \label{figure:keycloak_flow}
 \end{figure}
 
@@ -927,12 +937,12 @@ Když vše proběhne v~pořádku, \emph{KeyCloak} pošle odpověď aplikaci o~ú
 \label{pouzite:mqtt}
 
 V~této sekci lze nalézt knihovny a technologie určené pro bezproblémovou komunikaci pomocí \emph{MQTT} protokolu.
-Nejdůležitější komponentou komunikace přes \emph{MQTT} protokol je \emph{MQTT Broker}(více info viz. \ref{terminy:mqtt}).
+Nejdůležitější komponentou komunikace přes \emph{MQTT} protokol je \emph{MQTT Broker} (více info viz. \ref{terminy:mqtt}).
 Instance pro poskytnutí brokeru byla využita služba \emph{HiveMQ}.
 
-Každá část této aplikace(serverová část, klientská část, zařízení,...) komunikující přes daný protokol, musí disponovat knihovnou, která poskytuje rozhraní a implementaci standardních operací nad protokolem \emph{MQTT}(\emph{MQTT klient}).
+Každá část této aplikace (serverová část, klientská část, zařízení,...) komunikující přes daný protokol, musí disponovat knihovnou, která poskytuje rozhraní a implementaci standardních operací nad protokolem \emph{MQTT} (\emph{MQTT klient}).
 Pro serverovou část a pro klientskou část to byla zvolena knihovna \emph{Eclipse Paho}.
-Zvolená knihovna poskytuje knihovnu pro několik programovích jazyků a je velice rozšířená a oblíbená.
+Zvolená knihovna poskytuje knihovnu pro několik programovacích jazyků a je velice rozšířená a oblíbená.
 Pro HW zařízení byla zvolena knihovna \emph{PubSub} od autora se jménem \emph{Nick O'Leary} díky své jednoduchosti, spolehlivosti a výkonnosti.
 
 \newpage
@@ -954,7 +964,7 @@ Prvky, které jsou nejdůležitější a \emph{HiveMQ} je řeší:
 \begin{figure}[hbt]
   \centering
   \includegraphics[width=1 \linewidth]{obrazky-figures/hivemq_arch.png}
-  \caption{Enterprise architektura MQTT.~\cite{hivemq:info}}
+  \caption{Enterprise architektura MQTT. Převzato z~\cite{hivemq:info}.}
   \label{figure:hivemq_flow}
 \end{figure}
 
@@ -963,7 +973,7 @@ Prvky, které jsou nejdůležitější a \emph{HiveMQ} je řeší:
 \begin{figure}[hbt]
   \centering
   \includegraphics[width=.2 \linewidth]{obrazky-figures/paho.png}
-  \caption{Eclipse Paho logo.~\cite{paho:info}}
+  \caption{Eclipse Paho logo. Převzato z~\cite{paho:info}.}
   \label{figure:paho}
 \end{figure}
 
@@ -994,22 +1004,22 @@ Poslední podkapitola \ref{impl:hw} se zabývá implementací daných HW zaříz
 
 \section{Serverová část}
 \label{impl:backend}
-V~této podkapitole ja zahrnuta implementace serverové části aplikace, kde hlavním jádrem implementace je komunikace s~klientskými aplikacemi a HW zařízeními.
+V~této podkapitole je zahrnuta implementace serverové části aplikace, kde hlavním jádrem implementace je komunikace s~klientskými aplikacemi a HW zařízeními.
 V~části komunikace s~danými prvky je nezbytné oddělit \emph{business} logiku od komunikačních prostředků.
-V~aplikaci jsou zřízeny tzv. \emph{services}(služby), které udržují danou \emph{business logiku} ke které přistupují komunikační prostředky(\emph{REST controller, komunikace přes MQTT}).
+V~aplikaci jsou zřízeny tzv. \emph{services} (služby), které udržují danou \emph{business logiku} ke které přistupují komunikační prostředky (\emph{REST controller, komunikace přes MQTT}).
 Jak již bylo popsáno dříve v~návrhu, architektura serverové části aplikace dodržuje předpisy pro \emph{RESTful} aplikaci.
-Tudíž se zde počítá s~bezstavostí požadavku na server.
+Tudíž se zde počítá s~bezstavovostí požadavku na server.
 V~podkapitolách serverové části budou zahrnuty nejdůležitější, nebo nejzajímavější implementační detaily implementace dané části.
 
 \subsection*{Architektura}
 \label{impl:backend:architektura}
-Architektura serverové části systému(dále pouze jako \emph{aplikace}) je klíčová.
-Aplikace je strukturována jako \emph{multi-module project}(projekt obsahující více modulů).
+Architektura serverové části systému (dále pouze jako \emph{aplikace}) je klíčová.
+Aplikace je strukturována jako \emph{multi-module project} (projekt obsahující více modulů).
 \newline
 Tato struktura aplikace má spousty výhod:
 \begin{itemize}
   \item \textbf{Separace logiky} - Oddělení \emph{business logiky} od dalších částí projektu. Moduly do sebe nezasahují.
-  \item \textbf{Vysoká škálovatelnost} - Aplikace lze jednoduše rozšířit. Přídání dalšího modulu je jednoduché a není potřeba předělávat celou aplikaci. Platí i v~opačném případě při odebrání modulu z~projektu.
+  \item \textbf{Vysoká škálovatelnost} - Aplikace lze jednoduše rozšířit. Přidání dalšího modulu je jednoduché a není potřeba předělávat celou aplikaci. Platí i v~opačném případě při odebrání modulu z~projektu.
   \item \textbf{Udržovatelnost} - Vysoká míra udržovatelnosti aplikace a modulů.
   \item \textbf{Zachování \emph{API}} - \emph{API} je v~rámci celé aplikace většinou ve velké míře neměnné a mění se pouze implementace daného rozhraní s~rozdílnou logikou.
 \end{itemize}
@@ -1034,20 +1044,20 @@ Základní moduly této aplikace jsou:
 \newpage
 \subsection*{Přijímání požadavků}
 \label{impl:backend:request}
-O~přijímání požadavku se stará implementace rozhraní \emph{JAX-RS}\footnote{\textbf{JAX-RS} - Java API for RESTful Web Services(rozhraní pro \emph{RESTful} služby)} a to přesněji \emph{RESTeasy}.
+O~přijímání požadavku se stará implementace rozhraní \emph{JAX-RS}\footnote{\textbf{JAX-RS} - Java API for RESTful Web Services (rozhraní pro \emph{RESTful} služby)} a to přesněji \emph{RESTeasy}.
 Tento framework používá anotace na usnadnění vývoje aplikací s~daným \emph{API}.
 Přijímá a odesílá základní data pouze ve formátu \emph{JSON}.
-Klient pošle požadavek na daný \emph{REST endpoint}, ke kterému je svázána nějaká operace(metoda), která se vykoná.
-Každá třída implementující rozhraní pro přístup k~\emph{resources}(zdrojům) je vlastně \emph{Java Bean}\footnote{\textbf{Java Bean} - Java EE komponenta} se životností pouze po dobu vykonávání určitého požadavku (\emph{RequestScoped}), poté je destruována.
+Klient pošle požadavek na daný \emph{REST endpoint}, ke kterému je svázána nějaká operace (metoda), která se vykoná.
+Každá třída implementující rozhraní pro přístup k~\emph{resources} (zdrojům) je vlastně \emph{Java Bean}\footnote{\textbf{Java Bean} - Java EE komponenta} se životností pouze po dobu vykonávání určitého požadavku (\emph{RequestScoped}), poté je destruována.
 
 V~kódu níže je ukázka rozhraní, které vyobrazuje nastavení pro \emph{RESTeasy} framework.
 Dané rozhraní se nachází v~modulu \emph{API} a implementace daného rozhraní v~modulu \emph{Controller}.
 Jako první anotace použita na dané rozhraní je \annotation{@Path}, ve které se definuje cesta k~danému zdroji.
 Dále následuje anotace \annotation{@Consumes} a \annotation{@Produces}, u~kterých je definovaná hodnota \emph{MediaType.APPLICATION\_JSON}.
-Znamená to, že implementace daného rozhraní komzumuje a produkuje pouze informace ve formátu \emph{JSON}.
+Znamená to, že implementace daného rozhraní konzumuje a produkuje pouze informace ve formátu \emph{JSON}.
 
 Anotace \annotation{@Transactional} značí, že požadavek na daný zdroj je brán transakčně, tudíž splňovat požadavky \emph{ACID}\footnote{\textbf{ACID} - \textbf{A}tomicity, \textbf{C}onsistency, \textbf{I}solation, \textbf{D}urability (Atomicita, Konzistence, Izolace a Trvanlivost)}.
-Poslední \emph{class annotation}(anotace třídy) s~názvem \annotation{@Authenticated} značí, že uživatel musí být autentizován před vykonáním specifické operace.
+Poslední \emph{class annotation} (anotace třídy) s~názvem \annotation{@Authenticated} značí, že uživatel musí být autentizován před vykonáním specifické operace.
 
 Anotace \annotation{@GET} a \annotation{@POST} definují typy požadavku.
 Lze použít i anotaci \annotation{@Path} na metody rozhraní, např. kdyby u~metody byla přidaná anotace \annotation{@Path} s~obsahem \emph{"/info"}, cesta k~danému zdroji
@@ -1105,7 +1115,7 @@ Proto přichází řešení ve formě předávání stavu do různých komponent
 
 \subsubsection*{Řešení}
 Vytvořil jsem \emph{Java Bean} komponentu s~názvem \emph{BartSession}, která má životnost také omezenou na vykonávání určitého požadavku.
-Tato komponenta poskytuje uložení aktuálního stavu požadavku, distribuování \emph{services}(služeb) a informace o~autentizovaném uživateli.
+Tato komponenta poskytuje uložení aktuálního stavu požadavku, distribuování \emph{services} (služeb) a informace o~autentizovaném uživateli.
 Každá třída poskytující správu cílového zdroje z~požadavku (dále jako \emph{resource} třída) ve svém konstruktoru zahrnuje právě tuto komponentu.
 Je tak zaručeno, že se stav dokáže předat do každé dané \emph{resource} třídy.
 
@@ -1156,7 +1166,7 @@ Kód je pouze ilustrační; obsahuje pouze základní prvky potřebné pro ilust
 Tato sekce pojednává o~propojení databázové části se serverem včetně způsobu mapování tabulek pomocí \emph{ORM} frameworku.
 Uživatel posílající požadavky na server, po náležitých autentizačních/autorizačních operacích, dostane data právě ze zmiňované databáze.
 Díky databázi jsou perzistentně uložená data, která slouží pro správu celé domácnosti.
-Pro implementaci databázové části systému byla využita databáze \emph{PostgreSQL}(více info viz. \ref{pouzite:postgresql}).
+Pro implementaci databázové části systému byla využita databáze \emph{PostgreSQL} (více info viz. \ref{pouzite:postgresql}).
 Hlavní entitou databáze je samotná domácnost, kde je vytvořena asociace mezi dalšími tabulkami.
 
 Jak již bylo řečeno v~návrhu, mezi databázovou vrstvou a serverovou vrstvou jsou objekty mapovány do relační databáze.
@@ -1207,7 +1217,7 @@ V~úryvku kódu níže je vyobrazen ilustrační kód pro definování asociace 
 
 Entita vyznačující domácnost obsahuje množinu místností, které jsou připojeny k~domácnosti.
 Anotace \annotation{@OneToMany} určuje asociaci ve vztahu 1:N (domácnost:místnosti), kde v~parametrech anotace je určena \emph{targetEntity}, ve které je definována cílová entita a
-parametr \emph{mappedBy}, který představuje název atributu v~místnosi, pomocí kterého je domácnost mapována v~dané místnosti.
+parametr \emph{mappedBy}, který představuje název atributu v~místnosti, pomocí kterého je domácnost mapována v~dané místnosti.
 
 \begin{lstlisting}[style=JavaStyle, caption={Ukázka asociace 1:N (domácnost:místnosti)}]
   // Entita domacnost
@@ -1246,8 +1256,8 @@ Anotace \annotation{@JoinColumn} slouží na propojení sloupců tabulek.
 Klientská aplikace se zabývá interakcí mezi uživatelem a systémem.
 Tudíž je velmi důležitá v~kontextu řešení chytré domácnosti.
 V~návrhu klientské aplikace je více informací o~struktuře klientské části (více info viz. \ref{navrh:frontend}).
-Klientská aplikace byla implementována v~jazyce \emph{JavaScript} s~využítím knihovny \emph{React}(více info viz. \ref{frontend:react}).
-Další důležitou součástí aplikace je udržovat stav aplikace o~který se stará nástroj \emph{MobX}(více info viz. \ref{frontend:mobx}).
+Klientská aplikace byla implementována v~jazyce \emph{JavaScript} s~využitím knihovny \emph{React} (více info viz. \ref{frontend:react}).
+Další důležitou součástí aplikace je udržovat stav aplikace o~který se stará nástroj \emph{MobX} (více info viz. \ref{frontend:mobx}).
 
 Základem klientské aplikace je předpřipravená šablona ve stylu \emph{Dashboardu}, která je vydávána pod \emph{MIT} licencí, tudíž je volně šiřitelná.
 Tato šablona je vytvořena pomocí knihovny \emph{Material UI}\footnote{\url{https://www.material-ui.com/}}. Autorem šablony je \emph{Creative Tim}\footnote{\url{https://www.creative-tim.com}}.
@@ -1275,7 +1285,7 @@ V~úryvku kódu níže je příklad vytvoření komponenty pomocí knihovny \emp
 \end{lstlisting}
 
 Jak již bylo zmíněno, důležitou součástí klientské aplikace je i stav aplikace o~který se stará nástroj \emph{MobX}.
-Pro aplikaci jsou vytvořeny tzv. \emph{stores}(úložiště), které slouží pro udržování stavu napříč aplikací.
+Pro aplikaci jsou vytvořeny tzv. \emph{stores} (úložiště), které slouží pro udržování stavu napříč aplikací.
 \newline
 
 Pro tento systém byly zatím vytvořeny základní úložiště a to:
@@ -1290,9 +1300,9 @@ Pro tento systém byly zatím vytvořeny základní úložiště a to:
 \newpage
 V~úryvku kódu níže je příklad definování úložiště pomocí nástroje \emph{MobX}.
 Nejzajímavější část celého \emph{store} je funkce \emph{decorate}.
-Tato funkce definuje ve třídě atributy, které budou tzv. \emph{observable}(pozorovatelné).
-Poté definuje \emph{action}(akce) metody,
-které modifikují stav a \emph{computed}(vypočteno) getter, který vrací daný objekt/objekty.
+Tato funkce definuje ve třídě atributy, které budou tzv. \emph{observable} (pozorovatelné).
+Poté definuje \emph{action} (akce) metody,
+které modifikují stav a \emph{computed} (vypočteno) getter, který vrací daný objekt/objekty.
 
 \begin{lstlisting}[style=JavaScriptStyle,caption={Ukázka vytvoření \emph{store} pro domácnost}]
  export class !!HomeStore!!{
@@ -1325,8 +1335,8 @@ které modifikují stav a \emph{computed}(vypočteno) getter, který vrací dan�
 \section{HW část}
 \label{impl:hw}
 Hardwarová část systému chytré domácnosti je uzpůsobena pro komunikaci se serverovou částí a klientskou aplikací.
-Jak již bylo popsáno v~návrhu, základem je mikrokontrolér, který slouží jako mozek celého zařízení(více info viz. \ref{terminy:mcu}).
-Moduly, které jsou využity pro sestavení zařízení obsahují mikročip \emph{ESP8266}(více info viz. \ref{terminy:esp8266}).
+Jak již bylo popsáno v~návrhu, základem je mikrokontrolér, který slouží jako mozek celého zařízení (více info viz. \ref{terminy:mcu}).
+Moduly, které jsou využity pro sestavení zařízení obsahují mikročip \emph{ESP8266} (více info viz. \ref{terminy:esp8266}).
 V~návrhů řešení byly zařízení rozděleny do dvou kategorií.
 
 Do první kategorie patří úsporná zařízení, která využívají modul \emph{ESP-01}, který disponuje pouze dvěma GPIO piny a hodí se pro různé samostatné senzory, či ovládání výstupních zařízeních.
@@ -1337,7 +1347,7 @@ Tento modul využívá 11 GPIO pinů, tudíž lze připojit až 11 \emph{I/O} je
 
 Program, který využívají tyto zařízení je naprogramován pomocí programovacího jazyka C++.
 Kód je předpřipraven pracovat s~velkou řadou \emph{I/O} jednotek.
-Je také velice dobře škálovatelný pro přidávání nových kompatibilních zařízení(pro více info viz. \ref{navrh:hardware}).
+Je také velice dobře škálovatelný pro přidávání nových kompatibilních zařízení (pro více info viz. \ref{navrh:hardware}).
 Jak již bylo zmíněno v~návrhu, tak pro zařízení byla zvolena knihovna, která umožňuje zařízením komunikovat přes \emph{MQTT} protokol s~názvem \emph{PubSub}.
 Tuto knihovnu představil autor se jménem \emph{Nick O'Leary} a díky své jednoduchosti, spolehlivosti a výkonnosti jsem ji zařadil jako jádro komunikační části zařízení.
 
@@ -1348,7 +1358,7 @@ Zařízení vytvoří svůj vlastní \emph{WiFi AP}, na který se uživatel při
   \minipage{0.5\textwidth}
   \centering
   \includegraphics[width=.8\linewidth]{obrazky-figures/esp-01.png}
-  \caption{Modul \emph{ESP-01}.~\cite{esp01}}
+  \caption{Modul \emph{ESP-01}. Převzato z~\cite{esp01}.}
   \label{figure:esp01}
   \endminipage
 
@@ -1356,23 +1366,9 @@ Zařízení vytvoří svůj vlastní \emph{WiFi AP}, na který se uživatel při
   \minipage{0.5\textwidth}
   \centering
   \includegraphics[width=.7\linewidth]{obrazky-figures/wemos.png}
-  \caption{Modul Wemos D1 mini.~\cite{wemosFigure}}
+  \caption{Modul Wemos D1 mini. Převzato z~\cite{wemosFigure}.}
   \label{figure:wemos}
   \endminipage
-\end{figure}
-
-\begin{figure}[hbt]
-  \centering
-  \includegraphics[width=1 \linewidth]{obrazky-figures/schematic.png}
-  \caption{Návrh schématu centrálního zařízení}
-  \label{figure:schema}
-\end{figure}
-
-\begin{figure}[hbt]
-  \centering
-  \includegraphics[width=0.6 \linewidth]{obrazky-figures/pcb.png}
-  \caption{Návrh DPS pro centrální zařízení}
-  \label{figure:schema}
 \end{figure}
 
 \chapter{Testování}
@@ -1463,7 +1459,7 @@ V~další podkapitole \ref{testovani:navrh:hw} jsou popsány nedostatky u~HW za�
 U~serverové části systému je mírným nedostatkem management \emph{MQTT klienta}, který se stará o~správu zařízení a ukládání dat ze zařízení do databáze.
 Daný klient obstarává každou zprávu ze zařízení pro domácnost a správa klienta je občas celkem náročná a tím pádem se jedná o~větší vytížení serveru.
 Pro vylepšení dané záležitosti bych navrhoval použití některé existující streamovací služby, která se bude starat o~zprávy ze zařízení a bude lepší management zpráv.
-Zatím nejlepším adeptem na danou fukncionalitu je podle mého názoru služba \emph{Apache Kafka}\footnote{\url{https://www.kafka.apache.org/}}.
+Zatím nejlepším adeptem na danou funkcionalitu je podle mého názoru služba \emph{Apache Kafka}\footnote{\url{https://www.kafka.apache.org/}}.
 Daná služba pracuje velmi dobře s~protokolem \emph{MQTT} a je schopna plnohodnotně nahradit i \emph{MQTT Broker} pomocí \emph{MQTT Proxy}.
 Myslím si, že daná služba má velikou budoucnost ve streamovacích službách.
 
@@ -1534,3 +1530,5 @@ Do budoucích cílů, které bych rád naplnil, řadím implementaci plné autom
 Práce mi dala spousty zkušeností z~různorodých odvětví IT a naučila mě, jak může být někdy obtížná systémová integrace podsystémů.
 Svět chytrých zařízení se velice rychle rozrůstá a je to směr, kterým bych se chtěl rád v~profesním životě ubírat.
 V~brzké budoucnosti můžeme očekávat, že Internet věcí změní celý svět.
+
+Projekt je možno sledovat prostřednictvím webové služby \emph{GitHub}\footnote{\url{https://github.com/mabartos/SmartHomeBartos}}.
