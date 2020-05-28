@@ -35,7 +35,7 @@ import AuthService from "./services/auth/AuthService";
 import AuthStore from "./stores/auth/AuthStore";
 import {DeviceStore} from "./stores/homeComponent/DeviceStore";
 
-export const backendURL = "http://127.0.0.1:8888";
+export const backendURL = "http://localhost:8888";
 export const keycloakURL = "http://127.0.0.1:8180/auth/realms/SmartHome";
 
 export const BROKER_URL_REGEX = "(tcp|http|https)://(.+):.*";

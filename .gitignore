@@ -35,10 +35,6 @@ pom.xml.versionsBackup
 release.properties
 
 import.sql
-mvnw
-mvnw.cmd
-
-.mvn
 /backup
 /backupModules
 
@@ -46,3 +42,5 @@ lsp
 
 node_modules
 frontend/node_modules
+
+backend/dist/src/main/resources/application.properties
