@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2020.
+ * Martin Bartos
+ * SmartHome BartOS
+ * All rights reserved.
+ */
+
 package org.mabartos.services.protocols.mqtt;
 
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -19,14 +26,14 @@ import org.mabartos.api.protocol.mqtt.exceptions.WrongMessageTopicException;
 import org.mabartos.api.protocol.mqtt.topics.CRUDTopic;
 import org.mabartos.api.protocol.mqtt.topics.GeneralTopic;
 import org.mabartos.api.service.AppServices;
-import org.mabartos.services.model.capability.extern.ExternBtnCapEntity;
-import org.mabartos.services.model.capability.heater.HeaterCapEntity;
-import org.mabartos.services.model.capability.humidity.HumidityCapEntity;
-import org.mabartos.services.model.capability.light.LightCapEntity;
-import org.mabartos.services.model.capability.pir.PIRCapEntity;
-import org.mabartos.services.model.capability.relay.RelayCapEntity;
-import org.mabartos.services.model.capability.temperature.TemperatureCapEntity;
-import org.mabartos.services.model.device.DeviceEntity;
+import org.mabartos.persistence.jpa.model.services.capability.extern.ExternBtnCapEntity;
+import org.mabartos.persistence.jpa.model.services.capability.heater.HeaterCapEntity;
+import org.mabartos.persistence.jpa.model.services.capability.humidity.HumidityCapEntity;
+import org.mabartos.persistence.jpa.model.services.capability.light.LightCapEntity;
+import org.mabartos.persistence.jpa.model.services.capability.pir.PIRCapEntity;
+import org.mabartos.persistence.jpa.model.services.capability.relay.RelayCapEntity;
+import org.mabartos.persistence.jpa.model.services.capability.temperature.TemperatureCapEntity;
+import org.mabartos.persistence.jpa.model.services.device.DeviceEntity;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;

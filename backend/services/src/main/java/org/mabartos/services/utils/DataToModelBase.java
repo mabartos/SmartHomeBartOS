@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2020.
+ * Martin Bartos
+ * SmartHome BartOS
+ * All rights reserved.
+ */
+
 package org.mabartos.services.utils;
 
 import org.mabartos.api.controller.capability.CapabilityInfoData;
@@ -8,10 +15,10 @@ import org.mabartos.api.model.capability.CapabilityModel;
 import org.mabartos.api.model.device.DeviceModel;
 import org.mabartos.api.model.home.HomeModel;
 import org.mabartos.api.model.room.RoomModel;
-import org.mabartos.services.model.capability.CapabilityEntity;
-import org.mabartos.services.model.device.DeviceEntity;
-import org.mabartos.services.model.home.HomeEntity;
-import org.mabartos.services.model.room.RoomEntity;
+import org.mabartos.persistence.jpa.model.services.capability.CapabilityEntity;
+import org.mabartos.persistence.jpa.model.services.device.DeviceEntity;
+import org.mabartos.persistence.jpa.model.services.home.HomeEntity;
+import org.mabartos.persistence.jpa.model.services.room.RoomEntity;
 
 public class DataToModelBase {
 

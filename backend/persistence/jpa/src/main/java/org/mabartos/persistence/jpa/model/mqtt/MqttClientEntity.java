@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2020.
+ * Martin Bartos
+ * SmartHome BartOS
+ * All rights reserved.
+ */
+
 package org.mabartos.persistence.jpa.model.mqtt;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -5,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import org.mabartos.api.model.home.HomeModel;
 import org.mabartos.api.model.mqtt.MqttClientModel;
-import org.mabartos.services.model.home.HomeEntity;
+import org.mabartos.persistence.jpa.model.services.home.HomeEntity;
 
 import javax.persistence.Cacheable;
 import javax.persistence.Column;

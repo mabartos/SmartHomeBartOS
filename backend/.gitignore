@@ -1,0 +1,3 @@
+*.properties
+createImage.sh
+dist

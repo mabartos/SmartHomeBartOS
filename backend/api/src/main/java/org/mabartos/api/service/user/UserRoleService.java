@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2020.
+ * Martin Bartos
+ * SmartHome BartOS
+ * All rights reserved.
+ */
+
 package org.mabartos.api.service.user;
 
 import org.mabartos.api.model.user.UserRoleModel;

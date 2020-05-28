@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2020.
+ * Martin Bartos
+ * SmartHome BartOS
+ * All rights reserved.
+ */
+
 package org.mabartos.controller;
 
 import io.quarkus.security.Authenticated;
@@ -5,7 +12,7 @@ import io.quarkus.security.identity.SecurityIdentity;
 import io.smallrye.jwt.auth.principal.DefaultJWTCallerPrincipal;
 import org.mabartos.api.model.user.UserModel;
 import org.mabartos.api.service.AppServices;
-import org.mabartos.services.model.user.UserEntity;
+import org.mabartos.persistence.jpa.model.services.user.UserEntity;
 
 import javax.annotation.Priority;
 import javax.inject.Inject;

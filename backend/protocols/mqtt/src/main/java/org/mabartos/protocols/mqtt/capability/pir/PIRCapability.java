@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2020.
+ * Martin Bartos
+ * SmartHome BartOS
+ * All rights reserved.
+ */
+
 package org.mabartos.protocols.mqtt.capability.pir;
 
 import org.eclipse.paho.client.mqttv3.MqttMessage;
