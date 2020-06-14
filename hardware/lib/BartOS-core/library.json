@@ -1,0 +1,10 @@
+{
+    "name": "SmartHomeBartOS",
+    "keywords": "smarthome",
+    "description": "Library for smart home - BartOS",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/mabartos/SmartHomeBartos"
+    },
+    "frameworks": "arduino"
+}

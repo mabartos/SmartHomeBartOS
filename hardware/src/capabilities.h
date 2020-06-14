@@ -8,12 +8,12 @@
 #include <string>
 #include <vector>
 
-#include "capability/Capability.h"
-#include "capability/humidity/HumidityCap.h"
-#include "capability/lights/LightsCap.h"
-#include "capability/pir/PIRCap.h"
-#include "capability/relay/RelayCap.h"
-#include "capability/temperature/TemperatureCap.h"
+#include "capability/general/Capability.h"
+#include "core/HumidityCap.h"
+#include "core/LightsCap.h"
+#include "core/PIRCap.h"
+#include "core/RelayCap.h"
+#include "core/TemperatureCap.h"
 
 using namespace std;
 
@@ -22,7 +22,6 @@ using namespace std;
 DHT dht(D7, DHTTYPE);
 
 bool shouldClearState = false;
-
 vector<shared_ptr<Capability>> createdCaps{
     make_shared<HumidityCap>(D7, dht),
     make_shared<TemperatureCap>(D7, dht),
@@ -30,5 +29,9 @@ vector<shared_ptr<Capability>> createdCaps{
     make_shared<LightsCap>(D5),
     make_shared<RelayCap>(D1),
     make_shared<RelayCap>(D2)};
+
+/*vector<shared_ptr<Capability>> createdCaps{
+    make_shared<RelayCap>(0)};
+    */
 
 #endif
