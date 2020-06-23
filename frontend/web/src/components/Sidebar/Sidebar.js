@@ -72,6 +72,7 @@ export default function Sidebar(props) {
                     {brand}
                     <div className={classes.sidebarWrapper}>
                         {links()}
+
                     </div>
                     {image !== undefined ? (
                         <div
@@ -79,6 +80,8 @@ export default function Sidebar(props) {
                             style={{backgroundImage: "url(" + image + ")"}}
                         />
                     ) : null}
+                    <SidebarProfile/>
+
                 </Drawer>
             </Hidden>
             <Hidden smDown implementation="css">

@@ -7,6 +7,9 @@
 
 package org.mabartos.controller.user;
 
+import io.quarkus.security.Authenticated;
+import org.mabartos.api.annotations.HasRoleInHome;
+import org.mabartos.api.common.UserRole;
 import org.mabartos.api.controller.user.UsersResource;
 import org.mabartos.api.model.BartSession;
 import org.mabartos.api.model.user.UserModel;
@@ -20,6 +23,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -27,6 +31,7 @@ import java.util.UUID;
 @Produces(MediaType.APPLICATION_JSON)
 @Transactional
 @RequestScoped
+@Authenticated
 public class UsersResourceProvider implements UsersResource {
 
     private final BartSession session;
@@ -36,8 +41,9 @@ public class UsersResourceProvider implements UsersResource {
     }
 
     @GET
+    @HasRoleInHome(minRole = UserRole.SYS_ADMIN)
     public Set<UserModel> getAll() {
-        return session.getActualHome().getUsers();
+        return session.services().users().getAll();
     }
 
     @GET
@@ -53,6 +59,15 @@ public class UsersResourceProvider implements UsersResource {
     public UserModel getUserByUsername(@PathParam("username") String username) {
         if (username != null)
             return session.services().users().findByUsername(username);
+        return null;
+    }
+
+    @GET
+    @Path("/search/{name}")
+    public List<UserModel> findUsersByNameOrEmail(String name) {
+        if (name != null) {
+            return session.services().users().findAllByNameOrEmail(name);
+        }
         return null;
     }
 

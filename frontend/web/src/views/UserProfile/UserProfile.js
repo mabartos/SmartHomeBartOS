@@ -76,7 +76,7 @@ export default function UserProfile() {
                                 <CardBody profile>
                                     {showUserProperty()}
 
-                                    {/* <p>{authStore.getToken() || "Undefined token"}</p>*/}
+                                     <p>{authStore.getToken() || "Undefined token"}</p>
 
                                     <Button color="primary" round onClick={handleEdit}>
                                         EDIT

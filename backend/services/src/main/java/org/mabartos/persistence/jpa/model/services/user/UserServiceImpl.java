@@ -19,6 +19,7 @@ import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
+import java.util.List;
 import java.util.UUID;
 
 @Dependent
@@ -38,7 +39,7 @@ public class UserServiceImpl extends CRUDServiceImpl<UserModel, UserEntity, User
     @Override
     public UserModel findByID(UUID id) {
         try {
-            Query query = getEntityManager().createNamedQuery("findUserByUUID");
+            Query query = getEntityManager().createNamedQuery("findUserByUUID", UserModel.class);
             query.setParameter("id", id);
             return (UserModel) query.getSingleResult();
         } catch (NoResultException e) {
@@ -64,5 +65,13 @@ public class UserServiceImpl extends CRUDServiceImpl<UserModel, UserEntity, User
     @Override
     public UserModel findByEmail(String email) {
         return getRepository().find("email", email).firstResultOptional().orElse(null);
+    }
+
+    @Override
+    public List<UserModel> findAllByNameOrEmail(String nameOrEmail) {
+        Query query = getEntityManager().createNamedQuery("findUserByNameOrEmail", UserModel.class);
+        query.setParameter("name", nameOrEmail);
+        query.setMaxResults(20);
+        return query.getResultList();
     }
 }

@@ -47,7 +47,8 @@ import java.util.UUID;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonPropertyOrder({"id", "name", "email"})
 @NamedQueries({
-        @NamedQuery(name = "findUserByUUID", query = "select user from UserEntity user where user.uuid = :id")
+        @NamedQuery(name = "findUserByUUID", query = "select user from UserEntity user where user.uuid = :id"),
+        @NamedQuery(name = "findUserByNameOrEmail", query = "select user from UserEntity user where lower(user.username) like concat(:name,'%') or user.email like concat(:name,'%')")
 })
 public class UserEntity extends PanacheEntityBase implements UserModel {
 

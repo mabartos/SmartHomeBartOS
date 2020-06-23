@@ -45,19 +45,31 @@ export default function Header(props) {
     };
 
     const showHomeID = () => {
+        if (getHomeID() !== -1) {
+            return (<Typography color={"secondary"} variant={"h5"}>
+                Home ID: {getHomeID()}
+            </Typography>)
+        }
+    };
+
+    const getHomeID = () => {
         let path = window.location.pathname;
         let index = path.indexOf("/my-homes/");
         if (index !== -1) {
             path = path.substring(index);
             let array = path.split("/");
-            if (array.length > 2) {
-                let homeID = parseInt(array[2], 10);
-                return (<Typography color={"secondary"} variant={"h5"}>
-                    Home ID: {homeID}
-                </Typography>)
-            }
+            return (array.length > 2) ? parseInt(array[2], 10) : -1;
+        }
+        return -1;
+    };
+
+    const getHomeMembers = () => {
+        const homeID = getHomeID();
+        if (homeID !== -1) {
+
         }
     };
+
 
     const {color} = props;
     const appBarClasses = classNames({
@@ -73,6 +85,9 @@ export default function Header(props) {
                     </Button>
                     <Button color="transparent" onClick={handleClickBrand} className={classes.title}>
                         {makeBrand()}
+                    </Button>
+                    <Button color="transparent" variant="" className={classes.title}>
+                        Home Members
                     </Button>
                     <Button color="transparent" disabled className={classes.title}>
                         {showHomeID()}

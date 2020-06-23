@@ -18,6 +18,7 @@ export class UserStore extends GeneralStore {
     }
 
     setUsers = (usersList) => {
+        console.log(usersList)
         this._users = this.getMapFromList(usersList);
     };
 
@@ -68,6 +69,15 @@ export class UserStore extends GeneralStore {
         this._userService
             .getUserByUsername(username)
             .then(this.setUser)
+            .catch(this.setError)
+            .finally(this.stopLoading);
+    };
+
+    getUserByNameOrEmail = (name) => {
+        this.startLoading();
+        this._userService
+            .getUserByNameOrEmail(name)
+            .then(this.setUsers)
             .catch(this.setError)
             .finally(this.stopLoading);
     };

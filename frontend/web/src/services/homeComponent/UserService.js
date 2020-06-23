@@ -23,6 +23,10 @@ export default class UserService extends GeneralService {
         return this.fetch(`${UserService.USER_ENDPOINT}/searchUsername/${username}`);
     };
 
+    getUserByNameOrEmail = (name) => {
+        return this.fetch(`${UserService.USER_ENDPOINT}/search/${name}`);
+    };
+
     getAllInvitations = () => {
         return this.fetch(`${UserService.INVITATION_ENDPOINT}`);
     };

@@ -8,6 +8,7 @@
 package org.mabartos.api.common;
 
 public enum UserRole {
+    SYS_ADMIN(1000),
     HOME_ADMIN(10),
     HOME_MEMBER(9),
     HOME_CHILD(8);

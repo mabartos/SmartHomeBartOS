@@ -14,6 +14,7 @@ import {UpdateRoomForm} from "../Forms/Edit/UpdateRoomForm";
 import {AddDeviceToRoom} from "../BartDialogs/AddDeviceToRoom";
 import BartGeneralFooterCard from "./BartGeneralFooterCard";
 import {InviteUserToHome} from "../BartDialogs/InviteUserToHome";
+import {GeneralModal} from "../Modal/GeneralModal";
 
 const useStyles = makeStyles(styles);
 
