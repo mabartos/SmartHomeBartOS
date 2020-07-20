@@ -9,9 +9,14 @@ import HomeCard from "../../components/BartCard/BartHomeComponent/HomeCard";
 import {HomeComponent} from "../../index";
 import ErrorNotification from "../../components/Notifications/ErrorNotification";
 import SuccessNotification from "../../components/Notifications/SuccessNotification";
+import {RoutePages} from "../../routes";
 
 export default function Homes() {
-    const {homeStore, authStore} = useStores();
+    const {homeStore, authStore, uiStore} = useStores();
+
+    React.useEffect(() => {
+        uiStore.setActualPage(RoutePages.ALL_HOMES);
+    }, [uiStore]);
 
     useEffect(() => {
         authStore.initKeycloak();

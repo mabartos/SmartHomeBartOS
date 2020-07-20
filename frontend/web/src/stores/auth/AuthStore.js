@@ -22,7 +22,6 @@ export default class AuthStore extends GeneralStore {
     setUser = (user) => {
         this._user = user;
         this.checkError();
-        /*history.push("/admin");*/
     };
 
     get user() {

@@ -33,7 +33,8 @@ import {RoomStore} from "./stores/homeComponent/RoomStore";
 import LoginPage from "./views/SignIn/LoginPage";
 import AuthService from "./services/auth/AuthService";
 import AuthStore from "./stores/auth/AuthStore";
-import {DeviceStore} from "./stores/homeComponent/DeviceStore";
+import DeviceStore from "./stores/homeComponent/DeviceStore";
+import UIStore from "./stores/UIStore";
 
 export const backendURL = "http://localhost:8888";
 export const keycloakURL = "http://127.0.0.1:8180/auth/realms/SmartHome";
@@ -56,6 +57,7 @@ const homeStore = new HomeStore(homeService);
 const userStore = new UserStore(userService);
 const roomStore = new RoomStore(roomService);
 const deviceStore = new DeviceStore(deviceService);
+const uiStore = new UIStore();
 
 const services = {
     userService,
@@ -70,7 +72,8 @@ const stores = {
     homeStore,
     userStore,
     roomStore,
-    deviceStore
+    deviceStore,
+    uiStore
 };
 
 export const HomeComponent = {

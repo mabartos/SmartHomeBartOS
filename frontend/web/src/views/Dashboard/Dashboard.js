@@ -30,8 +30,6 @@ import {useObserver} from "mobx-react-lite"
 import homeImg from "../../assets/img/indexBackground.jpg";
 
 import {bugs, server, website} from "variables/general.js";
-
-
 import {completedTasksChart, dailySalesChart, emailsSubscriptionChart} from "variables/charts.js";
 
 import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js";
@@ -39,12 +37,17 @@ import MainDisplayCard from "../../components/BartCard/MainDisplayCard";
 import useStores from "../../hooks/useStores";
 import {Typography} from "@material-ui/core";
 import BartOSTitle from "../../components/Typography/BartOSTitle";
+import {RoutePages} from "../../routes";
 
 const useStyles = makeStyles(styles);
 
 export default function Dashboard() {
     const classes = useStyles();
-    const {authStore, homeStore} = useStores();
+    const {authStore, homeStore, uiStore} = useStores();
+
+    React.useEffect(() => {
+        uiStore.setActualPage(RoutePages.DASHBOARD);
+    }, [uiStore]);
 
     React.useEffect(() => {
         authStore.initKeycloak();

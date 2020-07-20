@@ -48,26 +48,8 @@ export default class GeneralService {
                                 .then(resolve)
                                 .catch(reject);
                             break;
-                        case 400:
-                            reject(response.reason);
-                            break;
-                        case 401:
-                            reject(response.reason);
-                            break;
-                        case 403:
-                            reject(response.reason);
-                            break;
-                        case 404:
-                            reject(response.reason);
-                            break;
-                        case 409:
-                            reject(response.reason);
-                            break;
-                        case 500:
-                            reject(response.reason);
-                            break;
                         default:
-                            reject("Error occurred");
+                            reject(response.reason);
                             break;
                     }
                 })

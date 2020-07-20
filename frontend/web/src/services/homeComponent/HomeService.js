@@ -44,7 +44,6 @@ export default class HomeService extends GeneralService {
     getDevicesInHome = (homeID) => {
         return this.fetch(this.getURL(homeID) + "/devices");
     };
-
     addHomeToUser = (homeID) => {
         return this.post(this.getURL(homeID), null);
     };
@@ -67,5 +66,9 @@ export default class HomeService extends GeneralService {
 
     getAllMyRoles = () => {
         return this.fetch(`${this.getURL()}/my-roles`);
-    }
+    };
+
+    getMembers = (homeID) => {
+        return this.fetch(`${this.getURL(homeID)}/members`);
+    };
 }

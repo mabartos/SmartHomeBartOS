@@ -1,7 +1,7 @@
 import GeneralStore from "../GeneralStore";
 import {action, computed, decorate, observable} from "mobx";
 
-export class DeviceStore extends GeneralStore {
+export default class DeviceStore extends GeneralStore {
 
     _devices = new Map();
 

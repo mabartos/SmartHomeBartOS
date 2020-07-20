@@ -11,6 +11,8 @@ export class HomeStore extends GeneralStore {
 
     _rolesInHome = new Map();
 
+    _members = new Map();
+
     _homeService;
 
     constructor(homeService) {
@@ -63,6 +65,14 @@ export class HomeStore extends GeneralStore {
         }
     };
 
+    setMembers = (memberList) => {
+        if (memberList) {
+            memberList.forEach(member => {
+                this._members.set(member.user.id, member);
+            })
+        }
+    };
+
     get homes() {
         return this._homes;
     }
@@ -81,6 +91,10 @@ export class HomeStore extends GeneralStore {
 
     get rolesInHome() {
         return this._rolesInHome;
+    }
+
+    get members() {
+        return this._members;
     }
 
     reloadHomes = () => {
@@ -217,6 +231,19 @@ export class HomeStore extends GeneralStore {
         this.stopLoading();
     };
 
+    getMembers = (homeID) => {
+        this.startLoading();
+        this._homeService
+            .getMembers(homeID)
+            .then(this.setMembers)
+            .catch(this.setError)
+            .finally(this.stopLoading);
+    };
+
+    clearMembers = () => {
+        this._members = new Map();
+    };
+
     reloadAllMyRoles = () => {
         this._homeService
             .getAllMyRoles()
@@ -237,11 +264,14 @@ export class HomeStore extends GeneralStore {
 }
 
 decorate(HomeStore, {
+    // OBSERVABLE
     _homes: observable,
     _devices: observable,
     _invitations: observable,
     _rolesInHome: observable,
+    _members: observable,
 
+    // ACTION
     setHome: action,
     setHomes: action,
 
@@ -253,10 +283,14 @@ decorate(HomeStore, {
     setRoleInHome: action,
     setAllRolesInHome: action,
 
+    setMembers: action,
+    clearMembers: action,
     resetStates: action,
 
+    // COMPUTED
     homes: computed,
     devices: computed,
     invitations: computed,
-    rolesInHome: computed
+    rolesInHome: computed,
+    members: computed
 });

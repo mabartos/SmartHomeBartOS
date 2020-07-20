@@ -7,11 +7,14 @@
 
 package org.mabartos.persistence.jpa.model.services.home;
 
+import com.google.common.collect.Sets;
 import io.quarkus.runtime.StartupEvent;
+import org.mabartos.api.controller.user.HomeMemberRoleData;
 import org.mabartos.api.data.general.home.HomeData;
 import org.mabartos.api.model.device.DeviceModel;
 import org.mabartos.api.model.home.HomeModel;
 import org.mabartos.api.model.user.UserModel;
+import org.mabartos.api.model.user.UserRoleModel;
 import org.mabartos.api.protocol.mqtt.BartMqttClient;
 import org.mabartos.api.protocol.mqtt.MqttClientManager;
 import org.mabartos.api.protocol.mqtt.TopicUtils;
@@ -26,6 +29,9 @@ import org.mabartos.services.utils.DataToModelBase;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
+import javax.persistence.Query;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -160,5 +166,24 @@ public class HomeServiceImpl extends CRUDServiceImpl<HomeModel, HomeEntity, Home
             home.getUnAssignedDevices().forEach(dev -> services.devices().clearRetainedMessages(dev.getID()));
             home.getChildren().forEach(room -> services.rooms().clearRetainedMessages(room.getID()));
         }
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public Set<UserRoleModel> getAllHomeMembers(Long homeID) {
+        Query query = getEntityManager().createNamedQuery("getAllHomeMembers");
+        query.setParameter("homeID", homeID);
+        return Sets.newHashSet(query.getResultList());
+    }
+
+    @Override
+    public Set<HomeMemberRoleData> getAllHomeMembersData(Long homeID) {
+        Set<UserRoleModel> members = getAllHomeMembers(homeID);
+        Set<HomeMemberRoleData> data = new HashSet<>();
+        if (members != null) {
+            members.forEach(member -> data.add(new HomeMemberRoleData(homeID, member.getRole(), member.getUser())));
+            return data;
+        }
+        return Collections.emptySet();
     }
 }

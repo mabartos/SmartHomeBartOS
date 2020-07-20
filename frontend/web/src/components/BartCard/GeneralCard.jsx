@@ -14,7 +14,7 @@ import {UpdateRoomForm} from "../Forms/Edit/UpdateRoomForm";
 import {AddDeviceToRoom} from "../BartDialogs/AddDeviceToRoom";
 import BartGeneralFooterCard from "./BartGeneralFooterCard";
 import {InviteUserToHome} from "../BartDialogs/InviteUserToHome";
-import {GeneralModal} from "../Modal/GeneralModal";
+import Conditional from "../Authorization/Conditional";
 
 const useStyles = makeStyles(styles);
 
@@ -72,8 +72,15 @@ export default function GeneralCard(props) {
         <GridItem xs={12} sm={6} md={3}>
             <BooleanDialog ref={refDelete} type={type} {...props}/>
             {getEditForm()}
-            {type === HomeComponent.ROOM && <AddDeviceToRoom ref={refAddDevice} {...props}/>}
-            {type === HomeComponent.HOME && <InviteUserToHome ref={refInviteUser} {...props}/>}
+
+            <Conditional condition={type === HomeComponent.HOME}>
+                <InviteUserToHome ref={refInviteUser} {...props}/>
+            </Conditional>
+
+            <Conditional condition={type === HomeComponent.ROOM}>
+                <AddDeviceToRoom ref={refAddDevice} {...props}/>
+            </Conditional>
+
             <Clickable onClick={() => onSelect()}>
                 <Card className={classes.container}>
                     <BartGeneralHeaderCard title={props.title} active={props.active} color={props.color}

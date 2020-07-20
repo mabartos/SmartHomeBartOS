@@ -8,10 +8,12 @@
 package org.mabartos.api.controller.user;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.mabartos.api.common.UserRole;
 import org.mabartos.api.data.general.SerializableJSON;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserRoleData implements SerializableJSON {
 
     @JsonProperty("id")

@@ -10,11 +10,17 @@ import RoomCard from "../../components/BartCard/BartHomeComponent/RoomCard";
 import {HomeComponent} from "../../index";
 import ErrorNotification from "../../components/Notifications/ErrorNotification";
 import SuccessNotification from "../../components/Notifications/SuccessNotification";
+import {RoutePages} from "../../routes";
 
 export default function Home(props) {
-    const {homeStore, roomStore, authStore, deviceStore} = useStores();
+    const {homeStore, roomStore, authStore, deviceStore, uiStore} = useStores();
     const {homeID} = useParams();
     const id = parseInt(homeID || -1);
+
+    React.useEffect(() => {
+        uiStore.setActualPage(RoutePages.HOME);
+        uiStore.setHomeID(homeID);
+    }, [uiStore, homeID]);
 
     React.useEffect(() => {
         if (!homeStore.homes[id]) {

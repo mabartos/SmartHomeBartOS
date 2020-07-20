@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useRef} from "react";
 import classNames from "classnames";
 import PropTypes from "prop-types";
 // @material-ui/core components
@@ -16,12 +16,19 @@ import {useHistory} from "react-router-dom";
 
 import styles from "assets/jss/material-dashboard-react/components/headerStyle.js";
 import {Typography} from "@material-ui/core";
+import useStores from "../../hooks/useStores";
+import {useObserver} from "mobx-react-lite";
+import Conditional from "../Authorization/Conditional";
+import {HomeMembersModal} from "../../views/Homes/HomeMembersModal";
 
 const useStyles = makeStyles(styles);
 
 export default function Header(props) {
     const classes = useStyles();
     const history = useHistory();
+    const {uiStore} = useStores();
+
+    const homeMembersRef = useRef(null);
 
     function makeBrand() {
         let name;
@@ -44,70 +51,64 @@ export default function Header(props) {
         history.goBack();
     };
 
-    const showHomeID = () => {
-        if (getHomeID() !== -1) {
-            return (<Typography color={"secondary"} variant={"h5"}>
-                Home ID: {getHomeID()}
-            </Typography>)
-        }
-    };
-
-    const getHomeID = () => {
-        let path = window.location.pathname;
-        let index = path.indexOf("/my-homes/");
-        if (index !== -1) {
-            path = path.substring(index);
-            let array = path.split("/");
-            return (array.length > 2) ? parseInt(array[2], 10) : -1;
-        }
-        return -1;
-    };
-
-    const getHomeMembers = () => {
-        const homeID = getHomeID();
-        if (homeID !== -1) {
-
-        }
-    };
-
-
     const {color} = props;
     const appBarClasses = classNames({
         [" " + classes[color]]: color
     });
-    return (
-        <AppBar className={classes.appBar + appBarClasses}>
-            <Toolbar className={classes.container}>
-                <div className={classes.flex}>
-                    {/* Here we create navbar brand, based on route name */}
-                    <Button color="transparent" href="#" className={classes.title} onClick={goBackInHistory}>
-                        Back
-                    </Button>
-                    <Button color="transparent" onClick={handleClickBrand} className={classes.title}>
-                        {makeBrand()}
-                    </Button>
-                    <Button color="transparent" variant="" className={classes.title}>
-                        Home Members
-                    </Button>
-                    <Button color="transparent" disabled className={classes.title}>
-                        {showHomeID()}
-                    </Button>
-                </div>
-                <Hidden smDown implementation="css">
-                    <AdminNavbarLinks/>
-                </Hidden>
-                <Hidden mdUp implementation="css">
-                    <IconButton
-                        color="inherit"
-                        aria-label="open drawer"
-                        onClick={props.handleDrawerToggle}
-                    >
-                        <Menu/>
-                    </IconButton>
-                </Hidden>
-            </Toolbar>
-        </AppBar>
-    );
+
+    return useObserver(() => {
+        const {homeID} = uiStore;
+
+        const getHomeID = () => {
+            if (homeID) {
+                return (<Typography color={"secondary"} variant={"h6"}>
+                    ID: {homeID}
+                </Typography>)
+            }
+        };
+
+        const handleClickMembers = () => {
+            homeMembersRef.current.openDialog();
+        };
+
+        return (
+            <AppBar className={classes.appBar + appBarClasses}>
+                <Toolbar className={classes.container}>
+                    <div className={classes.flex}>
+                        {/* Here we create navbar brand, based on route name */}
+                        <Button color="transparent" href="#" className={classes.title} onClick={goBackInHistory}>
+                            Back
+                        </Button>
+                        <Button color="transparent" onClick={handleClickBrand} className={classes.title}>
+                            {makeBrand()}
+                        </Button>
+
+                        <Conditional condition={getHomeID()}>
+                            <Button color="transparent" variant="" onClick={handleClickMembers} className={classes.title}>
+                                Home Members
+                            </Button>
+                            <Button color="transparent" disabled className={classes.title}>
+                                {getHomeID()}
+                            </Button>
+                            <HomeMembersModal ref={homeMembersRef} {...props}/>
+                        </Conditional>
+                    </div>
+                    <Hidden smDown implementation="css">
+                        <AdminNavbarLinks/>
+                    </Hidden>
+                    <Hidden mdUp implementation="css">
+                        <IconButton
+                            color="inherit"
+                            aria-label="open drawer"
+                            onClick={props.handleDrawerToggle}
+                        >
+                            <Menu/>
+                        </IconButton>
+                    </Hidden>
+                </Toolbar>
+            </AppBar>
+        )
+    });
 }
 
 Header.propTypes = {

@@ -37,7 +37,7 @@ public class UserResourceProvider implements UserResource {
     @POST
     public UserModel addUserToHome() {
         UserModel user = session.getActualUser();
-        if (session.getActualHome() != null ) {
+        if (session.getActualHome() != null) {
             user.addHome(session.getActualHome());
             session.getActualHome().addUser(user);
             return session.services().users().updateByID(session.getActualUser().getID(), user);

@@ -15,10 +15,8 @@ import org.mabartos.api.controller.home.HomesResource;
 import org.mabartos.api.controller.user.UserRoleData;
 import org.mabartos.api.data.general.home.HomeData;
 import org.mabartos.api.model.BartSession;
-import org.mabartos.api.model.device.DeviceModel;
 import org.mabartos.api.model.home.HomeModel;
 import org.mabartos.api.model.user.UserModel;
-import org.mabartos.api.model.user.UserRoleModel;
 import org.mabartos.controller.utils.ControllerUtil;
 import org.mabartos.services.utils.DataToModelBase;
 
@@ -34,7 +32,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -54,13 +51,6 @@ public class HomesResourceProvider implements HomesResource {
         this.session = session;
     }
 
-    //TODO test
-    @GET
-    @Path("/devTest")
-    public Set<DeviceModel> getDevs() {
-        return session.services().devices().getAll();
-    }
-
     @GET
     public Response getAll() {
         UserModel user = session.auth().getUserInfo();
@@ -75,12 +65,7 @@ public class HomesResourceProvider implements HomesResource {
     public Set<UserRoleData> getMyHomesRoles() {
         UserModel user = session.auth().getUserInfo();
         if (user != null) {
-            Set<UserRoleModel> roleModels = session.services().users().roles().getAllUserRoles(user.getID());
-            Set<UserRoleData> roleData = new HashSet<>();
-            if (roleModels != null) {
-                roleModels.forEach(role -> roleData.add(new UserRoleData(role.getHomeID(), role.getRole())));
-                return roleData;
-            }
+            return session.services().users().roles().getAllUserRolesData(user.getID());
         }
         return Collections.emptySet();
     }

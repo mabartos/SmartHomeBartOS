@@ -14,6 +14,7 @@ import avatar from "../../assets/img/avatar.jpeg";
 import useStores from "../../hooks/useStores";
 import {useObserver} from "mobx-react-lite";
 import {Typography} from "@material-ui/core";
+import {RoutePages} from "../../routes";
 
 const styles = {
     cardCategoryWhite: {
@@ -38,11 +39,15 @@ const useStyles = makeStyles(styles);
 
 export default function UserProfile() {
     const classes = useStyles();
-    const {authStore} = useStores();
+    const {authStore, uiStore} = useStores();
 
     React.useEffect(() => {
         authStore.getUserInfo();
     });
+
+    React.useEffect(() => {
+        uiStore.setActualPage(RoutePages.USER_PROFILE);
+    }, [uiStore]);
 
     return useObserver(() => {
         const {user, isAuthenticated} = authStore;

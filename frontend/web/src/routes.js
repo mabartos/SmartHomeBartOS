@@ -27,8 +27,18 @@ import Homes from "./views/Homes/Homes";
 import Home from "./views/Homes/Home.jsx";
 import Room from "./views/Room/Room";
 
+export const RoutePages = {
+    ALL_HOMES: 'allHomes',
+    HOME: 'home',
+    ROOM: 'room',
+    USER_PROFILE: 'userProfile',
+    DASHBOARD: 'dashboard',
+    OTHER: 'other'
+};
+
 const dashboardRoutes = [
     {
+        page: RoutePages.DASHBOARD,
         path: "/home",
         name: "Home",
         icon: Dashboard,
@@ -36,6 +46,7 @@ const dashboardRoutes = [
         layout: "/admin"
     },
     {
+        page: RoutePages.ROOM,
         path: "/my-homes/:homeID/rooms/:roomID",
         name: "Devices",
         icon: Person,
@@ -44,6 +55,7 @@ const dashboardRoutes = [
         inSidebar: false
     },
     {
+        page: RoutePages.HOME,
         path: "/my-homes/:homeID",
         name: "Rooms",
         icon: Person,
@@ -52,6 +64,7 @@ const dashboardRoutes = [
         inSidebar: false
     },
     {
+        page: RoutePages.ALL_HOMES,
         path: "/my-homes",
         name: "My Homes",
         icon: HomeIcon,
@@ -59,6 +72,7 @@ const dashboardRoutes = [
         layout: "/admin"
     },
     {
+        page: RoutePages.USER_PROFILE,
         path: "/user",
         name: "User Profile",
         icon: Person,

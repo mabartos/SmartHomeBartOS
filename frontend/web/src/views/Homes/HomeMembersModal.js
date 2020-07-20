@@ -1,20 +1,13 @@
 import React, {forwardRef, useImperativeHandle} from "react";
 import {useObserver} from "mobx-react-lite";
-import Backdrop from "@material-ui/core/Backdrop";
-import Fade from "@material-ui/core/Fade";
-import GridItem from "../../components/Grid/GridItem";
-import Card from "@material-ui/core/Card";
-import CardHeader from "../../components/Card/CardHeader";
-import CardBody from "../../components/Card/CardBody";
-import CustomInput from "../../components/CustomInput/CustomInput";
-import Button from "@material-ui/core/Button";
-import Search from "@material-ui/icons/Search";
-import GridContainer from "../../components/Grid/GridContainer";
-import CardFooter from "../../components/Card/CardFooter";
-import Modal from "@material-ui/core/Modal";
+import {GeneralModal} from "../../components/Modal/GeneralModal";
+import useStores from "../../hooks/useStores";
 
 export const HomeMembersModal = forwardRef((props, ref) => {
     const [open, setOpen] = React.useState(false);
+    const [isCleared, setCleared] = React.useState(false);
+
+    const {homeStore, uiStore} = useStores();
 
     const openDialog = () => {
         setOpen(true);
@@ -24,6 +17,22 @@ export const HomeMembersModal = forwardRef((props, ref) => {
         setOpen(false);
     };
 
+    const handleOpenState = (state) => {
+        state ? openDialog() : closeDialog();
+    };
+
+    React.useEffect(() => {
+        if (open) {
+            setCleared(true);
+            homeStore.getMembers(uiStore.homeID);
+        } else {
+            if (!isCleared) {
+                homeStore.clearMembers();
+                setCleared(true);
+            }
+        }
+    }, [open, homeStore, uiStore]);
+
     useImperativeHandle(ref, () => {
         return {
             openDialog: openDialog,
@@ -31,63 +40,15 @@ export const HomeMembersModal = forwardRef((props, ref) => {
         }
     });
 
-
     return useObserver(() => {
-
+        const {members} = homeStore;
 
         return (
             <>
-                <Modal
-                    aria-labelledby="transition-modal-title"
-                    aria-describedby="transition-modal-description"
-                    className={classes.modal}
-                    open={open}
-                    onKeyDown={handleKeys}
-                    closeAfterTransition
-                    BackdropComponent={Backdrop}
-                    BackdropProps={{
-                        timeout: 500,
-                    }}
-                >
-                    <Fade in={open}>
-                        <GridItem xs={12} sm={8} md={4}>
-                            <Card className={classes.card}>
-                                <CardHeader color={"info"}>
-                                    <h4 className={classes.cardTitleWhite}>Invite User to Home</h4>
-                                </CardHeader>
-                                <CardBody>
-                                    <div className={headerStyles.searchWrapper}>
-                                        <CustomInput
-                                            formControlProps={{
-                                                className: headerStyles.margin + " " + headerStyles.search
-                                            }}
-                                            inputProps={{
-                                                placeholder: "Find user",
-                                                inputProps: {
-                                                    "aria-label": "Find user"
-                                                }
-                                            }}
-                                            onChange={handleChangeName}
-                                            onKeyDown={handleSearchKey}
-                                        />
-                                        <Button color="primary" aria-label="edit" onClick={handleSearchUser}>
-                                            <Search/>
-                                        </Button>
-                                    </div>
-                                    <GridContainer>
-                                        {isSearched && getFoundUsers()}
-                                    </GridContainer>
+                <GeneralModal open={open} openCallback={handleOpenState} title={"Home Members"}
+                              confirmCondition={false}>
 
-                                </CardBody>
-                                <CardFooter>
-                                    <Button onClick={closeDialog} color="secondary">Cancel</Button>
-                                    <Button onClick={handleSendInvitation} color="primary"> Send invitation
-                                        card</Button>
-                                </CardFooter>
-                            </Card>
-                        </GridItem>
-                    </Fade>
-                </Modal>
+                </GeneralModal>
             </>
         )
     });

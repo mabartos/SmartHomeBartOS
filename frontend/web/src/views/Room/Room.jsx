@@ -11,13 +11,20 @@ import ErrorNotification from "../../components/Notifications/ErrorNotification"
 import SuccessNotification from "../../components/Notifications/SuccessNotification";
 import {toJS} from "mobx";
 import NoItemsAvailable from "../../components/BartCard/NoItemsAvailable";
+import {RoutePages} from "../../routes";
 
 export default function Room() {
-    const {authStore, deviceStore, homeStore} = useStores();
+    const {authStore, deviceStore, homeStore, uiStore} = useStores();
     const {homeID, roomID} = useParams();
 
     const [data, setData] = useState("");
     const [mqtt, setMqtt] = useState(null);
+
+    React.useEffect(() => {
+        uiStore.setActualPage(RoutePages.ROOM);
+        uiStore.setHomeID(homeID);
+        uiStore.setRoomID(roomID);
+    }, [uiStore, homeID, roomID]);
 
     React.useEffect(() => {
         let home = toJS(homeStore.homes);

@@ -13,6 +13,7 @@ import org.mabartos.api.controller.device.DevicesResource;
 import org.mabartos.api.controller.home.invitations.HomeInvitationsResource;
 import org.mabartos.api.controller.home.mqtt.MqttResource;
 import org.mabartos.api.controller.room.RoomsResource;
+import org.mabartos.api.controller.user.HomeMemberRoleData;
 import org.mabartos.api.controller.user.UserRoleData;
 import org.mabartos.api.controller.user.UsersResource;
 import org.mabartos.api.model.device.DeviceModel;
@@ -45,6 +46,10 @@ public interface HomeResource {
     @GET
     @Path("/my-role")
     UserRoleData getAuthUserRole();
+
+    @GET
+    @Path("/members")
+    Set<HomeMemberRoleData> getMembers();
 
     @PATCH
     @HasRoleInHome(minRole = UserRole.HOME_ADMIN)

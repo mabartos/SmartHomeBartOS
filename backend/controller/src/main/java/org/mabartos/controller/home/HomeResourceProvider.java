@@ -14,6 +14,7 @@ import org.mabartos.api.controller.home.HomeResource;
 import org.mabartos.api.controller.home.invitations.HomeInvitationsResource;
 import org.mabartos.api.controller.home.mqtt.MqttResource;
 import org.mabartos.api.controller.room.RoomsResource;
+import org.mabartos.api.controller.user.HomeMemberRoleData;
 import org.mabartos.api.controller.user.UserRoleData;
 import org.mabartos.api.controller.user.UsersResource;
 import org.mabartos.api.model.BartSession;
@@ -71,6 +72,12 @@ public class HomeResourceProvider implements HomeResource {
             }
         }
         return null;
+    }
+
+    @GET
+    @Path("/members")
+    public Set<HomeMemberRoleData> getMembers() {
+        return session.services().homes().getAllHomeMembersData(session.getActualHome().getID());
     }
 
     @PATCH

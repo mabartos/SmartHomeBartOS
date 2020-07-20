@@ -59,7 +59,7 @@ public class DefaultBartMqttClient implements BartMqttClient, Serializable {
             if (home.getMqttClient() != null && home.getMqttClient().isBrokerActive()) {
                 return;
             }
-            
+
             this.clientID = UUID.randomUUID().toString();
             this.brokerURL = home.getMqttClient().getBrokerURL();
             BartMqttClient actual = this;
