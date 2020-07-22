@@ -25,6 +25,7 @@ import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -44,6 +45,8 @@ import java.util.UUID;
 @Cacheable
 @JsonIgnoreProperties(ignoreUnknown = true)
 @NamedQueries({
+        @NamedQuery(name = "getAllRooms", query = "select room from RoomEntity room join fetch room.home"),
+        @NamedQuery(name = "getRoomByID", query = "select room from RoomEntity room join fetch room.home where room.id=:id"),
         @NamedQuery(name = "deleteRoomByID", query = "delete from RoomEntity where id=:id"),
         @NamedQuery(name = "deleteRoomsFromHome", query = "delete from RoomEntity where home.id=:homeID")
 })
@@ -62,7 +65,7 @@ public class RoomEntity extends PanacheEntityBase implements RoomModel {
     @Enumerated
     private RoomType type = RoomType.NONE;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private HomeEntity home;
 

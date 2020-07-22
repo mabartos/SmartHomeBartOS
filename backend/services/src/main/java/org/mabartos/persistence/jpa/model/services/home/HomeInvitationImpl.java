@@ -134,6 +134,9 @@ public class HomeInvitationImpl extends CRUDServiceImpl<HomeInvitationModel, Hom
 
     @Override
     public int deleteAllFromHome(Long homeID) {
+        getEntityManager().flush();
+        getEntityManager().clear();
+
         Query query = entityManager.createNamedQuery("deleteHomeInvitations");
         query.setParameter("homeID", homeID);
         return query.executeUpdate();

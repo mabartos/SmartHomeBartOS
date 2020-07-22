@@ -15,10 +15,12 @@ import org.mabartos.api.model.capability.CapabilityModel;
 import org.mabartos.api.model.device.DeviceModel;
 import org.mabartos.persistence.jpa.model.services.device.DeviceEntity;
 
+import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
@@ -32,6 +34,7 @@ import java.util.Objects;
 
 @Table(name = "CAPABILITY")
 @Entity
+@Cacheable
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @NamedQueries({
         @NamedQuery(name = "deleteCapsFromDevice", query = "delete from CapabilityEntity where device.id=:deviceID")
@@ -51,7 +54,7 @@ public class CapabilityEntity extends PanacheEntityBase implements CapabilityMod
     @Enumerated
     private CapabilityType type;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "DEVICE_ID")
     private DeviceEntity device;
 

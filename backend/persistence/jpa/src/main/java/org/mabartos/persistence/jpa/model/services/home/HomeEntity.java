@@ -83,7 +83,7 @@ public class HomeEntity extends PanacheEntityBase implements HomeModel {
     @JoinColumn(name = "mqttClient", referencedColumnName = "mqttClientID")
     private MqttClientEntity mqttClient;
 
-    @OneToMany(targetEntity = UserRoleEntity.class, mappedBy = "home", cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = UserRoleEntity.class, mappedBy = "home", cascade = CascadeType.ALL, orphanRemoval = true)
     @LazyCollection(LazyCollectionOption.FALSE)
     private Set<UserRoleModel> roles = new HashSet<>();
 

@@ -76,11 +76,11 @@ public class UserEntity extends PanacheEntityBase implements UserModel {
     )
     private Set<HomeModel> homesSet = new HashSet<>();
 
-    @OneToMany(targetEntity = HomeInvitationEntity.class, mappedBy = "receiver", cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = HomeInvitationEntity.class, mappedBy = "receiver", cascade = CascadeType.ALL, orphanRemoval = true)
     @LazyCollection(LazyCollectionOption.FALSE)
     private Set<HomeInvitationModel> invitations = new HashSet<>();
 
-    @OneToMany(targetEntity = UserRoleEntity.class, mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = UserRoleEntity.class, mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<UserRoleModel> roles = new HashSet<>();
 
     public UserEntity() {

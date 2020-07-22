@@ -18,8 +18,6 @@ import java.util.Set;
 
 public interface DeviceService extends CRUDService<DeviceModel, Long>, AbleSendMQTT {
 
-    Set<DeviceModel> findByType(CapabilityType type);
-
     DeviceModel addDeviceToRoom(Long roomID, Long deviceID);
 
     int deleteAllFromHome(Long homeID);

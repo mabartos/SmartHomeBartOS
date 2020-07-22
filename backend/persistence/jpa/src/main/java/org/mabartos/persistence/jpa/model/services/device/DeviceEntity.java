@@ -26,6 +26,7 @@ import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
@@ -48,7 +49,9 @@ import java.util.stream.Collectors;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @NamedQueries({
-        @NamedQuery(name = "setDeviceRoomToNull", query = "update DeviceEntity set room=null where room.id=:roomID"),
+        @NamedQuery(name = "getAllDevices", query = "select dev from DeviceEntity dev join fetch dev.room join fetch dev.home"),
+        @NamedQuery(name = "getDeviceByID", query = "select dev from DeviceEntity dev join fetch dev.room join fetch dev.home where dev.id=:id"),
+        @NamedQuery(name = "setDeviceRoomToNull", query = "update DeviceEntity set room = null where room.id=:roomID"),
         @NamedQuery(name = "deleteDevicesFromHome", query = "delete from DeviceEntity where home.id=:homeID")
 })
 public class DeviceEntity extends PanacheEntityBase implements DeviceModel {
@@ -61,11 +64,11 @@ public class DeviceEntity extends PanacheEntityBase implements DeviceModel {
     @Column(name = "NAME", nullable = false)
     private String name;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ROOM")
     private RoomEntity room;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "HOME")
     private HomeEntity home;
 

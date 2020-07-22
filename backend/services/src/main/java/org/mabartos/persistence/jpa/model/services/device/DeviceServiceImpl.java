@@ -8,7 +8,6 @@
 package org.mabartos.persistence.jpa.model.services.device;
 
 import io.quarkus.runtime.StartupEvent;
-import org.mabartos.api.common.CapabilityType;
 import org.mabartos.api.data.general.device.AddDeviceToRoomData;
 import org.mabartos.api.data.general.device.DeviceData;
 import org.mabartos.api.data.general.device.DeviceInfoData;
@@ -29,8 +28,8 @@ import javax.enterprise.context.Dependent;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.persistence.Query;
+import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Dependent
 public class DeviceServiceImpl extends CRUDServiceImpl<DeviceModel, DeviceEntity, DeviceRepository, Long> implements DeviceService {
@@ -47,15 +46,23 @@ public class DeviceServiceImpl extends CRUDServiceImpl<DeviceModel, DeviceEntity
     }
 
     @Override
+    public Set<DeviceModel> getAll() {
+        Query query = getEntityManager().createNamedQuery("getAllDevices", DeviceModel.class);
+        return new HashSet<>(query.getResultList());
+    }
+
+    @Override
+    public DeviceModel findByID(Long id) {
+        Query query = getEntityManager().createNamedQuery("getDeviceByID", DeviceModel.class);
+        query.setParameter("id", id);
+        return (DeviceModel) query.getSingleResult();
+    }
+
+    @Override
     public DeviceModel create(DeviceModel entity) {
         if (!isDeviceInHome(entity))
             return super.create(entity);
         else throw new DeviceConflictException();
-    }
-
-    @Override
-    public Set<DeviceModel> findByType(CapabilityType type) {
-        return getRepository().find("type", type).stream().collect(Collectors.toSet());
     }
 
     @Override
@@ -75,6 +82,8 @@ public class DeviceServiceImpl extends CRUDServiceImpl<DeviceModel, DeviceEntity
     public int deleteAllFromHome(Long homeID) {
         HomeModel home = services.homes().findByID(homeID);
         if (home != null) {
+            getEntityManager().flush();
+            getEntityManager().clear();
             home.getUnAssignedDevices().forEach(f -> {
                 Query queryCaps = entityManager.createNamedQuery("deleteCapsFromDevice");
                 queryCaps.setParameter("deviceID", f.getID());
@@ -141,6 +150,9 @@ public class DeviceServiceImpl extends CRUDServiceImpl<DeviceModel, DeviceEntity
 
     @Override
     public boolean deleteByID(Long id) {
+        getEntityManager().flush();
+        getEntityManager().clear();
+
         Query query = entityManager.createNamedQuery("deleteCapsFromDevice");
         query.setParameter("deviceID", id);
         query.executeUpdate();

@@ -19,6 +19,7 @@ import org.mabartos.persistence.jpa.model.services.user.UserEntity;
 import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -34,8 +35,8 @@ import java.util.UUID;
 @Cacheable
 @JsonPropertyOrder({"id", "homeID", "homeName", "receiverID", "issuerID"})
 @NamedQueries({
-        @NamedQuery(name = "getHomesInvitations", query = "select inv from HomeInvitationEntity inv where inv.home.id=:homeID"),
-        @NamedQuery(name = "getUsersInvitations", query = "select inv from HomeInvitationEntity inv where inv.issuerID=:userID"),
+        @NamedQuery(name = "getHomesInvitations", query = "select inv from HomeInvitationEntity inv join fetch inv.receiver join fetch inv.home where inv.home.id=:homeID"),
+        @NamedQuery(name = "getUsersInvitations", query = "select inv from HomeInvitationEntity inv join fetch inv.receiver join fetch inv.home where inv.issuerID=:userID"),
         @NamedQuery(name = "deleteHomeInvitations", query = "delete from HomeInvitationEntity where home.id=:homeID")
 })
 public class HomeInvitationEntity extends PanacheEntityBase implements HomeInvitationModel {
@@ -48,11 +49,11 @@ public class HomeInvitationEntity extends PanacheEntityBase implements HomeInvit
     @Column
     private UUID issuerID;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID")
     private UserEntity receiver;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "HOME_ID")
     private HomeEntity home;
 

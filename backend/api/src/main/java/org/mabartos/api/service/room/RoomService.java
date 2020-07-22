@@ -18,8 +18,6 @@ import java.util.UUID;
 
 public interface RoomService extends CRUDService<RoomModel, Long>, AbleSendMQTT {
 
-    Set<RoomModel> findByType(RoomType type);
-
     int deleteAllFromHome(Long homeID);
 
     Set<UserModel> getOwners(Long roomID);

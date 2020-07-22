@@ -8,7 +8,6 @@
 package org.mabartos.persistence.jpa.model.services.room;
 
 import io.quarkus.runtime.StartupEvent;
-import org.mabartos.api.common.RoomType;
 import org.mabartos.api.controller.room.RoomData;
 import org.mabartos.api.model.room.RoomModel;
 import org.mabartos.api.model.user.UserModel;
@@ -46,12 +45,23 @@ public class RoomServiceImpl extends CRUDServiceImpl<RoomModel, RoomEntity, Room
     }
 
     @Override
-    public Set<RoomModel> findByType(RoomType type) {
-        return getRepository().find("type", type).stream().collect(Collectors.toSet());
+    public Set<RoomModel> getAll() {
+        Query query = getEntityManager().createNamedQuery("getAllRooms", RoomModel.class);
+        return new HashSet<>(query.getResultList());
+    }
+
+    @Override
+    public RoomModel findByID(Long id) {
+        Query query = getEntityManager().createNamedQuery("getRoomByID", RoomModel.class);
+        query.setParameter("id", id);
+        return (RoomModel) query.getSingleResult();
     }
 
     @Override
     public int deleteAllFromHome(Long homeID) {
+        getEntityManager().flush();
+        getEntityManager().clear();
+
         Query query = entityManager.createNamedQuery("deleteRoomsFromHome");
         query.setParameter("homeID", homeID);
         return query.executeUpdate();
@@ -104,6 +114,9 @@ public class RoomServiceImpl extends CRUDServiceImpl<RoomModel, RoomEntity, Room
         query.executeUpdate();
 
         clearRetainedMessages(id);
+
+        getEntityManager().flush();
+        getEntityManager().clear();
 
         query = entityManager.createNamedQuery("deleteRoomByID");
         query.setParameter("id", id);

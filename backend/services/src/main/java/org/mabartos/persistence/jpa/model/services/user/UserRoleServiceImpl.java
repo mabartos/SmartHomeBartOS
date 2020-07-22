@@ -56,6 +56,9 @@ public class UserRoleServiceImpl extends CRUDServiceImpl<UserRoleModel, UserRole
 
     @Override
     public int deleteAllRolesFromHome(Long homeID) {
+        getEntityManager().flush();
+        getEntityManager().clear();
+
         Query query = getEntityManager().createNamedQuery("deleteAllRolesFromHome");
         query.setParameter("homeID", homeID);
         return query.executeUpdate();

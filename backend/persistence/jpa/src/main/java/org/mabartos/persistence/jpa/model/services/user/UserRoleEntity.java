@@ -20,6 +20,7 @@ import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -35,8 +36,8 @@ import java.util.UUID;
 @Cacheable
 @NamedQueries({
         @NamedQuery(name = "deleteAllRolesFromHome", query = "delete from UserRoleEntity where home.id=:homeID"),
-        @NamedQuery(name = "getAllUserRoleByUUID", query = "select roles from UserRoleEntity roles where roles.user.uuid=:userID"),
-        @NamedQuery(name = "getAllHomeMembers", query = "select roles from UserRoleEntity roles where roles.home.id=:homeID")
+        @NamedQuery(name = "getAllUserRoleByUUID", query = "select roles from UserRoleEntity roles join fetch roles.user join fetch roles.home where roles.user.uuid=:userID"),
+        @NamedQuery(name = "getAllHomeMembers", query = "select roles from UserRoleEntity roles join fetch roles.user join fetch roles.home where roles.home.id=:homeID")
 })
 public class UserRoleEntity extends PanacheEntityBase implements UserRoleModel {
 
@@ -45,11 +46,11 @@ public class UserRoleEntity extends PanacheEntityBase implements UserRoleModel {
     @Column(name = "USER_ROLE_ID")
     Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID")
     private UserEntity user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "HOME_ID")
     private HomeEntity home;
 
