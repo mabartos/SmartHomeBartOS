@@ -25,8 +25,6 @@ export const UpdateCapabilityForm = forwardRef((props, ref) => {
 
     const handleUpdate = () => {
         if (areValidValues()) {
-            console.log(deviceName);
-            console.log(defaultDeviceName);
             if (defaultDeviceName !== deviceName) {
                 setDefaultDeviceName(deviceName);
                 device.name = deviceName;

@@ -5,6 +5,7 @@ export default class UIStore {
     _homeID;
     _roomID;
     _actualPage;
+    _myHomeRole;
 
     get homeID() {
         return this._homeID;
@@ -20,6 +21,14 @@ export default class UIStore {
 
     setRoomID = (roomID) => {
         this._roomID = roomID;
+    };
+
+    get myHomeRole() {
+        return this._myHomeRole;
+    }
+
+    setMyHomeRole = (role) => {
+        this._myHomeRole = role;
     };
 
     get isHomePageActive() {
@@ -47,17 +56,20 @@ decorate(UIStore, {
     _homeID: observable,
     _roomID: observable,
     _actualPage: observable,
+    _myHomeRole: observable,
 
     setHomeID: action,
     setRoomID: action,
     setActualPage: action,
+    setMyHomeRole: action,
 
     isHomePageActive: computed,
     isRoomPageActive: computed,
 
     homeID: computed,
     roomID: computed,
-    actualPage: computed
+    actualPage: computed,
+    myHomeRole: computed
 });
 
 

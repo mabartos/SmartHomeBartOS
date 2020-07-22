@@ -16,14 +16,14 @@ import org.mabartos.api.data.general.SerializableJSON;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserRoleData implements SerializableJSON {
 
-    @JsonProperty("id")
+    @JsonProperty("homeID")
     private Long homeID;
 
     @JsonProperty("role")
     private UserRole role;
 
     @JsonCreator
-    public UserRoleData(@JsonProperty("id") Long homeID,
+    public UserRoleData(@JsonProperty("homeID") Long homeID,
                         @JsonProperty("role") UserRole role) {
         this.role = role;
         this.homeID = homeID;

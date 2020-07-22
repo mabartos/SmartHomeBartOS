@@ -53,14 +53,14 @@ export class HomeStore extends GeneralStore {
     };
 
     setRoleInHome = (role) => {
-        this._rolesInHome.set(role.id, role.role);
+        this._rolesInHome.set(role.homeID, role.role);
         this.checkError();
     };
 
     setAllRolesInHome = (roleList) => {
         if (roleList) {
             roleList.forEach(role => {
-                this._rolesInHome.set(role.id, role.role);
+                this._rolesInHome.set(role.homeID, role.role);
             })
         }
     };

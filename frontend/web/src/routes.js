@@ -28,12 +28,30 @@ import Home from "./views/Homes/Home.jsx";
 import Room from "./views/Room/Room";
 
 export const RoutePages = {
-    ALL_HOMES: 'allHomes',
-    HOME: 'home',
-    ROOM: 'room',
-    USER_PROFILE: 'userProfile',
-    DASHBOARD: 'dashboard',
-    OTHER: 'other'
+    ALL_HOMES: {
+        name: 'allHomes',
+        path: "/my-homes"
+    },
+    HOME: {
+        name: 'home',
+        path: "/admin"
+    },
+    ROOM: {
+        name: 'room',
+        path: "/rooms"
+    },
+    USER_PROFILE: {
+        name: 'userProfile',
+        path: "/user"
+    },
+    DASHBOARD: {
+        name: 'dashboard',
+        path: "/home"
+    },
+    OTHER: {
+        name: 'OTHER',
+        path: "/home"
+    }
 };
 
 const dashboardRoutes = [
@@ -47,7 +65,7 @@ const dashboardRoutes = [
     },
     {
         page: RoutePages.ROOM,
-        path: "/my-homes/:homeID/rooms/:roomID",
+        path: `${RoutePages.ALL_HOMES.path}/:homeID/${RoutePages.ROOM.path}/:roomID`,
         name: "Devices",
         icon: Person,
         component: Room,
@@ -56,7 +74,7 @@ const dashboardRoutes = [
     },
     {
         page: RoutePages.HOME,
-        path: "/my-homes/:homeID",
+        path: `${RoutePages.ALL_HOMES.path}/:homeID`,
         name: "Rooms",
         icon: Person,
         component: Home,
@@ -65,7 +83,7 @@ const dashboardRoutes = [
     },
     {
         page: RoutePages.ALL_HOMES,
-        path: "/my-homes",
+        path: `${RoutePages.ALL_HOMES.path}`,
         name: "My Homes",
         icon: HomeIcon,
         component: Homes,
@@ -73,7 +91,7 @@ const dashboardRoutes = [
     },
     {
         page: RoutePages.USER_PROFILE,
-        path: "/user",
+        path: `${RoutePages.USER_PROFILE.path}`,
         name: "User Profile",
         icon: Person,
         component: UserProfile,

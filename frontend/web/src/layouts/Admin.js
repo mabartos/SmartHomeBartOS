@@ -19,6 +19,7 @@ import logo from "assets/img/logo.png";
 import useStores from "../hooks/useStores";
 import {useObserver} from "mobx-react-lite";
 import {SemipolarLoading} from "react-loadingg";
+import {RoutePages} from "../routes";
 
 let ps;
 
@@ -54,7 +55,7 @@ const useStyles = makeStyles(styles);
 
 export default function Admin({...rest}) {
 
-    const {authStore, homeStore} = useStores();
+    const {authStore, homeStore, uiStore} = useStores();
 
     // styles
     const classes = useStyles();
@@ -110,6 +111,26 @@ export default function Admin({...rest}) {
             window.removeEventListener("resize", resizeFunction);
         };
     }, [mainPanel]);
+
+    React.useEffect(() => {
+        const homeID = getIDFromPath(`${RoutePages.ALL_HOMES.path}`);
+        uiStore.setHomeID((homeID !== -1) ? homeID : null);
+
+        const roomID = getIDFromPath(`${RoutePages.ROOM.path}`);
+        uiStore.setRoomID((roomID !== -1) ? roomID : null);
+
+    }, [window.location.pathname, uiStore]);
+
+    const getIDFromPath = (path) => {
+        let location = window.location.pathname;
+        let index = location.indexOf(`${path}/`);
+        if (index !== -1) {
+            location = location.substring(index);
+            let array = location.split("/");
+            return (array.length > 2) ? parseInt(array[2], 10) : -1;
+        }
+        return -1;
+    };
 
     return useObserver(() => {
         const {isAuthenticated} = authStore;
