@@ -10,6 +10,7 @@ package org.mabartos.persistence.jpa.model.mqtt;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import org.mabartos.api.data.general.JsonPropertyNames;
 import org.mabartos.api.model.home.HomeModel;
 import org.mabartos.api.model.mqtt.MqttClientModel;
 import org.mabartos.persistence.jpa.model.services.home.HomeEntity;
@@ -81,7 +82,7 @@ public class MqttClientEntity extends PanacheEntityBase implements MqttClientMod
         return home;
     }
 
-    @JsonProperty("homeId")
+    @JsonProperty(JsonPropertyNames.HOME_ID)
     public Long getHomeID() {
         return home.getID();
     }

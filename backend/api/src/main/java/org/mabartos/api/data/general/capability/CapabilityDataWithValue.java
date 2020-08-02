@@ -12,30 +12,32 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.mabartos.api.model.capability.CapabilityModel;
 import org.mabartos.api.model.capability.HasValue;
 
-public abstract class CapabilityDataWithValue<Type> extends CapabilityData implements HasValue<Type> {
+public class CapabilityDataWithValue<Type> extends CapabilityData implements HasValue<Type> {
 
-    @JsonProperty("actual")
+    @JsonProperty(JsonCapNames.ACTUAL_VALUE)
     protected Type actual;
 
     @JsonCreator
-    public CapabilityDataWithValue(@JsonProperty("actual") Type actual) {
+    public CapabilityDataWithValue(@JsonProperty(JsonCapNames.ACTUAL_VALUE) Type actual) {
         super();
         this.actual = actual;
     }
 
-    public Type getActual() {
+    @Override
+    public Type getValue() {
         return actual;
     }
 
-    public void setActual(Type actual) {
-        this.actual = actual;
+    @Override
+    public void setValue(Type value) {
+        this.actual = value;
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public CapabilityModel editModel(CapabilityModel model) {
         if (model instanceof HasValue) {
-            ((HasValue<Type>) model).setValue(getActual());
+            ((HasValue<Type>) model).setValue(getValue());
         }
         return model;
     }

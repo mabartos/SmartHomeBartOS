@@ -11,31 +11,32 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import org.mabartos.api.data.general.JsonPropertyNames;
 import org.mabartos.api.data.general.SerializeUtils;
 
 import java.util.UUID;
 
-@JsonPropertyOrder({"id", "issuerID", "receiverID", "homeID"})
+@JsonPropertyOrder({JsonPropertyNames.ID, JsonPropertyNames.ISSUER_ID, JsonPropertyNames.RECEIVER_ID, JsonPropertyNames.HOME_ID})
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class HomeInvitationData {
 
-    @JsonProperty("id")
+    @JsonProperty(JsonPropertyNames.ID)
     private Long id;
 
-    @JsonProperty("issuerID")
+    @JsonProperty(JsonPropertyNames.ISSUER_ID)
     private String issuerID;
 
-    @JsonProperty("receiverID")
+    @JsonProperty(JsonPropertyNames.RECEIVER_ID)
     private String receiverID;
 
-    @JsonProperty("homeID")
+    @JsonProperty(JsonPropertyNames.HOME_ID)
     private Long homeID;
 
     @JsonCreator
-    public HomeInvitationData(@JsonProperty("id") Long id,
-                              @JsonProperty("issuerID") String issuerID,
-                              @JsonProperty("receiverID") String receiverID,
-                              @JsonProperty("homeID") Long homeID) {
+    public HomeInvitationData(@JsonProperty(JsonPropertyNames.ID) Long id,
+                              @JsonProperty(JsonPropertyNames.ISSUER_ID) String issuerID,
+                              @JsonProperty(JsonPropertyNames.RECEIVER_ID) String receiverID,
+                              @JsonProperty(JsonPropertyNames.HOME_ID) Long homeID) {
         this.id = id;
         this.issuerID = issuerID;
         this.receiverID = receiverID;

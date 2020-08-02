@@ -10,36 +10,37 @@ package org.mabartos.api.data.general.device;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.mabartos.api.data.general.JsonPropertyNames;
 import org.mabartos.api.data.general.SerializeUtils;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DeviceInfoData {
 
-    @JsonProperty("id")
+    @JsonProperty(JsonPropertyNames.ID)
     private Long id;
 
-    @JsonProperty("name")
+    @JsonProperty(JsonPropertyNames.NAME)
     private String name;
 
-    @JsonProperty("active")
+    @JsonProperty(JsonPropertyNames.ACTIVE)
     private boolean active;
 
-    @JsonProperty("topic")
+    @JsonProperty(JsonPropertyNames.TOPIC)
     private String topic;
 
-    @JsonProperty("homeID")
+    @JsonProperty(JsonPropertyNames.HOME_ID)
     private Long homeID;
 
-    @JsonProperty("roomID")
+    @JsonProperty(JsonPropertyNames.ROOM_ID)
     private Long roomID;
 
     @JsonCreator
-    public DeviceInfoData(@JsonProperty("id") Long id,
-                          @JsonProperty("name") String name,
-                          @JsonProperty("active") boolean active,
-                          @JsonProperty("topic") String topic,
-                          @JsonProperty("homeID") Long homeID,
-                          @JsonProperty("roomID") Long roomID) {
+    public DeviceInfoData(@JsonProperty(JsonPropertyNames.ID) Long id,
+                          @JsonProperty(JsonPropertyNames.NAME) String name,
+                          @JsonProperty(JsonPropertyNames.ACTIVE) boolean active,
+                          @JsonProperty(JsonPropertyNames.TOPIC) String topic,
+                          @JsonProperty(JsonPropertyNames.HOME_ID) Long homeID,
+                          @JsonProperty(JsonPropertyNames.ROOM_ID) Long roomID) {
         this.id = id;
         this.name = name;
         this.active = active;

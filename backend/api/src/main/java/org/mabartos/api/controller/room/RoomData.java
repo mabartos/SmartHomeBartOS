@@ -9,23 +9,24 @@ package org.mabartos.api.controller.room;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.mabartos.api.data.general.JsonPropertyNames;
 import org.mabartos.api.data.general.SerializeUtils;
 
 public class RoomData {
 
-    @JsonProperty("id")
+    @JsonProperty(JsonPropertyNames.ID)
     private Long id;
 
-    @JsonProperty("name")
+    @JsonProperty(JsonPropertyNames.NAME)
     private String name;
 
-    @JsonProperty("homeID")
+    @JsonProperty(JsonPropertyNames.HOME_ID)
     private Long homeID;
 
     @JsonCreator
-    public RoomData(@JsonProperty("id") Long id,
-                    @JsonProperty("name") String name,
-                    @JsonProperty("homeID") Long homeID) {
+    public RoomData(@JsonProperty(JsonPropertyNames.ID) Long id,
+                    @JsonProperty(JsonPropertyNames.NAME) String name,
+                    @JsonProperty(JsonPropertyNames.HOME_ID) Long homeID) {
         this.id = id;
         this.name = name;
         this.homeID = homeID;

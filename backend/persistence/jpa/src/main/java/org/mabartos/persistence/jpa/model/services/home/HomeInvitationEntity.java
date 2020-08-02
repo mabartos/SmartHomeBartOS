@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import org.mabartos.api.data.general.JsonPropertyNames;
 import org.mabartos.api.model.home.HomeInvitationModel;
 import org.mabartos.api.model.home.HomeModel;
 import org.mabartos.api.model.user.UserModel;
@@ -33,7 +34,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "HomeInvitation")
 @Cacheable
-@JsonPropertyOrder({"id", "homeID", "homeName", "receiverID", "issuerID"})
+@JsonPropertyOrder({JsonPropertyNames.ID, JsonPropertyNames.HOME_ID, "homeName", JsonPropertyNames.RECEIVER_ID, JsonPropertyNames.ISSUER_ID})
 @NamedQueries({
         @NamedQuery(name = "getHomesInvitations", query = "select inv from HomeInvitationEntity inv join fetch inv.receiver join fetch inv.home where inv.home.id=:homeID"),
         @NamedQuery(name = "getUsersInvitations", query = "select inv from HomeInvitationEntity inv join fetch inv.receiver join fetch inv.home where inv.issuerID=:userID"),
@@ -101,12 +102,12 @@ public class HomeInvitationEntity extends PanacheEntityBase implements HomeInvit
 
     // Computed
 
-    @JsonProperty("receiverID")
+    @JsonProperty(JsonPropertyNames.RECEIVER_ID)
     public UUID getReceiverID() {
         return (receiver != null) ? receiver.getID() : null;
     }
 
-    @JsonProperty("homeID")
+    @JsonProperty(JsonPropertyNames.HOME_ID)
     public Long getHomeID() {
         return (home != null) ? home.getID() : -1;
     }

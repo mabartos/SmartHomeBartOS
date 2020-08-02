@@ -8,32 +8,35 @@
 package org.mabartos.api.data.general.device;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import org.mabartos.api.data.general.JsonPropertyNames;
 import org.mabartos.api.data.general.SerializableJSON;
 import org.mabartos.api.data.general.SerializeUtils;
 
-@JsonPropertyOrder({"resp", "roomID", "deviceID"})
+@JsonPropertyOrder({JsonPropertyNames.RESPONSE, JsonPropertyNames.ROOM_ID, JsonPropertyNames.DEVICE_ID})
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class AddDeviceToRoomData implements ResponseData, SerializableJSON {
 
-    @JsonProperty("resp")
+    @JsonProperty(JsonPropertyNames.RESPONSE)
     private boolean response;
-    @JsonProperty("roomID")
+    @JsonProperty(JsonPropertyNames.ROOM_ID)
     private Long roomID;
-    @JsonProperty("deviceID")
+    @JsonProperty(JsonPropertyNames.DEVICE_ID)
     private Long deviceID;
 
     @JsonCreator
-    public AddDeviceToRoomData(@JsonProperty("roomID") Long roomID,
-                               @JsonProperty("deviceID") Long deviceID,
-                               @JsonProperty("resp") boolean response) {
+    public AddDeviceToRoomData(@JsonProperty(JsonPropertyNames.ROOM_ID) Long roomID,
+                               @JsonProperty(JsonPropertyNames.DEVICE_ID) Long deviceID,
+                               @JsonProperty(JsonPropertyNames.RESPONSE) boolean response) {
         this(deviceID, response);
         this.roomID = roomID;
     }
 
     @JsonCreator
-    public AddDeviceToRoomData(@JsonProperty("deviceID") Long deviceID,
-                               @JsonProperty("resp") boolean response) {
+    public AddDeviceToRoomData(@JsonProperty(JsonPropertyNames.DEVICE_ID) Long deviceID,
+                               @JsonProperty(JsonPropertyNames.RESPONSE) boolean response) {
         this.deviceID = deviceID;
         this.response = response;
     }

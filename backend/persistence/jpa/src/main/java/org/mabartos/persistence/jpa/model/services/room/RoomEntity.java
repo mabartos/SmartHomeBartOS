@@ -14,6 +14,7 @@ import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.mabartos.api.common.RoomType;
+import org.mabartos.api.data.general.JsonPropertyNames;
 import org.mabartos.api.model.device.DeviceModel;
 import org.mabartos.api.model.home.HomeModel;
 import org.mabartos.api.model.room.RoomModel;
@@ -135,7 +136,7 @@ public class RoomEntity extends PanacheEntityBase implements RoomModel {
         return home;
     }
 
-    @JsonProperty("homeID")
+    @JsonProperty(JsonPropertyNames.HOME_ID)
     public Long getHomeID() {
         return home.getID();
     }

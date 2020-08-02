@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.mabartos.api.data.general.SerializeUtils;
 import org.mabartos.api.data.general.capability.CapabilityDataWithState;
+import org.mabartos.api.data.general.capability.JsonCapNames;
 import org.mabartos.api.model.capability.CapabilityModel;
 import org.mabartos.api.model.capability.relay.RelayCapModel;
 
@@ -19,7 +20,7 @@ import org.mabartos.api.model.capability.relay.RelayCapModel;
 public class RelayData extends CapabilityDataWithState {
 
     @JsonCreator
-    public RelayData(@JsonProperty("isTurnedOn") boolean isTurnedOn) {
+    public RelayData(@JsonProperty(JsonCapNames.STATE) boolean isTurnedOn) {
         super(isTurnedOn);
     }
 

@@ -10,6 +10,7 @@ package org.mabartos.api.data.general.device;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import org.mabartos.api.data.general.JsonPropertyNames;
 import org.mabartos.api.data.general.SerializableJSON;
 import org.mabartos.api.data.general.SerializeUtils;
 import org.mabartos.api.data.general.capability.manage.CapabilityWholeData;
@@ -18,21 +19,21 @@ import java.util.Set;
 
 public class AddDeviceRequestData implements SerializableJSON {
 
-    @JsonProperty("msgID")
+    @JsonProperty(JsonPropertyNames.MESSAGE_ID)
     private Long msgID;
 
-    @JsonProperty("name")
+    @JsonProperty(JsonPropertyNames.NAME)
     private String name;
 
-    @JsonProperty("capabilities")
+    @JsonProperty(JsonPropertyNames.CAPABILITIES)
     @JsonDeserialize(as = Set.class, contentAs = CapabilityWholeData.class)
     private Set<CapabilityWholeData> capabilities;
 
     @JsonCreator
     public AddDeviceRequestData(
-            @JsonProperty("msgID") Long msgID,
-            @JsonProperty("name") String name,
-            @JsonProperty("capabilities") Set<CapabilityWholeData> capabilities) {
+            @JsonProperty(JsonPropertyNames.MESSAGE_ID) Long msgID,
+            @JsonProperty(JsonPropertyNames.NAME) String name,
+            @JsonProperty(JsonPropertyNames.CAPABILITIES) Set<CapabilityWholeData> capabilities) {
         this.msgID = msgID;
         this.name = name;
         this.capabilities = capabilities;

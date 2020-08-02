@@ -12,24 +12,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.mabartos.api.common.CapabilityType;
 import org.mabartos.api.data.general.SerializeUtils;
 import org.mabartos.api.data.general.capability.CapabilityDataWithValue;
+import org.mabartos.api.data.general.capability.JsonCapNames;
 import org.mabartos.api.model.capability.CapabilityModel;
 import org.mabartos.api.model.capability.temperature.TemperatureCapModel;
 
 public class TemperatureData extends CapabilityDataWithValue<Double> {
 
     @JsonCreator
-    public TemperatureData(@JsonProperty("actual") Double actualTemperature) {
+    public TemperatureData(@JsonProperty(JsonCapNames.ACTUAL_VALUE) Double actualTemperature) {
         super(actualTemperature);
-    }
-
-    @Override
-    public Double getValue() {
-        return actual;
-    }
-
-    @Override
-    public void setValue(Double value) {
-        this.actual = value;
     }
 
     public static TemperatureData fromJson(String json) {

@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import org.mabartos.api.common.UserRole;
+import org.mabartos.api.data.general.JsonPropertyNames;
 import org.mabartos.api.model.home.HomeModel;
 import org.mabartos.api.model.user.UserModel;
 import org.mabartos.api.model.user.UserRoleModel;
@@ -105,12 +106,12 @@ public class UserRoleEntity extends PanacheEntityBase implements UserRoleModel {
     }
 
     /* COMPUTED */
-    @JsonProperty("userID")
+    @JsonProperty(JsonPropertyNames.USER_ID)
     public UUID getUserID() {
         return (user != null) ? user.getID() : null;
     }
 
-    @JsonProperty("homeID")
+    @JsonProperty(JsonPropertyNames.HOME_ID)
     public Long getHomeID() {
         return (home != null) ? home.getID() : -1;
     }

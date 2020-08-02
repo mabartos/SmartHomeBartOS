@@ -9,24 +9,25 @@ package org.mabartos.api.data.general.device;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import org.mabartos.api.data.general.JsonPropertyNames;
 import org.mabartos.api.data.general.SerializableJSON;
 import org.mabartos.api.data.general.SerializeUtils;
 
 @JsonPropertyOrder({"msgID", "id", "name"})
 public class ConnectRequestData implements SerializableJSON {
 
-    @JsonProperty("msgID")
+    @JsonProperty(JsonPropertyNames.MESSAGE_ID)
     private Long msgID;
 
-    @JsonProperty("id")
+    @JsonProperty(JsonPropertyNames.ID)
     private Long id;
 
-    @JsonProperty("name")
+    @JsonProperty(JsonPropertyNames.NAME)
     private String name;
 
-    public ConnectRequestData(@JsonProperty("msgID") Long msgID,
-                              @JsonProperty("id") Long id,
-                              @JsonProperty("name") String name) {
+    public ConnectRequestData(@JsonProperty(JsonPropertyNames.MESSAGE_ID) Long msgID,
+                              @JsonProperty(JsonPropertyNames.ID) Long id,
+                              @JsonProperty(JsonPropertyNames.NAME) String name) {
         this.msgID = msgID;
         this.id = id;
         this.name = name;

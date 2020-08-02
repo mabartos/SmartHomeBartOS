@@ -11,20 +11,21 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.mabartos.api.common.UserRole;
+import org.mabartos.api.data.general.JsonPropertyNames;
 import org.mabartos.api.data.general.SerializableJSON;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserRoleData implements SerializableJSON {
 
-    @JsonProperty("homeID")
+    @JsonProperty(JsonPropertyNames.HOME_ID)
     private Long homeID;
 
-    @JsonProperty("role")
+    @JsonProperty(JsonPropertyNames.ROLE)
     private UserRole role;
 
     @JsonCreator
-    public UserRoleData(@JsonProperty("homeID") Long homeID,
-                        @JsonProperty("role") UserRole role) {
+    public UserRoleData(@JsonProperty(JsonPropertyNames.HOME_ID) Long homeID,
+                        @JsonProperty(JsonPropertyNames.ROLE) UserRole role) {
         this.role = role;
         this.homeID = homeID;
     }

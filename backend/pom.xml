@@ -36,7 +36,7 @@
         <quarkus.platform.artifact-id>quarkus-universe-bom</quarkus.platform.artifact-id>
         <quarkus.platform.group-id>io.quarkus</quarkus.platform.group-id>
         <quarkus.platform.version>${quarkus.version}</quarkus.platform.version>
-        <quarkus.version>1.5.1.Final</quarkus.version>
+        <quarkus.version>1.6.0.Final</quarkus.version>
         <surefire-plugin.version>2.22.1</surefire-plugin.version>
         <war-plugin.version>3.1.0</war-plugin.version>
         <yarn.executable>${frontend.dir}/node/yarn/dist/bin/yarn</yarn.executable>
@@ -138,7 +138,6 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
-            <version>2.11.0</version>
         </dependency>
         <dependency>
             <groupId>org.hamcrest</groupId>

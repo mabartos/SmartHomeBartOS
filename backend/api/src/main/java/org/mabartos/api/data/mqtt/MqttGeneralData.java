@@ -8,29 +8,32 @@
 package org.mabartos.api.data.mqtt;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.mabartos.api.data.general.capability.JsonCapNames;
 import org.mabartos.api.model.device.DeviceModel;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class MqttGeneralData implements MqttSerializable {
 
-    @JsonProperty("idMessage")
+    @JsonProperty(JsonCapNames.MESSAGE_ID)
     private Long idMessage;
 
-    @JsonProperty("id")
+    @JsonProperty(JsonCapNames.ID)
     private Long id;
 
-    @JsonProperty("name")
+    @JsonProperty(JsonCapNames.NAME)
     private String name;
 
-    @JsonProperty("topic")
+    @JsonProperty(JsonCapNames.TOPIC)
     private String topic;
 
     @JsonCreator
     public MqttGeneralData(
-            @JsonProperty("idMessage") Long idMessage,
-            @JsonProperty("id") Long id,
-            @JsonProperty("name") String name,
-            @JsonProperty("topic") String topic
+            @JsonProperty(JsonCapNames.MESSAGE_ID) Long idMessage,
+            @JsonProperty(JsonCapNames.ID) Long id,
+            @JsonProperty(JsonCapNames.NAME) String name,
+            @JsonProperty(JsonCapNames.TOPIC) String topic
     ) {
         this.idMessage = idMessage;
         this.id = id;

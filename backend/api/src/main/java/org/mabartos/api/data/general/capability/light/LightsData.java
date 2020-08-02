@@ -13,22 +13,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.mabartos.api.common.CapabilityType;
 import org.mabartos.api.data.general.SerializeUtils;
 import org.mabartos.api.data.general.capability.CapabilityDataWithState;
+import org.mabartos.api.data.general.capability.JsonCapNames;
 import org.mabartos.api.model.capability.CapabilityModel;
 import org.mabartos.api.model.capability.light.LightCapModel;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LightsData extends CapabilityDataWithState {
 
-    @JsonProperty("intensity")
+    @JsonProperty(JsonCapNames.INTENSITY)
     protected Byte intensity;
 
-    @JsonProperty("minIntensity")
+    @JsonProperty(JsonCapNames.MIN_INTENSITY)
     protected Byte minIntensity;
 
     @JsonCreator
-    public LightsData(@JsonProperty("isTurnedOn") boolean state,
-                      @JsonProperty("intensity") Byte intensity,
-                      @JsonProperty("minIntensity") Byte minIntensity) {
+    public LightsData(@JsonProperty(JsonCapNames.STATE) boolean state,
+                      @JsonProperty(JsonCapNames.INTENSITY) Byte intensity,
+                      @JsonProperty(JsonCapNames.MIN_INTENSITY) Byte minIntensity) {
         super(state);
         this.intensity = intensity;
         this.minIntensity = minIntensity;

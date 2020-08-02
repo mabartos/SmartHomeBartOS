@@ -15,6 +15,7 @@ import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.mabartos.api.common.UserRole;
+import org.mabartos.api.data.general.JsonPropertyNames;
 import org.mabartos.api.model.device.DeviceModel;
 import org.mabartos.api.model.home.HomeInvitationModel;
 import org.mabartos.api.model.home.HomeModel;
@@ -49,8 +50,8 @@ import java.util.UUID;
 @Entity
 @Table(name = "Homes")
 @Cacheable
-@JsonIgnoreProperties(value = {"mqttClientID", "usersCount"})
-@JsonPropertyOrder({"id", "name", "active"})
+@JsonIgnoreProperties(value = {JsonPropertyNames.MQTT_CLIENT_ID, JsonPropertyNames.USERS_COUNT})
+@JsonPropertyOrder({JsonPropertyNames.ID, JsonPropertyNames.NAME, JsonPropertyNames.ACTIVE})
 public class HomeEntity extends PanacheEntityBase implements HomeModel {
 
     @Id
@@ -269,12 +270,12 @@ public class HomeEntity extends PanacheEntityBase implements HomeModel {
     }
 
     /* COMPUTED */
-    @JsonProperty("mqttClientID")
+    @JsonProperty(JsonPropertyNames.MQTT_CLIENT_ID)
     public Long getMqttClientID() {
         return mqttClient.getID();
     }
 
-    @JsonProperty("usersCount")
+    @JsonProperty(JsonPropertyNames.USERS_COUNT)
     public Integer getUsersCount() {
         if (usersSet != null) {
             return usersSet.size();
@@ -282,7 +283,7 @@ public class HomeEntity extends PanacheEntityBase implements HomeModel {
         return 0;
     }
 
-    @JsonProperty("active")
+    @JsonProperty(JsonPropertyNames.ACTIVE)
     public boolean isHomeActive() {
         if (mqttClient != null) {
             return mqttClient.isBrokerActive();

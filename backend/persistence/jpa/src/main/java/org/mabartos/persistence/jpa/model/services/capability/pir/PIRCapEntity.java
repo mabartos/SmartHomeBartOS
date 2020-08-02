@@ -9,6 +9,7 @@ package org.mabartos.persistence.jpa.model.services.capability.pir;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.mabartos.api.common.CapabilityType;
+import org.mabartos.api.data.general.capability.JsonCapNames;
 import org.mabartos.api.model.capability.pir.PIRCapModel;
 import org.mabartos.persistence.jpa.model.services.capability.CapabilityEntity;
 
@@ -29,7 +30,7 @@ public class PIRCapEntity extends CapabilityEntity implements PIRCapModel {
     }
 
     @Override
-    @JsonProperty("isTurnedOn")
+    @JsonProperty(JsonCapNames.STATE)
     public boolean isTurnedOn() {
         return this.isTurnedOn;
     }

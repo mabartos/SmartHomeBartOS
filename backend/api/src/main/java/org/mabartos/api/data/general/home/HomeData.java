@@ -9,30 +9,31 @@ package org.mabartos.api.data.general.home;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.mabartos.api.data.general.JsonPropertyNames;
 import org.mabartos.api.data.general.SerializeUtils;
 
 public class HomeData {
 
-    @JsonProperty("id")
+    @JsonProperty(JsonPropertyNames.ID)
     private Long id;
 
-    @JsonProperty("name")
+    @JsonProperty(JsonPropertyNames.NAME)
     private String name;
 
-    @JsonProperty("active")
+    @JsonProperty(JsonPropertyNames.ACTIVE)
     private boolean active;
 
-    @JsonProperty("brokerURL")
+    @JsonProperty(JsonPropertyNames.BROKER_URL)
     private String brokerURL;
 
-    @JsonProperty("mqttClientID")
+    @JsonProperty(JsonPropertyNames.MQTT_CLIENT_ID)
     private Long mqttClientID;
 
     @JsonCreator
-    public HomeData(@JsonProperty("id") Long id,
-                    @JsonProperty("name") String name,
-                    @JsonProperty("brokerURL") String brokerURL,
-                    @JsonProperty("mqttClientID") Long mqttClientID
+    public HomeData(@JsonProperty(JsonPropertyNames.ID) Long id,
+                    @JsonProperty(JsonPropertyNames.NAME) String name,
+                    @JsonProperty(JsonPropertyNames.BROKER_URL) String brokerURL,
+                    @JsonProperty(JsonPropertyNames.MQTT_CLIENT_ID) Long mqttClientID
     ) {
         this.id = id;
         this.name = name;

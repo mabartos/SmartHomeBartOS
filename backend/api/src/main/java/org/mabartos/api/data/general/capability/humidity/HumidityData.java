@@ -11,23 +11,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.mabartos.api.common.CapabilityType;
 import org.mabartos.api.data.general.SerializeUtils;
 import org.mabartos.api.data.general.capability.CapabilityDataWithValue;
+import org.mabartos.api.data.general.capability.JsonCapNames;
 import org.mabartos.api.model.capability.CapabilityModel;
 import org.mabartos.api.model.capability.humidity.HumidityCapModel;
 
 public class HumidityData extends CapabilityDataWithValue<Byte> {
 
-    public HumidityData(@JsonProperty("actual") Byte actual) {
+    public HumidityData(@JsonProperty(JsonCapNames.ACTUAL_VALUE) Byte actual) {
         super(actual);
-    }
-
-    @Override
-    public Byte getValue() {
-        return actual;
-    }
-
-    @Override
-    public void setValue(Byte value) {
-        this.actual = value;
     }
 
     public static HumidityData fromJson(String json) {

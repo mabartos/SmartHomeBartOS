@@ -11,40 +11,41 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.mabartos.api.common.CapabilityType;
+import org.mabartos.api.data.general.JsonPropertyNames;
 import org.mabartos.api.data.general.SerializeUtils;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CapabilityInfoData {
 
-    @JsonProperty("id")
+    @JsonProperty(JsonPropertyNames.ID)
     protected Long id;
 
-    @JsonProperty("name")
+    @JsonProperty(JsonPropertyNames.NAME)
     protected String name;
 
-    @JsonProperty("enabled")
+    @JsonProperty(JsonPropertyNames.ENABLED)
     protected boolean enabled;
 
-    @JsonProperty("type")
+    @JsonProperty(JsonPropertyNames.TYPE)
     protected CapabilityType type;
 
-    @JsonProperty("pin")
+    @JsonProperty(JsonPropertyNames.PIN)
     protected Integer pin;
 
-    @JsonProperty("active")
+    @JsonProperty(JsonPropertyNames.ACTIVE)
     protected boolean active;
 
-    @JsonProperty("deviceID")
+    @JsonProperty(JsonPropertyNames.DEVICE_ID)
     protected Long deviceID;
 
     @JsonCreator
-    public CapabilityInfoData(@JsonProperty("id") Long id,
-                              @JsonProperty("name") String name,
-                              @JsonProperty("enabled") boolean enabled,
-                              @JsonProperty("type") CapabilityType type,
-                              @JsonProperty("pin") Integer pin,
-                              @JsonProperty("active") boolean active,
-                              @JsonProperty("deviceID") Long deviceID) {
+    public CapabilityInfoData(@JsonProperty(JsonPropertyNames.ID) Long id,
+                              @JsonProperty(JsonPropertyNames.NAME) String name,
+                              @JsonProperty(JsonPropertyNames.ENABLED) boolean enabled,
+                              @JsonProperty(JsonPropertyNames.TYPE) CapabilityType type,
+                              @JsonProperty(JsonPropertyNames.PIN) Integer pin,
+                              @JsonProperty(JsonPropertyNames.ACTIVE) boolean active,
+                              @JsonProperty(JsonPropertyNames.DEVICE_ID) Long deviceID) {
         this.id = id;
         this.name = name;
         this.enabled = enabled;

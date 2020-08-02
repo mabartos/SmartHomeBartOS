@@ -14,13 +14,13 @@ import org.mabartos.api.model.capability.CapabilityModel;
 import org.mabartos.api.model.capability.HasState;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public abstract class CapabilityDataWithState extends CapabilityData implements HasState {
+public class CapabilityDataWithState extends CapabilityData implements HasState {
 
-    @JsonProperty("isTurnedOn")
+    @JsonProperty(JsonCapNames.STATE)
     protected boolean isTurnedOn;
 
     @JsonCreator
-    public CapabilityDataWithState(@JsonProperty("isTurnedOn") boolean isTurnedOn) {
+    public CapabilityDataWithState(@JsonProperty(JsonCapNames.STATE) boolean isTurnedOn) {
         super();
         this.isTurnedOn = isTurnedOn;
     }

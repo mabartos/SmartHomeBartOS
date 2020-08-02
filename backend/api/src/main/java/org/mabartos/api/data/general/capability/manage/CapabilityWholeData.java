@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import org.mabartos.api.common.CapabilityType;
+import org.mabartos.api.data.general.JsonPropertyNames;
 import org.mabartos.api.data.general.SerializableJSON;
 import org.mabartos.api.data.general.SerializeUtils;
 import org.mabartos.api.data.mqtt.ConvertableToModel;
@@ -19,21 +20,21 @@ import org.mabartos.api.model.capability.CapabilityModel;
 import java.util.HashSet;
 import java.util.Set;
 
-@JsonPropertyOrder({"id", "pin", "type"})
+@JsonPropertyOrder({JsonPropertyNames.ID, JsonPropertyNames.PIN, JsonPropertyNames.TYPE})
 public class CapabilityWholeData implements SerializableJSON, ConvertableToModel {
 
-    @JsonProperty("id")
+    @JsonProperty(JsonPropertyNames.ID)
     protected Long id;
 
-    @JsonProperty("type")
+    @JsonProperty(JsonPropertyNames.TYPE)
     protected CapabilityType type;
 
-    @JsonProperty("pin")
+    @JsonProperty(JsonPropertyNames.PIN)
     protected Integer pin;
 
     @JsonCreator
-    public CapabilityWholeData(@JsonProperty("type") CapabilityType type,
-                               @JsonProperty("pin") Integer pin) {
+    public CapabilityWholeData(@JsonProperty(JsonPropertyNames.TYPE) CapabilityType type,
+                               @JsonProperty(JsonPropertyNames.PIN) Integer pin) {
         this.type = type;
         this.pin = pin;
     }

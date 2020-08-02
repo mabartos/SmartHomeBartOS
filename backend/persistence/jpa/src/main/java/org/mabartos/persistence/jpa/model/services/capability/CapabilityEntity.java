@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import org.mabartos.api.common.CapabilityType;
+import org.mabartos.api.data.general.JsonPropertyNames;
 import org.mabartos.api.model.capability.CapabilityModel;
 import org.mabartos.api.model.device.DeviceModel;
 import org.mabartos.persistence.jpa.model.services.device.DeviceEntity;
@@ -118,7 +119,7 @@ public class CapabilityEntity extends PanacheEntityBase implements CapabilityMod
         return device;
     }
 
-    @JsonProperty("deviceID")
+    @JsonProperty(JsonPropertyNames.DEVICE_ID)
     public Long getDeviceID() {
         return (device != null) ? device.getID() : -1;
     }
@@ -128,7 +129,7 @@ public class CapabilityEntity extends PanacheEntityBase implements CapabilityMod
         this.device = (DeviceEntity) device;
     }
 
-    @JsonProperty("active")
+    @JsonProperty(JsonPropertyNames.ACTIVE)
     public boolean isActive() {
         return device.isActive();
     }

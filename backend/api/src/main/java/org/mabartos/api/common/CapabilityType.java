@@ -22,6 +22,7 @@ public enum CapabilityType {
     GAS_SENSOR("gas"),
     STATISTICS("stats"),
     AIR_CONDITIONER("ac"),
+    THERMOSTAT("thermo"),
     OTHER("other");
 
     private String name;
