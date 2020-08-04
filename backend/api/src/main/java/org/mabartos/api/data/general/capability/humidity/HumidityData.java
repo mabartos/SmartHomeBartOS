@@ -8,12 +8,12 @@
 package org.mabartos.api.data.general.capability.humidity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.mabartos.api.service.capability.CapabilityType;
 import org.mabartos.api.data.general.SerializeUtils;
 import org.mabartos.api.data.general.capability.CapDataWithNumberValue;
 import org.mabartos.api.data.general.capability.JsonCapNames;
 import org.mabartos.api.model.capability.CapabilityModel;
 import org.mabartos.api.model.capability.humidity.HumidityCapModel;
+import org.mabartos.api.service.capability.CapabilityType;
 
 public class HumidityData extends CapDataWithNumberValue<Byte> {
 

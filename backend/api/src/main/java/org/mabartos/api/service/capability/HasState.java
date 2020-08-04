@@ -18,7 +18,7 @@ public interface HasState extends HasValueType {
 
     void changeState();
 
-    default ValuesType getValuesType() {
+    default ValuesType getValueType() {
         return ValuesType.ON_OFF;
     }
 }

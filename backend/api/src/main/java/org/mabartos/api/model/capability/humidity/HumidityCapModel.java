@@ -7,10 +7,10 @@
 
 package org.mabartos.api.model.capability.humidity;
 
-import org.mabartos.api.model.capability.CapabilityModel;
+import org.mabartos.api.model.capability.InputCapModel;
 import org.mabartos.api.service.capability.HasValueAndUnits;
 
-public interface HumidityCapModel extends CapabilityModel, HasValueAndUnits<Byte> {
+public interface HumidityCapModel extends InputCapModel, HasValueAndUnits<Byte> {
 
     default Byte getMinValue() {
         return 0;

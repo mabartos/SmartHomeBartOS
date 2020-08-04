@@ -7,9 +7,9 @@
 
 package org.mabartos.api.model.capability;
 
-import org.mabartos.api.service.capability.CapabilityType;
 import org.mabartos.api.common.IdentifiableName;
 import org.mabartos.api.model.device.DeviceModel;
+import org.mabartos.api.service.capability.CapabilityType;
 
 public interface CapabilityModel extends IdentifiableName<Long> {
 

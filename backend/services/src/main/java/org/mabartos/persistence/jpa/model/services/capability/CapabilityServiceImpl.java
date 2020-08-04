@@ -9,6 +9,8 @@ package org.mabartos.persistence.jpa.model.services.capability;
 
 import io.quarkus.runtime.StartupEvent;
 import org.mabartos.api.controller.capability.CapabilityInfoData;
+import org.mabartos.api.data.general.capability.extern.ExternBtnWholeData;
+import org.mabartos.api.data.general.capability.manage.CapabilityUtils;
 import org.mabartos.api.data.general.capability.manage.CapabilityWholeData;
 import org.mabartos.api.model.capability.CapabilityModel;
 import org.mabartos.api.protocol.mqtt.BartMqttClient;
@@ -16,6 +18,7 @@ import org.mabartos.api.protocol.mqtt.MqttClientManager;
 import org.mabartos.api.protocol.mqtt.TopicUtils;
 import org.mabartos.api.service.AppServices;
 import org.mabartos.api.service.capability.CapabilityService;
+import org.mabartos.persistence.jpa.model.services.capability.extern.ExternBtnCapEntity;
 import org.mabartos.persistence.jpa.repository.CapabilityRepository;
 import org.mabartos.services.model.CRUDServiceImpl;
 import org.mabartos.services.utils.DataToModelBase;
@@ -77,10 +80,23 @@ public class CapabilityServiceImpl extends CRUDServiceImpl<CapabilityModel, Capa
     }
 
     @Override
+    public CapabilityModel fromDataToModel(CapabilityWholeData data) {
+        if (data != null) {
+            if (data instanceof ExternBtnWholeData) {
+                ExternBtnCapEntity entity = new ExternBtnCapEntity(CapabilityUtils.getRandomNameForCap(data.getType()), data.getPin());
+                entity.setHasTwoStates(((ExternBtnWholeData) data).hasTwoStates());
+                return entity;
+            }
+            return new CapabilityEntity(CapabilityUtils.getRandomNameForCap(data.getType()), data.getType(), data.getPin());
+        }
+        return null;
+    }
+
+    @Override
     public Set<CapabilityModel> fromDataToModel(Set<CapabilityWholeData> caps) {
         if (caps != null) {
             Set<CapabilityModel> result = new HashSet<>();
-            caps.forEach(cap -> result.add(cap.toModel()));
+            caps.forEach(cap -> result.add(fromDataToModel(cap)));
             return result;
         }
         return null;

@@ -8,7 +8,6 @@
 package org.mabartos.services;
 
 import io.quarkus.runtime.StartupEvent;
-import io.vertx.mutiny.core.Vertx;
 import org.mabartos.api.protocol.mqtt.MqttClientManager;
 import org.mabartos.api.service.AppServices;
 import org.mabartos.api.service.auth.AuthService;

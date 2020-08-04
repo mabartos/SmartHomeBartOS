@@ -9,8 +9,8 @@ package org.mabartos.controller.capability;
 
 import org.mabartos.api.annotations.HasRoleInHome;
 import org.mabartos.api.common.UserRole;
-import org.mabartos.api.controller.capability.CapabilityResource;
 import org.mabartos.api.controller.BartSession;
+import org.mabartos.api.controller.capability.CapabilityResource;
 import org.mabartos.api.model.capability.CapabilityModel;
 
 import javax.transaction.Transactional;

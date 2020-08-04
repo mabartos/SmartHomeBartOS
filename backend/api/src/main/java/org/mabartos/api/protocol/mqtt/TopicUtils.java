@@ -7,7 +7,6 @@
 
 package org.mabartos.api.protocol.mqtt;
 
-import org.mabartos.api.service.capability.CapabilityType;
 import org.mabartos.api.model.capability.CapabilityModel;
 import org.mabartos.api.model.home.HomeModel;
 import org.mabartos.api.protocol.mqtt.exceptions.WrongMessageTopicException;
@@ -16,6 +15,7 @@ import org.mabartos.api.protocol.mqtt.topics.CRUDTopicType;
 import org.mabartos.api.protocol.mqtt.topics.CapabilityTopic;
 import org.mabartos.api.protocol.mqtt.topics.GeneralTopic;
 import org.mabartos.api.protocol.mqtt.topics.Topics;
+import org.mabartos.api.service.capability.CapabilityType;
 
 import java.util.Arrays;
 import java.util.regex.Matcher;

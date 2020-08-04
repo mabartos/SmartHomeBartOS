@@ -9,10 +9,10 @@ package org.mabartos.controller.room;
 
 import org.mabartos.api.annotations.HasRoleInHome;
 import org.mabartos.api.common.UserRole;
+import org.mabartos.api.controller.BartSession;
 import org.mabartos.api.controller.device.DevicesResource;
 import org.mabartos.api.controller.room.OwnerData;
 import org.mabartos.api.controller.room.RoomResource;
-import org.mabartos.api.controller.BartSession;
 import org.mabartos.api.model.room.RoomModel;
 import org.mabartos.api.model.user.UserModel;
 import org.mabartos.controller.device.DevicesResourceProvider;

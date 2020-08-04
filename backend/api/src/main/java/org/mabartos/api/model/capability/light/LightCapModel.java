@@ -7,11 +7,12 @@
 
 package org.mabartos.api.model.capability.light;
 
-import org.mabartos.api.model.capability.CapabilityModel;
+import org.mabartos.api.common.values.ValuesType;
+import org.mabartos.api.model.capability.OutputCapModel;
 import org.mabartos.api.service.capability.HasNumberValueScope;
 import org.mabartos.api.service.capability.HasState;
 
-public interface LightCapModel extends CapabilityModel, HasState, HasNumberValueScope<Byte> {
+public interface LightCapModel extends OutputCapModel, HasState, HasNumberValueScope<Byte> {
 
     Byte getIntensity();
 
@@ -27,5 +28,10 @@ public interface LightCapModel extends CapabilityModel, HasState, HasNumberValue
 
     default Byte getMaxValue() {
         return 100;
+    }
+
+    @Override
+    default ValuesType getValueType() {
+        return ValuesType.NUMBER;
     }
 }

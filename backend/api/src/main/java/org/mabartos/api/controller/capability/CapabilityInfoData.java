@@ -10,9 +10,9 @@ package org.mabartos.api.controller.capability;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.mabartos.api.service.capability.CapabilityType;
 import org.mabartos.api.data.general.JsonPropertyNames;
 import org.mabartos.api.data.general.SerializeUtils;
+import org.mabartos.api.service.capability.CapabilityType;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CapabilityInfoData {

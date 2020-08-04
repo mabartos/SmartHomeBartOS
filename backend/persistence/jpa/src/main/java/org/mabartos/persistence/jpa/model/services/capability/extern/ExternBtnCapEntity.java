@@ -7,9 +7,9 @@
 
 package org.mabartos.persistence.jpa.model.services.capability.extern;
 
-import org.mabartos.api.service.capability.CapabilityType;
 import org.mabartos.api.model.capability.CapabilityModel;
 import org.mabartos.api.model.capability.extern.ExternBtnCapModel;
+import org.mabartos.api.service.capability.CapabilityType;
 import org.mabartos.persistence.jpa.model.services.capability.CapabilityEntity;
 
 import javax.persistence.Column;

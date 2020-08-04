@@ -8,9 +8,9 @@
 package org.mabartos.services.model;
 
 import io.quarkus.runtime.StartupEvent;
-import org.mabartos.api.protocol.mqtt.MqttClientService;
 import org.mabartos.api.model.home.HomeModel;
 import org.mabartos.api.model.mqtt.MqttClientModel;
+import org.mabartos.api.protocol.mqtt.MqttClientService;
 import org.mabartos.api.service.AppServices;
 import org.mabartos.persistence.jpa.model.mqtt.MqttClientEntity;
 import org.mabartos.persistence.jpa.repository.BartMqttClientRepository;

@@ -9,6 +9,7 @@ package org.mabartos.controller.home;
 
 import org.mabartos.api.annotations.HasRoleInHome;
 import org.mabartos.api.common.UserRole;
+import org.mabartos.api.controller.BartSession;
 import org.mabartos.api.controller.device.DevicesResource;
 import org.mabartos.api.controller.home.HomeResource;
 import org.mabartos.api.controller.home.invitations.HomeInvitationsResource;
@@ -17,7 +18,6 @@ import org.mabartos.api.controller.room.RoomsResource;
 import org.mabartos.api.controller.user.HomeMemberRoleData;
 import org.mabartos.api.controller.user.UserRoleData;
 import org.mabartos.api.controller.user.UsersResource;
-import org.mabartos.api.controller.BartSession;
 import org.mabartos.api.model.device.DeviceModel;
 import org.mabartos.api.model.home.HomeModel;
 import org.mabartos.api.model.user.UserModel;

@@ -10,12 +10,12 @@ package org.mabartos.api.data.general.capability.light;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.mabartos.api.service.capability.CapabilityType;
 import org.mabartos.api.data.general.SerializeUtils;
 import org.mabartos.api.data.general.capability.CapabilityDataWithState;
 import org.mabartos.api.data.general.capability.JsonCapNames;
 import org.mabartos.api.model.capability.CapabilityModel;
 import org.mabartos.api.model.capability.light.LightCapModel;
+import org.mabartos.api.service.capability.CapabilityType;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LightsData extends CapabilityDataWithState {

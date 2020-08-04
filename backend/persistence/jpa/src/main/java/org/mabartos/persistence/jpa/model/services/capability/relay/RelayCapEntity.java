@@ -8,10 +8,10 @@
 package org.mabartos.persistence.jpa.model.services.capability.relay;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.mabartos.api.service.capability.CapabilityType;
 import org.mabartos.api.data.general.capability.JsonCapNames;
 import org.mabartos.api.model.capability.CapabilityModel;
 import org.mabartos.api.model.capability.relay.RelayCapModel;
+import org.mabartos.api.service.capability.CapabilityType;
 import org.mabartos.persistence.jpa.model.services.capability.CapabilityEntity;
 
 import javax.persistence.Column;

@@ -9,5 +9,6 @@ package org.mabartos.api.common.values;
 
 public enum ValuesType {
     ON_OFF,
-    NUMBER
+    NUMBER,
+    BOTH
 }

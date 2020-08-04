@@ -9,8 +9,8 @@ package org.mabartos.controller.home.invitations;
 
 import org.mabartos.api.annotations.HasRoleInHome;
 import org.mabartos.api.common.UserRole;
-import org.mabartos.api.controller.home.invitations.HomeInvitationResource;
 import org.mabartos.api.controller.BartSession;
+import org.mabartos.api.controller.home.invitations.HomeInvitationResource;
 import org.mabartos.api.model.home.HomeInvitationModel;
 
 import javax.transaction.Transactional;

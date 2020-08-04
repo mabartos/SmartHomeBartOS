@@ -9,12 +9,12 @@ package org.mabartos.api.data.general.capability.temperature;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.mabartos.api.service.capability.CapabilityType;
 import org.mabartos.api.data.general.SerializeUtils;
 import org.mabartos.api.data.general.capability.CapDataWithNumberValue;
 import org.mabartos.api.data.general.capability.JsonCapNames;
 import org.mabartos.api.model.capability.CapabilityModel;
 import org.mabartos.api.model.capability.temperature.TemperatureCapModel;
+import org.mabartos.api.service.capability.CapabilityType;
 
 public class TemperatureData extends CapDataWithNumberValue<Double> {
 

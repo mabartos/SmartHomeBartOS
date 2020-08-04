@@ -11,11 +11,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.mabartos.api.data.general.capability.JsonCapNames;
 import org.mabartos.api.model.capability.CapabilityModel;
 import org.mabartos.api.model.capability.light.LightCapModel;
+import org.mabartos.api.model.events.trigger.TriggerModel;
 import org.mabartos.api.service.capability.CapabilityType;
 import org.mabartos.persistence.jpa.model.services.capability.CapabilityEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import java.util.Set;
 
 @Entity
 public class LightCapEntity extends CapabilityEntity implements LightCapModel {
@@ -84,5 +86,26 @@ public class LightCapEntity extends CapabilityEntity implements LightCapModel {
     @Override
     public void setValue(Byte value) {
         setIntensity(value);
+    }
+
+    /* Triggers */
+    @Override
+    public Set<TriggerModel> getTriggers() {
+        return null;
+    }
+
+    @Override
+    public void addTrigger(TriggerModel trigger) {
+
+    }
+
+    @Override
+    public void removeTrigger(Long id) {
+
+    }
+
+    @Override
+    public void editTrigger(Long id, TriggerModel trigger) {
+
     }
 }

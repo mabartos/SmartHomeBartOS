@@ -10,10 +10,10 @@ package org.mabartos.persistence.jpa.model.services.capability;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-import org.mabartos.api.service.capability.CapabilityType;
 import org.mabartos.api.data.general.JsonPropertyNames;
 import org.mabartos.api.model.capability.CapabilityModel;
 import org.mabartos.api.model.device.DeviceModel;
+import org.mabartos.api.service.capability.CapabilityType;
 import org.mabartos.persistence.jpa.model.services.device.DeviceEntity;
 
 import javax.persistence.Cacheable;

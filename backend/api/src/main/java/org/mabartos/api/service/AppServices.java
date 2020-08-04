@@ -7,7 +7,6 @@
 
 package org.mabartos.api.service;
 
-import io.vertx.mutiny.core.Vertx;
 import org.mabartos.api.protocol.mqtt.MqttClientManager;
 import org.mabartos.api.service.auth.AuthService;
 import org.mabartos.api.service.capability.CapabilityService;

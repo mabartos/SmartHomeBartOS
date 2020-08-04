@@ -7,9 +7,9 @@
 
 package org.mabartos.controller.user;
 
+import org.mabartos.api.controller.BartSession;
 import org.mabartos.api.controller.home.invitations.HomeInvitationsResource;
 import org.mabartos.api.controller.user.UserInvitationResource;
-import org.mabartos.api.controller.BartSession;
 import org.mabartos.api.model.home.HomeInvitationModel;
 import org.mabartos.api.model.user.UserModel;
 

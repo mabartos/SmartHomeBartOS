@@ -8,12 +8,9 @@
 package org.mabartos.api.data.general.capability.extern;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.mabartos.api.service.capability.CapabilityType;
-import org.mabartos.api.data.general.capability.manage.CapabilityUtils;
 import org.mabartos.api.data.general.capability.manage.CapabilityWholeData;
-import org.mabartos.api.model.capability.CapabilityModel;
 import org.mabartos.api.model.capability.extern.ExternBtnCapModel;
-import org.mabartos.persistence.jpa.model.services.capability.extern.ExternBtnCapEntity;
+import org.mabartos.api.service.capability.CapabilityType;
 
 public class ExternBtnWholeData extends CapabilityWholeData {
 
@@ -36,12 +33,5 @@ public class ExternBtnWholeData extends CapabilityWholeData {
 
     public void setHasTwoStates(boolean state) {
         this.hasTwoStates = state;
-    }
-
-    @Override
-    public CapabilityModel toModel() {
-        ExternBtnCapModel entity = new ExternBtnCapEntity(CapabilityUtils.getRandomNameForCap(getType()), getPin());
-        entity.setHasTwoStates(hasTwoStates());
-        return entity;
     }
 }

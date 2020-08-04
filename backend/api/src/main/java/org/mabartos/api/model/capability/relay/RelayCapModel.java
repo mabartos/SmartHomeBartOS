@@ -7,8 +7,8 @@
 
 package org.mabartos.api.model.capability.relay;
 
-import org.mabartos.api.model.capability.CapabilityModel;
+import org.mabartos.api.model.capability.OutputCapModel;
 import org.mabartos.api.service.capability.HasState;
 
-public interface RelayCapModel extends CapabilityModel, HasState {
+public interface RelayCapModel extends OutputCapModel, HasState {
 }

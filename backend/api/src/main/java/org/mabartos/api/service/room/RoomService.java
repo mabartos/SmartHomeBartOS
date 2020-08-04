@@ -7,7 +7,6 @@
 
 package org.mabartos.api.service.room;
 
-import org.mabartos.api.common.RoomType;
 import org.mabartos.api.model.room.RoomModel;
 import org.mabartos.api.model.user.UserModel;
 import org.mabartos.api.protocol.mqtt.AbleSendMQTT;

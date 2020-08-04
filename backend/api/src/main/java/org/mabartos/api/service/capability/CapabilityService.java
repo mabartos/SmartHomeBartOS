@@ -20,5 +20,7 @@ public interface CapabilityService extends CRUDService<CapabilityModel, Long>, A
 
     CapabilityModel updateFromJson(Long ID, String JSON);
 
+    CapabilityModel fromDataToModel(CapabilityWholeData data);
+
     Set<CapabilityModel> fromDataToModel(Set<CapabilityWholeData> caps);
 }
