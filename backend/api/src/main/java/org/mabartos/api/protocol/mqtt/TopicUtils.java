@@ -7,7 +7,7 @@
 
 package org.mabartos.api.protocol.mqtt;
 
-import org.mabartos.api.common.CapabilityType;
+import org.mabartos.api.service.capability.CapabilityType;
 import org.mabartos.api.model.capability.CapabilityModel;
 import org.mabartos.api.model.home.HomeModel;
 import org.mabartos.api.protocol.mqtt.exceptions.WrongMessageTopicException;

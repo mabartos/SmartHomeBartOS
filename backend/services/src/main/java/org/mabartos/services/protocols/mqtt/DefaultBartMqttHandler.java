@@ -58,7 +58,7 @@ public class DefaultBartMqttHandler implements BartMqttHandler {
             if (resultTopic != null && homeTopic != null && rawTopic.length() > homeTopic.length()) {
                 handler.init(client, home, resultTopic, message, rawTopic);
 
-                // It's the 'org.mabartos.manage' topic
+                // It's the 'manage' topic
                 if (handler.handleManageTopics())
                     return;
 

@@ -5,7 +5,7 @@
  * All rights reserved.
  */
 
-package org.mabartos.api.model;
+package org.mabartos.api.controller;
 
 import org.mabartos.api.model.capability.CapabilityModel;
 import org.mabartos.api.model.device.DeviceModel;

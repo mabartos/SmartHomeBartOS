@@ -9,7 +9,6 @@ package org.mabartos.services.protocols.mqtt;
 
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
-import org.mabartos.api.common.CapabilityType;
 import org.mabartos.api.data.general.device.AddDeviceRequestData;
 import org.mabartos.api.data.general.device.AddDeviceToRoomData;
 import org.mabartos.api.data.general.device.ConnectRequestData;
@@ -26,13 +25,7 @@ import org.mabartos.api.protocol.mqtt.exceptions.WrongMessageTopicException;
 import org.mabartos.api.protocol.mqtt.topics.CRUDTopic;
 import org.mabartos.api.protocol.mqtt.topics.GeneralTopic;
 import org.mabartos.api.service.AppServices;
-import org.mabartos.persistence.jpa.model.services.capability.extern.ExternBtnCapEntity;
-import org.mabartos.persistence.jpa.model.services.capability.heater.HeaterCapEntity;
-import org.mabartos.persistence.jpa.model.services.capability.humidity.HumidityCapEntity;
-import org.mabartos.persistence.jpa.model.services.capability.light.LightCapEntity;
-import org.mabartos.persistence.jpa.model.services.capability.pir.PIRCapEntity;
-import org.mabartos.persistence.jpa.model.services.capability.relay.RelayCapEntity;
-import org.mabartos.persistence.jpa.model.services.capability.temperature.TemperatureCapEntity;
+import org.mabartos.persistence.jpa.model.services.capability.CapabilityUtils;
 import org.mabartos.persistence.jpa.model.services.device.DeviceEntity;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -73,6 +66,7 @@ public class HandleManageMessage implements Serializable {
         if (topic instanceof CRUDTopic && services != null) {
             crudTopic = (CRUDTopic) topic;
             this.home = services.homes().findByID(this.home.getID());
+
             switch (crudTopic.getTypeCRUD()) {
                 case CONNECT:
                     return handleConnect();
@@ -222,42 +216,6 @@ public class HandleManageMessage implements Serializable {
         return false;
     }
 
-    //TODO
-    private CapabilityModel getTypedInstance(String name, CapabilityType type, Integer pin) {
-        if (name != null && type != null) {
-            switch (type) {
-                case NONE:
-                    break;
-                case TEMPERATURE:
-                    return new TemperatureCapEntity(name, pin);
-                case HUMIDITY:
-                    return new HumidityCapEntity(name, pin);
-                case HEATER:
-                    return new HeaterCapEntity(name, pin);
-                case LIGHT:
-                    return new LightCapEntity(name, pin);
-                case RELAY:
-                    return new RelayCapEntity(name, pin);
-                case SOCKET:
-                    break;
-                case EXTERN_BTN:
-                    return new ExternBtnCapEntity(name, pin);
-                case PIR:
-                    return new PIRCapEntity(name, pin);
-                case GAS_SENSOR:
-                    break;
-                case STATISTICS:
-                    break;
-                case AIR_CONDITIONER:
-                    break;
-                case OTHER:
-                    break;
-                default:
-            }
-        }
-        return null;
-    }
-
     private boolean isContainedInHome(CRUDTopic crudTopic) {
         boolean isContained = home.getUnAssignedDevices().stream().anyMatch(f -> f.getID().equals(crudTopic.getDeviceID()));
         if (!isContained)
@@ -269,7 +227,7 @@ public class HandleManageMessage implements Serializable {
         try {
             Set<CapabilityModel> capabilities = services.capabilities().fromDataToModel(message.getCapabilities())
                     .stream()
-                    .map(f -> getTypedInstance(f.getName(), f.getType(), f.getPin()))
+                    .map(CapabilityUtils::getEntityInstance)
                     .collect(Collectors.toSet());
 
             if (services != null && services.capabilities() != null) {

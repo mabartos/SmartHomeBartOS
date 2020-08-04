@@ -8,8 +8,9 @@
 package org.mabartos.persistence.jpa.model.services.capability.relay;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.mabartos.api.common.CapabilityType;
+import org.mabartos.api.service.capability.CapabilityType;
 import org.mabartos.api.data.general.capability.JsonCapNames;
+import org.mabartos.api.model.capability.CapabilityModel;
 import org.mabartos.api.model.capability.relay.RelayCapModel;
 import org.mabartos.persistence.jpa.model.services.capability.CapabilityEntity;
 
@@ -27,6 +28,10 @@ public class RelayCapEntity extends CapabilityEntity implements RelayCapModel {
 
     public RelayCapEntity(String name, Integer pin) {
         super(name, CapabilityType.RELAY, pin);
+    }
+
+    public RelayCapEntity(CapabilityModel model) {
+        this(model.getName(), model.getPin());
     }
 
     @Override

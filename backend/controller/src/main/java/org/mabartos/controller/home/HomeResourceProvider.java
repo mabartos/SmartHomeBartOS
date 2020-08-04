@@ -17,7 +17,7 @@ import org.mabartos.api.controller.room.RoomsResource;
 import org.mabartos.api.controller.user.HomeMemberRoleData;
 import org.mabartos.api.controller.user.UserRoleData;
 import org.mabartos.api.controller.user.UsersResource;
-import org.mabartos.api.model.BartSession;
+import org.mabartos.api.controller.BartSession;
 import org.mabartos.api.model.device.DeviceModel;
 import org.mabartos.api.model.home.HomeModel;
 import org.mabartos.api.model.user.UserModel;

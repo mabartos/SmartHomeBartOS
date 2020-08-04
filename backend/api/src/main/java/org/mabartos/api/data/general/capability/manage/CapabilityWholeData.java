@@ -8,19 +8,22 @@
 package org.mabartos.api.data.general.capability.manage;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import org.mabartos.api.common.CapabilityType;
+import org.mabartos.api.service.capability.CapabilityType;
 import org.mabartos.api.data.general.JsonPropertyNames;
 import org.mabartos.api.data.general.SerializableJSON;
 import org.mabartos.api.data.general.SerializeUtils;
 import org.mabartos.api.data.mqtt.ConvertableToModel;
 import org.mabartos.api.model.capability.CapabilityModel;
+import org.mabartos.persistence.jpa.model.services.capability.CapabilityEntity;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @JsonPropertyOrder({JsonPropertyNames.ID, JsonPropertyNames.PIN, JsonPropertyNames.TYPE})
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class CapabilityWholeData implements SerializableJSON, ConvertableToModel {
 
     @JsonProperty(JsonPropertyNames.ID)
@@ -75,6 +78,10 @@ public class CapabilityWholeData implements SerializableJSON, ConvertableToModel
             return result;
         }
         return null;
+    }
+
+    public CapabilityModel toModel() {
+        return new CapabilityEntity(CapabilityUtils.getRandomNameForCap(getType()), getType(), getPin());
     }
 
     public static CapabilityWholeData fromJson(String json) {

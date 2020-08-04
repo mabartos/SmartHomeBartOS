@@ -7,8 +7,9 @@
 
 package org.mabartos.persistence.jpa.model.services.capability.humidity;
 
-import org.mabartos.api.common.CapabilityType;
+import org.mabartos.api.model.capability.CapabilityModel;
 import org.mabartos.api.model.capability.humidity.HumidityCapModel;
+import org.mabartos.api.service.capability.CapabilityType;
 import org.mabartos.persistence.jpa.model.services.capability.CapabilityEntity;
 
 import javax.persistence.Column;
@@ -31,6 +32,10 @@ public class HumidityCapEntity extends CapabilityEntity implements HumidityCapMo
         super(name, CapabilityType.HUMIDITY, pin);
     }
 
+    public HumidityCapEntity(CapabilityModel model) {
+        this(model.getName(), model.getPin());
+    }
+
     @Override
     public Byte getValue() {
         return value;
@@ -38,7 +43,7 @@ public class HumidityCapEntity extends CapabilityEntity implements HumidityCapMo
 
     @Override
     public void setValue(Byte value) {
-        if (value >= 0 && value <= 100) {
+        if (value >= getMinValue() && value <= getMaxValue()) {
             this.value = value;
         }
     }

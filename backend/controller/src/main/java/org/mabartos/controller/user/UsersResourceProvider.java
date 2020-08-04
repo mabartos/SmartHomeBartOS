@@ -11,7 +11,7 @@ import io.quarkus.security.Authenticated;
 import org.mabartos.api.annotations.HasRoleInHome;
 import org.mabartos.api.common.UserRole;
 import org.mabartos.api.controller.user.UsersResource;
-import org.mabartos.api.model.BartSession;
+import org.mabartos.api.controller.BartSession;
 import org.mabartos.api.model.user.UserModel;
 import org.mabartos.controller.utils.ControllerUtil;
 

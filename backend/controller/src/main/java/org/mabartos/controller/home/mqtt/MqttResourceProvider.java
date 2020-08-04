@@ -10,7 +10,7 @@ package org.mabartos.controller.home.mqtt;
 import org.mabartos.api.annotations.HasRoleInHome;
 import org.mabartos.api.common.UserRole;
 import org.mabartos.api.controller.home.mqtt.MqttResource;
-import org.mabartos.api.model.BartSession;
+import org.mabartos.api.controller.BartSession;
 import org.mabartos.api.model.mqtt.MqttClientModel;
 
 import javax.transaction.Transactional;

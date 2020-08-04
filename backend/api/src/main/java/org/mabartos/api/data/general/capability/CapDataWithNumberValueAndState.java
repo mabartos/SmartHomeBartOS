@@ -8,14 +8,14 @@
 package org.mabartos.api.data.general.capability;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.mabartos.api.model.capability.HasState;
+import org.mabartos.api.service.capability.HasState;
 
-public class CapDataWithValueAndState<Type> extends CapabilityDataWithValue<Type> implements HasState {
+public class CapDataWithNumberValueAndState<Type extends Number> extends CapDataWithNumberValue<Type> implements HasState {
 
     private CapabilityDataWithState capState;
 
-    public CapDataWithValueAndState(@JsonProperty(JsonCapNames.ACTUAL_VALUE) Type actual,
-                                    @JsonProperty(JsonCapNames.STATE) boolean isTurnedOn) {
+    public CapDataWithNumberValueAndState(@JsonProperty(JsonCapNames.ACTUAL_VALUE) Type actual,
+                                          @JsonProperty(JsonCapNames.STATE) boolean isTurnedOn) {
         super(actual);
         this.capState = new CapabilityDataWithState(isTurnedOn);
     }

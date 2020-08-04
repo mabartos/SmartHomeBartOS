@@ -8,7 +8,13 @@
 package org.mabartos.api.model.capability.extern;
 
 import org.mabartos.api.model.capability.CapabilityModel;
-import org.mabartos.api.model.capability.HasState;
+import org.mabartos.api.service.capability.HasState;
 
 public interface ExternBtnCapModel extends CapabilityModel, HasState {
+
+    String HAS_TWO_STATES_JSON = "hasTwoStates";
+
+    boolean hasTwoStates();
+
+    void setHasTwoStates(boolean state);
 }

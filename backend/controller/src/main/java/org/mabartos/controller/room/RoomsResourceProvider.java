@@ -12,7 +12,7 @@ import org.mabartos.api.common.UserRole;
 import org.mabartos.api.controller.room.RoomData;
 import org.mabartos.api.controller.room.RoomResource;
 import org.mabartos.api.controller.room.RoomsResource;
-import org.mabartos.api.model.BartSession;
+import org.mabartos.api.controller.BartSession;
 import org.mabartos.api.model.room.RoomModel;
 import org.mabartos.controller.utils.ControllerUtil;
 import org.mabartos.services.utils.DataToModelBase;

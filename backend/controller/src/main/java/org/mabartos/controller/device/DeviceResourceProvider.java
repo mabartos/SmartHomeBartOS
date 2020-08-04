@@ -11,7 +11,7 @@ import org.mabartos.api.annotations.HasRoleInHome;
 import org.mabartos.api.common.UserRole;
 import org.mabartos.api.controller.capability.CapabilitiesResource;
 import org.mabartos.api.controller.device.DeviceResource;
-import org.mabartos.api.model.BartSession;
+import org.mabartos.api.controller.BartSession;
 import org.mabartos.api.model.device.DeviceModel;
 import org.mabartos.controller.capability.CapabilitiesResourceProvider;
 

@@ -9,14 +9,14 @@ package org.mabartos.api.data.general.capability.temperature;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.mabartos.api.common.CapabilityType;
+import org.mabartos.api.service.capability.CapabilityType;
 import org.mabartos.api.data.general.SerializeUtils;
-import org.mabartos.api.data.general.capability.CapabilityDataWithValue;
+import org.mabartos.api.data.general.capability.CapDataWithNumberValue;
 import org.mabartos.api.data.general.capability.JsonCapNames;
 import org.mabartos.api.model.capability.CapabilityModel;
 import org.mabartos.api.model.capability.temperature.TemperatureCapModel;
 
-public class TemperatureData extends CapabilityDataWithValue<Double> {
+public class TemperatureData extends CapDataWithNumberValue<Double> {
 
     @JsonCreator
     public TemperatureData(@JsonProperty(JsonCapNames.ACTUAL_VALUE) Double actualTemperature) {

@@ -7,7 +7,7 @@
 
 package org.mabartos.services;
 
-import org.mabartos.api.model.BartSession;
+import org.mabartos.api.controller.BartSession;
 import org.mabartos.api.model.capability.CapabilityModel;
 import org.mabartos.api.model.device.DeviceModel;
 import org.mabartos.api.model.home.HomeInvitationModel;

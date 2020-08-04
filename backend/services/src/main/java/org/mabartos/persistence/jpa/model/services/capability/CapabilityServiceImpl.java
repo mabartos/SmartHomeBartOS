@@ -9,7 +9,6 @@ package org.mabartos.persistence.jpa.model.services.capability;
 
 import io.quarkus.runtime.StartupEvent;
 import org.mabartos.api.controller.capability.CapabilityInfoData;
-import org.mabartos.api.data.general.capability.manage.CapabilityUtils;
 import org.mabartos.api.data.general.capability.manage.CapabilityWholeData;
 import org.mabartos.api.model.capability.CapabilityModel;
 import org.mabartos.api.protocol.mqtt.BartMqttClient;
@@ -81,7 +80,7 @@ public class CapabilityServiceImpl extends CRUDServiceImpl<CapabilityModel, Capa
     public Set<CapabilityModel> fromDataToModel(Set<CapabilityWholeData> caps) {
         if (caps != null) {
             Set<CapabilityModel> result = new HashSet<>();
-            caps.forEach(cap -> result.add(new CapabilityEntity(CapabilityUtils.getRandomNameForCap(cap.getType()), cap.getType(), cap.getPin())));
+            caps.forEach(cap -> result.add(cap.toModel()));
             return result;
         }
         return null;

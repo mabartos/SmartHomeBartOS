@@ -5,9 +5,9 @@
  * All rights reserved.
  */
 
-package org.mabartos.api.model.capability;
+package org.mabartos.api.service.capability;
 
-public interface HasValueAndUnits<T> extends HasValue<T> {
+public interface HasValueAndUnits<T extends Number> extends HasNumberValueScope<T> {
 
     String getUnits();
 

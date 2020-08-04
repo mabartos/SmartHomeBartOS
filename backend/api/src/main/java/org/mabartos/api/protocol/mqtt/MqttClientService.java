@@ -5,7 +5,7 @@
  * All rights reserved.
  */
 
-package org.mabartos.api.model;
+package org.mabartos.api.protocol.mqtt;
 
 import org.mabartos.api.model.home.HomeModel;
 import org.mabartos.api.model.mqtt.MqttClientModel;

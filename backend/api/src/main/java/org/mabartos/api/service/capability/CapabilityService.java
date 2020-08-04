@@ -16,7 +16,7 @@ import java.util.Set;
 
 public interface CapabilityService extends CRUDService<CapabilityModel, Long>, AbleSendMQTT {
 
-    public CapabilityModel createFromJSON(String JSON);
+    CapabilityModel createFromJSON(String JSON);
 
     CapabilityModel updateFromJson(Long ID, String JSON);
 

@@ -8,8 +8,8 @@
 package org.mabartos.api.model.capability.thermo;
 
 import org.mabartos.api.model.capability.CapabilityModel;
-import org.mabartos.api.model.capability.HasState;
-import org.mabartos.api.model.capability.HasValueAndUnits;
+import org.mabartos.api.service.capability.HasState;
+import org.mabartos.api.service.capability.HasValueAndUnits;
 
 public interface ThermostatCapModel extends CapabilityModel, HasState, HasValueAndUnits<Double> {
 

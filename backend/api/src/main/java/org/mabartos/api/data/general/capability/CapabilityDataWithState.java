@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.mabartos.api.model.capability.CapabilityModel;
-import org.mabartos.api.model.capability.HasState;
+import org.mabartos.api.service.capability.HasState;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CapabilityDataWithState extends CapabilityData implements HasState {

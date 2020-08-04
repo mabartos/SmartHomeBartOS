@@ -7,7 +7,8 @@
 
 package org.mabartos.persistence.jpa.model.services.capability.extern;
 
-import org.mabartos.api.common.CapabilityType;
+import org.mabartos.api.service.capability.CapabilityType;
+import org.mabartos.api.model.capability.CapabilityModel;
 import org.mabartos.api.model.capability.extern.ExternBtnCapModel;
 import org.mabartos.persistence.jpa.model.services.capability.CapabilityEntity;
 
@@ -20,11 +21,18 @@ public class ExternBtnCapEntity extends CapabilityEntity implements ExternBtnCap
     @Column
     private boolean isTurnedOn;
 
+    @Column
+    private boolean hasTwoStates;
+
     public ExternBtnCapEntity() {
     }
 
     public ExternBtnCapEntity(String name, Integer pin) {
         super(name, CapabilityType.EXTERN_BTN, pin);
+    }
+
+    public ExternBtnCapEntity(CapabilityModel model) {
+        this(model.getName(), model.getPin());
     }
 
     @Override
@@ -40,5 +48,15 @@ public class ExternBtnCapEntity extends CapabilityEntity implements ExternBtnCap
     @Override
     public void changeState() {
         isTurnedOn = !isTurnedOn;
+    }
+
+    @Override
+    public boolean hasTwoStates() {
+        return hasTwoStates;
+    }
+
+    @Override
+    public void setHasTwoStates(boolean state) {
+        this.hasTwoStates = state;
     }
 }

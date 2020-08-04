@@ -38,9 +38,6 @@ public class DefaultAppServices implements AppServices {
     BeanManager beanManager;
 
     @Inject
-    Vertx vertx;
-
-    @Inject
     MqttClientManager mqttClientManager;
 
     @PersistenceContext
@@ -109,10 +106,5 @@ public class DefaultAppServices implements AppServices {
     @Override
     public MqttClientManager mqttManager() {
         return mqttClientManager;
-    }
-
-    @Override
-    public Vertx getVertx() {
-        return vertx;
     }
 }

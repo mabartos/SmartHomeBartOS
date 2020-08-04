@@ -14,7 +14,7 @@ import org.mabartos.api.controller.home.HomeResource;
 import org.mabartos.api.controller.home.HomesResource;
 import org.mabartos.api.controller.user.UserRoleData;
 import org.mabartos.api.data.general.home.HomeData;
-import org.mabartos.api.model.BartSession;
+import org.mabartos.api.controller.BartSession;
 import org.mabartos.api.model.home.HomeModel;
 import org.mabartos.api.model.user.UserModel;
 import org.mabartos.controller.utils.ControllerUtil;

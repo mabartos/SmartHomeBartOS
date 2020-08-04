@@ -5,7 +5,7 @@
  * All rights reserved.
  */
 
-package org.mabartos.api.common;
+package org.mabartos.api.service.capability;
 
 import java.util.Arrays;
 
@@ -13,7 +13,6 @@ public enum CapabilityType {
     NONE("none"),
     TEMPERATURE("temp"),
     HUMIDITY("humi"),
-    HEATER("heater"),
     LIGHT("light"),
     RELAY("relay"),
     EXTERN_BTN("extern-btn"),

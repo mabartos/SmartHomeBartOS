@@ -8,8 +8,9 @@
 package org.mabartos.persistence.jpa.model.services.capability.pir;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.mabartos.api.common.CapabilityType;
+import org.mabartos.api.service.capability.CapabilityType;
 import org.mabartos.api.data.general.capability.JsonCapNames;
+import org.mabartos.api.model.capability.CapabilityModel;
 import org.mabartos.api.model.capability.pir.PIRCapModel;
 import org.mabartos.persistence.jpa.model.services.capability.CapabilityEntity;
 
@@ -27,6 +28,10 @@ public class PIRCapEntity extends CapabilityEntity implements PIRCapModel {
 
     public PIRCapEntity(String name, Integer pin) {
         super(name, CapabilityType.PIR, pin);
+    }
+
+    public PIRCapEntity(CapabilityModel model) {
+        this(model.getName(), model.getPin());
     }
 
     @Override

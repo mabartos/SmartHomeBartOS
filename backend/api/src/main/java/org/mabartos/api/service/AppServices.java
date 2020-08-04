@@ -37,6 +37,4 @@ public interface AppServices {
     CapabilityService capabilities();
 
     MqttClientManager mqttManager();
-
-    Vertx getVertx();
 }

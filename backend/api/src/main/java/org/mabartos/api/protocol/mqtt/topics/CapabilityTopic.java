@@ -7,7 +7,7 @@
 
 package org.mabartos.api.protocol.mqtt.topics;
 
-import org.mabartos.api.common.CapabilityType;
+import org.mabartos.api.service.capability.CapabilityType;
 
 public class CapabilityTopic implements GeneralTopic {
     private CapabilityType capabilityType;

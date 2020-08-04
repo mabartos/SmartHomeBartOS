@@ -7,7 +7,7 @@
 
 package org.mabartos.api.data.general.capability.manage;
 
-import org.mabartos.api.common.CapabilityType;
+import org.mabartos.api.service.capability.CapabilityType;
 
 import java.util.Random;
 

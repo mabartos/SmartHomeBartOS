@@ -7,8 +7,9 @@
 
 package org.mabartos.persistence.jpa.model.services.capability.temperature;
 
-import org.mabartos.api.common.CapabilityType;
+import org.mabartos.api.model.capability.CapabilityModel;
 import org.mabartos.api.model.capability.temperature.TemperatureCapModel;
+import org.mabartos.api.service.capability.CapabilityType;
 import org.mabartos.persistence.jpa.model.services.capability.CapabilityEntity;
 
 import javax.persistence.Column;
@@ -31,6 +32,10 @@ public class TemperatureCapEntity extends CapabilityEntity implements Temperatur
         setUnits("°C");
     }
 
+    public TemperatureCapEntity(CapabilityModel model) {
+        this(model.getName(), model.getPin());
+    }
+
     @Override
     public Double getValue() {
         return value;
@@ -38,7 +43,8 @@ public class TemperatureCapEntity extends CapabilityEntity implements Temperatur
 
     @Override
     public void setValue(Double value) {
-        this.value = value;
+        if (value >= getMinValue() && value <= getMaxValue())
+            this.value = value;
     }
 
     @Override

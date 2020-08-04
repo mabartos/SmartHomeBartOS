@@ -8,9 +8,10 @@
 package org.mabartos.persistence.jpa.model.services.capability.light;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.mabartos.api.common.CapabilityType;
 import org.mabartos.api.data.general.capability.JsonCapNames;
+import org.mabartos.api.model.capability.CapabilityModel;
 import org.mabartos.api.model.capability.light.LightCapModel;
+import org.mabartos.api.service.capability.CapabilityType;
 import org.mabartos.persistence.jpa.model.services.capability.CapabilityEntity;
 
 import javax.persistence.Column;
@@ -35,12 +36,18 @@ public class LightCapEntity extends CapabilityEntity implements LightCapModel {
         super(name, CapabilityType.LIGHT, pin);
     }
 
+    public LightCapEntity(CapabilityModel model) {
+        this(model.getName(), model.getPin());
+    }
+
     public Byte getIntensity() {
         return intensity;
     }
 
     public void setIntensity(Byte intensity) {
-        this.intensity = intensity;
+        if (intensity >= getMinValue() && intensity <= getMaxValue()) {
+            this.intensity = intensity;
+        }
     }
 
     public Byte getMinIntensity() {
@@ -48,7 +55,9 @@ public class LightCapEntity extends CapabilityEntity implements LightCapModel {
     }
 
     public void setMinIntensity(Byte minIntensity) {
-        this.minIntensity = minIntensity;
+        if (minIntensity >= getMinValue() && minIntensity <= getMaxValue()) {
+            this.minIntensity = minIntensity;
+        }
     }
 
     @Override
@@ -65,5 +74,15 @@ public class LightCapEntity extends CapabilityEntity implements LightCapModel {
     @Override
     public void changeState() {
         this.isTurnedOn = !this.isTurnedOn;
+    }
+
+    @Override
+    public Byte getValue() {
+        return getIntensity();
+    }
+
+    @Override
+    public void setValue(Byte value) {
+        setIntensity(value);
     }
 }
