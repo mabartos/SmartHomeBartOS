@@ -11,14 +11,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 import org.mabartos.api.common.RoomType;
 import org.mabartos.api.data.general.JsonPropertyNames;
 import org.mabartos.api.model.device.DeviceModel;
+import org.mabartos.api.model.events.trigger.TriggerModel;
 import org.mabartos.api.model.home.HomeModel;
 import org.mabartos.api.model.room.RoomModel;
 import org.mabartos.persistence.jpa.model.services.device.DeviceEntity;
+import org.mabartos.persistence.jpa.model.services.events.trigger.TriggerEntity;
 import org.mabartos.persistence.jpa.model.services.home.HomeEntity;
 
 import javax.persistence.Cacheable;
@@ -38,6 +38,7 @@ import javax.persistence.Table;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -46,8 +47,8 @@ import java.util.UUID;
 @Cacheable
 @JsonIgnoreProperties(ignoreUnknown = true)
 @NamedQueries({
-        @NamedQuery(name = "getAllRooms", query = "select room from RoomEntity room join fetch room.home"),
-        @NamedQuery(name = "getRoomByID", query = "select room from RoomEntity room join fetch room.home where room.id=:id"),
+        @NamedQuery(name = "getAllRooms", query = "select room from RoomEntity room join fetch room.home join fetch room.devicesSet"),
+        @NamedQuery(name = "getRoomByID", query = "select room from RoomEntity room join fetch room.home join fetch room.devicesSet where room.id=:id"),
         @NamedQuery(name = "deleteRoomByID", query = "delete from RoomEntity where id=:id"),
         @NamedQuery(name = "deleteRoomsFromHome", query = "delete from RoomEntity where home.id=:homeID")
 })
@@ -75,8 +76,10 @@ public class RoomEntity extends PanacheEntityBase implements RoomModel {
     private Set<UUID> ownersID = new HashSet<>();
 
     @OneToMany(targetEntity = DeviceEntity.class, mappedBy = "room")
-    @LazyCollection(LazyCollectionOption.FALSE)
     private Set<DeviceModel> devicesSet = new HashSet<>();
+
+    @OneToMany(targetEntity = TriggerEntity.class, mappedBy = "room")
+    private Set<TriggerModel> triggers = new HashSet<>();
 
     public RoomEntity() {
     }
@@ -146,6 +149,22 @@ public class RoomEntity extends PanacheEntityBase implements RoomModel {
         if (home != null) {
             this.home.addChild(this);
         }
+    }
+
+    @Override
+    @JsonIgnore
+    public Set<TriggerModel> getAllTriggers() {
+        return this.triggers;
+    }
+
+    @JsonProperty("triggersCount")
+    public Integer getTriggersCount() {
+        return triggers.size();
+    }
+
+    @Override
+    public void setTriggers(Set<TriggerModel> triggers) {
+        this.triggers = triggers;
     }
 
     /* DEVICES */

@@ -41,6 +41,7 @@ import javax.persistence.Table;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -118,12 +119,12 @@ public class DeviceEntity extends PanacheEntityBase implements DeviceModel {
 
     @JsonProperty(JsonPropertyNames.ROOM_ID)
     public Long getRoomID() {
-        return (room != null) ? room.getID() : -1;
+        return Optional.ofNullable(room.getID()).orElse(-1L);
     }
 
     @JsonProperty(JsonPropertyNames.HOME_ID)
     public Long getHomeID() {
-        return (home != null) ? home.getID() : -1;
+        return Optional.ofNullable(home.getID()).orElse(-1L);
     }
 
     public void setRoom(RoomModel room) {

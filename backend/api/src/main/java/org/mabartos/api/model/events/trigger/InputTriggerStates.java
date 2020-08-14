@@ -7,7 +7,7 @@
 
 package org.mabartos.api.model.events.trigger;
 
-public enum InputTriggerStates {
+public enum InputTriggerStates{
     ON,
     OFF,
     SIGNAL

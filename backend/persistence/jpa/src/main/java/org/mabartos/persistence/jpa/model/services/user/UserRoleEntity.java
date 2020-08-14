@@ -30,6 +30,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 @Entity
@@ -113,7 +114,7 @@ public class UserRoleEntity extends PanacheEntityBase implements UserRoleModel {
 
     @JsonProperty(JsonPropertyNames.HOME_ID)
     public Long getHomeID() {
-        return (home != null) ? home.getID() : -1;
+        return Optional.ofNullable(home.getID()).orElse(-1L);
     }
 
     /* MANAGE */

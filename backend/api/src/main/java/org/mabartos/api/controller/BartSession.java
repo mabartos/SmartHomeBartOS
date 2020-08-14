@@ -9,6 +9,7 @@ package org.mabartos.api.controller;
 
 import org.mabartos.api.model.capability.CapabilityModel;
 import org.mabartos.api.model.device.DeviceModel;
+import org.mabartos.api.model.events.trigger.TriggerModel;
 import org.mabartos.api.model.home.HomeInvitationModel;
 import org.mabartos.api.model.home.HomeModel;
 import org.mabartos.api.model.room.RoomModel;
@@ -45,6 +46,10 @@ public interface BartSession extends Serializable {
     HomeInvitationModel getActualInvitation();
 
     BartSession setActualInvitation(Long id);
+
+    TriggerModel getActualTrigger();
+
+    BartSession setActualTrigger(Long id);
 
     MqttClientManager getClientManager();
 

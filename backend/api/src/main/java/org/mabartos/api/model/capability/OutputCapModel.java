@@ -13,11 +13,7 @@ import java.util.Set;
 
 public interface OutputCapModel extends CapabilityModel {
 
-    Set<TriggerModel> getTriggers();
+    Set<TriggerModel> getAttachedTriggers();
 
-    void addTrigger(TriggerModel trigger);
-
-    void removeTrigger(Long id);
-
-    void editTrigger(Long id, TriggerModel trigger);
+    void setAttachedTriggers(Set<TriggerModel> triggers);
 }

@@ -11,4 +11,6 @@ public interface HasNumberValueScope<T extends Number> extends HasNumberValue<T>
     T getMinValue();
 
     T getMaxValue();
+
+    boolean checkValidValue(T value);
 }

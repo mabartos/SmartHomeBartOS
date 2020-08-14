@@ -32,6 +32,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import java.util.Objects;
+import java.util.Optional;
 
 @Table(name = "CAPABILITY")
 @Entity
@@ -121,7 +122,7 @@ public class CapabilityEntity extends PanacheEntityBase implements CapabilityMod
 
     @JsonProperty(JsonPropertyNames.DEVICE_ID)
     public Long getDeviceID() {
-        return (device != null) ? device.getID() : -1;
+        return Optional.ofNullable(device.getID()).orElse(-1L);
     }
 
     public void setDevice(DeviceModel device) {

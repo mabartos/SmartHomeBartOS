@@ -10,6 +10,7 @@ package org.mabartos.services;
 import org.mabartos.api.controller.BartSession;
 import org.mabartos.api.model.capability.CapabilityModel;
 import org.mabartos.api.model.device.DeviceModel;
+import org.mabartos.api.model.events.trigger.TriggerModel;
 import org.mabartos.api.model.home.HomeInvitationModel;
 import org.mabartos.api.model.home.HomeModel;
 import org.mabartos.api.model.room.RoomModel;
@@ -18,6 +19,7 @@ import org.mabartos.api.protocol.mqtt.MqttClientManager;
 import org.mabartos.api.service.AppServices;
 import org.mabartos.api.service.auth.AuthService;
 import org.mabartos.api.service.capability.CapabilityService;
+import org.mabartos.api.service.capability.triggers.TriggerService;
 import org.mabartos.api.service.device.DeviceService;
 import org.mabartos.api.service.home.HomeInvitationService;
 import org.mabartos.api.service.home.HomeService;
@@ -59,6 +61,9 @@ public class DefaultBartSession implements BartSession {
 
     private HomeInvitationModel actualInvitation;
     private Long actualInvitationID;
+
+    private TriggerModel actualTrigger;
+    private Long actualTriggerID;
 
     @Inject
     public DefaultBartSession() {
@@ -133,6 +138,18 @@ public class DefaultBartSession implements BartSession {
     public BartSession setActualInvitation(Long id) {
         this.actualInvitation = services.getProvider(HomeInvitationService.class).findByID(id);
         this.actualInvitationID = id;
+        return this;
+    }
+
+    @Override
+    public TriggerModel getActualTrigger() {
+        return (actualTrigger != null) ? actualTrigger : services().getProvider(TriggerService.class).findByID(actualTriggerID);
+    }
+
+    @Override
+    public BartSession setActualTrigger(Long id) {
+        this.actualTrigger = services().getProvider(TriggerService.class).findByID(id);
+        this.actualTriggerID = id;
         return this;
     }
 

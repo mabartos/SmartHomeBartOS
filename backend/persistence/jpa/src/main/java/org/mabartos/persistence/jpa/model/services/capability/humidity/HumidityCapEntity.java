@@ -43,7 +43,7 @@ public class HumidityCapEntity extends CapabilityEntity implements HumidityCapMo
 
     @Override
     public void setValue(Byte value) {
-        if (value >= getMinValue() && value <= getMaxValue()) {
+        if (checkValidValue(value)) {
             this.value = value;
         }
     }

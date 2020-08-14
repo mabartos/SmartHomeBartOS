@@ -29,6 +29,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 @Entity
@@ -109,12 +110,12 @@ public class HomeInvitationEntity extends PanacheEntityBase implements HomeInvit
 
     @JsonProperty(JsonPropertyNames.HOME_ID)
     public Long getHomeID() {
-        return (home != null) ? home.getID() : -1;
+        return Optional.ofNullable(home.getID()).orElse(-1L);
     }
 
     @JsonProperty("homeName")
     public String getHomeName() {
-        return (home != null) ? home.getName() : "";
+        return Optional.ofNullable(home.getName()).orElse("");
     }
 
     public boolean equalsWithoutID(Object obj) {

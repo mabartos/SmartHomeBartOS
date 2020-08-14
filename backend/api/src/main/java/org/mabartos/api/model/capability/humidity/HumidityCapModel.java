@@ -19,4 +19,8 @@ public interface HumidityCapModel extends InputCapModel, HasValueAndUnits<Byte> 
     default Byte getMaxValue() {
         return 100;
     }
+
+    default boolean checkValidValue(Byte value) {
+        return (value >= getMinValue() && value <= getMaxValue());
+    }
 }

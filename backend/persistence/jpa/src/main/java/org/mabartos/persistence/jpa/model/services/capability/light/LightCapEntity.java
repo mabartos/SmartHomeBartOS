@@ -14,9 +14,12 @@ import org.mabartos.api.model.capability.light.LightCapModel;
 import org.mabartos.api.model.events.trigger.TriggerModel;
 import org.mabartos.api.service.capability.CapabilityType;
 import org.mabartos.persistence.jpa.model.services.capability.CapabilityEntity;
+import org.mabartos.persistence.jpa.model.services.events.trigger.TriggerEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -30,6 +33,10 @@ public class LightCapEntity extends CapabilityEntity implements LightCapModel {
 
     @Column
     private boolean isTurnedOn = false;
+
+    @Column
+    @OneToMany(targetEntity = TriggerEntity.class, mappedBy = "triggerCap")
+    private Set<TriggerModel> attachedTriggers = new HashSet<>();
 
     public LightCapEntity() {
     }
@@ -47,7 +54,7 @@ public class LightCapEntity extends CapabilityEntity implements LightCapModel {
     }
 
     public void setIntensity(Byte intensity) {
-        if (intensity >= getMinValue() && intensity <= getMaxValue()) {
+        if (checkValidValue(intensity)) {
             this.intensity = intensity;
         }
     }
@@ -57,7 +64,7 @@ public class LightCapEntity extends CapabilityEntity implements LightCapModel {
     }
 
     public void setMinIntensity(Byte minIntensity) {
-        if (minIntensity >= getMinValue() && minIntensity <= getMaxValue()) {
+        if (checkValidValue(minIntensity)) {
             this.minIntensity = minIntensity;
         }
     }
@@ -88,24 +95,13 @@ public class LightCapEntity extends CapabilityEntity implements LightCapModel {
         setIntensity(value);
     }
 
-    /* Triggers */
     @Override
-    public Set<TriggerModel> getTriggers() {
-        return null;
+    public Set<TriggerModel> getAttachedTriggers() {
+        return attachedTriggers;
     }
 
     @Override
-    public void addTrigger(TriggerModel trigger) {
-
-    }
-
-    @Override
-    public void removeTrigger(Long id) {
-
-    }
-
-    @Override
-    public void editTrigger(Long id, TriggerModel trigger) {
-
+    public void setAttachedTriggers(Set<TriggerModel> triggers) {
+        this.attachedTriggers=triggers;
     }
 }

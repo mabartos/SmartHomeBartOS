@@ -85,8 +85,6 @@ public class DefaultBartMqttHandler implements BartMqttHandler {
                 case HUMIDITY:
                     new HumidityCapability(services, mqttClient, capabilityTopic, message).parseMessage();
                     break;
-                case HEATER:
-                    break;
                 case EXTERN_BTN:
                     new ExternBtnCapability(services, mqttClient, capabilityTopic, message).parseMessage();
                     break;

@@ -18,6 +18,7 @@ import org.mabartos.api.protocol.mqtt.MqttClientManager;
 import org.mabartos.api.protocol.mqtt.TopicUtils;
 import org.mabartos.api.service.AppServices;
 import org.mabartos.api.service.capability.CapabilityService;
+import org.mabartos.api.service.capability.triggers.TriggerService;
 import org.mabartos.persistence.jpa.model.services.capability.extern.ExternBtnCapEntity;
 import org.mabartos.persistence.jpa.repository.CapabilityRepository;
 import org.mabartos.services.model.CRUDServiceImpl;
@@ -33,11 +34,13 @@ import java.util.Set;
 public class CapabilityServiceImpl extends CRUDServiceImpl<CapabilityModel, CapabilityEntity, CapabilityRepository, Long> implements CapabilityService {
 
     AppServices services;
+    TriggerService triggerService;
 
     @Inject
-    CapabilityServiceImpl(CapabilityRepository repository, AppServices services) {
+    CapabilityServiceImpl(CapabilityRepository repository, AppServices services, TriggerService triggerService) {
         super(repository);
         this.services = services;
+        this.triggerService = triggerService;
     }
 
     public void start(@Observes StartupEvent event) {
@@ -47,6 +50,11 @@ public class CapabilityServiceImpl extends CRUDServiceImpl<CapabilityModel, Capa
     public boolean deleteByID(Long id) {
         clearRetainedMessages(id);
         return super.deleteByID(id);
+    }
+
+    @Override
+    public TriggerService triggers() {
+        return this.triggerService;
     }
 
     public CapabilityModel createFromJSON(String JSON) {

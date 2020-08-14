@@ -8,15 +8,18 @@
 package org.mabartos.services.utils;
 
 import org.mabartos.api.controller.capability.CapabilityInfoData;
+import org.mabartos.api.controller.capability.triggers.TriggerData;
 import org.mabartos.api.controller.room.RoomData;
 import org.mabartos.api.data.general.device.DeviceInfoData;
 import org.mabartos.api.data.general.home.HomeData;
 import org.mabartos.api.model.capability.CapabilityModel;
 import org.mabartos.api.model.device.DeviceModel;
+import org.mabartos.api.model.events.trigger.TriggerModel;
 import org.mabartos.api.model.home.HomeModel;
 import org.mabartos.api.model.room.RoomModel;
 import org.mabartos.persistence.jpa.model.services.capability.CapabilityEntity;
 import org.mabartos.persistence.jpa.model.services.device.DeviceEntity;
+import org.mabartos.persistence.jpa.model.services.events.trigger.TriggerEntity;
 import org.mabartos.persistence.jpa.model.services.home.HomeEntity;
 import org.mabartos.persistence.jpa.model.services.room.RoomEntity;
 

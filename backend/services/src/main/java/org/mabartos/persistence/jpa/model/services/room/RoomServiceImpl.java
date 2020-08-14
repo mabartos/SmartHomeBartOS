@@ -118,6 +118,10 @@ public class RoomServiceImpl extends CRUDServiceImpl<RoomModel, RoomEntity, Room
         getEntityManager().flush();
         getEntityManager().clear();
 
+        query = entityManager.createNamedQuery("deleteTriggersByRoomID");
+        query.setParameter("roomID", id);
+        query.executeUpdate();
+
         query = entityManager.createNamedQuery("deleteRoomByID");
         query.setParameter("id", id);
         return query.executeUpdate() > 0;

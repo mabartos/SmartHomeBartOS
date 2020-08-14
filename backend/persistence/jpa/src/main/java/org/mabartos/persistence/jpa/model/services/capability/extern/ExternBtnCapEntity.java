@@ -9,11 +9,15 @@ package org.mabartos.persistence.jpa.model.services.capability.extern;
 
 import org.mabartos.api.model.capability.CapabilityModel;
 import org.mabartos.api.model.capability.extern.ExternBtnCapModel;
+import org.mabartos.api.model.events.trigger.TriggerModel;
 import org.mabartos.api.service.capability.CapabilityType;
 import org.mabartos.persistence.jpa.model.services.capability.CapabilityEntity;
+import org.mabartos.persistence.jpa.model.services.events.trigger.TriggerEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import java.util.Set;
 
 @Entity
 public class ExternBtnCapEntity extends CapabilityEntity implements ExternBtnCapModel {
@@ -23,6 +27,10 @@ public class ExternBtnCapEntity extends CapabilityEntity implements ExternBtnCap
 
     @Column
     private boolean hasTwoStates;
+
+    @Column
+    @OneToMany(targetEntity = TriggerEntity.class, mappedBy = "resultCap")
+    private Set<TriggerModel> triggers;
 
     public ExternBtnCapEntity() {
     }
@@ -58,5 +66,15 @@ public class ExternBtnCapEntity extends CapabilityEntity implements ExternBtnCap
     @Override
     public void setHasTwoStates(boolean state) {
         this.hasTwoStates = state;
+    }
+
+    @Override
+    public Set<TriggerModel> getTriggers() {
+        return triggers;
+    }
+
+    @Override
+    public void setTriggers(Set<TriggerModel> triggers) {
+        this.triggers = triggers;
     }
 }

@@ -11,10 +11,13 @@ import org.mabartos.api.data.general.capability.manage.CapabilityWholeData;
 import org.mabartos.api.model.capability.CapabilityModel;
 import org.mabartos.api.protocol.mqtt.AbleSendMQTT;
 import org.mabartos.api.service.CRUDService;
+import org.mabartos.api.service.capability.triggers.TriggerService;
 
 import java.util.Set;
 
 public interface CapabilityService extends CRUDService<CapabilityModel, Long>, AbleSendMQTT {
+
+    TriggerService triggers();
 
     CapabilityModel createFromJSON(String JSON);
 

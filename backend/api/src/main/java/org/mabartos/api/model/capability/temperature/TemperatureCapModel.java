@@ -21,4 +21,8 @@ public interface TemperatureCapModel extends InputCapModel, HasValueAndUnits<Dou
     default Double getMaxValue() {
         return MAX_SCOPE;
     }
+
+    default boolean checkValidValue(Double value) {
+        return (value >= getMinValue() && value <= getMaxValue());
+    }
 }

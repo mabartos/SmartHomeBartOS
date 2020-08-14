@@ -25,7 +25,13 @@ public interface JsonPropertyNames {
 
     String RESPONSE = "resp";
 
+    // CAPABILITIES
     String CAPABILITIES = "capabilities";
+
+    String TRIGGER_INPUT_CAP_ID="inputCapID";
+    String TRIGGER_OUTPUT_CAP_ID="outputCapID";
+    String TRIGGER_INPUT_STATE="inputState";
+    String TRIGGER_OUTPUT_STATE="outputState";
 
     String USER = "user";
     String USER_ID = "userID";

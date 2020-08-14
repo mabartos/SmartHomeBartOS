@@ -9,7 +9,11 @@ package org.mabartos.api.model.capability;
 
 import org.mabartos.api.common.IdentifiableName;
 import org.mabartos.api.model.device.DeviceModel;
+import org.mabartos.api.model.events.trigger.TriggerModel;
 import org.mabartos.api.service.capability.CapabilityType;
+
+import java.util.Collections;
+import java.util.Set;
 
 public interface CapabilityModel extends IdentifiableName<Long> {
 
@@ -34,4 +38,8 @@ public interface CapabilityModel extends IdentifiableName<Long> {
     void setDevice(DeviceModel device);
 
     boolean isActive();
+
+    default Set<TriggerModel> getTriggers() {
+        return Collections.emptySet();
+    }
 }

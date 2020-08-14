@@ -43,7 +43,7 @@ public class TemperatureCapEntity extends CapabilityEntity implements Temperatur
 
     @Override
     public void setValue(Double value) {
-        if (value >= getMinValue() && value <= getMaxValue())
+        if (checkValidValue(value))
             this.value = value;
     }
 

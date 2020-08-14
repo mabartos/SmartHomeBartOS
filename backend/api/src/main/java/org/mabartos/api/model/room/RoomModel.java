@@ -11,6 +11,7 @@ import org.mabartos.api.common.HasChildren;
 import org.mabartos.api.common.IdentifiableName;
 import org.mabartos.api.common.RoomType;
 import org.mabartos.api.model.device.DeviceModel;
+import org.mabartos.api.model.events.trigger.TriggerModel;
 import org.mabartos.api.model.home.HomeModel;
 
 import java.util.Set;
@@ -39,6 +40,11 @@ public interface RoomModel extends HasChildren<DeviceModel>, IdentifiableName<Lo
     Long getHomeID();
 
     void setHome(HomeModel home);
+
+    /* TRIGGERS */
+    Set<TriggerModel> getAllTriggers();
+
+    void setTriggers(Set<TriggerModel> triggers);
 
     /* COMPUTED */
     Integer getDevicesCount();

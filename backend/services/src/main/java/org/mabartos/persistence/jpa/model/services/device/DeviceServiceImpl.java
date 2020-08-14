@@ -126,7 +126,7 @@ public class DeviceServiceImpl extends CRUDServiceImpl<DeviceModel, DeviceEntity
             device.setRoom(null);
             clearRetainedMessages(deviceID);
             room.removeChild(device);
-            sendDeviceInRoomMessage(roomID, (long) -1);
+            sendDeviceInRoomMessage(roomID, -1L);
             return updateByID(deviceID, device) != null;
         }
         return false;

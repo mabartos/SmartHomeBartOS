@@ -30,6 +30,10 @@ public interface LightCapModel extends OutputCapModel, HasState, HasNumberValueS
         return 100;
     }
 
+    default boolean checkValidValue(Byte value) {
+        return (value >= getMinValue() && value <= getMaxValue());
+    }
+
     @Override
     default ValuesType getValueType() {
         return ValuesType.NUMBER;
