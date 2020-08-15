@@ -3,6 +3,7 @@ using namespace std;
 
 #include "GeneralDeps.h"
 #include "capabilities.h"
+#include "http/HttpClient.h"
 #include "mqtt/MessageForwarder.h"
 #include "wifiUtils/WifiUtils.h"
 
@@ -11,6 +12,7 @@ PubSubClient clientPub(espClient);
 MqttClient client(clientPub);
 WiFiManager wifiManager;
 WifiUtils wifiUtils(wifiManager);
+HttpClient httpClient;
 
 const char *CONFIG_FILE = "/config.json";
 
@@ -40,13 +42,12 @@ void setup() {
     wifiManager.setSaveConfigCallback(saveConfigCallback);
     wifiUtils.begin();
 
-    client.init(wifiUtils.getBrokerURL());
-    device.setHomeID(wifiUtils.getHomeID());
-
+    client.init(device.getBrokerURL());
     client.getMQTT().setCallback(forwardMessages);
 
-    device.setCapabilities(createdCaps);
+    httpClient.setServerURL(device.getServerURL());
 
+    device.setCapabilities(createdCaps);
     device.initAllCapabilities();
 
     if (!wifiUtils.alreadyDeviceCreated()) {

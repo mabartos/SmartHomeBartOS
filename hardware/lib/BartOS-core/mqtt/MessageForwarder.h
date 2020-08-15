@@ -10,9 +10,6 @@ class MessageForwarder {
     char *_topic;
 
     void manageAddDeviceToRoom(const JsonObject &obj);
-    void manageCreate(const JsonObject &obj);
-    void manageCreateSPIFS(const JsonObject &doc, const long &deviceID);
-    void manageConnect(const JsonObject &obj);
     void manageEraseAll(const JsonObject &obj);
     void manageCapabilityReact(const JsonObject &obj);
 
@@ -23,6 +20,7 @@ class MessageForwarder {
     MessageForwarder() = default;
     ~MessageForwarder() = default;
 
+    static void manageCreateSPIFS(const JsonObject &doc, const long &deviceID);
     static bool containKeys(const JsonObject &obj, vector<string> &keys);
     void forwardMessage(char *topic, DynamicJsonDocument &doc);
 };

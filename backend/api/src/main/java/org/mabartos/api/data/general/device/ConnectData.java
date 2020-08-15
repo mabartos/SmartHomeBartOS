@@ -12,14 +12,14 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import org.mabartos.api.data.general.JsonPropertyNames;
 import org.mabartos.api.model.device.DeviceModel;
 
-@JsonPropertyOrder({JsonPropertyNames.MESSAGE_ID, JsonPropertyNames.RESPONSE, JsonPropertyNames.ID, JsonPropertyNames.NAME, JsonPropertyNames.ROOM_ID})
-public class ConnectResponseData extends DeviceData {
+@JsonPropertyOrder({JsonPropertyNames.ID, JsonPropertyNames.NAME, JsonPropertyNames.ROOM_ID})
+public class ConnectData extends DeviceData {
 
     @JsonProperty(JsonPropertyNames.ROOM_ID)
     private Long roomID;
 
-    public ConnectResponseData(Long msgID, DeviceModel device) {
-        super(msgID, device, true);
+    public ConnectData(DeviceModel device) {
+        super(device);
         this.roomID = device.getRoomID();
     }
 

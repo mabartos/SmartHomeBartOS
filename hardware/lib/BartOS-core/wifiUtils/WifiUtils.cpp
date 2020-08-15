@@ -11,6 +11,8 @@
 #include "mqtt/MqttClient.h"
 
 #define BROKER_URL_SIZE 60
+#define SERVER_URL_SIZE 60
+
 #define ID_SIZE 60
 #define UUID_SIZE 50
 #define NAME_SIZE 60
@@ -20,6 +22,7 @@ extern Device device;
 extern const char *CONFIG_FILE;
 
 char brokerURL[BROKER_URL_SIZE];
+char serverURL[SERVER_URL_SIZE];
 char homeID[ID_SIZE];
 char UUID[UUID_SIZE];
 char name[NAME_SIZE];
@@ -54,11 +57,13 @@ void WifiUtils::readSaved() {
             const JsonObject object = configDoc.as<JsonObject>();
 
             vector<string> keys{"brokerURL",
+                                "serverURL",
                                 "homeID",
                                 "uuid",
                                 "name"};
             if (MessageForwarder::containKeys(object, keys)) {
                 strcpy(brokerURL, configDoc["brokerURL"]);
+                strcpy(serverURL, configDoc["serverURL"]);
                 strcpy(homeID, configDoc["homeID"]);
                 strcpy(UUID, configDoc["uuid"]);
                 strcpy(name, configDoc["name"]);
@@ -71,6 +76,10 @@ void WifiUtils::readSaved() {
                 }
 
                 device.setName(string(name));
+                device.setHomeID(_homeID);
+                device.setBrokerURL(brokerURL);
+                device.setServerURL(serverURL);
+
                 client.setUUID(string(UUID));
                 _alreadyCreated = true;
                 readActionProvided = true;
@@ -90,6 +99,7 @@ void WifiUtils::writeSaved() {
     if (_shouldSaveConfig) {
         StaticJsonDocument<1024> configDoc;
         configDoc["brokerURL"] = brokerURL;
+        configDoc["serverURL"] = serverURL;
         configDoc["homeID"] = homeID;
         configDoc["name"] = device.getName().c_str();
 
@@ -118,13 +128,18 @@ void WifiUtils::writeSaved() {
 }
 
 void WifiUtils::setWifiManager() {
+    if (readActionProvided)
+        return;
+
     string label("<h3> Device : " + device.getName() + "</h3>");
     WiFiManagerParameter label_parameter(label.c_str());
     WiFiManagerParameter brokerURL_parameter("broker", "MQTT Broker URL", brokerURL, BROKER_URL_SIZE);
+    WiFiManagerParameter serverURL_parameter("server", "Server URL", serverURL, SERVER_URL_SIZE);
     WiFiManagerParameter homeID_parameter("homeID", "Home ID", homeID, ID_SIZE);
 
     _wifiManager.addParameter(&label_parameter);
     _wifiManager.addParameter(&brokerURL_parameter);
+    _wifiManager.addParameter(&serverURL_parameter);
     _wifiManager.addParameter(&homeID_parameter);
 
     string WIFI_NAME("SmartHome-" + device.getName());
@@ -135,16 +150,14 @@ void WifiUtils::setWifiManager() {
 
     if (!readActionProvided) {
         strcpy(brokerURL, brokerURL_parameter.getValue());
+        strcpy(serverURL, serverURL_parameter.getValue());
         strcpy(homeID, homeID_parameter.getValue());
         readActionProvided = false;
     }
 
     _brokerURL = brokerURL;
+    _serverURL = serverURL;
     _homeID = strtol(homeID, nullptr, 10);
-}
-
-string WifiUtils::getBrokerURL() {
-    return string(_brokerURL);
 }
 
 long WifiUtils::getHomeID() {

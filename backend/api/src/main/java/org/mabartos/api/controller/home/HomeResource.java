@@ -37,7 +37,7 @@ import java.util.Set;
 public interface HomeResource {
 
     @GET
-    @Path(DevicesResource.DEVICE_PATH)
+    @Path(DevicesResource.PATH)
     Set<DeviceModel> getDevices();
 
     @GET
@@ -62,7 +62,7 @@ public interface HomeResource {
     @Path("/mqtt")
     MqttResource forwardToMqttInfo();
 
-    @Path(DevicesResource.DEVICE_PATH)
+    @Path(DevicesResource.PATH)
     DevicesResource forwardToDevices();
 
     @Path(UsersResource.USER_PATH)

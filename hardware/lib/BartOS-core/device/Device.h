@@ -19,6 +19,9 @@ class Device {
     long _homeID = -1;
     long _roomID = -1;
 
+    string _brokerURL;
+    string _serverURL;
+
     int _manageMsgID;
 
     bool _initialized = false;
@@ -50,6 +53,12 @@ class Device {
     long getManageMsgID();
     void setManageMsgID(const long &msgID);
 
+    string getBrokerURL();
+    void setBrokerURL(const string &brokerURL);
+
+    string getServerURL();
+    void setServerURL(const string &serverURL);
+
     //TOPIC
     string getHomeTopic();
     string getHomeTopicWildCard();
@@ -61,13 +70,9 @@ class Device {
     string getDeviceTopic();
 
     //Manage topics
-    string getCreateTopic();
-    string getConnectTopic();
+    string getCreatePath();
+    string getConnectPath();
 
-    string getCreateTopicResp();
-    string getConnectTopicResp();
-
-    string getCreateTopicWild();
     string getLogoutTopic();
 
     string getEraseAllTopic();

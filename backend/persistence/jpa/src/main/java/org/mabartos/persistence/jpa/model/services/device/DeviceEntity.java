@@ -133,7 +133,7 @@ public class DeviceEntity extends PanacheEntityBase implements DeviceModel {
 
     public String getTopic() {
         if (home != null) {
-            return home.getMqttClient().getTopic() + DevicesResource.DEVICE_PATH + "/" + id;
+            return home.getMqttClient().getTopic() + DevicesResource.PATH + "/" + id;
         }
         return null;
     }

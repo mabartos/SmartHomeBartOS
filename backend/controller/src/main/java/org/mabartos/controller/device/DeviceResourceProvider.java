@@ -12,7 +12,9 @@ import org.mabartos.api.common.UserRole;
 import org.mabartos.api.controller.BartSession;
 import org.mabartos.api.controller.capability.CapabilitiesResource;
 import org.mabartos.api.controller.device.DeviceResource;
+import org.mabartos.api.data.general.device.ConnectData;
 import org.mabartos.api.model.device.DeviceModel;
+import org.mabartos.api.model.room.RoomModel;
 import org.mabartos.controller.capability.CapabilitiesResourceProvider;
 
 import javax.transaction.Transactional;
@@ -39,6 +41,46 @@ public class DeviceResourceProvider implements DeviceResource {
     @GET
     public DeviceModel getDevice() {
         return session.getActualDevice();
+    }
+
+    @GET
+    @Path(CONNECT_PATH)
+    public ConnectData connectDeviceJSON() {
+        return session.services()
+                .devices()
+                .connectDevice(session.getActualDevice().getID());
+    }
+
+    @GET
+    @Path(DISCONNECT_PATH)
+    public boolean disconnectDevice() {
+        return session.services()
+                .devices()
+                .disconnectDevice(session.getActualDevice().getID());
+    }
+
+    @GET
+    @Path(ADD_TO_ROOM)
+    public DeviceModel addToRoom() {
+        RoomModel room = session.getActualRoom();
+        if (room != null) {
+            return session.services()
+                    .devices()
+                    .addDeviceToRoom(room.getID(), session.getActualDevice().getID());
+        }
+        return null;
+    }
+
+    @GET
+    @Path(REMOVE_FROM_ROOM)
+    public boolean removeFromRoom() {
+        RoomModel room = session.getActualRoom();
+        if (room != null) {
+            return session.services()
+                    .devices()
+                    .removeDeviceFromRoom(room.getID(), session.getActualDevice().getID());
+        }
+        return false;
     }
 
     @PATCH

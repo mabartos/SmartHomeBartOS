@@ -51,7 +51,7 @@ public class HomeResourceProvider implements HomeResource {
     }
 
     @GET
-    @Path(DevicesResource.DEVICE_PATH)
+    @Path(DevicesResource.PATH)
     public Set<DeviceModel> getDevices() {
         return session.getActualHome().getUnAssignedDevices();
     }
@@ -100,7 +100,7 @@ public class HomeResourceProvider implements HomeResource {
         return new MqttResourceProvider(session);
     }
 
-    @Path(DevicesResource.DEVICE_PATH)
+    @Path(DevicesResource.PATH)
     public DevicesResource forwardToDevices() {
         return new DevicesResourceProvider(session);
     }

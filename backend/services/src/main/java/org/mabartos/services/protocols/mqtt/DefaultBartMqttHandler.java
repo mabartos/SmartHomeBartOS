@@ -37,9 +37,6 @@ public class DefaultBartMqttHandler implements BartMqttHandler {
     AppServices services;
 
     @Inject
-    HandleManageMessage handler;
-
-    @Inject
     public DefaultBartMqttHandler(AppServices services) {
         this.services = services;
     }
@@ -51,21 +48,11 @@ public class DefaultBartMqttHandler implements BartMqttHandler {
 
         this.mqttClient = client;
 
-        String homeTopic = TopicUtils.getHomeTopic(home);
         try {
             GeneralTopic resultTopic = TopicUtils.getSpecificTopic(rawTopic);
-
-            if (resultTopic != null && homeTopic != null && rawTopic.length() > homeTopic.length()) {
-                handler.init(client, home, resultTopic, message, rawTopic);
-
-                // It's the 'manage' topic
-                if (handler.handleManageTopics())
-                    return;
-
-                if (resultTopic instanceof CapabilityTopic) {
-                    CapabilityTopic capTopic = (CapabilityTopic) resultTopic;
-                    redirectParsing(capTopic, message);
-                }
+            if (resultTopic instanceof CapabilityTopic) {
+                CapabilityTopic capTopic = (CapabilityTopic) resultTopic;
+                redirectParsing(capTopic, message);
             }
         } catch (IndexOutOfBoundsException iobe) {
             logger.log(Level.ERROR, "Invalid topic : " + rawTopic);

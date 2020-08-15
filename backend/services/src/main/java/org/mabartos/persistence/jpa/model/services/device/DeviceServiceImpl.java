@@ -9,8 +9,10 @@ package org.mabartos.persistence.jpa.model.services.device;
 
 import io.quarkus.runtime.StartupEvent;
 import org.mabartos.api.data.general.device.AddDeviceToRoomData;
+import org.mabartos.api.data.general.device.ConnectData;
 import org.mabartos.api.data.general.device.DeviceData;
 import org.mabartos.api.data.general.device.DeviceInfoData;
+import org.mabartos.api.model.capability.CapabilityModel;
 import org.mabartos.api.model.device.DeviceModel;
 import org.mabartos.api.model.home.HomeModel;
 import org.mabartos.api.model.room.RoomModel;
@@ -20,6 +22,7 @@ import org.mabartos.api.protocol.mqtt.TopicUtils;
 import org.mabartos.api.protocol.mqtt.exceptions.DeviceConflictException;
 import org.mabartos.api.service.AppServices;
 import org.mabartos.api.service.device.DeviceService;
+import org.mabartos.persistence.jpa.model.services.capability.CapabilityUtils;
 import org.mabartos.persistence.jpa.repository.DeviceRepository;
 import org.mabartos.services.model.CRUDServiceImpl;
 import org.mabartos.services.utils.DataToModelBase;
@@ -29,7 +32,9 @@ import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.persistence.Query;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Dependent
 public class DeviceServiceImpl extends CRUDServiceImpl<DeviceModel, DeviceEntity, DeviceRepository, Long> implements DeviceService {
@@ -60,9 +65,10 @@ public class DeviceServiceImpl extends CRUDServiceImpl<DeviceModel, DeviceEntity
 
     @Override
     public DeviceModel create(DeviceModel entity) {
-        if (!isDeviceInHome(entity))
+        if (!isDeviceInHome(entity)) {
+            entity.setActive(true);
             return super.create(entity);
-        else throw new DeviceConflictException();
+        } else throw new DeviceConflictException();
     }
 
     @Override
@@ -72,8 +78,69 @@ public class DeviceServiceImpl extends CRUDServiceImpl<DeviceModel, DeviceEntity
         if (device != null && room != null) {
             device.setRoom(room);
             room.addChild(device);
-            sendDeviceInRoomMessage(roomID, deviceID);
             return updateByID(deviceID, device);
+        }
+        return null;
+    }
+
+    @Override
+    public DeviceData createToHomeJSON(DeviceData data, Long homeID) {
+        DeviceModel model = createFromJSON(data);
+        HomeModel home = services.homes().findByID(homeID);
+        if (model != null && home != null && services.homes().addDeviceToHome(model, homeID)) {
+            return new DeviceData(model);
+        }
+        return null;
+    }
+
+    @Override
+    public DeviceData createToRoomJSON(DeviceData data, Long roomID) {
+        DeviceModel model = createFromJSON(data);
+        if (model != null && roomID != null) {
+            model = addDeviceToRoom(roomID, model.getRoomID());
+            return new DeviceData(model);
+        }
+        return null;
+    }
+
+    @Override
+    public ConnectData connectDevice(Long deviceID) {
+        return changeConnectionState(deviceID, true);
+    }
+
+    @Override
+    public boolean disconnectDevice(Long deviceID) {
+        return changeConnectionState(deviceID, false) != null;
+    }
+
+    @Override
+    public Long getRoomID(Long deviceID) {
+        DeviceModel device = findByID(deviceID);
+        return Optional.ofNullable(device.getRoomID()).orElse(-1L);
+    }
+
+    private ConnectData changeConnectionState(Long deviceID, boolean connectDev) {
+        DeviceModel model = findByID(deviceID);
+        if (model != null) {
+            model.setActive(connectDev);
+            model = updateByID(deviceID, model);
+            return new ConnectData(model);
+        }
+        return null;
+    }
+
+    private DeviceModel createFromJSON(DeviceData data) {
+        try {
+            if (data != null && data.getCapabilities() != null) {
+                Set<CapabilityModel> capabilities = services.capabilities().fromDataToModel(data.getCapabilities())
+                        .stream()
+                        .map(CapabilityUtils::getEntityInstance)
+                        .collect(Collectors.toSet());
+
+                return create(new DeviceEntity(data.getName(), capabilities));
+            }
+        } catch (RuntimeException e) {
+            e.printStackTrace();
         }
         return null;
     }
@@ -188,7 +255,7 @@ public class DeviceServiceImpl extends CRUDServiceImpl<DeviceModel, DeviceEntity
         if (device != null && device.getHome() != null && roomID != null) {
             BartMqttClient client = services.mqttManager().getMqttForHome(device.getHomeID());
             if (client != null) {
-                client.publish(TopicUtils.getDeviceTopic(device.getHomeID(), deviceID), new AddDeviceToRoomData(roomID, deviceID, true).toJson(), 1, false);
+                client.publish(TopicUtils.getDeviceTopic(device.getHomeID(), deviceID), new AddDeviceToRoomData(roomID, deviceID).toJson(), 1, false);
             }
         }
     }

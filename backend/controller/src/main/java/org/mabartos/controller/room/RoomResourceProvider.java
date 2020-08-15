@@ -92,7 +92,7 @@ public class RoomResourceProvider implements RoomResource {
         return Response.status(400).build();
     }
 
-    @Path(DevicesResource.DEVICE_PATH)
+    @Path(DevicesResource.PATH)
     public DevicesResource forwardToDevices() {
         return new DevicesResourceProvider(session);
     }

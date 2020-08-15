@@ -9,7 +9,6 @@ package org.mabartos.api.data.general;
 
 public interface JsonPropertyNames {
     String ID = "id";
-    String MESSAGE_ID = "msgID";
     String NAME = "name";
 
     String TYPE = "type";
@@ -22,8 +21,6 @@ public interface JsonPropertyNames {
     String ACTIVE = "active";
     String ENABLED = "enabled";
     String DISABLED = "disabled";
-
-    String RESPONSE = "resp";
 
     // CAPABILITIES
     String CAPABILITIES = "capabilities";

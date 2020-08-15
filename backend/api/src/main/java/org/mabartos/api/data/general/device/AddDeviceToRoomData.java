@@ -15,12 +15,10 @@ import org.mabartos.api.data.general.JsonPropertyNames;
 import org.mabartos.api.data.general.SerializableJSON;
 import org.mabartos.api.data.general.SerializeUtils;
 
-@JsonPropertyOrder({JsonPropertyNames.RESPONSE, JsonPropertyNames.ROOM_ID, JsonPropertyNames.DEVICE_ID})
+@JsonPropertyOrder({JsonPropertyNames.ROOM_ID, JsonPropertyNames.DEVICE_ID})
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class AddDeviceToRoomData implements ResponseData, SerializableJSON {
+public class AddDeviceToRoomData implements SerializableJSON {
 
-    @JsonProperty(JsonPropertyNames.RESPONSE)
-    private boolean response;
     @JsonProperty(JsonPropertyNames.ROOM_ID)
     private Long roomID;
     @JsonProperty(JsonPropertyNames.DEVICE_ID)
@@ -28,17 +26,9 @@ public class AddDeviceToRoomData implements ResponseData, SerializableJSON {
 
     @JsonCreator
     public AddDeviceToRoomData(@JsonProperty(JsonPropertyNames.ROOM_ID) Long roomID,
-                               @JsonProperty(JsonPropertyNames.DEVICE_ID) Long deviceID,
-                               @JsonProperty(JsonPropertyNames.RESPONSE) boolean response) {
-        this(deviceID, response);
-        this.roomID = roomID;
-    }
-
-    @JsonCreator
-    public AddDeviceToRoomData(@JsonProperty(JsonPropertyNames.DEVICE_ID) Long deviceID,
-                               @JsonProperty(JsonPropertyNames.RESPONSE) boolean response) {
+                               @JsonProperty(JsonPropertyNames.DEVICE_ID) Long deviceID) {
         this.deviceID = deviceID;
-        this.response = response;
+        this.roomID = roomID;
     }
 
     public Long getRoomID() {
@@ -59,15 +49,5 @@ public class AddDeviceToRoomData implements ResponseData, SerializableJSON {
 
     public static AddDeviceToRoomData fromJson(String json) {
         return SerializeUtils.fromJson(json, AddDeviceToRoomData.class);
-    }
-
-    @Override
-    public boolean isResponse() {
-        return this.response;
-    }
-
-    @Override
-    public void setIsResponse(boolean state) {
-        this.response = state;
     }
 }

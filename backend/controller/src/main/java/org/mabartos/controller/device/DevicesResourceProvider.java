@@ -12,7 +12,10 @@ import org.mabartos.api.common.UserRole;
 import org.mabartos.api.controller.BartSession;
 import org.mabartos.api.controller.device.DeviceResource;
 import org.mabartos.api.controller.device.DevicesResource;
+import org.mabartos.api.data.general.device.DeviceData;
 import org.mabartos.api.model.device.DeviceModel;
+import org.mabartos.api.model.home.HomeModel;
+import org.mabartos.api.model.room.RoomModel;
 import org.mabartos.controller.utils.ControllerUtil;
 
 import javax.transaction.Transactional;
@@ -42,25 +45,40 @@ public class DevicesResourceProvider implements DevicesResource {
         return session.getActualRoom() != null ? session.getActualRoom().getChildren() : session.services().devices().getAll();
     }
 
+    @Override
+    public DeviceData createDeviceJSON(DeviceData data) {
+        HomeModel home = session.getActualHome();
+        RoomModel room = session.getActualRoom();
+
+        if (home != null) {
+            if (room != null) {
+                return session.services().devices().createToRoomJSON(data, room.getID());
+            } else {
+                return session.services().devices().createToHomeJSON(data, home.getID());
+            }
+        }
+        return null;
+    }
+
     @POST
-    @Path(DEVICE_ID + "/add")
+    @Path(ID_PATH + ADD_PATH)
     @HasRoleInHome(minRole = UserRole.HOME_ADMIN, orIsOwner = true)
-    public DeviceModel addDeviceToRoom(@PathParam(DEVICE_ID_NAME) Long id) {
+    public DeviceModel addDeviceToRoom(@PathParam(ID_NAME) Long id) {
         return session.services().devices().addDeviceToRoom(session.getActualRoom().getID(), id);
     }
 
     @POST
-    @Path(DEVICE_ID + "/remove")
+    @Path(ID_PATH + REMOVE_PATH)
     @HasRoleInHome(minRole = UserRole.HOME_ADMIN, orIsOwner = true)
-    public Response removeDeviceFromRoom(@PathParam(DEVICE_ID_NAME) Long id) {
+    public Response removeDeviceFromRoom(@PathParam(ID_NAME) Long id) {
         if (session.services().devices().removeDeviceFromRoom(session.getActualRoom().getID(), id)) {
             return Response.ok().build();
         }
         return Response.status(400).build();
     }
 
-    @Path(DEVICE_ID)
-    public DeviceResource forwardToDevice(@PathParam(DEVICE_ID_NAME) Long id) {
+    @Path(ID_PATH)
+    public DeviceResource forwardToDevice(@PathParam(ID_NAME) Long id) {
         if (session.getActualRoom() == null || ControllerUtil.containsItem(session.getActualRoom().getChildren(), id)) {
             return new DeviceResourceProvider(session.setActualDevice(id));
         }

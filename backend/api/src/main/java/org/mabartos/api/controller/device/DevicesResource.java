@@ -9,6 +9,7 @@ package org.mabartos.api.controller.device;
 
 import org.mabartos.api.annotations.HasRoleInHome;
 import org.mabartos.api.common.UserRole;
+import org.mabartos.api.data.general.device.DeviceData;
 import org.mabartos.api.model.device.DeviceModel;
 
 import javax.transaction.Transactional;
@@ -28,23 +29,31 @@ import java.util.Set;
 @HasRoleInHome
 public interface DevicesResource {
 
-    String DEVICE_ID_NAME = "idDevice";
-    String DEVICE_ID = "/{" + DEVICE_ID_NAME + ":[\\d]+}";
-    String DEVICE_PATH = "/devices";
+    String ID_NAME = "idDevice";
+    String ID_PATH = "/{" + ID_NAME + ":[\\d]+}";
+    String PATH = "/devices";
+
+    String CREATE_PATH = "/create";
+    String ADD_PATH = "/add";
+    String REMOVE_PATH = "/remove";
 
     @GET
     Set<DeviceModel> getAll();
 
     @POST
-    @Path(DEVICE_ID + "/add")
-    @HasRoleInHome(minRole = UserRole.HOME_MEMBER, orIsOwner = true)
-    DeviceModel addDeviceToRoom(@PathParam(DEVICE_ID_NAME) Long id);
+    @Path(CREATE_PATH)
+    DeviceData createDeviceJSON(DeviceData data);
 
     @POST
-    @Path(DEVICE_ID + "/remove")
+    @Path(ID_PATH + ADD_PATH)
     @HasRoleInHome(minRole = UserRole.HOME_MEMBER, orIsOwner = true)
-    Response removeDeviceFromRoom(@PathParam(DEVICE_ID_NAME) Long id);
+    DeviceModel addDeviceToRoom(@PathParam(ID_NAME) Long id);
 
-    @Path(DEVICE_ID)
-    DeviceResource forwardToDevice(@PathParam(DEVICE_ID_NAME) Long id);
+    @POST
+    @Path(ID_PATH + REMOVE_PATH)
+    @HasRoleInHome(minRole = UserRole.HOME_MEMBER, orIsOwner = true)
+    Response removeDeviceFromRoom(@PathParam(ID_NAME) Long id);
+
+    @Path(ID_PATH)
+    DeviceResource forwardToDevice(@PathParam(ID_NAME) Long id);
 }

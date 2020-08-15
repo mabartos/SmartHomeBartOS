@@ -11,6 +11,7 @@ using namespace std;
 class WifiUtils {
    private:
     char* _brokerURL;
+    char* _serverURL;
     long _homeID;
     WiFiManager& _wifiManager;
 
@@ -29,7 +30,6 @@ class WifiUtils {
 
     void begin();
 
-    string getBrokerURL();
     long getHomeID();
     WiFiManager& getWifiManager();
 

@@ -61,6 +61,6 @@ public interface RoomResource {
     @HasRoleInHome(minRole = UserRole.HOME_ADMIN, orIsOwner = true)
     Response removeOwner(OwnerData data);
 
-    @Path(DevicesResource.DEVICE_PATH)
+    @Path(DevicesResource.PATH)
     DevicesResource forwardToDevices();
 }

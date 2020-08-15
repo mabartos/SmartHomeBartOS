@@ -4,11 +4,14 @@
 #include <string>
 
 #include "capability/utils/CapabilityUtils.h"
+#include "http/HttpClient.h"
+#include "mqtt/MessageForwarder.h"
 #include "mqtt/MqttClient.h"
 #include "wifiUtils/WifiUtils.h"
 
 extern MqttClient client;
 extern WifiUtils wifiUtils;
+extern HttpClient httpClient;
 
 Device::Device() {
     setName("Dev_" + NumberGenerator::generateIntToString(2000, 9999));
@@ -87,29 +90,14 @@ string Device::getDeviceTopic() {
 }
 
 // Manage topics
-string Device::getCreateTopic() {
+string Device::getCreatePath() {
     string homeTopic = getHomeTopic();
     return (homeTopic != "") ? string(homeTopic + "/create") : "";
 }
 
-string Device::getConnectTopic() {
-    string homeTopic = getHomeTopic();
-    return (homeTopic != "") ? string(homeTopic + "/connect") : "";
-}
-
-string Device::getCreateTopicResp() {
-    string createTopic = getCreateTopic();
-    return (createTopic != "") ? string(createTopic + "/resp") : "";
-}
-
-string Device::getConnectTopicResp() {
-    string connectTopic = getConnectTopic();
-    return (connectTopic != "") ? string(connectTopic + "/resp") : "";
-}
-
-string Device::getCreateTopicWild() {
-    string createTopic = getCreateTopic();
-    return (createTopic != "") ? string(createTopic + "/#") : "";
+string Device::getConnectPath() {
+    string deviceTopic = getDeviceTopic();
+    return (deviceTopic != "") ? string(deviceTopic + "/connect") : "";
 }
 
 string Device::getLogoutTopic() {
@@ -181,10 +169,7 @@ void Device::executeAllCapabilities() {
 DynamicJsonDocument Device::getCreateJSON() {
     const size_t capacity = getCreateJSONSize();
     DynamicJsonDocument create(capacity);
-    long msgID = NumberGenerator::generateLong(100, 999);
-    setManageMsgID(msgID);
 
-    create["msgID"] = msgID;
     create["name"] = _name.c_str();
     JsonArray caps = create.createNestedArray("capabilities");
 
@@ -203,12 +188,33 @@ size_t Device::getCreateJSONSize() {
 
 void Device::publishCreateMessage() {
     char buffer[2048];
-    client.getMQTT().subscribe(getCreateTopicResp().c_str());
 
     serializeJson(getCreateJSON(), buffer);
-    const char *result = getCreateTopic().c_str();
 
-    client.getMQTT().publish(result, buffer, false);
+    HttpResponse resp = httpClient.doPost(getCreatePath(), string(buffer));
+
+    DynamicJsonDocument doc(1024);
+    DeserializationError err = deserializeJson(doc, resp.getPayload().c_str(), resp.getPayload().size());
+    if (err) {
+        Serial.println(err.c_str());
+        return;
+    }
+
+    JsonObject obj = doc.as<JsonObject>();
+
+    vector<string> keys{"id", "name", "capabilities"};
+    if (!MessageForwarder::containKeys(obj, keys) || resp.getResponseCode() != 200 || resp.getResponseCode() != 201) {
+        return;
+    }
+
+    long ID = obj["id"];
+    setID(ID);
+    MessageForwarder::manageCreateSPIFS(obj, ID);
+
+    client.getMQTT().subscribe(getDeviceTopic().c_str());
+    setInitialized(true);
+    client.reconnect();
+    doc.garbageCollect();
 }
 
 // CONNECT
@@ -232,10 +238,47 @@ size_t Device::getConnectJSONSize() {
 
 void Device::publishConnectMessage() {
     char buffer[2048];
-    client.getMQTT().subscribe(getConnectTopicResp().c_str());
+
     serializeJson(getConnectJSON(), buffer);
-    string topic(getConnectTopic() + "/" + NumberGenerator::longToString(getID()));
-    client.getMQTT().publish_P(topic.c_str(), buffer, false);
+
+    HttpResponse resp = httpClient.doGet(getConnectPath());
+
+    DynamicJsonDocument doc(1024);
+    DeserializationError err = deserializeJson(doc, resp.getPayload().c_str(), resp.getPayload().size());
+    if (err) {
+        Serial.println(err.c_str());
+        return;
+    }
+
+    JsonObject obj = doc.as<JsonObject>();
+
+    vector<string> keys{"id", "name", "capabilities"};
+    if (!MessageForwarder::containKeys(obj, keys) || resp.getResponseCode() != 200) {
+        return;
+    }
+
+    const char *name = obj["name"];
+    if (strcmp(name, getName().c_str()) != 0) {
+        setName(string(name));
+    }
+
+    if (obj.containsKey("roomID")) {
+        long roomID = obj["roomID"];
+        if (roomID != getRoomID()) {
+            setRoomID(roomID);
+        }
+    }
+
+    if (getRoomTopicWildCard() != "") {
+        client.getMQTT().subscribe(getRoomTopicWildCard().c_str());
+    }
+
+    setCapsIDFromJSON(obj);
+    setInitialized(true);
+    client.getMQTT().subscribe(getDeviceTopic().c_str());
+
+    client.reconnect();
+    doc.garbageCollect();
 }
 
 void Device::setCapsIDFromJSON(const JsonObject &obj) {
@@ -283,4 +326,19 @@ void Device::eraseAll() {
     delay(2000);
     ESP.restart();
     delay(3000);
+}
+
+string Device::getBrokerURL() {
+    return _brokerURL;
+}
+void Device::setBrokerURL(const string &brokerURL) {
+    _brokerURL = brokerURL;
+}
+
+string Device::getServerURL() {
+    return _serverURL;
+}
+
+void Device::setServerURL(const string &serverURL) {
+    _serverURL = serverURL;
 }

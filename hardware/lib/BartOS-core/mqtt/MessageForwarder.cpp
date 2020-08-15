@@ -15,8 +15,7 @@ extern MqttClient client;
 void MessageForwarder::forwardMessage(char *topic, DynamicJsonDocument &doc) {
     _topic = topic;
     JsonObject obj = doc.as<JsonObject>();
-    manageCreate(obj);
-    manageConnect(obj);
+
     manageAddDeviceToRoom(obj);
     manageEraseAll(obj);
 
@@ -32,33 +31,6 @@ bool MessageForwarder::equalsTopic(const char *receiveTopic) {
 
 bool MessageForwarder::equalsTopic(const string &receiveTopic) {
     return (strcmp(_topic, receiveTopic.c_str()) == 0);
-}
-
-void MessageForwarder::manageCreate(const JsonObject &obj) {
-    if (equalsTopic(device.getCreateTopicResp()) && !device.isInitialized()) {
-        vector<string> keys{"resp", "msgID", "id", "name", "capabilities"};
-        if (!containKeys(obj, keys) || (obj.containsKey("code") && obj["code"] != 200))
-            return;
-
-        long msgID = obj["msgID"];
-
-        if (msgID == device.getManageMsgID()) {
-            device.setManageMsgID(-1);
-            long ID = obj["id"];
-            device.setID(ID);
-
-            manageCreateSPIFS(obj, ID);
-
-            client.getMQTT().subscribe(device.getDeviceTopic().c_str());
-            client.getMQTT().unsubscribe(device.getCreateTopic().c_str());
-            client.getMQTT().unsubscribe(device.getCreateTopicWild().c_str());
-
-            device.setInitialized(true);
-
-            device.setID(ID);
-            client.reconnect();
-        }
-    }
 }
 
 void MessageForwarder::manageCreateSPIFS(const JsonObject &obj, const long &deviceID) {
@@ -107,40 +79,6 @@ void MessageForwarder::manageCreateSPIFS(const JsonObject &obj, const long &devi
 
     doc.garbageCollect();
     newDoc.garbageCollect();
-}
-
-void MessageForwarder::manageConnect(const JsonObject &obj) {
-    if (equalsTopic(device.getConnectTopicResp())) {
-        vector<string> keys{"resp", "msgID", "id", "name", "roomID", "capabilities"};
-        if (!containKeys(obj, keys) || (obj.containsKey("code") && obj["code"] != 200))
-            return;
-
-        long msgID = obj["msgID"];
-        long id = obj["id"];
-        if (msgID != device.getManageMsgID() || id != device.getID())
-            return;
-
-        const char *name = obj["name"];
-        long roomID = obj["roomID"];
-        if (strcmp(name, device.getName().c_str()) != 0) {
-            device.setName(string(name));
-        }
-        if (roomID != device.getRoomID()) {
-            device.setRoomID(roomID);
-        }
-
-        if (device.getRoomTopicWildCard() != "") {
-            client.getMQTT().subscribe(device.getRoomTopicWildCard().c_str());
-        }
-        device.setCapsIDFromJSON(obj);
-        device.setInitialized(true);
-
-        client.getMQTT().subscribe(device.getDeviceTopic().c_str());
-        client.getMQTT().unsubscribe(device.getConnectTopic().c_str());
-        client.getMQTT().unsubscribe(device.getConnectTopicResp().c_str());
-
-        client.reconnect();
-    }
 }
 
 void MessageForwarder::manageEraseAll(const JsonObject &obj) {
